@@ -18,9 +18,11 @@ void Regulated::intro(LoanSession& s, const Config& c){
 void Regulated::consent(LoanSession &s,const Config &c){
     if(s.deniedByLimit){ return; }
     if(c.requireQuiz){
-        std::string a;
-        do{ a=UI::prompt("Quiz: Which number is the APR? (enter percentage)"); }
-        while(std::stod(a)!=c.maxRegulatedAPR);
+        double answer = 0.0;
+        do {
+            answer = UI::askNum("Quiz: Which number is the APR? (enter percentage)?");
+        } while(answer != c.maxRegulatedAPR);
+        std::string a = std::to_string(answer);
         s.record("quizPassed",a);
     }
     if(c.banArbitration) UI::show("✅ You retain your right to sue in court — no arbitration required.");
@@ -48,9 +50,18 @@ double Regulated::calcFee(LoanSession &s,const Config &c){
     double apr = std::min(c.apr,c.maxRegulatedAPR);
     double f   = s.amount*(apr/100);
     s.record("fee", std::to_string(f));
-    if(c.showCfpbReference) UI::legalNotice("CFPB Reg Z §1026: 36% APR cap");
-    if(c.showDelawareCase)  UI::legalNotice("Delaware v. X Corp (2024): usury cap enforced");
-    if(c.showSdPilot)       UI::legalNotice("SD Pilot: 0% APR extension once/year");
+    if(c.showCfpbReference) {
+        UI::legalNotice("CFPB Reg Z §1026: 36% APR cap");
+        s.addReferencedDisclosure("CFPB Reg Z §1026: 36% APR cap");
+    }
+    if(c.showDelawareCase) {
+        UI::legalNotice("Delaware v. X Corp (2024): usury cap enforced");
+        s.addReferencedDisclosure("Delaware v. X Corp (2024): usury cap enforced");
+    }
+    if(c.showSdPilot) {
+        UI::legalNotice("SD Pilot: 0% APR extension once/year");
+        s.addReferencedDisclosure("SD Pilot: 0% APR extension once/year");
+    }
     if(c.requireCoolingOff) UI::show("Cooling-off: You may cancel within 24h.");
     return s.fee=f;
 }
@@ -70,7 +81,8 @@ void Regulated::renewals(LoanSession &s,const Config &c){
     }
 }
 
-void Regulated::finalize(LoanSession &s,const Config &c){
+void Regulated::finalize(LoanSession &s,const Config &c, const std::string& mode){
+    UI::show("\n--- Finalizing Loan (Mode: " + mode + (c.state.empty() ? "" : ", State: " + c.state) + ") ---");
     if(s.deniedByLimit){ return; }
     s.userName = UI::prompt("Your name:");
     s.employer = UI::prompt("Employer:");
@@ -83,6 +95,14 @@ void Regulated::finalize(LoanSession &s,const Config &c){
     UI::show("Total of Payments: $" + std::to_string((int)(s.amount+s.fee)));
     UI::show("Payment Due in " + std::to_string(c.daysToRepay) + " days");
     while(UI::prompt("Type 'I AGREE' to confirm these terms:")!="I AGREE"){}
+    s.record("finalAgreement", "I AGREE");
+
+    // Term Recall Prompts
+    std::string recalledAPR = UI::prompt("Term Recall: What was the disclosed APR (%) for this loan?");
+    s.recall("Disclosed APR: " + recalledAPR);
+    std::string recalledFee = UI::prompt("Term Recall: What was the disclosed Finance Charge ($) for this loan?");
+    s.recall("Disclosed Finance Charge: " + recalledFee);
+    
     printSummary(s);
     UI::show("Compliance Report:");
     UI::show(" • APR cap applied: " + std::string(c.apr>c.maxRegulatedAPR?"YES":"NO"));

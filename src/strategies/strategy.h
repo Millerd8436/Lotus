@@ -11,7 +11,7 @@ struct LoanStrategy {
     virtual double calcFee(LoanSession&, const Config&) =0;
     virtual void extras(LoanSession&, const Config&) =0;
     virtual void renewals(LoanSession&, const Config&) =0;
-    virtual void finalize(LoanSession&, const Config&) =0;
+    virtual void finalize(LoanSession&, const Config&, const std::string& mode) =0;
     virtual ~LoanStrategy(){}
 };
 

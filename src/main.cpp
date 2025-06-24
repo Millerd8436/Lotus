@@ -44,7 +44,7 @@ int main(int argc,char* argv[]){
     strat->calcFee(sess,cfg);
     strat->extras(sess,cfg);
     strat->renewals(sess,cfg);
-    strat->finalize(sess,cfg);
+    strat->finalize(sess,cfg, mode);
 
     UI::show("Done.");
     return 0;

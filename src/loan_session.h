@@ -23,11 +23,13 @@ public:
     std::vector<std::string> darkPatterns;
     std::vector<std::string> recalls;
     std::vector<std::pair<std::string,std::string>> notices;
+    std::vector<std::string> referencedDisclosures; // New member
 
     void record(const std::string &e, const std::string &d = "");
     void tag(const std::string &p) { darkPatterns.push_back(p); }
     void notice(const std::string &s,const std::string &n){ notices.emplace_back(s,n); }
     void recall(const std::string &q){ recalls.push_back(q); }
+    void addReferencedDisclosure(const std::string& disclosure); // New method
 
     int consentScore() const;
     int manipulationIndex() const { return (int)darkPatterns.size(); }

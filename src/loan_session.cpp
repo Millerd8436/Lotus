@@ -1,4 +1,5 @@
 #include "loan_session.h"
+#include <map>
 
 void LoanSession::record(const std::string &e, const std::string &d){
     std::time_t now = std::time(nullptr);
@@ -9,12 +10,29 @@ void LoanSession::record(const std::string &e, const std::string &d){
     }
 }
 
+void LoanSession::addReferencedDisclosure(const std::string& disclosure) {
+    referencedDisclosures.push_back(disclosure);
+}
+
 int LoanSession::consentScore() const {
+    static const std::map<std::string, int> penalties = {
+        {"urgency", 20},
+        {"fakeConsent", 20},
+        {"hiddenAPR", 20},
+        {"autoRollover", 15}, // Changed from "rollover" to "autoRollover"
+        {"guiltTip", 15},
+        {"forcedTip", 10} // Added penalty for forcedTip
+    };
+    const int defaultPenalty = 10;
+
     int score = 100;
     for(const auto &p: darkPatterns){
-        if(p=="urgency" || p=="fakeConsent" || p=="hiddenAPR") score -= 20;
-        else if(p=="rollover" || p=="guiltTip") score -= 15;
-        else score -= 10;
+        auto it = penalties.find(p);
+        if (it != penalties.end()) {
+            score -= it->second;
+        } else {
+            score -= defaultPenalty;
+        }
     }
     return std::max(0, score);
 }
@@ -36,6 +54,16 @@ void LoanSession::exportJson(const std::string &file) const {
     for(size_t i=0;i<darkPatterns.size();++i){
         o << '\"'<<darkPatterns[i]<<'\"';
         if(i+1<darkPatterns.size()) o << ',';
+    }
+    o << "],\n  \"recalls\": ["; // Added recalls to JSON
+    for(size_t i=0;i<recalls.size();++i){
+        o << '\"'<<recalls[i]<<'\"';
+        if(i+1<recalls.size()) o << ',';
+    }
+    o << "],\n  \"referencedDisclosures\": ["; // Added referencedDisclosures to JSON
+    for(size_t i=0;i<referencedDisclosures.size();++i){
+        o << '\"'<<referencedDisclosures[i]<<'\"';
+        if(i+1<referencedDisclosures.size()) o << ',';
     }
     o << "],\n  \"history\": [";
     for(size_t i=0;i<history.size();++i){

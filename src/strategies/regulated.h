@@ -11,7 +11,7 @@ struct Regulated : LoanStrategy {
     double calcFee(LoanSession&, const Config&) override;
     void extras(LoanSession&, const Config&) override;
     void renewals(LoanSession&, const Config&) override;
-    void finalize(LoanSession&, const Config&) override;
+    void finalize(LoanSession&, const Config&, const std::string& mode) override;
 };
 
 #endif
