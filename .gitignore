@@ -2,3 +2,4 @@ lotus
 *.log
 *.json
 loan_count.txt
+status
