@@ -4,13 +4,18 @@
 #include <fstream>   
 #include <ctime>     
 #include <numeric> 
+#include <iomanip> 
 
 // Define defaultPenalty if not already defined
-const int defaultPenalty = 15; // Increased default penalty for uncategorized dark patterns
+const int defaultPenalty = 15; 
 
 void LoanSession::record(const std::string &e, const std::string &d){
     std::time_t now = std::time(nullptr);
-    history.push_back({e,d,now});
+    std::string sanitized_d = d;
+    std::replace(sanitized_d.begin(), sanitized_d.end(), '"', '\''); 
+    std::replace(sanitized_d.begin(), sanitized_d.end(), '\n', ' ');
+    std::replace(sanitized_d.begin(), sanitized_d.end(), '\r', ' ');
+    history.push_back({e, sanitized_d, now});
 }
 
 void LoanSession::tagDarkPattern(const std::string &p) {
@@ -46,11 +51,12 @@ void LoanSession::reset() {
     feeComponents.clear();
     userName = ""; employer = ""; contact = "";
     monthlyIncome = 0.0; zipCode = ""; isMilitary = false; isExistingCustomer = false; creditScoreCategory = 3;
-    sessionId = ""; 
+    sessionId = ""; state = "";
     userExpenses.clear(); userScenarioNotes = "";
     rushRating = 0;
     activeLoansWithLender = 0;
     deniedByLimit = false; denialReason = ""; isCABLoanInTX = false; cabFeeCharged = 0.0; charterStateUsed = "";
+    aprHiddenInitially = false; countdownTimerValue = 0;
     
     capacityConfirmed_Age = false; capacityConfirmed_SoundMind = false; 
     fullDisclosureProvided = false; disclosureTimestamp = 0;
@@ -61,6 +67,7 @@ void LoanSession::reset() {
     rescissionOffered = false; rescissionDeadlineText = ""; loanRescinded = false; 
     consentTimestamp = 0; consentTermsHash = ""; 
     kantianReflectionResponse = ""; millianReflectionResponse = ""; millianRolloverJustification = "";
+    respectMeterScore = 100.0;
     
     renewalsTaken = 0; renewalCount = 0; 
     installmentPlanOffered = false; installmentPlanAccepted = false;
@@ -86,90 +93,93 @@ int LoanSession::consentScore() const {
     int score = 100;
     // Pillar 1: Capacity
     if (!capacityConfirmed_Age || !capacityConfirmed_SoundMind) { 
-        if (consentGiven) score -= 60; // Consented without full capacity confirmed is extremely bad
-        else score -=20; // Process started without capacity check is already a flaw
+        if (consentGiven) score -= 60; 
+        else score -=25; 
     }
 
     // Pillar 2: Disclosure
-    if (!fullDisclosureProvided && consentGiven) score -= 70; // Major violation, increased penalty
-    else if (!fullDisclosureProvided) score -= 40; // Disclosure missing even if no consent yet is a major flaw
+    if (!fullDisclosureProvided && consentGiven) score -= 70; 
+    else if (!fullDisclosureProvided) score -= 40; 
+    if (aprHiddenInitially && consentGiven) score -= 20; // Specific penalty for hiding APR
 
     // Pillar 3: Comprehension
     if (fullDisclosureProvided && consentGiven) { 
-        if (quizAttemptsTotal > 0) { // Quiz was attempted
-            if (!quizPassedOverall) score -= 50; // Consented despite failing quiz is extremely bad
-            else if (quizQuestionsCorrect < quizQuestionsTotal) score -= 25; // Passed but not perfectly
-            else if (quizAttemptsTotal > quizQuestionsTotal) score -=20; // Took more than one full attempt cycle (e.g. 2 tries for 3 Qs = 6 attempts)
-        } else { // No quiz attempted, but disclosure was there
-            score -= 35; // Significant gap if quiz is a policy but wasn't run
+        if (quizAttemptsTotal > 0) { 
+            if (!quizPassedOverall) score -= 50; 
+            else if (quizQuestionsCorrect < quizQuestionsTotal) score -= 30; 
+            else if (quizAttemptsTotal > quizQuestionsTotal) score -=20; 
+        } else { 
+            score -= 40; 
         }
+    } else if (fullDisclosureProvided && !consentGiven && quizAttemptsTotal > 0 && !quizPassedOverall) {
+        score -= 10; 
     }
     
     // Pillar 4: Voluntariness
-    if (metaConsentCheckPerformed && !voluntarinessAffirmedByDeclaration && consentGiven) score -= 40; // User felt pressured but was pushed/allowed to consent
-    if (!metaConsentCheckPerformed && consentGiven) score -=20; // Meta-consent is important for voluntariness
+    if (metaConsentCheckPerformed && !voluntarinessAffirmedByDeclaration && consentGiven) score -= 45; 
+    if (!metaConsentCheckPerformed && consentGiven) score -=20; 
 
     // Pillar 5: Authorization
     if (consentGiven) {
-        // More stringent check on consent phrase length and content
-        if (explicitConsentInput.length() < 50 || explicitConsentInput.find("UNDERSTAND AND VOLUNTARILY CONSENT AND AUTHORIZE") == std::string::npos) score -= 35; 
-        if (consentTermsHash.empty()) score -=25; // No terms hash for audit is a serious record-keeping failure
-    } else if (amount > 0 && !deniedByLimit && !loanRescinded) { // Loan funded without consent flag
-        score = 0; // Catastrophic failure of consent
+        if (explicitConsentInput.length() < 60 || explicitConsentInput.find("UNDERSTAND AND VOLUNTARILY CONSENT AND AUTHORIZE") == std::string::npos) score -= 40; 
+        if (consentTermsHash.empty()) score -=30; 
+    } else if (amount > 0 && !deniedByLimit && !loanRescinded) { 
+        score = 0; 
     }
 
-    // Dark Pattern Penalties (ensure this map is comprehensive from Config/Exploit logic)
-    static const std::map<std::string, int> dark_pattern_penalties_v6_holistic = { 
+    static const std::map<std::string, int> dark_pattern_penalties_v8_holistic = { 
         {"ExploitMech_1_EndlessRolloverTrap", 45}, {"ExploitMech_2_InterestOnlyAutoRenewal", 45},
         {"ExploitMech_3_HiddenFeesAndLayering", 40}, {"ExploitMech_4_MisleadingCostDisplay", 40},
-        {"ExploitMech_5_OptionalTipsDisguiseInterest", 35}, {"ExploitMech_6_FinePrintConsentObscure", 45}, 
+        {"ExploitMech_4_HiddenAPREarly", 25}, // Specific for hidden APR
+        {"ExploitMech_5_OptionalTipsDisguiseInterest", 35}, {"ExploitMech_5_DefaultTipEnabled", 20},
+        {"ExploitMech_6_FinePrintConsentObscure", 45}, {"ExploitMech_6_ObscureCancellation", 25},
+        {"ExploitMech_6_DataSharingPopupCoercion", 25},
         {"ExploitMech_7_AutoBankDebitOverdraftExploit", 45}, {"ExploitMech_8_MisleadingCollectionThreats", 35},
         {"ExploitMech_9_MisleadingTestimonials", 30}, {"ExploitMech_10_PersonalDataExploitation", 45}, 
         {"ExploitMech_11_TargetedMarketingVulnerable", 25}, {"ExploitMech_12_RentABankLoophole", 40},
         {"timePressureIntroCountdownSpecificAggressivePersonalizedUrgentFOMOSocialProofExtreme", 35}, 
-        {"superficialConsentHighPressureWithUnconditionalIrrevocableForeverTermsAcknowledgementWaiver", 60}, // Max penalty
+        {"superficialConsentHighPressureWithUnconditionalIrrevocableForeverTermsAcknowledgementWaiver", 60}, 
         {"feeStackingWithExtras", 30}, {"feeEscalationOnRollover", 35},
         {"aggressiveCollectionThreatsHyperbolicDetailed", 45},
-        {"urgency", 20}, {"fakeConsent", 60}, {"hiddenAPR", 40}, {"autoRolloverOptOutImpossibleDetailed", 40},
-        {"misleadingApprovalSpeed_UltraFast", 15}, {"misleadingApprovalRate_NearPerfect", 15},
-        {"emotionalAppeal_DesperationExploitation_Intense", 20}, {"AntiBankSentiment_Strong", 10},
-        {"KantianRespectMeter_Low_ClarityOrVoluntarinessIssueSimulated", 25} 
+        {"KantianRespectMeter_Low_ClarityOrVoluntarinessIssueSimulated", 30} 
     };
 
     for(const auto &p: darkPatternsEncountered){ 
-        auto it = dark_pattern_penalties_v6_holistic.find(p); 
-        if (it != dark_pattern_penalties_v6_holistic.end()) {
+        auto it = dark_pattern_penalties_v8_holistic.find(p); 
+        if (it != dark_pattern_penalties_v8_holistic.end()) {
             score -= it->second;
         } else {
             score -= defaultPenalty; 
         }
     }
 
-    // Rewards for ethical safeguards (more granular and impactful)
+    // Rewards for ethical safeguards
     if (capacityConfirmed_Age && capacityConfirmed_SoundMind) score = std::min(100, score + 10);
     if (fullDisclosureProvided) score = std::min(100, score + 20);
     if (quizPassedOverall && quizAttemptsTotal > 0 && quizQuestionsCorrect == quizQuestionsTotal) score = std::min(100, score + 20);
     if (voluntarinessAffirmedByDeclaration && metaConsentCheckPerformed) score = std::min(100, score + 15);
-    if (consentGiven && explicitConsentInput.length() > 50 && !consentTermsHash.empty()) score = std::min(100, score + 15); // Stricter phrase length
+    if (consentGiven && explicitConsentInput.length() > 60 && !consentTermsHash.empty()) score = std::min(100, score + 15); 
     if (rescissionOffered && loanRescinded) score = std::min(100, score + 10); 
     else if (rescissionOffered) score = std::min(100, score + 5); 
 
     for(const auto &es : ethicalSafeguardsApplied) {
-        if (es.find("AffordabilityCapApplied") != std::string::npos || es.find("ATR_Detailed") != std::string::npos) score = std::min(100, score + 15); // Higher reward for ATR
+        if (es.find("AffordabilityCapApplied") != std::string::npos || es.find("ATR_Detailed") != std::string::npos) score = std::min(100, score + 15); 
         if (es.find("InstallmentPlanAccepted") != std::string::npos) score = std::min(100, score + 10);
         if (es.find("WarnedExcessiveFees_MillianDetailed") != std::string::npos) score = std::min(100, score + 7);
-        if (es.find("Kantian") != std::string::npos && es.find("Explained") != std::string::npos) score = std::min(100, score + 5); // Higher for lectures
+        if (es.find("Kantian") != std::string::npos && es.find("Explained") != std::string::npos) score = std::min(100, score + 5); 
         if (es.find("Rawlsian") != std::string::npos && es.find("Explained") != std::string::npos) score = std::min(100, score + 5);
         if (es.find("Millian") != std::string::npos && es.find("Explained") != std::string::npos) score = std::min(100, score + 5);
         if (es.find("StateSpecificFeeCapsApplied") != std::string::npos) score = std::min(100, score + 7);
-        if (es.find("RolloverLimitEnforced_Strict") != std::string::npos) score = std::min(100, score + 10); // Strict rollover enforcement
-        if (es.find("ComplianceAuditSimulator_Passed") != std::string::npos) score = std::min(100, score + 5); // Passed simulated audit
+        if (es.find("RolloverLimitEnforced_Strict_Compliance") != std::string::npos) score = std::min(100, score + 10); 
+        if (es.find("ComplianceAuditSimulator_Passed_Ethical") != std::string::npos) score = std::min(100, score + 5); 
+        if (es.find("KantianRespectMeter_High") != std::string::npos) score = std::min(100, score + 10);
     }
     return std::max(0, score);
 }
 
 void LoanSession::exportJson(const std::string &file) const {
     std::ofstream o(file);
+    o << std::fixed << std::setprecision(2); 
     o << "{\n";
     o << "  \"sessionId\": \""<<sessionId<<"\",\n"; 
     o << "  \"sessionData\": {\n"; 
@@ -215,6 +225,8 @@ void LoanSession::exportJson(const std::string &file) const {
     o << "    \"denialReason\": \""<<denialReason<<"\",\n"; 
     o << "    \"isCABLoanInTX\": "<<(isCABLoanInTX?"true":"false")<<",\n";
     o << "    \"charterStateUsedForRentABank\": \""<<charterStateUsed<<"\",\n"; 
+    o << "    \"aprHiddenInitially\": "<<(aprHiddenInitially?"true":"false")<<",\n"; // New
+    o << "    \"countdownTimerValueAtDecision\": "<<countdownTimerValue<<",\n"; // New
     o << "    \"renewalsTaken\": "<<renewalsTaken<<",\n";
     o << "    \"renewalCountField\": "<<renewalCount<<",\n"; 
     o << "    \"totalFeesPaidAcrossAllTerms\": "<<totalFeesPaidAcrossAllTerms<<",\n"; 
@@ -261,6 +273,7 @@ void LoanSession::exportJson(const std::string &file) const {
     
     o << "  \"analysisAndLogs\": {\n"; 
     o << "    \"consentScore\": "<<consentScore()<<",\n";
+    o << "    \"respectMeterScore_Kantian\": "<<respectMeterScore<<",\n"; 
     o << "    \"manipulationIndex\": "<<manipulationIndex()<<",\n";
     o << "    \"darkPatternsEncountered\": ["; 
     for(size_t i=0;i<darkPatternsEncountered.size();++i){ 
@@ -296,7 +309,11 @@ void LoanSession::exportJson(const std::string &file) const {
     o << "    \"eventHistory\": ["; 
     for(size_t i=0;i<history.size();++i){
         const auto &ev = history[i];
-        o << "{\"type\":\""<<ev.type<<"\",\"data\":\""<<ev.data<<"\",\"ts\": "<<ev.timestamp<<"}";
+        std::string sanitized_data = ev.data;
+        std::replace(sanitized_data.begin(), sanitized_data.end(), '\\', '/'); 
+        std::replace(sanitized_data.begin(), sanitized_data.end(), '"', '\''); 
+        std::replace(sanitized_data.begin(), sanitized_data.end(), '\n', ' '); 
+        o << "{\"type\":\""<<ev.type<<"\",\"data\":\""<<sanitized_data<<"\",\"ts\": "<<ev.timestamp<<"}";
         if(i+1<history.size()) o << ',';
     }
     o << "]\n  }\n"; 

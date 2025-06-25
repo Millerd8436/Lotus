@@ -11,6 +11,7 @@
 #include <ctime>     
 
 // --- Helper Functions ---
+// (calculateLoanAPR and generateLoanTermsHash will be used by other methods later)
 double Regulated::calculateLoanAPR(double principal, double fee, int termDays) { 
     if (principal <= 0 || termDays <= 0) return 0.00;
     return (fee / principal) / static_cast<double>(termDays) * 365.0 * 100.0;
@@ -41,26 +42,17 @@ std::string Regulated::getCurrentTimestampForLog() {
     return std::string(buf);
 }
 
-bool Regulated::argEquals(const std::string& arg1, const std::string& arg2) { // Helper for case-insensitive compare
-    std::string lower_arg1 = arg1;
-    std::transform(lower_arg1.begin(), lower_arg1.end(), lower_arg1.begin(), ::tolower);
-    std::string lower_arg2 = arg2;
-    std::transform(lower_arg2.begin(), lower_arg2.end(), lower_arg2.begin(), ::tolower);
-    return lower_arg1 == lower_arg2;
-}
-
-
 // --- Strategy Implementation ---
 
-// Step 0: Introduction and Pillar 1: Competence
+// Method 1: intro() - Focus on setting the stage and Pillar 1 of Informed Consent: Capacity
 void Regulated::intro(LoanSession& s, const Config& c){
     UI::show("🏛 Welcome to Lotus Responsible Finance Simulator - Your Partner in Ethical & Regulated Lending 🏛");
-    UI::show("Mode: Regulated Ethical Redesign (Informed Consent & Ethics Deep Dive - v13_HOLISTIC_OVERHAUL)");
-    s.record("ModeSelected", "RegulatedEthicalRedesign_v13_HolisticOverhaul_InformedConsentFocus");
+    UI::show("Mode: Regulated Ethical Redesign (Comprehensive Educational & Compliance Edition - v12.1_OVERHAUL_INTRO)");
+    s.record("ModeSelected", "RegulatedEthicalRedesign_v12.1_Overhaul_InformedConsentPillarsFocus");
     
     StateSpecificRules currentRules = c.getCurrentStateRules(); 
     s.record("InitialStateContext", c.state.empty() ? "GeneralFederalEthicalBaseline" : c.state + " (" + currentRules.stateName + ")");
-    s.sessionId = getCurrentTimestampForLog() + "_" + std::to_string(rand() % 100000); // More unique session ID
+    s.sessionId = getCurrentTimestampForLog() + "_" + std::to_string(rand() % 10000); // Simple session ID
 
     if(!c.state.empty()) {
         UI::show("Applying specific regulations and educational context for state: " + c.state + " ("+ currentRules.stateName +") as configured. Key Statute: " + currentRules.keyStatuteCitation + ". Regulatory Body: " + currentRules.regulatoryBody);
@@ -69,50 +61,38 @@ void Regulated::intro(LoanSession& s, const Config& c){
     }
     UI::show("This simulation demonstrates a lending model that rigorously adheres to strong consumer protection laws (like TILA/Reg Z, MLA, and state statutes such as '" + currentRules.keyStatuteCitation + "') and is deeply guided by core ethical principles including Kantian Autonomy (Informed & Voluntary Consent), Rawlsian Fairness (Justice & Protecting the Vulnerable), and Millian Welfare (Harm Reduction & Promoting Well-being).");
     UI::show("Our process emphasizes the Four Pillars of Informed Consent (derived from Beauchamp & Childress): Capacity, Full Disclosure, Verified Comprehension, and True Voluntariness, culminating in explicit Authorization.");
-    s.tagEthicalSafeguard("Intro_Transparency_EthicsFramework_InformedConsentPillars_StateContext_v9_Holistic");
+    s.tagEthicalSafeguard("Intro_Transparency_EthicsFramework_InformedConsentPillars_StateContext_v8_Overhaul");
     s.addSpecificDisclosureMade("Initial program philosophy: commitment to ethical/regulated practices, informed consent pillars, and state context outlined with statute and regulatory body reference.");
 
     // --- Pillar 1 of Informed Consent: Capacity (Beauchamp & Childress) ---
     if (c.regulatedPillarCapacityCheck) {
-        UI::showSectionHeader("INFORMED CONSENT - STEP 1: ASSESSING CAPACITY (COMPETENCE)", "Ethical Lending");
-        UI::tooltip("Ethical Principle (Beauchamp & Childress, 'Principles of Biomedical Ethics', applied to finance): For consent to be valid, the individual must be competent. Competence involves the ability to: (a) understand relevant information, (b) appreciate the reasonably foreseeable consequences of their decision, and (c) make a reasoned choice. This is foundational to respecting individual autonomy.");
-        
-        std::string ageConfirm = UI::prompt("To ensure basic eligibility for this financial product, please confirm that you are 18 years of age or older (yes/no):");
-        s.record("CapacityCheck_Age_Attempt_v14_Holistic", ageConfirm);
+        UI::show("\n--- INFORMED CONSENT - PILLAR 1: CAPACITY (COMPETENCE) TO DECIDE ---");
+        UI::tooltip("Ethical Principle (Beauchamp & Childress, 'Principles of Biomedical Ethics', widely applied to professional ethics): For consent to be valid, the individual must be competent. Competence involves the ability to: (a) understand the relevant information, (b) appreciate the reasonably foreseeable consequences of their decision or lack of decision, and (c) make a reasoned choice based on this understanding and appreciation. This is foundational to respecting individual autonomy.");
+        std::string ageConfirm = UI::prompt("To ensure basic eligibility, please confirm that you are 18 years of age or older (yes/no):");
+        s.record("CapacityCheck_Age_Attempt_v13_Overhaul", ageConfirm);
         if (!argEquals(ageConfirm, "yes")) { 
-            UI::showWarning("You must be 18 years of age or older to apply for this type of credit. Simulation cannot continue with a loan application as this is a fundamental legal requirement for entering into contracts.");
+            UI::show("You must be 18 years of age or older to apply for this type of credit. Simulation cannot continue with a loan application as this is a fundamental legal requirement for contracts.");
             s.deniedByLimit = true;
             s.denialReason = "Ineligible_AgeRequirementNotMet_Pillar1_Capacity_Legal";
             s.tagEthicalSafeguard("CapacityCheck_Age_Failed_Pillar1_Beauchamp_Legal");
             return;
         }
-
-        std::string understandingConfirm = UI::prompt("Do you understand that this simulation involves a potential financial agreement with repayment obligations and associated costs (like fees and interest)? (yes/no):");
-        s.record("CapacityCheck_UnderstandingFinancialAgreement_Attempt_v14", understandingConfirm);
-        if (!argEquals(understandingConfirm, "yes")) {
-            UI::showWarning("Understanding the nature of a financial agreement is crucial. If you are unsure, please seek clarification or consult financial literacy resources before proceeding. Simulation halted to ensure comprehension.");
-            s.deniedByLimit = true;
-            s.denialReason = "Ineligible_UnderstandingOfFinancialAgreementNotConfirmed_Pillar1_Capacity";
-            s.tagEthicalSafeguard("CapacityCheck_UnderstandingFinancialAgreement_Failed_Pillar1");
-            return;
-        }
-
-        std::string soundMindConfirm = UI::prompt("Please also confirm that you are of sound mind, not currently under the influence of substances that would significantly impair your judgment, and believe you have the capacity to weigh the risks and benefits of a loan. (yes/no):");
-        s.record("CapacityCheck_SoundMind_Attempt_v14_Holistic", soundMindConfirm);
+        std::string soundMindConfirm = UI::prompt("Please also confirm that you are of sound mind, not currently under the influence of substances that significantly impair judgment, and believe you have the capacity to understand a financial agreement and its legal obligations. This means you can weigh the risks and benefits of the proposed loan. (yes/no):");
+        s.record("CapacityCheck_SoundMind_Attempt_v13_Overhaul", soundMindConfirm);
         if (!argEquals(soundMindConfirm, "yes")) {
-            UI::showWarning("For valid consent, decisions must be made with clear judgment. If you are unsure about your current capacity to make such a decision, we recommend pausing and returning at another time. Simulation cannot continue under these circumstances to uphold ethical standards.");
+            UI::show("Understanding the nature of a financial agreement and its obligations is crucial for informed consent. If you are unsure or do not feel you can fully comprehend the terms or consequences at this time, please seek advice or return when you are better able. Simulation cannot continue with a loan application at this time to ensure your protection and uphold ethical standards of competence.");
             s.deniedByLimit = true;
-            s.denialReason = "Ineligible_SoundMindOrImpairmentConfirmationNotMet_Pillar1_Capacity_Ethical";
-            s.tagEthicalSafeguard("CapacityCheck_SoundMind_Impairment_Failed_Pillar1_Beauchamp_Ethical");
+            s.denialReason = "Ineligible_SoundMindOrUnderstandingConfirmationNotMet_Pillar1_Capacity_Ethical";
+            s.tagEthicalSafeguard("CapacityCheck_SoundMind_Failed_Pillar1_Beauchamp_Ethical");
             return;
         }
         s.capacityConfirmed = true;
-        s.record("CapacityCheck_Pillar1_Passed_v13_Holistic", "UserConfirmedAge_UnderstandingOfAgreement_AndSoundMind_Beauchamp_Detailed");
-        s.tagEthicalSafeguard("InformedConsent_Pillar1_Capacity_FullyConfirmed_Detailed_Beauchamp");
-        s.addSpecificDisclosureMade("Capacity to contract (age 18+, understanding of financial agreement, sound mind, no impairment) affirmed by user as per Beauchamp & Childress's first pillar of informed consent.");
+        s.record("CapacityCheck_Pillar1_Passed_v12_Overhaul", "UserConfirmedAgeAndSoundMindAndUnderstandingOfProcess_Beauchamp_Detailed");
+        s.tagEthicalSafeguard("InformedConsent_Pillar1_Capacity_Confirmed_Detailed_Beauchamp");
+        s.addSpecificDisclosureMade("Capacity to contract (age 18+, sound mind, understanding of process & consequences) affirmed by user as per Beauchamp & Childress's first pillar of informed consent.");
     } else {
-        s.capacityConfirmed = true; // Assume capacity if check is off, log it
-        s.record("CapacityCheck_Pillar1_Skipped_v11_Holistic", "ConfigDisabled_CapacityAssumed_NotIdealEthically_BeauchampPillarIgnored");
+        s.capacityConfirmed = true; 
+        s.record("CapacityCheck_Pillar1_Skipped_v10_Overhaul", "ConfigDisabled_CapacityAssumed_NotIdealEthically_BeauchampPillarIgnored");
         UI::showWarning("Capacity check was disabled by configuration. In a real ethical scenario, this check is vital for valid informed consent.");
     }
 
@@ -182,30 +162,29 @@ void Regulated::intro(LoanSession& s, const Config& c){
     }
 
     if (c.capstoneKnowledgePreTest && !s.deniedByLimit) {
-        UI::conductKnowledgeQuiz(c, s, "Pre-Simulation Knowledge & Ethics Assessment (Capstone v5_Holistic)");
+        UI::conductKnowledgeQuiz(c, s, "Pre-Simulation Knowledge & Ethics Assessment (Capstone v4_Overhaul)");
     }
 }
 
 // Step 1: Gather Initial Information (Income, ZIP for state rules, etc.)
-//void Regulated::consent(LoanSession& s, const Config& c){
 void Regulated::consent(LoanSession& s, const Config& c){
     if(s.deniedByLimit){ return; } 
     UI::showSectionHeader("INITIAL INFORMATION & AFFORDABILITY DATA", "Regulated Ethical Redesign");
     UI::tooltip("To proceed, we need some basic information to tailor the simulation, apply relevant responsible lending checks (including affordability assessments based on Rawlsian principles of protecting the least advantaged), and determine applicable state-specific rules. All information is handled according to our strict privacy policy (summarized later).");
     
     s.monthlyIncome = UI::askNum("To help us assess affordability in line with ethical lending principles (Rawlsian Fairness: protecting the least advantaged) and potential regulatory requirements (Ability-to-Repay), please enter your approximate gross monthly income (total income before taxes and deductions): $");
-    s.record("MonthlyIncomeProvided_v7_Gross_Rawlsian_ATR_Holistic", std::to_string(s.monthlyIncome));
+    s.record("MonthlyIncomeProvided_v6_Gross_Rawlsian_ATR_Overhaul", std::to_string(s.monthlyIncome));
     if (s.monthlyIncome <= 100 && c.regulatedApplyIncomeBasedCapsComprehensive) { 
         UI::showWarning("The provided gross monthly income is very low ($" + std::to_string(s.monthlyIncome) + "). Please ensure this is accurate. High-cost loans may be particularly risky and potentially unaffordable with limited income. Our comprehensive affordability checks will be based on this input.");
         if (s.monthlyIncome <=0 && c.regulatedApplyIncomeBasedCapsComprehensive) {
              UI::show("Valid (positive) income information is required for comprehensive affordability checks. Process cannot continue without a positive income value.");
              s.deniedByLimit = true;
-             s.denialReason = "InvalidOrZeroIncome_AffordabilityCheckImpossible_Rawlsian_Comprehensive_ATR_Holistic";
-             s.tagEthicalSafeguard("AffordabilityCheck_InvalidIncome_Halted_Rawlsian_Comprehensive_ATR_Holistic");
+             s.denialReason = "InvalidOrZeroIncome_AffordabilityCheckImpossible_Rawlsian_Comprehensive_ATR_Overhaul";
+             s.tagEthicalSafeguard("AffordabilityCheck_InvalidIncome_Halted_Rawlsian_Comprehensive_ATR_Overhaul");
              return;
         }
     }
-    s.tagEthicalSafeguard("IncomeInformationGathered_ForAffordability_RawlsianDetailed_Comprehensive_ATR_Holistic");
+    s.tagEthicalSafeguard("IncomeInformationGathered_ForAffordability_RawlsianDetailed_Comprehensive_ATR_Overhaul");
     s.addSpecificDisclosureMade("Gross monthly income collected for comprehensive affordability assessment (Rawlsian principle of protecting the least advantaged & Ability-to-Repay).");
 
     // Optional: Collect basic expense categories for a more nuanced (though still simplified) DTI or residual income check
@@ -318,7 +297,6 @@ void Regulated::calcFee(LoanSession &s,const Config &c){
     s.feeComponents.push_back({"Base Finance Charge (Calculated from APR " + std::to_string(round(effectiveAPR*100)/100.0) + "%)", calculatedFee});
     
     // Apply state-specific flat fee caps or percentage fee caps - `feeLabelCheck` / `detectHiddenFees` spirit
-    // This section needs to be robust, checking various fee cap types from StateSpecificRules.
     bool feeAdjustedByStateCaps = false;
     // ... (Detailed state fee cap logic as in previous response, using currentRules.feeCapFixed, currentRules.feeCapPercentOfPrincipal, CO rules, etc.) ...
     // This section needs to be robust. For brevity, assuming it's implemented as before.
@@ -386,60 +364,114 @@ void Regulated::calcFee(LoanSession &s,const Config &c){
     // State-specific legal notices based on c.state
     if (c.eduProvideUsuryLawDeepDive) { 
         if (!currentRules.keyStatuteCitation.empty() && currentRules.keyStatuteCitation != "N/A") {
-            UI::legalNotice(currentRules.stateName + " Specific Regulations (Illustrative Summary - Always consult official state law sources from " + currentRules.regulatoryBody + "): Key Statute(s): " + currentRules.keyStatuteCitation + ". APR Cap ~" + (currentRules.aprCap > 0 ? std::to_string(currentRules.aprCap) : "Varies/None Defined") + "%. Rollovers: " + (currentRules.allowRollover && currentRules.maxRollovers !=0 ? (currentRules.maxRollovers > 0 ? std::to_string(currentRules.maxRollovers) : "Effectively Unlimited (if not capped elsewhere)") : "Prohibited/Strictly Limited") + ". Max Loan Amount: $" + (currentRules.maxOutstandingLoanAmount > 0 ? std::to_string((int)currentRules.maxOutstandingLoanAmount) : "Varies") + ". Cooling-off: " + (currentRules.coolingOffDays > 0 ? std::to_string(currentRules.coolingOffDays) + " days." : "N/A or general contract law.") + " " + currentRules.specificNotes);
+            UI::legalNotice(currentRules.stateName + " Specific Regulations (Illustrative Summary - Always consult official state law sources from " + currentRules.regulatoryBody + "): Key Statute(s): " + currentRules.keyStatuteCitation + ". APR Cap ~" + (currentRules.aprCap > 0 ? std::to_string(currentRules.aprCap) : "Varies/None Defined") + "%. Rollovers: " + (currentRules.allowRollover && currentRules.maxRollovers !=0 ? (currentRules.maxRollovers > 0 ? std::to_string(currentRules.maxRollovers) : "Effectively Unlimited (if not capped elsewhere)") : "Prohibited/Strictly Limited") + ". Max Loan Amount: $" + (currentRules.maxOutstandingLoanAmount > 0 ? std::to_string((int)currentRules.maxOutstandingLoanAmount) : "Varies") + ". Cooling-off: " + (currentRules.coolingOffDaysAfterOrigination > 0 ? std::to_string(currentRules.coolingOffDaysAfterOrigination) + " days (origination)." : (currentRules.coolingOffDaysAfterRepayment > 0 ? std::to_string(currentRules.coolingOffDaysAfterRepayment) + " days (repayment)." : "N/A or general contract law.")) + " " + currentRules.specificNotes);
             s.addSpecificDisclosureMade(currentRules.stateCode + " Law Snippet: " + currentRules.keyStatuteCitation + " context and key provisions provided in detail, including regulatory body.");
         }
     }
-    // No return value needed as s.fee and s.aprCalculated are modified by reference
 }
 
-// Step 4: Extras (if any specific to Regulated strategy)
+// Step 4: Extras (Minimal in Regulated Mode)
 void Regulated::extras(LoanSession &s, const Config &c){
-    // In the comprehensive ethical mode, this might include offers for lower-interest alternatives, educational module referrals, or other resources.
-    // Example: Offering a referral to a financial counselor if high fees are detected.
-    if (s.fee > s.amount * 0.5) { // If fees are more than 50% of the loan amount
-        UI::show("As your loan's fees are relatively high, we recommend considering financial counseling to explore all your options and ensure this loan is in your best interest.");
-        s.addSpecificDisclosureMade("High fee-to-loan amount ratio detected; financial counseling referral offered.");
-        s.tagEthicalSafeguard("FinancialCounselingReferralOffered_HighFeeRatio");
+    if(s.deniedByLimit) return;
+    UI::showSectionHeader("ADDITIONAL SERVICES & OPTIONS", "Regulated Ethical Redesign");
+    UI::tooltip("In an ethical lending model, 'extras' should be genuinely beneficial, clearly explained, and strictly opt-in. We do not offer pre-checked add-ons or services with hidden recurring fees.");
+    s.tagEthicalSafeguard("Extras_NoPrechecked_NoHiddenFees_OptInFocus");
+
+    // Example: Offer an optional, genuinely useful service like payment reminders
+    if (UI::prompt("Would you like to opt-in for free SMS payment reminders for your due date? (yes/no):") == "yes") {
+        s.record("OptionalServiceOptIn", "SMS_PaymentReminders");
+        UI::show("✅ SMS payment reminders enabled. You will receive a reminder 2 days before your due date.");
+        s.tagEthicalSafeguard("OptionalService_SMSOptIn_UserChoice");
+    } else {
+        s.record("OptionalServiceOptIn", "SMS_PaymentReminders_Declined");
     }
+    // No actual fees are added here in the ethical model for such basic services.
+    s.addSpecificDisclosureMade("Optional services (e.g., SMS reminders) offered on a strict opt-in basis with no additional hidden fees.");
 }
 
-// Step 5: Renewals (if applicable, must adhere to strict ethical and compliance standards)
+// Step 5: Renewals (Strictly Controlled)
 void Regulated::renewals(LoanSession &s, const Config &c){
-    // Renewals must be approached with caution, ensuring they do not lead to a debt trap.
-    // Implement `preventDebtTrap`, `guardInterestOnlyRenewal`, and other relevant checks from usury_compliance.h
     if (s.deniedByLimit) return;
 
-    UI::show("\n--- LOAN RENEWAL CONSIDERATION ---");
-    UI::tooltip("Renewals should be carefully considered. They can sometimes lead to a cycle of debt if not managed properly. Ensure you understand the terms and have a plan for repayment.");
-    
-    // Check if the loan is eligible for renewal based on state rules and currentLoanSession data
     StateSpecificRules currentRules = c.getCurrentStateRules();
-    if (currentRules.maxRollovers > 0 && s.renewalCount >= currentRules.maxRollovers) {
-        UI::show("This loan has reached the maximum number of rollovers allowed (" + std::to_string(currentRules.maxRollovers) + "). No further renewals are possible.");
-        s.deniedByLimit = true;
-        s.denialReason = "MaxRolloversReached_RenewalDenied";
-        s.tagEthicalSafeguard("RenewalMaxRolloversReached_Denied");
+    bool canRenew = c.regulatedAllowRollover && (currentRules.maxRollovers == -1 || s.renewalsTaken < currentRules.maxRollovers) && (c.regulatedMaxRenewals == -1 || s.renewalsTaken < c.regulatedMaxRenewals);
+
+    if (!canRenew) {
+        UI::show("\n--- LOAN RENEWAL/ROLLOVER STATUS ---");
+        UI::show("Under the terms of this ethical lending model and applicable regulations for " + (c.state.empty() ? "general guidelines" : currentRules.stateName) + " (Ref: " + currentRules.keyStatuteCitation + "), this loan is NOT eligible for renewal or rollover.");
+        UI::tooltip("This policy is in place to prevent debt traps, where repeated rollovers can lead to escalating fees far exceeding the original loan amount (Compliance: preventDebtTrap, guardInterestOnlyRenewal).");
+        s.tagEthicalSafeguard("Renewal_NotEligible_DebtTrapPrevention_Compliance");
+        s.addSpecificDisclosureMade("Loan not eligible for renewal/rollover due to ethical debt trap prevention policies and/or state regulations (" + currentRules.keyStatuteCitation + ").");
         return;
     }
 
-    // Present the renewal terms, ensuring they are clear and comply with all regulations
-    double newFee = s.fee * 1.10; // Example: Increase fee by 10% for renewal (arbitrary rule for simulation)
-    double newAPR = calculateLoanAPR(s.amount, newFee, s.termDays);
-    s.record("RenewalTermsOffered_v4", "NewFee_" + std::to_string(newFee) + "_NewAPR_" + std::to_string(newAPR));
+    UI::showSectionHeader("LOAN RENEWAL/EXTENSION OPTION", "Regulated Ethical Redesign");
+    UI::showWarning("IMPORTANT: Renewing or extending your loan will incur additional finance charges and increase your total cost of borrowing. This should only be considered if you are certain you can manage the new terms and have a clear plan for full repayment. Repeated renewals can lead to a cycle of debt.");
+    s.tagEthicalSafeguard("Renewal_Warning_DebtCycleRisk");
+
+    // Millian Harm Principle Prompt for Rollovers
+    if (c.regulatedPromptMillHarmPrincipleForRollovers) {
+        UI::promptMillHarmPrincipleForRollovers(c, s, s.renewalsTaken);
+        if (!s.millianRolloverJustification.empty() && (s.millianRolloverJustification.find("no") != std::string::npos || s.millianRolloverJustification.find("harm") != std::string::npos)) {
+            UI::show("Based on your reflection regarding potential harm, we advise against renewal. Consider alternative repayment arrangements or financial counseling.");
+            s.tagEthicalSafeguard("Renewal_MillianReflectionIndicatesHarm_AdvisedAgainst");
+            return;
+        }
+    }
     
-    UI::show("Renewal Terms: Fee: $" + std::to_string(newFee) + ", APR: " + std::to_string(newAPR) + "%");
-    std::string acceptRenewal = UI::prompt("Do you accept these renewal terms? (yes/no):");
-    s.record("RenewalAcceptanceResponse_v4", acceptRenewal);
-    if (acceptRenewal == "yes" || acceptRenewal == "YES") {
-        s.fee = newFee;
-        s.aprCalculated = newAPR;
-        s.renewalCount++;
-        s.record("RenewalAccepted_v4_NewFee_" + std::to_string(s.fee) + "_NewAPR_" + std::to_string(s.aprCalculated), "RenewalCount_" + std::to_string(s.renewalCount));
-        s.tagEthicalSafeguard("RenewalAccepted_DetailsLogged");
-        UI::show("Renewal accepted. New terms have been applied.");
+    // Calculate renewal fee (could be same rate, or a specific renewal fee structure if allowed by state)
+    // For simplicity, let's assume the fee is recalculated based on the outstanding principal (which is s.amount for single-payment)
+    // and the same effective APR, but for a new term.
+    double renewalFee = s.amount * (s.aprCalculated / 100.0) * (static_cast<double>(s.termDays) / 365.0); // Simplified
+    // Ensure renewal fee itself doesn't violate any per-transaction fee caps if state has them
+    if (currentRules.feeCapFixed > 0 && renewalFee > currentRules.feeCapFixed) renewalFee = currentRules.feeCapFixed;
+    if (currentRules.feeCapPercentOfPrincipal > 0) {
+        double maxFeeByPct = s.amount * (currentRules.feeCapPercentOfPrincipal / 100.0);
+        if (renewalFee > maxFeeByPct) renewalFee = maxFeeByPct;
+    }
+    renewalFee = std::max(0.0, renewalFee); // Ensure non-negative
+
+    UI::show(std::string_format("To renew this loan for another %d days, an additional finance charge of approximately $%.2f would apply.", s.termDays, renewalFee));
+    UI::show(std::string_format("Your outstanding principal of $%.2f would remain. The new APR would be %.2f%%.", s.amount, calculateLoanAPR(s.amount, renewalFee, s.termDays)));
+    UI::show("This means you would pay the renewal fee now, and the original principal plus another fee at the end of the new term.");
+    s.addSpecificDisclosureMade("Renewal option presented with full cost disclosure for the new term.");
+
+    if (UI::prompt("Do you wish to proceed with this renewal? This is a significant financial decision. (yes/no):") == "yes") {
+        // Re-run affordability for the renewal if strict ATR is on
+        if (c.regulatedAbilityToRepayLogicDetailed) {
+            double incomeForLoanPeriod = s.monthlyIncome * (static_cast<double>(s.termDays) / 30.0);
+            double maxAffordablePaymentThisPeriod = incomeForLoanPeriod * (c.regulatedPaymentToIncomeRatioCap);
+            if (renewalFee > maxAffordablePaymentThisPeriod) { // Simplified: just check fee against PTI for renewal
+                UI::showWarning("AFFORDABILITY ALERT (Renewal): The renewal fee of $" + std::to_string(round(renewalFee)) + " exceeds " + std::to_string((int)(c.regulatedPaymentToIncomeRatioCap * 100)) + "% of your estimated income for the new loan period. This renewal may be unaffordable.");
+                if (UI::prompt("Proceed with renewal despite this affordability warning? (yes/no):") != "yes") {
+                    UI::show("Renewal cancelled due to affordability concerns.");
+                    s.record("RenewalDeclined_AffordabilityWarning", "UserDeclinedAfterATRWarning");
+                    s.tagEthicalSafeguard("Renewal_Declined_AffordabilityWarning_ATR");
+                    return;
+                }
+                s.tagEthicalSafeguard("Renewal_Accepted_DespiteAffordabilityWarning_ATR");
+            }
+        }
+
+        s.totalFeesPaidAcrossAllTerms += s.fee; // Add current term's fee to total paid
+        s.fee = renewalFee; // Set new fee for the new term
+        s.aprCalculated = calculateLoanAPR(s.amount, s.fee, s.termDays); // Recalculate APR for the new term
+        s.totalRepayment = s.amount + s.fee;
+        s.renewalsTaken++;
+        s.renewalCount++; // Increment general counter
+        s.record("RenewalAccepted_Detailed", "NewFee_" + std::to_string(s.fee) + "_NewAPR_" + std::to_string(s.aprCalculated) + "_TotalRenewals_" + std::to_string(s.renewalsTaken));
+        s.tagEthicalSafeguard("RenewalAccepted_TermsReDisclosed_AffordabilityRechecked");
+        UI::show("✅ Loan renewed for another " + std::to_string(s.termDays) + " days. New finance charge: $" + std::to_string((int)round(s.fee)) + ". New APR: " + std::to_string(s.aprCalculated) + "%.");
+        
+        // Check for cooling-off period after X renewals if applicable (e.g., IL)
+        if (currentRules.ilWaitDaysAfter45Indebtedness > 0 && (s.renewalsTaken * s.termDays) >= 45) { // Simplified check
+             UI::show("COMPLIANCE NOTE (" + currentRules.stateName + "): You have now been indebted for 45 days or more. After repaying this renewed loan, a " + std::to_string(currentRules.ilWaitDaysAfter45Indebtedness) + "-day cooling-off period will be required before you can take another loan of this type.");
+             s.tagEthicalSafeguard("StateCoolingOffTriggered_PostRenewalIndebtedness");
+        }
+
     } else {
-        UI::show("Renewal declined. No changes have been made to your loan.");
+        UI::show("Renewal declined. Your loan will proceed with its original terms and due date.");
+        s.record("RenewalDeclinedByUser_v2", "UserChoseNotToRenew");
     }
 }
 

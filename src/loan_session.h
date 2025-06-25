@@ -9,13 +9,13 @@
 #include <algorithm>
 #include <map>
 
-struct Event { std::string type, data; std::time_t timestamp; };
+struct Event { std::string type; std::string data; std::time_t timestamp; };
 
 class LoanSession {
 public:
     // Core loan data
     double amount = 0.0;        
-    double fee = 0.0;           
+    double fee = 0.0;           // Current period's main finance charge
     double tip = 0.0; 
     int termDays = 14; 
     double aprCalculated = 0.0; 
@@ -34,41 +34,45 @@ public:
     std::string userScenarioNotes = "";
     bool isExistingCustomer = false; 
     int creditScoreCategory = 3; // 1=Poor, 2=Fair, 3=Good (for simulated scoring)
-    std::string sessionId = ""; // Unique ID for the session
+    std::string sessionId = ""; 
+    std::string state = ""; // Store the active state for the session
 
     // Session state & outcomes
     int rushRating = 0;             
-    bool freeExtensionUsed = false;  
-    int loanCount = 0; 
-    int activeLoansWithLender = 0; 
+    bool freeExtensionUsed = false;  // e.g., SD Pilot
+    int loanCount = 0; // Loans this year by this user (simulated)
+    int activeLoansWithLender = 0; // Current number of active loans (simulated for E-005)
     bool deniedByLimit = false;     
     std::string denialReason = "";
     bool isCABLoanInTX = false; 
-    double cabFeeCharged = 0.0; 
+    double cabFeeCharged = 0.0; // Store the CAB fee if applicable
     std::string charterStateUsed = ""; // For rent-a-bank simulation
+    bool aprHiddenInitially = false; // For --hide-apr exploit
+    int countdownTimerValue = 0; // For --countdown exploit
 
     // Informed Consent Tracking (Capacity, Disclosure, Comprehension, Voluntariness, Authorization)
     bool capacityConfirmed_Age = false;
     bool capacityConfirmed_SoundMind = false;
-    bool fullDisclosureProvided = false;
+    bool fullDisclosureProvided = false; // Pillar 2: TILA summary card + detailed terms
     std::time_t disclosureTimestamp = 0;
-    int quizAttemptsTotal = 0; // Total attempts across all quiz questions
+    int quizAttemptsTotal = 0; 
     int quizQuestionsCorrect = 0;
     int quizQuestionsTotal = 0;
-    bool quizPassedOverall = false;
+    bool quizPassedOverall = false; // Pillar 3: Comprehension
     std::vector<std::pair<std::string, bool>> quizResponses; 
     std::string explicitConsentInput = ""; 
-    bool consentGiven = false;
-    bool metaConsentCheckPerformed = false; 
-    bool voluntarinessAffirmedByDeclaration = false; // Explicit declaration
+    bool consentGiven = false; // Pillar 5: Authorization
+    bool metaConsentCheckPerformed = false; // Pillar 4: Voluntariness component
+    bool voluntarinessAffirmedByDeclaration = false; // Pillar 4: Voluntariness component
     bool rescissionOffered = false;
-    std::string rescissionDeadlineText = ""; // Store the calculated deadline text
+    std::string rescissionDeadlineText = ""; 
     bool loanRescinded = false;
     std::time_t consentTimestamp = 0; 
     std::string consentTermsHash = ""; 
-    std::string kantianReflectionResponse = ""; // For Kantian Universalizability prompt
-    std::string millianReflectionResponse = ""; // For Millian Harm Principle prompt
-    std::string millianRolloverJustification = ""; // For Mill's harm principle on rollovers
+    std::string kantianReflectionResponse = ""; 
+    std::string millianReflectionResponse = ""; 
+    std::string millianRolloverJustification = ""; 
+    double respectMeterScore = 100.0; // Kantian Respect Meter (0-100)
 
     // Loan lifecycle
     int renewalsTaken = 0;
@@ -80,7 +84,7 @@ public:
     bool inOverdraftCycle = false; 
     int nsfDebitAttemptsByLender = 0; 
     double totalNSFFeesFromLender = 0.0;
-    std::vector<std::string> collectionThreatsMade; // Log specific threats
+    std::vector<std::string> collectionThreatsMade; 
 
     // Logging & Analysis
     std::vector<Event> history;
@@ -92,7 +96,7 @@ public:
     std::vector<std::string> educationalModulesPresented; 
     std::string userReflectionJournalEntry = ""; 
     std::string userFeedbackSurveyResponse = ""; 
-    std::string userJustificationForLoan = ""; // For Habermas deliberation prompt
+    std::string userJustificationForLoan = ""; // For Habermas deliberation prompt (future)
 
     void record(const std::string &e, const std::string &d = "");
     void tagDarkPattern(const std::string &p); 
@@ -102,8 +106,8 @@ public:
 
     void reset();
 
-    int consentScore() const; // May need refinement based on new consent details
-    int manipulationIndex() const { return (int)darkPatternsEncountered.size(); } // Corrected from darkPatterns.size()
+    int consentScore() const; 
+    int manipulationIndex() const { return (int)darkPatternsEncountered.size(); } 
     void exportJson(const std::string &file) const;
 
     static int loadLoanCount();
