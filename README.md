@@ -1,12 +1,36 @@
-# Lotus CLI Simulator
+# Lotus CLI Payday Loan Simulator (Enhanced Educational Version)
 
-This project demonstrates how payday lending can vary depending on ethics and regulation. Three selectable modes show distinct philosophies:
+This project simulates payday lending practices through two distinct, in-depth modes, designed to educate users on consumer rights, ethical considerations, and the tactics used in the lending industry.
 
-- **ethical** – represents an ideal lender guided by bioethical principles (Belmont Report). It begins with a short ethics primer, checks for "meta-consent" to avoid nudging, breaks down every fee in a cost–benefit ledger and ends with philosophical quotes. This mode is intentionally unrealistic: beyond low profit, its generous terms would often require subsidies and may conflict with current payday regulations.
-- **exploitative** – mirrors the worst behaviour found on real payday websites. It personalizes offers by ZIP code, hides data‑sharing consent in tiny text, forces arbitration, adds layered fees, encourages automatic rollovers and even threatens credit reporting. These tactics reflect documented dark patterns and business practices.
-- **regulated** – follows common consumer‑protection rules such as a 36% APR cap, mandatory disclosures and a 24‑hour cancellation window. A quiz confirms the borrower sees the APR, rollovers are banned and a compliance report is printed. This mode illustrates a practical middle ground where lenders remain profitable while obeying law.
+- **Realistic Exploitative Mode**: This mode aims to replicate common predatory tactics observed in some segments of the payday lending market. It demonstrates how vulnerable consumers can be subjected to:
+    - **Obfuscated Terms & Hidden Fees**: Using confusing language, fine print, and drip pricing where the full cost is not apparent until late in the process.
+    - **High-Pressure Sales Tactics**: Employing artificial urgency (e.g., "limited time offers," "few slots left") and fake testimonials to rush decisions.
+    - **Misleading Information**: Displaying costs as low weekly/daily fees instead of the legally required APR, or downplaying the total repayment amount.
+    - **Aggressive Rollover Strategies**: Defaulting users into costly rollovers with difficult opt-out procedures, leading to debt traps.
+    - **Superficial Consent**: Obtaining "consent" through easy-to-click buttons without ensuring genuine understanding or voluntary agreement, often burying critical terms like forced arbitration clauses.
+    - **Data Sharing & Upselling**: Using pre-checked boxes for expensive, often unnecessary, add-on services and sharing user data broadly with affiliates.
+    The objective is to arm users with the knowledge to identify and critically assess these harmful practices.
 
-The simulator offers features like an amortization schedule and early‑payoff incentive in ethical mode, and a one‑time 0% extension in regulated mode. Sessions can be exported to JSON for research. Each output line references either philosophical ideals or real policy so users understand why the behaviour occurs.
+- **Regulated Ethical Redesign Mode**: This mode models a payday lending approach that rigorously adheres to strong consumer protection laws (inspired by TILA/Reg Z, CFPB guidelines, and proactive state regulations) and is deeply rooted in core ethical principles. Key features include:
+    - **Comprehensive Informed Consent (Kantian Autonomy)**:
+        - Full, clear, and conspicuous TILA-like disclosures: Amount Financed, Finance Charge, Annual Percentage Rate (APR), Total of Payments, and Payment Schedule.
+        - Prominent display of the Right to Cancel (Rescission Period, e.g., 3 business days).
+        - Comprehension Checks/Quizzes to ensure the borrower understands the key terms before proceeding.
+        - Explicit, voluntary consent obtained via a typed phrase, logged for audit.
+        - No forced arbitration clauses; data sharing only with explicit, separate opt-in.
+    - **Ethical Framework Integration**:
+        - *Rawlsian Fairness (Justice as Fairness)*: Implementing policies to protect the vulnerable, such as capping loan payments as a percentage of the borrower's income (Payment-to-Income ratio), offering tiered fee structures that are more favorable to lower-income individuals, and imposing strict limits on loan renewals/rollovers to prevent debt traps.
+        - *Millian Utilitarianism/Welfare (Harm Reduction)*: Aiming to maximize overall well-being by transparently showing long-term cost implications (e.g., cumulative cost timelines), offering less harmful alternatives like structured installment plans, and issuing clear warnings if loan terms (e.g., fees exceeding principal) indicate a high risk of financial harm.
+    - **Rich Educational Components**:
+        - Information on usury laws (historical context and modern state-specific APR caps).
+        - Data on the documented harms of predatory lending (citing sources like Pew Charitable Trusts, CFPB).
+        - Comparisons to safer alternatives (e.g., Credit Union Payday Alternative Loans - PALs).
+        - Explanations of common deceptive "dark patterns" to foster consumer awareness.
+        - Mini-lectures on the applied ethical philosophies (Kant, Rawls, Mill).
+    - **Regulatory Compliance**: Adherence to simulated state-specific rules (e.g., for IL, CO, SD) regarding APR caps, fee structures, term limits, rollover prohibitions/limits, and cooling-off periods.
+    This mode serves as an educational tool to illustrate what responsible, ethical, and legally compliant short-term lending can look like.
+
+The simulator allows users to interactively experience these contrasting scenarios, understand the profound impact of different lending practices, and learn about consumer rights, financial literacy, and ethical considerations in financial services. Session details, including disclosures and consent events, can be exported to JSON for review or educational purposes.
 
 ## Build
 Compile with a C++17 compiler. Example:
@@ -16,23 +40,31 @@ g++ -std=c++17 -I src -o lotus src/*.cpp src/strategies/*.cpp
 ```
 
 ## Run
-Choose a mode interactively or pass `--mode=` on the command line:
-
+Choose a mode interactively when prompted:
 ```bash
-./lotus --mode=ethical
+./lotus 
+(You will be prompted to choose: 
+  1. Realistic Exploitative Practices
+  2. Regulated Ethical Redesign)
+```
+Or specify the mode and other options via command-line arguments:
+```bash
 ./lotus --mode=exploitative --loan=300
+./lotus --mode=regulated_ethical --loan=250 --state=CO --term=30 
 ```
 
-The optional `--loan=` flag pre-fills the desired loan amount so you can skip
-interactive entry.
+**Key Command-Line Options:**
+- `--mode=<mode_name>`: `exploitative` or `regulated_ethical`.
+- `--loan=<amount>`: Pre-fills the desired loan amount.
+- `--state=<ST>`: Applies specific regulations for the 2-letter state code (e.g., `CO`, `IL`, `SD`) in Regulated Ethical Redesign mode.
+- `--term=<days>`: Sets the loan term in days.
+- *(Additional flags can be discovered via `--help` or by reviewing `Config.h` for advanced scenario customization, such as disabling quizzes, forcing specific income caps, etc.)*
 
-You can also select a state to demonstrate local usury rules. Example:
+Supported states for tailored rules include (but are not limited to): `SD` (South Dakota), `DE` (Delaware), `RI` (Rhode Island), `UT` (Utah), `IL` (Illinois), `CO` (Colorado). The system can be expanded with more state-specific data.
 
-```bash
-./lotus --mode=regulated --state=SD --loan=200
-```
+Session logs are written to the working directory (e.g., `exploit_session.json` or `regulated_ethical_redesign_session.json`) if export is enabled.
 
-Supported states include `SD` (South Dakota, 36% cap with pilot extension), `DE`
-(Delaware), `RI` (Rhode Island, permissive cap) and `UT` (Utah, very high cap).
-
-Session logs are written to the working directory when export is enabled.
+## Git Configuration
+// ...existing code...
+## Opening in VS Code
+// ...existing code...
