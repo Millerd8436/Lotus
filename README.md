@@ -39,6 +39,40 @@ Compile with a C++17 compiler. Example:
 g++ -std=c++17 -I src -o lotus src/*.cpp src/strategies/*.cpp
 ```
 
+**Important: Compiler Setup**
+
+To build and run this project, you need a C++17 compatible compiler (like GCC) installed and configured correctly.
+
+**Windows:**
+1.  **Install MinGW-w64:**
+    *   We recommend using MSYS2 ([https://www.msys2.org/](https://www.msys2.org/)).
+    *   After installing MSYS2, open the MSYS2 MinGW 64-bit terminal and run:
+        ```bash
+        pacman -Syu
+        pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-gdb mingw-w64-x86_64-make
+        ```
+2.  **Add to PATH:**
+    *   Add the MinGW-w64 `bin` directory to your Windows PATH environment variable. This is typically `C:\msys64\mingw64\bin`.
+    *   After updating PATH, restart VS Code or your computer.
+3.  **VS Code Configuration:**
+    *   Ensure the `.vscode/c_cpp_properties.json` file has the correct `compilerPath`. If `gcc` is in your PATH, `"compilerPath": "gcc"` should work. Otherwise, provide the full path (e.g., `"C:/msys64/mingw64/bin/gcc.exe"`).
+
+**Linux (Debian/Ubuntu):**
+```bash
+sudo apt update
+sudo apt install build-essential gdb
+```
+GCC is usually correctly configured in PATH automatically.
+
+**macOS:**
+Install Xcode Command Line Tools:
+```bash
+xcode-select --install
+```
+This includes Clang (which is GCC-compatible) and other necessary tools.
+
+After setting up your compiler, if you are using VS Code, the C/C++ extension should be able to find it, and IntelliSense errors like "Unable to resolve configuration" should disappear. You might need to restart VS Code.
+
 ## Run
 Choose a mode interactively when prompted:
 ```bash
