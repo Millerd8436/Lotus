@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotus + Autonomy Theater Capstone</title>
+    <!-- Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link to stylesheet in css/ directory -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+</head>
+<body class="bg-gray-900 text-gray-200 font-mono">
+
+    <div id="container" class="max-w-4xl mx-auto p-4 md:p-8">
+        <header role="banner" class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-purple-400 border-b-2 border-gray-700 pb-4">Lotus + Autonomy Theater</h1>
+            <p class="text-gray-400 mt-2">An Interactive Simulation of Choice, Consent, and Coercion</p>
+        </header>
+
+        <!-- Urgency Banner for Exploitative Mode -->
+        <div id="urgency-banner" class="hidden bg-red-800 border-2 border-red-500 text-center p-3 rounded-lg mb-6 shadow-lg">
+            <p class="text-lg font-bold text-yellow-300 animate-pulse">
+                🔥 INSTANT APPROVAL! <span id="timer">05:00</span> LEFT TO LOCK IN YOUR SPECIAL RATE! 🔥
+            </p>
+        </div>
+
+        <main role="main">
+            <!-- Section for simulation controls -->
+            <section id="controls" aria-labelledby="controls-heading" class="mb-6 p-6 bg-gray-800 rounded-lg shadow-lg">
+                <h2 id="controls-heading" class="text-xl font-semibold text-center text-purple-300 mb-4">Simulation Setup</h2>
+                <div class="cli-options grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+                    <div class="flex flex-col">
+                        <label for="state-input" class="mb-1 text-sm text-gray-400">State (e.g., CO, TX)</label>
+                        <input type="text" id="state-input" placeholder="State Abbr." class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="amount-input" class="mb-1 text-sm text-gray-400">Loan Amount ($)</label>
+                        <input type="number" id="amount-input" placeholder="e.g., 500" class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="term-input" class="mb-1 text-sm text-gray-400">Loan Term (days)</label>
+                        <input type="number" id="term-input" placeholder="e.g., 14" class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="scenario-select" class="mb-1 text-sm text-gray-400">Empathy Scenario</label>
+                        <select id="scenario-select" class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                            <option value="">-- Select a Scenario --</option>
+                            <option value="singleparent">Single Parent, Car Repair</option>
+                            <option value="tempworker">Gig Worker, Medical Bill</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mode-selection mt-6 text-center">
+                    <p class="mb-3 font-semibold">Choose a simulation mode:</p>
+                    <div class="flex justify-center gap-4 flex-wrap">
+                        <!-- Button IDs match app.js event listeners -->
+                        <button id="start-regulated" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded shadow-md transition-transform transform hover:scale-105">
+                            Ethical & Regulated Simulation
+                        </button>
+                        <button id="start-exploit" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded shadow-md transition-transform transform hover:scale-105">
+                            Exploitative Simulation
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Container for the live simulation output and input -->
+            <section id="simContainer" aria-labelledby="simulation-heading" class="mb-6">
+                <h2 id="simulation-heading" class="sr-only">Simulation Output</h2>
+                <pre id="output" class="bg-black p-4 rounded-t-lg min-h-[300px] max-h-[60vh] overflow-y-auto whitespace-pre-wrap break-words font-mono text-sm">Welcome! Please configure your simulation and select a mode to begin.</pre>
+                <div id="input-area" style="display: none;" class="flex">
+                    <input type="text" id="user-input" placeholder="Enter your response here..." class="flex-grow bg-gray-700 border-t-0 border-gray-600 p-3 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <button id="submit-input" class="bg-purple-600 hover:bg-purple-500 text-white font-bold p-3 rounded-br-lg">Submit</button>
+                </div>
+            </section>
+
+            <!-- Hidden pane for end-of-session reflection, to be populated by reflection.js -->
+            <section id="reflectionPane" x-data="{ tab: 'behavior' }" aria-labelledby="reflection-heading" class="hidden mt-8 p-6 bg-gray-800 rounded-lg shadow-lg">
+                <h2 id="reflection-heading" class="text-xl font-semibold text-center text-purple-300 mb-4">Ethical Reflection & Analysis</h2>
+
+                <!-- Tab Navigation -->
+                <div class="border-b border-gray-700">
+                    <nav class="-mb-px flex justify-center space-x-8" aria-label="Tabs">
+                        <button @click="tab = 'behavior'" :class="{ 'border-purple-400 text-purple-300': tab === 'behavior', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'behavior' }" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-base focus:outline-none">
+                            Behavioral Analysis
+                        </button>
+                        <button @click="tab = 'ethics'" :class="{ 'border-purple-400 text-purple-300': tab === 'ethics', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'ethics' }" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-base focus:outline-none">
+                            Ethical Report
+                        </button>
+                    </nav>
+                </div>
+
+                <div id="reflection-content" class="mt-6 space-y-4">
+                    <!-- Always visible: Consent Score -->
+                    <div class="p-4 bg-gray-700 rounded">
+                        <h3 class="font-bold text-lg">Informed Consent Score:</h3>
+                        <div class="w-full bg-gray-600 rounded-full h-4 mt-2">
+                            <div id="consent-bar" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Panels -->
+                    <div x-show="tab === 'behavior'" id="behaviorSummary" class="p-4 bg-gray-700 rounded">
+                        <p>Awaiting session data...</p>
+                    </div>
+                    <div x-show="tab === 'ethics'" id="autonomyScore" class="p-4 bg-gray-700 rounded">
+                        <p>Calculating...</p>
+                    </div>
+                    
+                    <!-- Ghost message is separate -->
+                    <div id="ghostMessage" class="p-4 bg-gray-900 border border-dashed border-red-500 rounded">
+                        <h3 class="font-bold text-lg text-red-400">A Voice in the Machine (from ghost.js):</h3>
+                        <p class="italic">Ghost's commentary appears in the main simulation console above.</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <button id="emailReportBtn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                        Generate Follow-up Email Summary
+                    </button>
+                    <button id="downloadLogBtn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded ml-4">
+                        Download Session Log (JSON)
+                    </button>
+                    <button id="replayBtn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded ml-4">
+                        Replay Simulation
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer role="contentinfo" class="text-center mt-12 text-gray-500 text-sm">
+            <p>This was a simulation. These were not real choices.</p>
+            <p>Lotus + Autonomy Theater Capstone Project</p>
+        </footer>
+    </div>
+
+    <!-- 
+    Modern ES Module Loading:
+    All JavaScript logic is now initiated from app.js, which imports other modules as needed.
+    This replaces the previous list of individual script tags.
+    For this to work, you must move your existing JS files to their new locations
+    and add `export` statements to the functions/classes you need to use in other files.
+    -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>

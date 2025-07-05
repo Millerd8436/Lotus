@@ -1,4 +1,4 @@
-# Lotus + Autonomy Theater Capstone
+# Lotus + Autonomy Theater Capstone Final Strategy (Two-Mode Version)
 
 This project is a deployable GitHub Pages website that combines ethical and exploitative payday loan simulator modes with Echo scoring, Kantian autonomy tracking, and Autonomy Theater's philosophical scaffolding. The entire project forms a live, interactive portfolio in interface ethics and applied simulation.
 
@@ -19,26 +19,15 @@ This project is a deployable GitHub Pages website that combines ethical and expl
 ## Project Structure
 
 -   `index.html`: The main UI container for the simulator.
+-   `style.css`: The stylesheet for the simulator.
 -   `app.js`: The main application logic that orchestrates the simulation.
--   `ui.js`: The UI coordinator, which imports and manages UI components.
--   `css/styles.css`: The stylesheet for the simulator.
 -   `core/loan_core.js`: Contains the core loan calculation logic, and the `Config` and `LoanSession` classes.
--   `modes/`: Contains the different simulation modes.
-    -   `exploitative.js`: The exploitative simulation mode.
-    -   `ethical.js`: The ethical simulation mode.
--   `engine/`: Contains the autonomy tracking modules.
-    -   `echo.js`: The Echo engine for tracking user interactions and calculating an autonomy score.
-    -   `kant.js`: The Kantian judge for flagging ethical violations.
-    -   `autonomy_theater.js`: The behavioral trap simulator.
-    -   `ethics_engine.js`: The Kantian and consent module.
--   `components/`: Contains components used by the simulation.
-    -   `reflection.js`: The reflection component for displaying the end-of-session analysis.
--   `narrator/`: Contains the optional Ghost narrator.
-    -   `ghost.js`: Provides judgmental commentary on the user's actions.
--   `ui_components/`: Contains the UI components.
-    -   `consentBar.js`: The visual consent tracker.
-    -   `promptEngine.js`: The dynamic prompt builder.
-    -   `summary.js`: Generates the loan summary/report.
+-   `modes/exploitative.js`: The exploitative simulation mode.
+-   `modes/ethical.js`: The ethical simulation mode.
+-   `engine/echo.js`: The Echo engine for tracking user interactions and calculating an autonomy score.
+-   `engine/kant.js`: The Kantian judge for flagging ethical violations.
+-   `components/reflection.js`: The reflection component for displaying the end-of-session analysis.
+-   `narrator/ghost.js`: The optional Ghost narrator for providing judgmental commentary.
 -   `docs/`: Contains the project documentation.
     -   `README.md`: This file.
     -   `philosophy.md`: The philosophical underpinnings of the project.
