@@ -1,0 +1,350 @@
+<!-- Copilot: do not overwrite -->
+<div class="apr-display ethical-apr">
+  <div class="container">
+    <div class="apr-header">
+      <h2>📊 Complete Cost Analysis</h2>
+      <p>Transparent breakdown of all costs and fees</p>
+    </div>
+    
+    <div class="apr-calculator">
+      <div class="calculator-inputs">
+        <div class="input-group">
+          <label for="calc-amount">Loan Amount</label>
+          <input type="number" id="calc-amount" value="500" min="100" max="2000" step="50">
+        </div>
+        
+        <div class="input-group">
+          <label for="calc-term">Term (days)</label>
+          <input type="number" id="calc-term" value="14" min="7" max="60">
+        </div>
+        
+        <div class="input-group">
+          <label for="calc-fee-rate">Fee Rate (%)</label>
+          <input type="number" id="calc-fee-rate" value="15" min="10" max="25" step="0.1">
+        </div>
+      </div>
+      
+      <div class="calculation-results">
+        <div class="result-item">
+          <label>Finance Charge:</label>
+          <span id="calc-finance-charge" class="amount">$75.00</span>
+        </div>
+        
+        <div class="result-item">
+          <label>Processing Fee:</label>
+          <span id="calc-processing-fee" class="amount">$25.00</span>
+        </div>
+        
+        <div class="result-item total">
+          <label><strong>Total Repayment:</strong></label>
+          <span id="calc-total" class="amount"><strong>$600.00</strong></span>
+        </div>
+        
+        <div class="result-item apr-highlight">
+          <label><strong>Annual Percentage Rate:</strong></label>
+          <span id="calc-apr" class="apr-value"><strong>521.43%</strong></span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="comparison-section">
+      <h3>💡 Compare with Alternatives</h3>
+      <div class="comparison-table">
+        <div class="comparison-header">
+          <div>Loan Type</div>
+          <div>APR Range</div>
+          <div>$500 for 14 days</div>
+          <div>Notes</div>
+        </div>
+        
+        <div class="comparison-row payday">
+          <div><strong>Payday Loan</strong></div>
+          <div>400-800%</div>
+          <div id="payday-cost">$600</div>
+          <div>Short-term, high-cost</div>
+        </div>
+        
+        <div class="comparison-row credit-card">
+          <div>Credit Card Cash Advance</div>
+          <div>25-30%</div>
+          <div>$503</div>
+          <div>If available</div>
+        </div>
+        
+        <div class="comparison-row credit-union">
+          <div>Credit Union PAL</div>
+          <div>18-28%</div>
+          <div>$502</div>
+          <div>Best option if eligible</div>
+        </div>
+        
+        <div class="comparison-row bank">
+          <div>Bank Personal Loan</div>
+          <div>6-36%</div>
+          <div>$502</div>
+          <div>Requires good credit</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="educational-content">
+      <h3>🎓 Understanding APR</h3>
+      <div class="education-grid">
+        <div class="education-item">
+          <h4>What is APR?</h4>
+          <p>Annual Percentage Rate includes both the interest rate and fees, calculated as if you borrowed for a full year.</p>
+        </div>
+        
+        <div class="education-item">
+          <h4>Why is Payday APR so high?</h4>
+          <p>The short term (14 days) magnifies the cost. A $15 fee on $100 for 14 days equals 391% APR.</p>
+        </div>
+        
+        <div class="education-item">
+          <h4>The Debt Trap Risk</h4>
+          <p>Most borrowers can't repay in full and "roll over" the loan, paying additional fees.</p>
+        </div>
+        
+        <div class="education-item">
+          <h4>Better Alternatives</h4>
+          <p>Credit unions, employer advances, payment plans, or assistance programs often cost much less.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="btn-primary" onclick="exploreAlternatives()">
+        🔍 Explore Better Alternatives
+      </button>
+      <button class="btn-secondary" onclick="continueWithLoan()">
+        Continue with This Loan Anyway
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// APR Calculator functionality
+function updateAPRCalculation() {
+  const amount = parseFloat(document.getElementById('calc-amount').value) || 500;
+  const term = parseInt(document.getElementById('calc-term').value) || 14;
+  const feeRate = parseFloat(document.getElementById('calc-fee-rate').value) || 15;
+  
+  const financeCharge = amount * (feeRate / 100);
+  const processingFee = 25; // Fixed processing fee
+  const total = amount + financeCharge + processingFee;
+  
+  // Calculate APR: ((fees / principal) * (365 / term)) * 100
+  const apr = ((financeCharge + processingFee) / amount) * (365 / term) * 100;
+  
+  // Update display
+  document.getElementById('calc-finance-charge').textContent = `$${financeCharge.toFixed(2)}`;
+  document.getElementById('calc-processing-fee').textContent = `$${processingFee.toFixed(2)}`;
+  document.getElementById('calc-total').textContent = `$${total.toFixed(2)}`;
+  document.getElementById('calc-apr').textContent = `${apr.toFixed(2)}%`;
+  
+  // Update payday comparison
+  document.getElementById('payday-cost').textContent = `$${total.toFixed(2)}`;
+}
+
+// Event listeners for real-time calculation
+document.getElementById('calc-amount').addEventListener('input', updateAPRCalculation);
+document.getElementById('calc-term').addEventListener('input', updateAPRCalculation);
+document.getElementById('calc-fee-rate').addEventListener('input', updateAPRCalculation);
+
+function exploreAlternatives() {
+  document.getElementById('alternatives-section').scrollIntoView({
+    behavior: 'smooth'
+  });
+}
+
+function continueWithLoan() {
+  document.getElementById('ethical-form-step2').scrollIntoView({
+    behavior: 'smooth'
+  });
+}
+
+// Initialize calculation
+updateAPRCalculation();
+</script>
+
+<style>
+.apr-display {
+  background: #f8f9fa;
+  padding: 2rem 0;
+  margin: 2rem 0;
+}
+
+.apr-calculator {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin: 2rem 0;
+}
+
+.calculator-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #343a40;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #dee2e6;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.calculation-results {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.result-item.total {
+  border-top: 2px solid #343a40;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.result-item.apr-highlight {
+  background: #fff3cd;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.apr-value {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.comparison-table {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  gap: 0.5rem;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comparison-header {
+  display: contents;
+}
+
+.comparison-header > div {
+  background: #343a40;
+  color: white;
+  padding: 1rem;
+  font-weight: 600;
+}
+
+.comparison-row {
+  display: contents;
+}
+
+.comparison-row > div {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.comparison-row.payday > div {
+  background: #fff5f5;
+  border-left: 4px solid #e74c3c;
+}
+
+.comparison-row.credit-union > div {
+  background: #f0fff4;
+  border-left: 4px solid #28a745;
+}
+
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.education-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-left: 4px solid #007bff;
+}
+
+.education-item h4 {
+  color: #007bff;
+  margin-bottom: 1rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #28a745;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #218838;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .comparison-table {
+    grid-template-columns: 1fr;
+  }
+  
+  .comparison-header {
+    display: none;
+  }
+  
+  .comparison-row > div:first-child::before {
+    content: attr(data-label);
+    font-weight: 600;
+    display: block;
+  }
+}
+</style>

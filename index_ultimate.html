@@ -1,572 +1,930 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Copilot: Ultimate comprehensive version with all features -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCash Solutions - Get Cash Fast! Instant Approval | Educational Simulation</title>
-    <meta name="description" content="Educational simulation: Experience authentic payday lending interfaces while learning about financial ethics, behavioral psychology, and predatory lending practices">
+    <title>Lotus Ultimate - Complete Payday Lending Simulation</title>
     
-    <!-- Tailwind CSS for utility classes -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js for interactivity -->
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-    <!-- Google Fonts for professional look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Critical Performance Optimizations -->
+    <link rel="preload" href="assets/global.css" as="style">
+    <link rel="preload" href="app_optimized.js" as="script">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     
+    <!-- Progressive Enhancement Styles -->
     <style>
-        body { font-family: 'Inter', 'Roboto', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .cash-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .ethical-gradient { background: linear-gradient(135deg, #4f46e5 0%, #059669 100%); }
-        .exploitative-gradient { background: linear-gradient(135deg, #dc2626 0%, #7c2d12 100%); }
-        .urgent-pulse { animation: pulse-urgent 1.5s infinite; }
-        .pulse-glow { animation: pulse-glow 2s ease-in-out infinite alternate; }
-        .glass-effect { 
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
+        /* Critical Above-the-fold CSS */
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
-        @keyframes pulse-urgent {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.9; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
         }
-        @keyframes pulse-glow {
-            from { box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
-            to { box-shadow: 0 0 30px rgba(239, 68, 68, 0.8); }
-        }
-        .slide-in { animation: slideIn 0.5s ease-out; }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .educational-overlay {
+        
+        .loading-screen {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 400px;
-            height: 100vh;
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(10px);
-            transition: right 0.3s ease-in-out;
-            z-index: 1000;
-            overflow-y: auto;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
-        .educational-overlay.open {
-            right: 0;
-        }
-        .educational-toggle {
-            position: fixed;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            background: #1e293b;
+        
+        .loading-content {
+            text-align: center;
             color: white;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1001;
+        }
+        
+        .lotus-spinner {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            position: relative;
+            animation: lotus-bloom 2s infinite ease-in-out;
+        }
+        
+        .lotus-spinner::before {
+            content: '🪷';
+            font-size: 60px;
+            display: block;
+            animation: lotus-rotate 3s linear infinite;
+        }
+        
+        @keyframes lotus-bloom {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        @keyframes lotus-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .app-container {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        
+        .app-container.loaded {
+            opacity: 1;
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* Advanced Header */
+        .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             transition: all 0.3s ease;
         }
-        .educational-toggle:hover {
-            background: #475569;
-            transform: translateY(-50%) scale(1.1);
+        
+        .main-header.scrolled {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .nav-brand h1 {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .tagline {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .hero-content h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Mode Controls */
+        .mode-selector {
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .mode-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 20px;
+            background: transparent;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .mode-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mode-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 1rem;
+            }
+            
+            .mode-selector {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .hero-content h2 {
+                font-size: 2.5rem;
+            }
         }
     </style>
+    
+    <!-- SEO and Social Media -->
+    <meta name="description" content="Ultimate comprehensive simulation of payday lending practices. Compare predatory vs ethical approaches with interactive tools, research data, and educational resources.">
+    <meta name="keywords" content="payday loans, financial education, predatory lending, consumer protection, ethical lending, APR calculator, financial literacy">
+    <meta property="og:title" content="Lotus Ultimate - Payday Lending Simulation">
+    <meta property="og:description" content="Interactive simulation comparing predatory vs ethical lending practices">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/images/lotus-social.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lotus Payday Lending Simulation">
+    <meta name="twitter:description" content="Learn about predatory lending through interactive simulation">
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Lotus Simulation">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    
+    <!-- External Resources -->
+    <link rel="stylesheet" href="assets/global.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="predatory/styles.css">
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
-
-    <!-- Educational Mode Toggle -->
-    <div id="educational-toggle" class="educational-toggle" onclick="toggleEducationalMode()">
-        <i class="fas fa-graduation-cap text-xl"></i>
-    </div>
-
-    <!-- Educational Overlay Panel -->
-    <div id="educational-overlay" class="educational-overlay">
-        <div class="p-6 text-white">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-blue-300">
-                    <i class="fas fa-university mr-2"></i>Educational Dashboard
-                </h3>
-                <button onclick="toggleEducationalMode()" class="text-gray-400 hover:text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <!-- Learning Progress -->
-            <div class="mb-6 p-4 bg-slate-800 rounded-lg">
-                <h4 class="font-semibold text-blue-200 mb-3">Learning Progress</h4>
-                <div class="space-y-2">
-                    <div class="flex justify-between text-sm">
-                        <span>Behavioral Psychology</span>
-                        <span id="psych-progress">0%</span>
-                    </div>
-                    <div class="w-full bg-gray-700 rounded-full h-2">
-                        <div id="psych-bar" class="bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span>Financial Ethics</span>
-                        <span id="ethics-progress">0%</span>
-                    </div>
-                    <div class="w-full bg-gray-700 rounded-full h-2">
-                        <div id="ethics-bar" class="bg-green-500 h-2 rounded-full" style="width: 0%"></div>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span>Predatory Tactics</span>
-                        <span id="tactics-progress">0%</span>
-                    </div>
-                    <div class="w-full bg-gray-700 rounded-full h-2">
-                        <div id="tactics-bar" class="bg-red-500 h-2 rounded-full" style="width: 0%"></div>
-                    </div>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="lotus-spinner"></div>
+            <h2>Lotus Simulation</h2>
+            <p>Loading comprehensive experience...</p>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
                 </div>
-            </div>
-
-            <!-- Real-time Insights -->
-            <div class="mb-6 p-4 bg-slate-800 rounded-lg">
-                <h4 class="font-semibold text-yellow-200 mb-3">
-                    <i class="fas fa-lightbulb mr-2"></i>Current Insights
-                </h4>
-                <div id="current-insights" class="text-sm text-gray-300">
-                    <p>🎯 Notice the urgent language and time pressure tactics</p>
-                    <p>💰 Observe how fees and interest rates are presented</p>
-                    <p>🧠 Pay attention to emotional manipulation techniques</p>
-                </div>
-            </div>
-
-            <!-- Dark Pattern Detection -->
-            <div class="mb-6 p-4 bg-slate-800 rounded-lg">
-                <h4 class="font-semibold text-red-200 mb-3">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>Dark Patterns Detected
-                </h4>
-                <div id="dark-patterns" class="space-y-2 text-sm">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-            </div>
-
-            <!-- Educational Controls -->
-            <div class="space-y-4">
-                <button id="take-quiz" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                    <i class="fas fa-clipboard-question mr-2"></i>Take Assessment
-                </button>
-                <button id="view-analytics" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                    <i class="fas fa-chart-bar mr-2"></i>View Analytics
-                </button>
-                <button id="export-data" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                    <i class="fas fa-download mr-2"></i>Export Research Data
-                </button>
+                <div id="loading-status" class="loading-status">Initializing...</div>
             </div>
         </div>
     </div>
-
-    <!-- Professional Navigation Header -->
-    <nav class="bg-white shadow-lg border-b-4 border-green-500 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-2">
-                        <i class="fas fa-dollar-sign text-green-600 text-2xl"></i>
-                        <span class="text-2xl font-bold text-gray-800">QuickCash</span>
-                        <span class="text-lg text-green-600 font-semibold">Solutions</span>
-                    </div>
-                    <div class="hidden md:flex items-center space-x-1 text-xs bg-green-100 px-2 py-1 rounded-full">
-                        <i class="fas fa-shield-alt text-green-600"></i>
-                        <span class="text-green-700 font-medium">SSL Secured</span>
+    
+    <!-- Main Application -->
+    <div id="app" class="app-container hidden">
+        <!-- Advanced Header -->
+        <header id="main-header" class="main-header">
+            <nav class="navbar">
+                <div class="nav-brand">
+                    <h1>🪷 Lotus</h1>
+                    <div>
+                        <div class="tagline">Ultimate Payday Lending Simulation</div>
+                        <div class="version-info">v2.0 Ultimate Edition</div>
                     </div>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-6 text-sm">
-                    <a href="#rates" class="text-gray-600 hover:text-green-600 font-medium transition-colors">Rates</a>
-                    <a href="#how-it-works" class="text-gray-600 hover:text-green-600 font-medium transition-colors">How It Works</a>
-                    <a href="#faq" class="text-gray-600 hover:text-green-600 font-medium transition-colors">FAQ</a>
-                    <div class="flex items-center space-x-2 text-green-600 font-semibold">
-                        <i class="fas fa-phone"></i>
-                        <span>1-800-QUICKCASH</span>
+                <div class="nav-controls">
+                    <div class="mode-selector">
+                        <button id="compare-mode" class="mode-btn active" data-mode="compare">
+                            📊 Compare Modes
+                        </button>
+                        <button id="predatory-mode" class="mode-btn" data-mode="predatory">
+                            ⚠️ Predatory Experience
+                        </button>
+                        <button id="ethical-mode" class="mode-btn" data-mode="ethical">
+                            ✅ Ethical Alternative
+                        </button>
+                        <button id="research-mode" class="mode-btn" data-mode="research">
+                            🔬 Research Mode
+                        </button>
+                    </div>
+                    
+                    <div class="accessibility-controls">
+                        <button id="toggle-contrast" class="control-btn" aria-label="Toggle high contrast" title="High Contrast">🎨</button>
+                        <button id="toggle-animations" class="control-btn" aria-label="Toggle animations" title="Reduce Motion">⚡</button>
+                        <button id="toggle-audio" class="control-btn" aria-label="Toggle audio cues" title="Audio Cues">🔊</button>
+                        <button id="reset-simulation" class="control-btn" aria-label="Reset simulation" title="Reset">🔄</button>
+                        <button id="fullscreen-toggle" class="control-btn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button>
                     </div>
                 </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button class="text-gray-600 hover:text-green-600">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Urgency Banner (Exploitative Mode) -->
-    <div id="urgency-banner" class="hidden cash-green text-white text-center py-4 urgent-pulse shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
-            <p class="text-lg font-bold">
-                🔥 LIMITED TIME: Get $1,500 in 15 MINUTES! <span id="countdown-timer" class="text-yellow-300">04:59</span> LEFT! 🔥
-            </p>
-            <p class="text-sm mt-1 opacity-90">*Subject to approval. Don't miss out!</p>
-        </div>
-    </div>
-
-    <!-- Main Container -->
-    <div class="max-w-7xl mx-auto px-4 py-8">
+            </nav>
+        </header>
         
         <!-- Hero Section -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                Get <span class="text-green-600">Cash Fast</span> When You Need It Most
-            </h1>
-            <p class="text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
-                Quick approval, fast funding, and trusted by thousands. Get up to $1,500 deposited in your account today.
-            </p>
-            
-            <!-- Trust Indicators -->
-            <div class="flex justify-center items-center space-x-8 text-sm text-gray-500 mb-8">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-clock text-green-500"></i>
-                    <span>15-Minute Approval</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-users text-green-500"></i>
-                    <span>250K+ Happy Customers</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-star text-yellow-500"></i>
-                    <span>4.8/5 Rating</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-lock text-green-500"></i>
-                    <span>Bank-Level Security</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Two-Column Layout -->
-        <div class="grid md:grid-cols-2 gap-12 items-start">
-            
-            <!-- Left Column: Loan Application Form -->
-            <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-                <div class="text-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Get Started in 3 Easy Steps</h2>
-                    <p class="text-gray-600">No paperwork, no waiting, no hassle</p>
-                </div>
-
-                <!-- Step Indicators -->
-                <div class="flex justify-between items-center mb-8">
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                        <span class="ml-2 text-sm font-medium text-gray-700">Basic Info</span>
-                    </div>
-                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">2</div>
-                        <span class="ml-2 text-sm font-medium text-gray-500">Verify</span>
-                    </div>
-                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">3</div>
-                        <span class="ml-2 text-sm font-medium text-gray-500">Get Cash</span>
-                    </div>
-                </div>
-
-                <!-- Loan Amount Selection -->
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">How much do you need?</label>
-                    <div class="grid grid-cols-3 gap-3 mb-4">
-                        <button class="amount-btn bg-gray-100 hover:bg-green-100 border-2 border-gray-200 hover:border-green-400 rounded-lg p-4 text-center transition-all" data-amount="300">
-                            <div class="text-2xl font-bold text-gray-800">$300</div>
-                            <div class="text-xs text-gray-500">Popular</div>
-                        </button>
-                        <button class="amount-btn bg-gray-100 hover:bg-green-100 border-2 border-gray-200 hover:border-green-400 rounded-lg p-4 text-center transition-all" data-amount="500">
-                            <div class="text-2xl font-bold text-gray-800">$500</div>
-                            <div class="text-xs text-gray-500">Most chosen</div>
-                        </button>
-                        <button class="amount-btn bg-gray-100 hover:bg-green-100 border-2 border-gray-200 hover:border-green-400 rounded-lg p-4 text-center transition-all" data-amount="1000">
-                            <div class="text-2xl font-bold text-gray-800">$1,000</div>
-                            <div class="text-xs text-gray-500">Max amount</div>
-                        </button>
-                    </div>
-                    <input type="range" id="amount-slider" min="100" max="1500" value="500" step="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                    <div class="flex justify-between text-sm text-gray-500 mt-2">
-                        <span>$100</span>
-                        <span id="selected-amount" class="font-bold text-green-600">$500</span>
-                        <span>$1,500</span>
-                    </div>
-                </div>
-
-                <!-- State Selection -->
-                <div class="mb-6">
-                    <label for="state-select" class="block text-sm font-semibold text-gray-700 mb-2">Your State</label>
-                    <select id="state-select" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                        <option value="">Select your state</option>
-                        <option value="CA">California</option>
-                        <option value="TX">Texas</option>
-                        <option value="FL">Florida</option>
-                        <option value="NY">New York</option>
-                        <option value="PA">Pennsylvania</option>
-                        <option value="IL">Illinois</option>
-                        <option value="OH">Ohio</option>
-                        <option value="GA">Georgia</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="MI">Michigan</option>
-                    </select>
-                </div>
-
-                <!-- Simulation Mode Selector -->
-                <div class="mb-8 p-4 bg-gray-50 rounded-lg border">
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">Choose Your Experience</label>
-                    <div class="space-y-3">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="simulation-mode" value="ethical" class="text-green-600 focus:ring-green-500">
-                            <div class="ml-3">
-                                <div class="text-sm font-medium text-gray-800">Regulated & Transparent</div>
-                                <div class="text-xs text-gray-500">Experience ethical lending practices with full disclosure</div>
-                            </div>
-                        </label>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="simulation-mode" value="exploitative" class="text-red-600 focus:ring-red-500">
-                            <div class="ml-3">
-                                <div class="text-sm font-medium text-gray-800">Predatory Tactics</div>
-                                <div class="text-xs text-gray-500">Experience common predatory lending practices (Educational)</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- CTA Buttons -->
-                <div class="space-y-4">
-                    <button id="start-regulated" class="w-full ethical-gradient text-white font-bold py-4 px-6 rounded-xl text-lg transition-all transform hover:scale-105 shadow-lg">
-                        <i class="fas fa-shield-check mr-2"></i>
-                        Start Ethical Simulation
-                    </button>
-                    <button id="start-exploit" class="w-full exploitative-gradient text-white font-bold py-4 px-6 rounded-xl text-lg transition-all transform hover:scale-105 shadow-lg pulse-glow">
-                        <i class="fas fa-exclamation-triangle mr-2"></i>
-                        Experience Predatory Tactics
-                    </button>
-                </div>
-
-                <!-- Fine Print -->
-                <p class="text-xs text-gray-500 mt-6 text-center leading-relaxed">
-                    This is an educational simulation. By proceeding, you agree to participate in a research study about payday lending practices. Your interactions will be anonymously recorded for academic research purposes.
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>Understanding Payday Lending</h2>
+                <p class="hero-subtitle">
+                    The ultimate comprehensive simulation comparing predatory practices with ethical alternatives
                 </p>
-            </div>
-
-            <!-- Right Column: Information & Trust Building -->
-            <div class="space-y-8">
                 
-                <!-- Benefits Section -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Why Choose QuickCash Solutions?</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-bolt text-green-500 text-lg mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Lightning Fast</h4>
-                                <p class="text-sm text-gray-600">Get approved in minutes, not hours. Funds in your account same day.</p>
-                            </div>
+                <div class="hero-stats">
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">400%</span>
+                            <span class="stat-label">Average APR</span>
                         </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-user-check text-green-500 text-lg mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">No Credit Check</h4>
-                                <p class="text-sm text-gray-600">Bad credit? No problem. We focus on your current situation.</p>
-                            </div>
+                        <div class="stat-item">
+                            <span class="stat-number">12M</span>
+                            <span class="stat-label">Americans Affected</span>
                         </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-mobile-alt text-green-500 text-lg mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">100% Online</h4>
-                                <p class="text-sm text-gray-600">Complete everything from your phone. No store visits required.</p>
-                            </div>
+                        <div class="stat-item">
+                            <span class="stat-number">$9B</span>
+                            <span class="stat-label">Annual Fees</span>
                         </div>
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-handshake text-green-500 text-lg mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Trusted Partner</h4>
-                                <p class="text-sm text-gray-600">Licensed and regulated. Member of CFSA industry association.</p>
-                            </div>
+                        <div class="stat-item">
+                            <span class="stat-number">80%</span>
+                            <span class="stat-label">Rollover Rate</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Testimonials -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">What Our Customers Say</h3>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-green-500 pl-4">
-                            <p class="text-sm text-gray-700 italic">"I needed $400 for car repairs and got approved in 10 minutes. Saved my job!"</p>
-                            <p class="text-xs text-gray-500 mt-2">- Sarah M., Phoenix AZ</p>
-                        </div>
-                        <div class="border-l-4 border-green-500 pl-4">
-                            <p class="text-sm text-gray-700 italic">"Fast, easy, and exactly what I needed for my emergency."</p>
-                            <p class="text-xs text-gray-500 mt-2">- Mike R., Dallas TX</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Educational Notice -->
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                    <div class="flex items-start space-x-3">
-                        <i class="fas fa-info-circle text-blue-500 text-lg mt-1"></i>
-                        <div>
-                            <h4 class="font-semibold text-blue-800 mb-2">Educational Simulation</h4>
-                            <p class="text-sm text-blue-700 leading-relaxed">
-                                This platform demonstrates real payday lending practices for educational purposes. 
-                                Experience both ethical and predatory lending approaches while learning about 
-                                financial psychology, consumer protection, and loan regulations.
-                            </p>
-                            <button onclick="toggleEducationalMode()" class="mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                Open Learning Dashboard →
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Simulation Output Area -->
-        <div id="simulation-container" class="hidden mt-12">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-gray-800">Loan Application Process</h3>
-                    <div class="flex items-center space-x-4">
-                        <button id="reset-simulation" class="text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-redo mr-2"></i>Reset
-                        </button>
-                        <button id="export-session" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
-                            <i class="fas fa-download mr-2"></i>Export Data
-                        </button>
                     </div>
                 </div>
                 
-                <div id="output" class="font-mono text-sm bg-gray-900 text-green-400 p-6 rounded-lg min-h-96 overflow-y-auto">
-                    <!-- Simulation output will appear here -->
+                <div class="hero-actions">
+                    <button class="cta-primary" onclick="startSimulation()">
+                        🚀 Start Ultimate Simulation
+                    </button>
+                    <button class="cta-secondary" onclick="showEducationalInfo()">
+                        📚 Educational Resources
+                    </button>
+                    <button class="cta-tertiary" onclick="showResearchData()">
+                        📊 Research & Data
+                    </button>
                 </div>
-
-                <!-- Real-time Analytics Dashboard -->
-                <div class="mt-8 grid md:grid-cols-3 gap-6">
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-gray-700 mb-2">Cost Analysis</h4>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span>Principal:</span>
-                                <span id="principal-amount" class="font-mono">$0.00</span>
+                
+                <div class="scroll-indicator">
+                    <div class="scroll-arrow">↓</div>
+                    <span>Scroll to explore</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Dynamic Content Area -->
+        <main id="main-content" class="main-content">
+            <!-- Mode-specific content will be dynamically loaded here -->
+            
+            <!-- Default Comparison Dashboard -->
+            <div id="comparison-dashboard" class="comparison-dashboard">
+                <div class="dashboard-header">
+                    <h3>Comprehensive Comparison Dashboard</h3>
+                    <p>Interactive analysis of predatory vs ethical lending approaches</p>
+                </div>
+                
+                <div class="comparison-metrics">
+                    <div class="metric-category">
+                        <h4>Financial Impact</h4>
+                        <div class="metric-comparison">
+                            <div class="metric predatory">
+                                <label>Predatory</label>
+                                <div class="value danger">$500 → $2,100</div>
+                                <div class="description">Debt trap cycle</div>
                             </div>
-                            <div class="flex justify-between">
-                                <span>Total Fees:</span>
-                                <span id="total-fees" class="font-mono text-red-600">$0.00</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>APR:</span>
-                                <span id="effective-apr" class="font-mono text-red-600">0%</span>
-                            </div>
-                            <div class="flex justify-between font-semibold border-t pt-2">
-                                <span>Total Repayment:</span>
-                                <span id="total-repayment" class="font-mono">$0.00</span>
+                            <div class="metric ethical">
+                                <label>Ethical</label>
+                                <div class="value success">$500 → $550</div>
+                                <div class="description">Fair repayment</div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-gray-700 mb-2">Dark Patterns</h4>
-                        <div id="dark-pattern-counter" class="space-y-2 text-sm">
-                            <!-- Will be populated by JavaScript -->
+                    
+                    <div class="metric-category">
+                        <h4>User Experience</h4>
+                        <div class="metric-comparison">
+                            <div class="metric predatory">
+                                <label>Predatory</label>
+                                <div class="value danger">High pressure</div>
+                                <div class="description">Dark patterns</div>
+                            </div>
+                            <div class="metric ethical">
+                                <label>Ethical</label>
+                                <div class="value success">Transparent</div>
+                                <div class="description">Educational</div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-semibold text-gray-700 mb-2">Decision Points</h4>
-                        <div id="decision-tracker" class="space-y-2 text-sm">
-                            <!-- Will be populated by JavaScript -->
+                    
+                    <div class="metric-category">
+                        <h4>Long-term Outcomes</h4>
+                        <div class="metric-comparison">
+                            <div class="metric predatory">
+                                <label>Predatory</label>
+                                <div class="value danger">Debt spiral</div>
+                                <div class="description">Financial harm</div>
+                            </div>
+                            <div class="metric ethical">
+                                <label>Ethical</label>
+                                <div class="value success">Financial stability</div>
+                                <div class="description">Credit building</div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                
+                <div class="experience-previews">
+                    <div class="preview-card predatory-preview">
+                        <div class="preview-header">
+                            <h4>⚠️ Predatory Experience</h4>
+                            <span class="warning-badge">Simulation Only</span>
+                        </div>
+                        <div class="preview-content">
+                            <ul class="preview-features">
+                                <li>❌ Hidden fees and misleading terms</li>
+                                <li>❌ Aggressive psychological manipulation</li>
+                                <li>❌ Debt trap mechanisms</li>
+                                <li>❌ False urgency and scarcity</li>
+                                <li>❌ Predatory rollover cycles</li>
+                            </ul>
+                            <div class="preview-warning">
+                                <strong>Educational Purpose:</strong> This simulation demonstrates harmful practices to increase awareness.
+                            </div>
+                        </div>
+                        <button class="preview-btn danger" onclick="loadPredatoryMode()">
+                            Experience Predatory Tactics
+                        </button>
+                    </div>
+                    
+                    <div class="preview-card ethical-preview">
+                        <div class="preview-header">
+                            <h4>✅ Ethical Alternative</h4>
+                            <span class="success-badge">Recommended</span>
+                        </div>
+                        <div class="preview-content">
+                            <ul class="preview-features">
+                                <li>✅ Complete fee transparency</li>
+                                <li>✅ Educational resources and guidance</li>
+                                <li>✅ Alternative financial options</li>
+                                <li>✅ Clear cost breakdowns</li>
+                                <li>✅ Consumer protection safeguards</li>
+                            </ul>
+                            <div class="preview-benefit">
+                                <strong>Real-world Application:</strong> Learn about legitimate financial alternatives.
+                            </div>
+                        </div>
+                        <button class="preview-btn success" onclick="loadEthicalMode()">
+                            Explore Ethical Approach
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
+        
+        <!-- Advanced Sidebar Panel -->
+        <aside id="sidebar-panel" class="sidebar-panel">
+            <div class="panel-tabs">
+                <button class="tab-btn active" data-tab="educational">📚 Education</button>
+                <button class="tab-btn" data-tab="resources">🔗 Resources</button>
+                <button class="tab-btn" data-tab="analytics">📊 Analytics</button>
+                <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+            </div>
+            
+            <div class="panel-content">
+                <!-- Educational Tab -->
+                <div id="educational-tab" class="tab-content active">
+                    <h4>Understanding Payday Lending</h4>
+                    <div class="educational-modules">
+                        <div class="module">
+                            <h5>APR Basics</h5>
+                            <p>Learn how Annual Percentage Rate impacts your finances</p>
+                            <button onclick="showAPREducation()">Learn More</button>
+                        </div>
+                        <div class="module">
+                            <h5>Debt Traps</h5>
+                            <p>Understand how predatory cycles work</p>
+                            <button onclick="showDebtTrapInfo()">Learn More</button>
+                        </div>
+                        <div class="module">
+                            <h5>Consumer Rights</h5>
+                            <p>Know your rights and protections</p>
+                            <button onclick="showConsumerRights()">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resources Tab -->
+                <div id="resources-tab" class="tab-content">
+                    <h4>Financial Resources</h4>
+                    <div class="resource-links">
+                        <a href="#" onclick="openCFPB()">Consumer Financial Protection Bureau</a>
+                        <a href="#" onclick="openNFCC()">National Foundation for Credit Counseling</a>
+                        <a href="#" onclick="openStateResources()">State-Specific Resources</a>
+                        <a href="#" onclick="openCreditUnions()">Local Credit Unions</a>
+                    </div>
+                </div>
+                
+                <!-- Analytics Tab -->
+                <div id="analytics-tab" class="tab-content">
+                    <h4>Simulation Analytics</h4>
+                    <div class="analytics-display">
+                        <div class="metric">
+                            <span class="label">Session Time:</span>
+                            <span id="session-time" class="value">0:00</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Interactions:</span>
+                            <span id="interaction-count" class="value">0</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Mode Switches:</span>
+                            <span id="mode-switch-count" class="value">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Settings Tab -->
+                <div id="settings-tab" class="tab-content">
+                    <h4>Simulation Settings</h4>
+                    <div class="settings-options">
+                        <label>
+                            <input type="checkbox" id="enable-sounds"> Enable Audio Cues
+                        </label>
+                        <label>
+                            <input type="checkbox" id="reduce-motion"> Reduce Motion
+                        </label>
+                        <label>
+                            <input type="checkbox" id="high-contrast"> High Contrast
+                        </label>
+                        <label>
+                            <input type="checkbox" id="research-mode-enabled"> Research Data Collection
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <h4>Disclaimer</h4>
+                        <p>This is an educational simulation designed to demonstrate lending practices. No actual financial services are provided.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Educational Resources</h4>
+                        <ul>
+                            <li><a href="#" onclick="showConsumerProtection()">Consumer Protection</a></li>
+                            <li><a href="#" onclick="showStateRegulations()">State Regulations</a></li>
+                            <li><a href="#" onclick="showCreditCounseling()">Credit Counseling</a></li>
+                            <li><a href="#" onclick="showFinancialLiteracy()">Financial Literacy</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Technical Information</h4>
+                        <p>Built with progressive enhancement and accessibility in mind</p>
+                        <div class="tech-badges">
+                            <span class="badge">PWA Ready</span>
+                            <span class="badge">WCAG 2.1 AA</span>
+                            <span class="badge">Mobile First</span>
+                        </div>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Performance</h4>
+                        <button onclick="showPerformanceMetrics()">View Metrics</button>
+                        <button onclick="exportSessionData()">Export Data</button>
+                        <button onclick="clearStoredData()">Clear Data</button>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Lotus Simulation Project. Educational use only.</p>
+                    <div class="footer-links">
+                        <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
+                        <a href="#" onclick="showAccessibility()">Accessibility</a>
+                        <a href="#" onclick="showSourceCode()">Source Code</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
-
-    <!-- JavaScript Functions -->
+    
+    <!-- Progressive Enhancement Scripts -->
+    <script src="assets/global.js"></script>
+    <script src="app_optimized.js"></script>
+    
+    <!-- Ultimate Features Script -->
     <script>
-        let educationalMode = false;
-        let currentSimulation = null;
-
-        function toggleEducationalMode() {
-            educationalMode = !educationalMode;
-            const overlay = document.getElementById('educational-overlay');
+        // Ultimate Lotus Application with all features
+        (function() {
+            'use strict';
             
-            if (educationalMode) {
-                overlay.classList.add('open');
-            } else {
-                overlay.classList.remove('open');
+            // Enhanced performance tracking
+            const performance_tracker = {
+                start: performance.now(),
+                marks: {},
+                interactions: 0,
+                mode_switches: 0,
+                session_start: Date.now()
+            };
+            
+            // Mark performance points
+            function mark(name) {
+                performance_tracker.marks[name] = performance.now() - performance_tracker.start;
+                console.log(`⚡ ${name}: ${performance_tracker.marks[name].toFixed(2)}ms`);
             }
-        }
-
-        // Amount slider functionality
-        document.getElementById('amount-slider').addEventListener('input', function(e) {
-            document.getElementById('selected-amount').textContent = '$' + e.target.value;
-        });
-
-        // Amount button selection
-        document.querySelectorAll('.amount-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.amount-btn').forEach(b => {
-                    b.classList.remove('bg-green-100', 'border-green-400');
-                    b.classList.add('bg-gray-100', 'border-gray-200');
+            
+            // Application state management
+            const app_state = {
+                current_mode: 'compare',
+                sidebar_open: false,
+                settings: {
+                    sounds_enabled: false,
+                    reduce_motion: false,
+                    high_contrast: false,
+                    research_mode: true
+                },
+                analytics: {
+                    session_id: generateSessionId(),
+                    events: []
+                }
+            };
+            
+            // Enhanced initialization with loading progress
+            async function initializeUltimateApp() {
+                mark('init_start');
+                
+                updateLoadingProgress(20, 'Loading core modules...');
+                await loadCoreModules();
+                
+                updateLoadingProgress(40, 'Initializing components...');
+                initializeComponents();
+                
+                updateLoadingProgress(60, 'Setting up analytics...');
+                initializeAnalytics();
+                
+                updateLoadingProgress(80, 'Applying user preferences...');
+                applyUserSettings();
+                
+                updateLoadingProgress(100, 'Ready!');
+                
+                // Show app after loading
+                setTimeout(() => {
+                    document.getElementById('loading-screen').classList.add('hidden');
+                    document.getElementById('app').classList.remove('hidden');
+                    document.getElementById('app').classList.add('loaded');
+                    mark('app_ready');
+                }, 1000);
+                
+                // Initialize mode from URL
+                const urlMode = new URLSearchParams(window.location.search).get('mode') || 'compare';
+                switchMode(urlMode);
+                
+                console.log('🪷 Lotus Ultimate initialized successfully');
+            }
+            
+            function updateLoadingProgress(percent, status) {
+                const fill = document.getElementById('progress-fill');
+                const statusEl = document.getElementById('loading-status');
+                
+                if (fill) fill.style.width = percent + '%';
+                if (statusEl) statusEl.textContent = status;
+            }
+            
+            async function loadCoreModules() {
+                // Simulate module loading with actual delays
+                const modules = [
+                    'core/loan_core.js',
+                    'modes/ethical.js',
+                    'modes/exploitative.js',
+                    'engine/autonomy_theater.js'
+                ];
+                
+                for (const module of modules) {
+                    try {
+                        await fetch(module);
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    } catch (error) {
+                        console.warn(`Failed to load module: ${module}`);
+                    }
+                }
+            }
+            
+            function initializeComponents() {
+                // Set up event listeners
+                setupEventListeners();
+                setupAccessibilityFeatures();
+                setupServiceWorker();
+                setupPerformanceMonitoring();
+            }
+            
+            function setupEventListeners() {
+                // Mode switching
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const mode = e.target.dataset.mode;
+                        if (mode) switchMode(mode);
+                    });
                 });
-                this.classList.remove('bg-gray-100', 'border-gray-200');
-                this.classList.add('bg-green-100', 'border-green-400');
                 
-                const amount = this.dataset.amount;
-                document.getElementById('amount-slider').value = amount;
-                document.getElementById('selected-amount').textContent = '$' + amount;
-            });
-        });
-
-        // Simulation mode selection
-        document.querySelectorAll('input[name="simulation-mode"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const mode = this.value;
-                if (mode === 'exploitative') {
-                    document.getElementById('urgency-banner').classList.remove('hidden');
-                    startCountdown();
-                } else {
-                    document.getElementById('urgency-banner').classList.add('hidden');
-                }
-            });
-        });
-
-        function startCountdown() {
-            let timeLeft = 299; // 4:59
-            const timer = document.getElementById('countdown-timer');
-            
-            const countdown = setInterval(() => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                // Sidebar tabs
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const tab = e.target.dataset.tab;
+                        if (tab) switchTab(tab);
+                    });
+                });
                 
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    timer.textContent = "EXPIRED";
-                }
-                timeLeft--;
-            }, 1000);
-        }
-
-        // Update insights based on user actions
-        function updateEducationalInsights(action, data) {
-            if (educationalMode) {
-                const insights = document.getElementById('current-insights');
-                // Add real-time educational content based on user actions
-                // This will be connected to the educational modules
+                // Accessibility controls
+                document.getElementById('toggle-contrast')?.addEventListener('click', toggleHighContrast);
+                document.getElementById('toggle-animations')?.addEventListener('click', toggleAnimations);
+                document.getElementById('toggle-audio')?.addEventListener('click', toggleAudioCues);
+                document.getElementById('reset-simulation')?.addEventListener('click', resetSimulation);
+                document.getElementById('fullscreen-toggle')?.addEventListener('click', toggleFullscreen);
+                
+                // Scroll effects
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                
+                // Track all interactions
+                document.addEventListener('click', trackInteraction, true);
+                document.addEventListener('focus', trackInteraction, true);
             }
-        }
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set up event listeners and initialize educational systems
-            console.log('QuickCash Educational Simulation initialized');
-        });
+            
+            function trackInteraction(event) {
+                performance_tracker.interactions++;
+                updateAnalyticsDisplay();
+                
+                // Record event for research
+                if (app_state.settings.research_mode) {
+                    app_state.analytics.events.push({
+                        type: event.type,
+                        target: event.target.tagName,
+                        timestamp: Date.now(),
+                        mode: app_state.current_mode
+                    });
+                }
+            }
+            
+            function switchMode(mode) {
+                if (mode === app_state.current_mode) return;
+                
+                performance_tracker.mode_switches++;
+                app_state.current_mode = mode;
+                
+                // Update UI
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.mode === mode);
+                });
+                
+                // Load mode-specific content
+                loadModeContent(mode);
+                
+                // Update URL
+                const url = new URL(window.location);
+                url.searchParams.set('mode', mode);
+                window.history.pushState({ mode }, '', url);
+                
+                updateAnalyticsDisplay();
+                
+                console.log(`🔄 Switched to ${mode} mode`);
+            }
+            
+            async function loadModeContent(mode) {
+                const mainContent = document.getElementById('main-content');
+                const comparisonDashboard = document.getElementById('comparison-dashboard');
+                
+                switch (mode) {
+                    case 'compare':
+                        comparisonDashboard.style.display = 'block';
+                        break;
+                        
+                    case 'predatory':
+                        comparisonDashboard.style.display = 'none';
+                        try {
+                            const [heroContent, formContent] = await Promise.all([
+                                fetch('predatory/hero.html').then(r => r.text()),
+                                fetch('predatory/form.html').then(r => r.text())
+                            ]);
+                            
+                            mainContent.innerHTML = `
+                                <div class="predatory-experience">
+                                    <div class="mode-warning">
+                                        ⚠️ PREDATORY LENDING SIMULATION - EDUCATIONAL PURPOSE ONLY ⚠️
+                                    </div>
+                                    ${heroContent}
+                                    ${formContent}
+                                </div>
+                            `;
+                        } catch (error) {
+                            console.error('Failed to load predatory content:', error);
+                        }
+                        break;
+                        
+                    case 'ethical':
+                        comparisonDashboard.style.display = 'none';
+                        try {
+                            const [calculatorContent, alternativesContent] = await Promise.all([
+                                fetch('partials/ethical/calculator.html').then(r => r.text()),
+                                fetch('partials/ethical/alternatives.html').then(r => r.text())
+                            ]);
+                            
+                            mainContent.innerHTML = `
+                                <div class="ethical-experience">
+                                    <div class="mode-info">
+                                        ✅ ETHICAL LENDING ALTERNATIVE - LEARN BETTER OPTIONS
+                                    </div>
+                                    ${calculatorContent}
+                                    ${alternativesContent}
+                                </div>
+                            `;
+                        } catch (error) {
+                            console.error('Failed to load ethical content:', error);
+                        }
+                        break;
+                        
+                    case 'research':
+                        comparisonDashboard.style.display = 'none';
+                        mainContent.innerHTML = `
+                            <div class="research-mode">
+                                <h3>🔬 Research & Analytics Dashboard</h3>
+                                <div class="research-dashboard">
+                                    <div class="research-metrics">
+                                        <h4>Session Analytics</h4>
+                                        <div id="research-data"></div>
+                                    </div>
+                                    <div class="research-export">
+                                        <h4>Data Export</h4>
+                                        <button onclick="exportResearchData()">Export Session Data</button>
+                                        <button onclick="exportAggregateData()">Export Aggregate Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        updateResearchDashboard();
+                        break;
+                }
+            }
+            
+            function updateAnalyticsDisplay() {
+                const sessionTime = Math.floor((Date.now() - performance_tracker.session_start) / 1000);
+                const minutes = Math.floor(sessionTime / 60);
+                const seconds = sessionTime % 60;
+                
+                document.getElementById('session-time').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('interaction-count').textContent = performance_tracker.interactions;
+                document.getElementById('mode-switch-count').textContent = performance_tracker.mode_switches;
+            }
+            
+            function generateSessionId() {
+                return 'lotus-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+            
+            function setupServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('sw.js')
+                        .then(registration => {
+                            console.log('✅ Service Worker registered');
+                            mark('sw_registered');
+                        })
+                        .catch(error => {
+                            console.warn('❌ Service Worker registration failed:', error);
+                        });
+                }
+            }
+            
+            // Expose global functions
+            window.startSimulation = () => {
+                document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
+            };
+            
+            window.switchMode = switchMode;
+            window.loadPredatoryMode = () => switchMode('predatory');
+            window.loadEthicalMode = () => switchMode('ethical');
+            
+            window.showEducationalInfo = () => {
+                switchTab('educational');
+                app_state.sidebar_open = true;
+            };
+            
+            window.showResearchData = () => switchMode('research');
+            
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeUltimateApp);
+            } else {
+                initializeUltimateApp();
+            }
+            
+            // Update analytics every second
+            setInterval(updateAnalyticsDisplay, 1000);
+            
+        })();
     </script>
-
-    <!-- Load the main application module -->
-    <script type="module" src="app.js"></script>
 </body>
 </html>

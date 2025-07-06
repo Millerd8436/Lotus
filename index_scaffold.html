@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Copilot: Base scaffold for component-based development -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotus Scaffold - Component Development</title>
+    
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="assets/global.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Component Testing Styles -->
+    <style>
+        .scaffold-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .scaffold-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .component-section {
+            margin-bottom: 40px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .component-header {
+            background: #343a40;
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .component-content {
+            padding: 20px;
+        }
+        
+        .component-controls {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .control-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .demo-area {
+            min-height: 200px;
+            border: 2px dashed #dee2e6;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: #fff;
+        }
+        
+        .demo-placeholder {
+            text-align: center;
+            color: #6c757d;
+        }
+        
+        .code-preview {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        
+        .mode-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+        }
+        
+        .scaffold-nav {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 999;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #333;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .nav-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .nav-item.active {
+            background: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mode Indicator -->
+    <div id="mode-indicator" class="mode-indicator">
+        SCAFFOLD MODE
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="scaffold-nav">
+        <button class="nav-item active" onclick="showSection('hero')">Hero</button>
+        <button class="nav-item" onclick="showSection('form')">Forms</button>
+        <button class="nav-item" onclick="showSection('calculator')">Calculator</button>
+        <button class="nav-item" onclick="showSection('components')">UI Components</button>
+        <button class="nav-item" onclick="showSection('engine')">Engines</button>
+        <button class="nav-item" onclick="showSection('analytics')">Analytics</button>
+    </nav>
+    
+    <!-- Main Container -->
+    <div class="scaffold-container">
+        <!-- Header -->
+        <header class="scaffold-header">
+            <h1>🪷 Lotus Component Scaffold</h1>
+            <p>Development environment for testing and building individual components</p>
+            <div style="margin-top: 15px;">
+                <span style="background: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 10px;">DEVELOPMENT</span>
+                <span style="background: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px; font-size: 12px;">COMPONENT TESTING</span>
+            </div>
+        </header>
+        
+        <!-- Hero Components Section -->
+        <section id="hero-section" class="component-section">
+            <div class="component-header">
+                <span>Hero Components</span>
+                <span>predatory/hero.html & partials/ethical/hero.html</span>
+            </div>
+            <div class="component-content">
+                <div id="hero-demo" class="demo-area">
+                    <div class="demo-placeholder">
+                        <h3>Hero Component Demo</h3>
+                        <p>Select a mode to see the hero component</p>
+                    </div>
+                </div>
+            </div>
+            <div class="component-controls">
+                <button class="control-btn" onclick="loadHeroComponent('predatory')">Load Predatory Hero</button>
+                <button class="control-btn" onclick="loadHeroComponent('ethical')">Load Ethical Hero</button>
+                <button class="control-btn" onclick="clearDemo('hero-demo')">Clear</button>
+                <button class="control-btn" onclick="toggleCodePreview('hero')">Show Code</button>
+            </div>
+        </section>
+        
+        <!-- Form Components Section -->
+        <section id="form-section" class="component-section" style="display: none;">
+            <div class="component-header">
+                <span>Form Components</span>
+                <span>predatory/form.html & partials/ethical/calculator.html</span>
+            </div>
+            <div class="component-content">
+                <div id="form-demo" class="demo-area">
+                    <div class="demo-placeholder">
+                        <h3>Form Component Demo</h3>
+                        <p>Select a form type to see the component</p>
+                    </div>
+                </div>
+            </div>
+            <div class="component-controls">
+                <button class="control-btn" onclick="loadFormComponent('predatory')">Load Predatory Form</button>
+                <button class="control-btn" onclick="loadFormComponent('ethical')">Load Ethical Calculator</button>
+                <button class="control-btn" onclick="clearDemo('form-demo')">Clear</button>
+                <button class="control-btn" onclick="toggleCodePreview('form')">Show Code</button>
+            </div>
+        </section>
+        
+        <!-- Calculator Section -->
+        <section id="calculator-section" class="component-section" style="display: none;">
+            <div class="component-header">
+                <span>Calculator Components</span>
+                <span>ui_components/aprCalculator.js & aprTransparencyMeter.js</span>
+            </div>
+            <div class="component-content">
+                <div id="calculator-demo" class="demo-area">
+                    <div class="demo-placeholder">
+                        <h3>Calculator Demo</h3>
+                        <p>Interactive loan calculations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="component-controls">
+                <button class="control-btn" onclick="loadCalculator('apr')">APR Calculator</button>
+                <button class="control-btn" onclick="loadCalculator('transparency')">Transparency Meter</button>
+                <button class="control-btn" onclick="loadCalculator('risk')">Risk Assessment</button>
+                <button class="control-btn" onclick="clearDemo('calculator-demo')">Clear</button>
+            </div>
+        </section>
+        
+        <!-- UI Components Section -->
+        <section id="components-section" class="component-section" style="display: none;">
+            <div class="component-header">
+                <span>UI Components</span>
+                <span>Individual component testing</span>
+            </div>
+            <div class="component-content">
+                <div id="components-demo" class="demo-area">
+                    <div class="demo-placeholder">
+                        <h3>UI Component Testing</h3>
+                        <p>Test individual UI elements</p>
+                    </div>
+                </div>
+            </div>
+            <div class="component-controls">
+                <button class="control-btn" onclick="loadUIComponent('urgency')">Urgency Engine</button>
+                <button class="control-btn" onclick="loadUIComponent('trap')">Trap UI</button>
+                <button class="control-btn" onclick="loadUIComponent('safeguards')">Ethical Safeguards</button>
+                <button class="control-btn" onclick="loadUIComponent('alternatives')">Alternatives</button>
+                <button class="control-btn" onclick="clearDemo('components-demo')">Clear</button>
+            </div>
+        </section>
+        
+        <!-- Engine Testing Section -->
+        <section id="engine-section" class="component-section" style="display: none;">
+            <div class="component-header">
+                <span>Engine Testing</span>
+                <span>Core logic and behavioral engines</span>
+            </div>
+            <div class="component-content">
+                <div id="engine-demo" class="demo-area">
+                    <div class="demo-placeholder">
+                        <h3>Engine Testing</h3>
+                        <p>Test core behavioral and logic engines</p>
+                    </div>
+                </div>
+            </div>
+            <div class="component-controls">
+                <button class="control-btn" onclick="testEngine('autonomy')">Autonomy Theater</button>
+                <button class="control-btn" onclick="testEngine('behavioral')">Behavioral Psychology</button>
+                <button class="control-btn" onclick="testEngine('prompt')">Prompt Engine</button>
+                <button class="control-btn" onclick="testEngine('loan-core')">Loan Core</button>
+                <button class="control-btn" onclick="clearDemo('engine-demo')">Clear</button>
+            </div>
+        </section>
+        
+        <!-- Analytics Section -->
+        <section id="analytics-section" class="component-section" style="display: none;">
+            <div class="component-header">
+                <span>Analytics & Research</span>
+                <span>Data collection and research components</span>
+            </div>
+            <div class="component-content">
+                <div id="analytics-demo" class="demo-area">
+                    <div class="demo-placeholder">
+                        <h3>Analytics Dashboard</h3>
+                        <p>Monitor user interactions and research data</p>
+                    </div>
+                </div>
+            </div>
+            <div class="component-controls">
+                <button class="control-btn" onclick="loadAnalytics('research')">Research Analytics</button>
+                <button class="control-btn" onclick="loadAnalytics('interaction')">Interaction Tracking</button>
+                <button class="control-btn" onclick="loadAnalytics('performance')">Performance Metrics</button>
+                <button class="control-btn" onclick="clearDemo('analytics-demo')">Clear</button>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="assets/global.js"></script>
+    <script src="core/loan_core.js"></script>
+    
+    <!-- Scaffold-specific JavaScript -->
+    <script>
+        let currentSection = 'hero';
+        let codePreviewsVisible = {};
+        
+        // Section Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.component-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').style.display = 'block';
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            currentSection = sectionName;
+        }
+        
+        // Hero Component Loading
+        async function loadHeroComponent(mode) {
+            const demoArea = document.getElementById('hero-demo');
+            
+            try {
+                const response = await fetch(mode === 'predatory' ? 
+                    'predatory/hero.html' : 'partials/ethical/hero.html');
+                const content = await response.text();
+                
+                demoArea.innerHTML = content;
+                
+                // Apply mode-specific styling
+                demoArea.className = `demo-area mode-${mode}`;
+                
+            } catch (error) {
+                demoArea.innerHTML = `<div class="demo-placeholder error">
+                    <h3>Error Loading Component</h3>
+                    <p>${error.message}</p>
+                </div>`;
+            }
+        }
+        
+        // Form Component Loading
+        async function loadFormComponent(mode) {
+            const demoArea = document.getElementById('form-demo');
+            
+            try {
+                const response = await fetch(mode === 'predatory' ? 
+                    'predatory/form.html' : 'partials/ethical/calculator.html');
+                const content = await response.text();
+                
+                demoArea.innerHTML = content;
+                demoArea.className = `demo-area mode-${mode}`;
+                
+            } catch (error) {
+                demoArea.innerHTML = `<div class="demo-placeholder error">
+                    <h3>Error Loading Form</h3>
+                    <p>${error.message}</p>
+                </div>`;
+            }
+        }
+        
+        // Calculator Loading
+        function loadCalculator(type) {
+            const demoArea = document.getElementById('calculator-demo');
+            
+            // Create calculator interface based on type
+            let calculatorHTML = '';
+            
+            switch (type) {
+                case 'apr':
+                    calculatorHTML = `
+                        <div class="calculator-widget">
+                            <h3>APR Calculator</h3>
+                            <div class="calc-input">
+                                <label>Loan Amount: $<input type="number" id="loan-amount" value="500"></label>
+                            </div>
+                            <div class="calc-input">
+                                <label>Fee: $<input type="number" id="fee" value="75"></label>
+                            </div>
+                            <div class="calc-input">
+                                <label>Term: <input type="number" id="term" value="14"> days</label>
+                            </div>
+                            <div class="calc-result">
+                                <strong>APR: <span id="apr-result">391.07%</span></strong>
+                            </div>
+                            <button onclick="calculateAPR()">Calculate</button>
+                        </div>
+                    `;
+                    break;
+                case 'transparency':
+                    calculatorHTML = `
+                        <div class="transparency-meter">
+                            <h3>Transparency Meter</h3>
+                            <div class="meter-bar">
+                                <div class="meter-fill" style="width: 25%; background: #dc3545;"></div>
+                            </div>
+                            <p>Transparency Score: <strong>25%</strong></p>
+                            <ul>
+                                <li>❌ Hidden fees disclosed</li>
+                                <li>❌ Clear APR presentation</li>
+                                <li>❌ Alternative options shown</li>
+                                <li>✅ Terms and conditions available</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'risk':
+                    calculatorHTML = `
+                        <div class="risk-assessment">
+                            <h3>Risk Assessment</h3>
+                            <div class="risk-level high">
+                                <span class="risk-indicator">⚠️ HIGH RISK</span>
+                            </div>
+                            <div class="risk-factors">
+                                <h4>Risk Factors:</h4>
+                                <ul>
+                                    <li>Short repayment term</li>
+                                    <li>High fees relative to principal</li>
+                                    <li>No credit building opportunity</li>
+                                    <li>Potential for debt cycle</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            demoArea.innerHTML = calculatorHTML;
+        }
+        
+        // UI Component Loading
+        function loadUIComponent(type) {
+            const demoArea = document.getElementById('components-demo');
+            
+            let componentHTML = '';
+            
+            switch (type) {
+                case 'urgency':
+                    componentHTML = `
+                        <div class="urgency-demo">
+                            <div class="urgency-banner blink">
+                                🔥 LIMITED TIME OFFER 🔥
+                            </div>
+                            <div class="countdown-timer">
+                                Time remaining: <span class="countdown">04:59</span>
+                            </div>
+                            <div class="fake-scarcity">
+                                Only 3 loans available at this rate!
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'trap':
+                    componentHTML = `
+                        <div class="trap-ui-demo">
+                            <div class="pre-checked-options">
+                                <label>
+                                    <input type="checkbox" checked disabled>
+                                    Express Processing Fee ($25)
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    Premium Service ($15)
+                                </label>
+                            </div>
+                            <button class="deceptive-cancel" style="color: #ccc; background: #f8f9fa;">
+                                Maybe Later
+                            </button>
+                            <button class="prominent-accept" style="background: #28a745; color: white; font-size: 18px;">
+                                ACCEPT AND CONTINUE
+                            </button>
+                        </div>
+                    `;
+                    break;
+                case 'safeguards':
+                    componentHTML = `
+                        <div class="safeguards-demo">
+                            <div class="cooling-off">
+                                <h4>🛡️ Cooling-off Period</h4>
+                                <p>You have 24 hours to reconsider this decision.</p>
+                            </div>
+                            <div class="alternative-suggestion">
+                                <h4>💡 Consider These Alternatives</h4>
+                                <ul>
+                                    <li>Credit union emergency loan</li>
+                                    <li>Payment plan with creditor</li>
+                                    <li>Local assistance programs</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'alternatives':
+                    componentHTML = `
+                        <div class="alternatives-demo">
+                            <h4>Better Options Available</h4>
+                            <div class="alternative-grid">
+                                <div class="alternative-card">
+                                    <h5>Credit Union Loan</h5>
+                                    <p>APR: 18% | Term: 6 months</p>
+                                    <button>Learn More</button>
+                                </div>
+                                <div class="alternative-card">
+                                    <h5>Payment Plan</h5>
+                                    <p>0% interest | Flexible terms</p>
+                                    <button>Contact Creditor</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            demoArea.innerHTML = componentHTML;
+        }
+        
+        // Engine Testing
+        function testEngine(type) {
+            const demoArea = document.getElementById('engine-demo');
+            
+            switch (type) {
+                case 'autonomy':
+                    demoArea.innerHTML = `
+                        <div class="engine-test">
+                            <h3>Autonomy Theater Engine</h3>
+                            <p>Testing illusion of choice mechanisms...</p>
+                            <div class="fake-choices">
+                                <button>Option A (leads to same outcome)</button>
+                                <button>Option B (leads to same outcome)</button>
+                                <button>Option C (leads to same outcome)</button>
+                            </div>
+                            <p><small>All options lead to the same predatory loan terms</small></p>
+                        </div>
+                    `;
+                    break;
+                case 'behavioral':
+                    demoArea.innerHTML = `
+                        <div class="engine-test">
+                            <h3>Behavioral Psychology Engine</h3>
+                            <p>Testing psychological triggers...</p>
+                            <div class="trigger-demo">
+                                <div>✅ Social Proof: "1,247 people approved today"</div>
+                                <div>✅ Scarcity: "Limited slots available"</div>
+                                <div>✅ Authority: "Trusted by financial experts"</div>
+                                <div>✅ Reciprocity: "Special rate just for you"</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'prompt':
+                    demoArea.innerHTML = `
+                        <div class="engine-test">
+                            <h3>Prompt Engine</h3>
+                            <p>Testing guided conversation flow...</p>
+                            <div class="prompt-sequence">
+                                <div class="prompt">Q: How much do you need?</div>
+                                <div class="prompt">Q: When do you need it?</div>
+                                <div class="prompt">Q: What's this for? (leads to emotional manipulation)</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'loan-core':
+                    demoArea.innerHTML = `
+                        <div class="engine-test">
+                            <h3>Loan Core Engine</h3>
+                            <p>Testing loan calculation logic...</p>
+                            <div class="core-demo">
+                                <div>Principal: $500</div>
+                                <div>Fee: $75 (15%)</div>
+                                <div>Term: 14 days</div>
+                                <div><strong>APR: 391.07%</strong></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+        
+        // Analytics Loading
+        function loadAnalytics(type) {
+            const demoArea = document.getElementById('analytics-demo');
+            
+            switch (type) {
+                case 'research':
+                    demoArea.innerHTML = `
+                        <div class="analytics-dashboard">
+                            <h3>Research Analytics</h3>
+                            <div class="metric-grid">
+                                <div class="metric">Users in Predatory Mode: 45</div>
+                                <div class="metric">Users in Ethical Mode: 23</div>
+                                <div class="metric">Average Session Time: 4:32</div>
+                                <div class="metric">Form Completion Rate: 73%</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'interaction':
+                    demoArea.innerHTML = `
+                        <div class="interaction-tracking">
+                            <h3>Interaction Tracking</h3>
+                            <div class="event-log">
+                                <div>14:32:15 - Page loaded</div>
+                                <div>14:32:18 - Mode switched to predatory</div>
+                                <div>14:32:45 - Form field focused</div>
+                                <div>14:33:12 - Urgency timer viewed</div>
+                                <div>14:33:28 - Submit button clicked</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'performance':
+                    demoArea.innerHTML = `
+                        <div class="performance-metrics">
+                            <h3>Performance Metrics</h3>
+                            <div class="perf-grid">
+                                <div>Page Load: 1.2s</div>
+                                <div>First Paint: 0.8s</div>
+                                <div>JavaScript Load: 0.3s</div>
+                                <div>Components Ready: 1.5s</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+        
+        // Utility Functions
+        function clearDemo(demoId) {
+            const demoArea = document.getElementById(demoId);
+            demoArea.innerHTML = `
+                <div class="demo-placeholder">
+                    <h3>Demo Cleared</h3>
+                    <p>Select a component to test</p>
+                </div>
+            `;
+            demoArea.className = 'demo-area';
+        }
+        
+        function toggleCodePreview(section) {
+            // This would show/hide code preview for the component
+            console.log(`Toggle code preview for ${section}`);
+        }
+        
+        function calculateAPR() {
+            const amount = parseFloat(document.getElementById('loan-amount').value);
+            const fee = parseFloat(document.getElementById('fee').value);
+            const term = parseFloat(document.getElementById('term').value);
+            
+            const apr = ((fee / amount) * (365 / term) * 100).toFixed(2);
+            document.getElementById('apr-result').textContent = apr + '%';
+        }
+        
+        // Initialize
+        console.log('🔧 Scaffold mode initialized');
+        console.log('Use the navigation to test different components');
+    </script>
+</body>
+</html>

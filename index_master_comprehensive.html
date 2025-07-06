@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Copilot: Master comprehensive integration preserving all 123 files -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lotus Payday Loan Simulator - Complete Educational Platform</title>
+  
+  <!-- Meta tags for GitHub Pages -->
+  <meta name="description" content="Educational simulation platform comparing predatory vs ethical payday lending with complete autonomy theater integration, research analytics, and comprehensive behavioral psychology">
+  <meta name="keywords" content="payday loans, ethical lending, dark patterns, behavioral psychology, autonomy theater, financial education">
+  <meta name="author" content="Lotus Research Project">
+  <meta name="theme-color" content="#667eea">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="favicon.ico">
+  
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="assets/global.css">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Mode-specific stylesheets (dynamically controlled) -->
+  <link rel="stylesheet" href="predatory/styles.css" id="pred-styles">
+  <link rel="stylesheet" href="ethical/styles.css" id="eth-styles" disabled>
+  
+  <!-- External Dependencies -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+</head>
+<body>
+  <!-- Universal Mode Switch Controls -->
+  <div class="mode-controls">
+    <div class="control-group">
+      <label class="mode-switch">
+        <input type="checkbox" id="mode-switch">
+        <span class="slider"></span>
+        <span class="mode-label">Ethical Redesign</span>
+      </label>
+      
+      <label class="interface-switch">
+        <input type="checkbox" id="interface-switch">
+        <span class="slider"></span>
+        <span class="interface-label">UI Experience</span>
+      </label>
+    </div>
+    
+    <div class="research-controls">
+      <label class="research-switch">
+        <input type="checkbox" id="research-mode-toggle">
+        <span class="slider"></span>
+        <span class="research-label">Research Mode</span>
+      </label>
+      
+      <label class="education-switch">
+        <input type="checkbox" id="education-mode-toggle">
+        <span class="slider"></span>
+        <span class="education-label">Educational Overlay</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Research Dashboard (Hidden by default) -->
+  <div id="research-dashboard" class="hidden research-panel">
+    <h3>Research Analytics Dashboard</h3>
+    <div class="research-metrics">
+      <div class="metric">
+        <label>Session ID:</label>
+        <span id="session-id">Loading...</span>
+      </div>
+      <div class="metric">
+        <label>Dark Patterns Detected:</label>
+        <span id="dark-patterns-count">0</span>
+      </div>
+      <div class="metric">
+        <label>Autonomy Score:</label>
+        <span id="autonomy-score">100%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Educational Progress Tracker -->
+  <div id="education-progress" class="hidden education-panel">
+    <h3>Educational Progress</h3>
+    <div class="progress-metrics">
+      <div class="progress-item">
+        <label>Financial Literacy:</label>
+        <div class="progress-bar">
+          <div id="financial-literacy-progress" class="progress-fill"></div>
+        </div>
+      </div>
+      <div class="progress-item">
+        <label>Dark Pattern Awareness:</label>
+        <div class="progress-bar">
+          <div id="dark-pattern-awareness-progress" class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Simulation Interface (Complete) -->
+  <div id="simulation-interface" class="interface-container active">
+    <div class="bg-gray-900 text-gray-200 font-mono antialiased min-h-screen">
+      <div id="container" class="max-w-5xl mx-auto p-4 md:p-8">
+        <header role="banner" class="text-center mb-10">
+          <h1 class="text-4xl font-bold text-purple-400">Lotus + Autonomy Theater</h1>
+          <p class="text-gray-400 mt-2 text-lg">An Interactive Simulation of Choice, Consent, and Coercion</p>
+          <div class="header-controls mt-4">
+            <button id="toggle-research" class="btn-secondary">Research Mode</button>
+            <button id="toggle-education" class="btn-secondary">Educational Mode</button>
+            <button id="toggle-compliance" class="btn-secondary">Compliance Mode</button>
+          </div>
+        </header>
+
+        <!-- Urgency Banner for Exploitative Mode -->
+        <div id="urgency-banner" class="hidden bg-red-800 border-2 border-red-500 text-center p-3 rounded-lg mb-6 shadow-lg animate-pulse">
+          <p class="text-lg font-bold text-yellow-300">
+            🔥 INSTANT APPROVAL! <span id="timer">05:00</span> LEFT TO LOCK IN YOUR SPECIAL RATE! 🔥
+          </p>
+        </div>
+
+        <main role="main">
+          <!-- Simulation Controls -->
+          <section id="controls" aria-labelledby="controls-heading" class="mb-8 p-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
+            <h2 id="controls-heading" class="text-2xl font-semibold text-center text-purple-300 mb-6">Simulation Setup</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
+              <div class="flex flex-col">
+                <label for="state-input" class="mb-2 text-sm font-medium text-gray-400">State (e.g., CO, TX)</label>
+                <input type="text" id="state-input" placeholder="State Abbr." class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
+              </div>
+              <div class="flex flex-col">
+                <label for="amount-input" class="mb-2 text-sm font-medium text-gray-400">Loan Amount ($)</label>
+                <input type="number" id="amount-input" placeholder="e.g., 500" class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
+              </div>
+              <div class="flex flex-col">
+                <label for="term-input" class="mb-2 text-sm font-medium text-gray-400">Loan Term (days)</label>
+                <input type="number" id="term-input" placeholder="e.g., 14" class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
+              </div>
+              <div class="flex flex-col">
+                <label for="scenario-select" class="mb-2 text-sm font-medium text-gray-400">Empathy Scenario</label>
+                <select id="scenario-select" class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
+                  <option value="">-- Select a Scenario --</option>
+                  <option value="singleparent">Single Parent, Car Repair</option>
+                  <option value="tempworker">Gig Worker, Medical Bill</option>
+                  <option value="student">Student Emergency</option>
+                  <option value="senior">Senior Fixed Income</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Advanced Configuration -->
+            <div class="advanced-config mt-6 p-4 bg-gray-700 rounded-lg">
+              <h3 class="text-lg font-semibold mb-4">Advanced Configuration</h3>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="enable-research-mode">
+                  <span>Research Mode</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="enable-educational-tracking">
+                  <span>Educational Tracking</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="enable-dark-pattern-detection">
+                  <span>Dark Pattern Detection</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="enable-autonomy-theater">
+                  <span>Autonomy Theater</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="mode-selection mt-8 text-center">
+              <p class="mb-4 font-semibold text-lg">Choose a simulation mode:</p>
+              <div class="flex justify-center gap-6 flex-wrap">
+                <button id="start-regulated" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-400">
+                  Ethical & Regulated Simulation
+                </button>
+                <button id="start-exploit" class="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-400">
+                  Exploitative Simulation
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Simulation Output Container -->
+          <section id="simContainer" aria-labelledby="simulation-heading" class="mb-8">
+            <h2 id="simulation-heading" class="sr-only">Simulation Output</h2>
+            <pre id="output" class="bg-black p-6 rounded-t-lg min-h-[350px] max-h-[60vh] overflow-y-auto whitespace-pre-wrap break-words font-mono text-sm border-2 border-gray-700 border-b-0">Welcome! Please configure your simulation and select a mode to begin.</pre>
+            <div id="input-area" style="display: none;" class="flex">
+              <input type="text" id="user-input" placeholder="Enter your response here..." class="flex-grow bg-gray-800 border-2 border-gray-700 p-3 rounded-bl-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <button id="submit-input" class="bg-purple-600 hover:bg-purple-500 text-white font-bold p-3 rounded-br-lg transition">Submit</button>
+            </div>
+          </section>
+
+          <!-- Comprehensive Reflection Pane -->
+          <section id="reflectionPane" x-data="{ tab: 'behavior' }" aria-labelledby="reflection-heading" class="hidden mt-10 p-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
+            <h2 id="reflection-heading" class="text-2xl font-semibold text-center text-purple-300 mb-6">Comprehensive Analysis & Reflection</h2>
+
+            <!-- Tab Navigation -->
+            <div class="border-b border-gray-600">
+              <nav class="-mb-px flex justify-center space-x-8" aria-label="Tabs">
+                <button @click="tab = 'behavior'" :class="{ 'border-purple-400 text-purple-300': tab === 'behavior', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'behavior' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base focus:outline-none transition-colors">
+                  Behavioral Analysis
+                </button>
+                <button @click="tab = 'ethics'" :class="{ 'border-purple-400 text-purple-300': tab === 'ethics', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'ethics' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base focus:outline-none transition-colors">
+                  Ethical Report
+                </button>
+                <button @click="tab = 'autonomy'" :class="{ 'border-purple-400 text-purple-300': tab === 'autonomy', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'autonomy' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base focus:outline-none transition-colors">
+                  Autonomy Theater
+                </button>
+                <button @click="tab = 'research'" :class="{ 'border-purple-400 text-purple-300': tab === 'research', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'research' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base focus:outline-none transition-colors">
+                  Research Data
+                </button>
+              </nav>
+            </div>
+
+            <div id="reflection-content" class="mt-6 space-y-6">
+              <!-- Consent Score -->
+              <div class="p-4 bg-gray-700 rounded-lg">
+                <h3 class="font-bold text-lg">Informed Consent Score:</h3>
+                <div class="w-full bg-gray-600 rounded-full h-5 mt-2">
+                  <div id="consent-bar" class="bg-green-500 h-5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                </div>
+                <div class="mt-2 text-sm text-gray-400">
+                  Score: <span id="consent-score-text">0%</span> | 
+                  Autonomy: <span id="autonomy-score-text">100%</span> |
+                  Dark Patterns: <span id="dark-patterns-detected">0</span>
+                </div>
+              </div>
+
+              <!-- Tab Content Panels -->
+              <div x-show="tab === 'behavior'" id="behaviorSummary" class="p-5 bg-gray-700 rounded-lg">
+                <h3 class="font-bold text-lg mb-3">Behavioral Psychology Analysis</h3>
+                <div id="behavior-content">
+                  <p>Awaiting session data...</p>
+                </div>
+              </div>
+              
+              <div x-show="tab === 'ethics'" id="autonomyScore" class="p-5 bg-gray-700 rounded-lg">
+                <h3 class="font-bold text-lg mb-3">Ethical Evaluation</h3>
+                <div id="ethics-content">
+                  <p>Calculating ethical impact...</p>
+                </div>
+              </div>
+              
+              <div x-show="tab === 'autonomy'" id="autonomyTheater" class="p-5 bg-gray-700 rounded-lg">
+                <h3 class="font-bold text-lg mb-3">Autonomy Theater Report</h3>
+                <div id="autonomy-content">
+                  <p>Analyzing choice architecture...</p>
+                </div>
+              </div>
+              
+              <div x-show="tab === 'research'" id="researchData" class="p-5 bg-gray-700 rounded-lg">
+                <h3 class="font-bold text-lg mb-3">Research Analytics</h3>
+                <div id="research-content">
+                  <p>Compiling research data...</p>
+                </div>
+              </div>
+              
+              <div id="ghostMessage" class="p-4 bg-gray-900 border border-dashed border-red-500 rounded-lg">
+                <h3 class="font-bold text-lg text-red-400">Ghost's Commentary:</h3>
+                <div id="ghost-content" class="italic mt-1">
+                  <p>Waiting for simulation to begin...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 text-center space-x-4">
+              <button id="emailReportBtn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">
+                Generate Follow-up Email
+              </button>
+              <button id="downloadLogBtn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">
+                Download Session Log (JSON)
+              </button>
+              <button id="replayBtn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">
+                Replay Simulation
+              </button>
+              <button id="exportResearchBtn" class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">
+                Export Research Data
+              </button>
+            </div>
+          </section>
+        </main>
+
+        <footer role="contentinfo" class="text-center mt-16 text-gray-500 text-sm">
+          <p>This was a simulation. These were not real choices.</p>
+          <p class="mt-1">Lotus + Autonomy Theater Capstone Project</p>
+          <p class="mt-1">Educational tool for understanding predatory lending practices</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- UI Interface with Complete Content -->
+  <div id="ui-interface" class="interface-container">
+    <!-- Predatory UI Section -->
+    <section id="predatory-ui" class="ui-section active">
+      <!-- Copilot: include predatory/hero.html here -->
+      <div id="predatory-hero-content" class="partial-content"></div>
+      
+      <!-- Copilot: include predatory/slider.html here -->
+      <div id="predatory-slider-content" class="partial-content"></div>
+      
+      <!-- Copilot: include predatory/form.html here -->
+      <div id="predatory-form-content" class="partial-content"></div>
+      
+      <!-- Copilot: include predatory/faq.html here -->
+      <div id="predatory-faq-content" class="partial-content"></div>
+      
+      <!-- Copilot: include predatory/trust-signals.html here -->
+      <div id="predatory-trust-signals-content" class="partial-content"></div>
+      
+      <!-- Copilot: include predatory/terms.html here -->
+      <div id="predatory-terms-content" class="partial-content"></div>
+    </section>
+
+    <!-- Ethical UI Section -->
+    <section id="ethical-ui" class="ui-section" style="display:none;">
+      <!-- Copilot: include ethical/hero.html here -->
+      <div id="ethical-hero-content" class="partial-content"></div>
+      
+      <!-- Copilot: include ethical/form-step1.html here -->
+      <div id="ethical-form-step1-content" class="partial-content"></div>
+      
+      <!-- Copilot: include ethical/form-step2.html here -->
+      <div id="ethical-form-step2-content" class="partial-content"></div>
+      
+      <!-- Copilot: include ethical/apr-display.html here -->
+      <div id="ethical-apr-display-content" class="partial-content"></div>
+      
+      <!-- Copilot: include ethical/education.html here -->
+      <div id="ethical-education-content" class="partial-content"></div>
+      
+      <!-- Include ethical partials -->
+      <div id="ethical-alternatives-content" class="partial-content"></div>
+      <div id="ethical-calculator-content" class="partial-content"></div>
+      <div id="ethical-footer-content" class="partial-content"></div>
+    </section>
+  </div>
+
+  <!-- Load All JavaScript Modules -->
+  <script src="assets/global.js"></script>
+  <script src="predatory/countdown.js"></script>
+  <script type="module" src="app.js"></script>
+  
+  <!-- Master Integration Script - Preserving All 123 Files -->
+  <script>
+    // Copilot: Master comprehensive integration script preserving all functionality
+    
+    // Initialize global application state
+    window.LotusApp = window.LotusApp || {
+      version: '2.0.0',
+      totalFiles: 123,
+      currentInterface: 'simulation',
+      currentMode: 'predatory',
+      researchMode: false,
+      educationalMode: false,
+      analytics: {
+        sessionStart: Date.now(),
+        interactions: 0,
+        darkPatternsDetected: 0,
+        autonomyViolations: 0
+      },
+      modules: {
+        darkPatternEngine: null,
+        autonomyTheater: null,
+        researchAnalytics: null,
+        behavioralPsychology: null,
+        educationalScaffolding: null
+      }
+    };
+    
+    // Content sections mapping all partials
+    const contentSections = {
+      predatory: [
+        { id: 'predatory-hero-content', file: 'predatory/hero.html' },
+        { id: 'predatory-slider-content', file: 'predatory/slider.html' },
+        { id: 'predatory-form-content', file: 'predatory/form.html' },
+        { id: 'predatory-faq-content', file: 'predatory/faq.html' },
+        { id: 'predatory-trust-signals-content', file: 'predatory/trust-signals.html' },
+        { id: 'predatory-terms-content', file: 'predatory/terms.html' }
+      ],
+      ethical: [
+        { id: 'ethical-hero-content', file: 'ethical/hero.html' },
+        { id: 'ethical-form-step1-content', file: 'ethical/form-step1.html' },
+        { id: 'ethical-form-step2-content', file: 'ethical/form-step2.html' },
+        { id: 'ethical-apr-display-content', file: 'ethical/apr-display.html' },
+        { id: 'ethical-education-content', file: 'ethical/education.html' },
+        { id: 'ethical-alternatives-content', file: 'partials/ethical/alternatives.html' },
+        { id: 'ethical-calculator-content', file: 'partials/ethical/calculator.html' },
+        { id: 'ethical-footer-content', file: 'partials/ethical/footer.html' }
+      ]
+    };
+    
+    // Dynamic content loading with error handling
+    async function loadContent(sections) {
+      const promises = sections.map(async (section) => {
+        try {
+          const response = await fetch(section.file);
+          if (response.ok) {
+            const html = await response.text();
+            const container = document.getElementById(section.id);
+            if (container) {
+              container.innerHTML = html;
+              
+              // Execute inline scripts
+              const scripts = container.querySelectorAll('script');
+              scripts.forEach(script => {
+                try {
+                  const newScript = document.createElement('script');
+                  if (script.src) {
+                    newScript.src = script.src;
+                  } else {
+                    newScript.textContent = script.textContent;
+                  }
+                  document.head.appendChild(newScript);
+                } catch (scriptError) {
+                  console.warn(`Script execution error in ${section.file}:`, scriptError);
+                }
+              });
+              
+              // Mark as loaded
+              container.classList.add('loaded');
+              return true;
+            }
+          } else {
+            console.warn(`Failed to load ${section.file}: ${response.status}`);
+            return false;
+          }
+        } catch (error) {
+          console.error(`Error loading ${section.file}:`, error);
+          // Create fallback content
+          const container = document.getElementById(section.id);
+          if (container) {
+            container.innerHTML = `<div class="error-placeholder">Content not available: ${section.file}</div>`;
+          }
+          return false;
+        }
+      });
+      
+      const results = await Promise.all(promises);
+      const successCount = results.filter(r => r).length;
+      console.log(`Loaded ${successCount}/${results.length} content sections`);
+      return results;
+    }
+    
+    // Interface switching with analytics
+    function switchInterface(newInterface) {
+      const simInterface = document.getElementById('simulation-interface');
+      const uiInterface = document.getElementById('ui-interface');
+      
+      // Track interface switch
+      LotusApp.analytics.interactions++;
+      
+      if (newInterface === 'simulation') {
+        simInterface.classList.add('active');
+        uiInterface.classList.remove('active');
+        LotusApp.currentInterface = 'simulation';
+      } else {
+        simInterface.classList.remove('active');
+        uiInterface.classList.add('active');
+        LotusApp.currentInterface = 'ui';
+        
+        // Load UI partials if not already loaded
+        if (!uiInterface.dataset.loaded) {
+          loadAllPartials().then(() => {
+            uiInterface.dataset.loaded = 'true';
+          });
+        }
+      }
+      
+      // Update URL without page reload
+      const url = new URL(window.location);
+      url.searchParams.set('interface', newInterface);
+      window.history.pushState({}, '', url);
+    }
+    
+    // Mode switching with comprehensive state management
+    function switchMode(newMode) {
+      const predatoryUI = document.getElementById('predatory-ui');
+      const ethicalUI = document.getElementById('ethical-ui');
+      const predStyles = document.getElementById('pred-styles');
+      const ethStyles = document.getElementById('eth-styles');
+      
+      // Track mode switch
+      LotusApp.analytics.interactions++;
+      
+      if (newMode === 'predatory') {
+        predatoryUI.style.display = 'block';
+        ethicalUI.style.display = 'none';
+        predStyles.disabled = false;
+        ethStyles.disabled = true;
+        LotusApp.currentMode = 'predatory';
+        document.body.className = 'mode-predatory';
+      } else {
+        predatoryUI.style.display = 'none';
+        ethicalUI.style.display = 'block';
+        predStyles.disabled = true;
+        ethStyles.disabled = false;
+        LotusApp.currentMode = 'ethical';
+        document.body.className = 'mode-ethical';
+      }
+      
+      // Update simulation state if active
+      if (window.LotusApp?.simulation?.active) {
+        window.LotusApp.simulation.mode = newMode;
+      }
+      
+      // Update URL
+      const url = new URL(window.location);
+      url.searchParams.set('mode', newMode);
+      window.history.pushState({}, '', url);
+    }
+    
+    // Research mode toggle
+    function toggleResearchMode(enabled) {
+      LotusApp.researchMode = enabled;
+      const dashboard = document.getElementById('research-dashboard');
+      
+      if (enabled) {
+        dashboard?.classList.remove('hidden');
+        initializeResearchAnalytics();
+      } else {
+        dashboard?.classList.add('hidden');
+      }
+    }
+    
+    // Educational mode toggle
+    function toggleEducationalMode(enabled) {
+      LotusApp.educationalMode = enabled;
+      const progress = document.getElementById('education-progress');
+      
+      if (enabled) {
+        progress?.classList.remove('hidden');
+        initializeEducationalTracking();
+      } else {
+        progress?.classList.add('hidden');
+      }
+    }
+    
+    // Initialize research analytics
+    function initializeResearchAnalytics() {
+      // Update session ID display
+      const sessionId = 'LOTUS_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      document.getElementById('session-id').textContent = sessionId;
+      
+      // Initialize counters
+      document.getElementById('dark-patterns-count').textContent = LotusApp.analytics.darkPatternsDetected;
+      document.getElementById('autonomy-score').textContent = '100%';
+    }
+    
+    // Initialize educational tracking
+    function initializeEducationalTracking() {
+      // Set initial progress
+      updateEducationalProgress('financial-literacy-progress', 0);
+      updateEducationalProgress('dark-pattern-awareness-progress', 0);
+    }
+    
+    // Update educational progress
+    function updateEducationalProgress(elementId, percentage) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.style.width = `${percentage}%`;
+      }
+    }
+    
+    // Load all partials
+    async function loadAllPartials() {
+      try {
+        const results = await Promise.all([
+          loadContent(contentSections.predatory),
+          loadContent(contentSections.ethical)
+        ]);
+        
+        console.log('All partials loaded:', results);
+        return results;
+      } catch (error) {
+        console.error('Error loading partials:', error);
+        return false;
+      }
+    }
+    
+    // Initialize URL state
+    function initializeFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      const mode = urlParams.get('mode') || 'predatory';
+      const interface = urlParams.get('interface') || 'simulation';
+      const research = urlParams.get('research') === 'true';
+      const education = urlParams.get('education') === 'true';
+      
+      // Set initial states
+      switchMode(mode);
+      switchInterface(interface);
+      
+      if (research) {
+        toggleResearchMode(true);
+        document.getElementById('research-mode-toggle').checked = true;
+      }
+      
+      if (education) {
+        toggleEducationalMode(true);
+        document.getElementById('education-mode-toggle').checked = true;
+      }
+      
+      // Update toggle switches
+      document.getElementById('mode-switch').checked = (mode === 'ethical');
+      document.getElementById('interface-switch').checked = (interface === 'ui');
+    }
+    
+    // Event listeners setup
+    function setupEventListeners() {
+      // Interface switching
+      const interfaceSwitch = document.getElementById('interface-switch');
+      interfaceSwitch?.addEventListener('change', function() {
+        switchInterface(this.checked ? 'ui' : 'simulation');
+      });
+      
+      // Mode switching
+      const modeSwitch = document.getElementById('mode-switch');
+      modeSwitch?.addEventListener('change', function() {
+        switchMode(this.checked ? 'ethical' : 'predatory');
+      });
+      
+      // Research mode toggle
+      const researchToggle = document.getElementById('research-mode-toggle');
+      researchToggle?.addEventListener('change', function() {
+        toggleResearchMode(this.checked);
+      });
+      
+      // Educational mode toggle
+      const educationToggle = document.getElementById('education-mode-toggle');
+      educationToggle?.addEventListener('change', function() {
+        toggleEducationalMode(this.checked);
+      });
+      
+      // Header control buttons
+      document.getElementById('toggle-research')?.addEventListener('click', function() {
+        const toggle = document.getElementById('research-mode-toggle');
+        toggle.checked = !toggle.checked;
+        toggleResearchMode(toggle.checked);
+      });
+      
+      document.getElementById('toggle-education')?.addEventListener('click', function() {
+        const toggle = document.getElementById('education-mode-toggle');
+        toggle.checked = !toggle.checked;
+        toggleEducationalMode(toggle.checked);
+      });
+      
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+          switch(e.key) {
+            case 'm':
+              e.preventDefault();
+              modeSwitch.click();
+              break;
+            case 'i':
+              e.preventDefault();
+              interfaceSwitch.click();
+              break;
+            case 'r':
+              e.preventDefault();
+              researchToggle.click();
+              break;
+            case 'e':
+              e.preventDefault();
+              educationToggle.click();
+              break;
+          }
+        }
+      });
+    }
+    
+    // Initialize application
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Lotus Comprehensive Platform Initializing...');
+      console.log(`Total files integrated: ${LotusApp.totalFiles}`);
+      
+      // Setup all event listeners
+      setupEventListeners();
+      
+      // Initialize from URL parameters
+      initializeFromURL();
+      
+      // Mark application as ready
+      document.body.classList.add('app-ready');
+      
+      console.log('Lotus Platform Ready');
+    });
+    
+    // Error handling for uncaught exceptions
+    window.addEventListener('error', function(e) {
+      console.error('Application error:', e.error);
+      // Continue execution despite errors
+    });
+    
+    // Service Worker support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .catch(error => console.log('SW registration failed'));
+      });
+    }
+  </script>
+  
+  <!-- Comprehensive CSS for all modes and interfaces -->
+  <style>
+    /* Core application styles */
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --danger-color: #dc3545;
+      --success-color: #28a745;
+      --warning-color: #ffc107;
+      --info-color: #17a2b8;
+      --dark-color: #343a40;
+      --light-color: #f8f9fa;
+    }
+    
+    /* Mode-specific styling */
+    .mode-predatory {
+      --accent-color: var(--danger-color);
+      --text-emphasis: #ff6b6b;
+    }
+    
+    .mode-ethical {
+      --accent-color: var(--success-color);
+      --text-emphasis: #51cf66;
+    }
+    
+    /* Mode controls styling */
+    .mode-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 200px;
+    }
+    
+    .control-group,
+    .research-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .mode-switch, .interface-switch, .research-switch, .education-switch {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    /* Toggle switch styling */
+    .mode-switch input[type="checkbox"],
+    .interface-switch input[type="checkbox"],
+    .research-switch input[type="checkbox"],
+    .education-switch input[type="checkbox"] {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      appearance: none;
+      background: #ccc;
+      border-radius: 10px;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    
+    .mode-switch input[type="checkbox"]:checked,
+    .interface-switch input[type="checkbox"]:checked,
+    .research-switch input[type="checkbox"]:checked,
+    .education-switch input[type="checkbox"]:checked {
+      background: var(--primary-color);
+    }
+    
+    .mode-switch input[type="checkbox"]::before,
+    .interface-switch input[type="checkbox"]::before,
+    .research-switch input[type="checkbox"]::before,
+    .education-switch input[type="checkbox"]::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    
+    .mode-switch input[type="checkbox"]:checked::before,
+    .interface-switch input[type="checkbox"]:checked::before,
+    .research-switch input[type="checkbox"]:checked::before,
+    .education-switch input[type="checkbox"]:checked::before {
+      transform: translateX(20px);
+    }
+    
+    /* Interface containers */
+    .interface-container {
+      display: none;
+      min-height: 100vh;
+    }
+    
+    .interface-container.active {
+      display: block;
+    }
+    
+    .ui-section {
+      width: 100%;
+    }
+    
+    /* Research and educational panels */
+    .research-panel, .education-panel {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 1rem;
+      border-radius: 10px;
+      min-width: 250px;
+      z-index: 999;
+    }
+    
+    .research-panel h3, .education-panel h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.1rem;
+      color: var(--primary-color);
+    }
+    
+    .research-metrics, .progress-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .metric, .progress-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    
+    .progress-bar {
+      width: 100px;
+      height: 10px;
+      background: #333;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--success-color);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    /* Partial content styling */
+    .partial-content {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .partial-content.loaded {
+      opacity: 1;
+    }
+    
+    .error-placeholder {
+      padding: 1rem;
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      border-radius: 0.25rem;
+      margin: 0.5rem 0;
+    }
+    
+    /* Advanced configuration */
+    .advanced-config {
+      border-top: 1px solid #444;
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #ccc;
+      cursor: pointer;
+    }
+    
+    .checkbox-label input[type="checkbox"] {
+      margin: 0;
+    }
+    
+    /* Header controls */
+    .header-controls {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background-color 0.15s ease-in-out;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .mode-controls {
+        top: 10px;
+        right: 10px;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        min-width: 180px;
+      }
+      
+      .research-panel, .education-panel {
+        top: 10px;
+        left: 10px;
+        font-size: 0.8rem;
+        min-width: 200px;
+      }
+      
+      .header-controls {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    
+    /* Animation for app readiness */
+    body:not(.app-ready) {
+      opacity: 0;
+    }
+    
+    body.app-ready {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    
+    /* Hidden utility class */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</body>
+</html>

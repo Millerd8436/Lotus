@@ -1,0 +1,158 @@
+<!-- Copilot: do not overwrite -->
+<div class="ethical-form-container container hidden" id="ethical-form-step2">
+  <div class="form-header">
+    <h2>Step 2: Loan Details & Full Cost Disclosure</h2>
+    <p class="progress-indicator">Step 2 of 3 - Complete transparency, no surprises</p>
+  </div>
+  
+  <div class="loan-details-form">
+    <div class="amount-selection">
+      <label for="loan-amount">Loan Amount</label>
+      <input type="range" id="loan-amount" min="100" max="1000" step="50" value="500">
+      <div class="amount-display">
+        <span>$</span><span id="amount-value">500</span>
+      </div>
+    </div>
+    
+    <div class="term-selection">
+      <label for="loan-term">Repayment Period</label>
+      <select id="loan-term">
+        <option value="14">14 days</option>
+        <option value="30">30 days</option>
+        <option value="60">60 days</option>
+      </select>
+    </div>
+    
+    <!-- Real-time APR Display -->
+    <div class="apr-display-section">
+      <h3>Complete Cost Breakdown</h3>
+      <div class="cost-table">
+        <div class="cost-row">
+          <span>Loan Amount:</span>
+          <span id="display-principal">$500</span>
+        </div>
+        <div class="cost-row">
+          <span>Finance Charge:</span>
+          <span id="display-finance-charge">$75</span>
+        </div>
+        <div class="cost-row">
+          <span>Processing Fee:</span>
+          <span id="display-processing-fee">$25</span>
+        </div>
+        <div class="cost-row total">
+          <span><strong>Total Amount Due:</strong></span>
+          <span id="display-total"><strong>$600</strong></span>
+        </div>
+        <div class="cost-row apr">
+          <span><strong>Annual Percentage Rate (APR):</strong></span>
+          <span id="display-apr"><strong>521.43%</strong></span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Educational Warning -->
+    <div class="educational-warning">
+      <div class="warning-icon">⚠️</div>
+      <div class="warning-content">
+        <h4>Important: This is an expensive form of credit</h4>
+        <ul>
+          <li>Payday loans are designed for short-term financial needs only</li>
+          <li>They should not be used to meet long-term financial needs</li>
+          <li>Consider alternatives like credit union loans, payment plans, or emergency assistance</li>
+          <li>Defaulting on this loan may result in additional fees and collection actions</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="consent-section">
+      <h3>Required Disclosures & Consent</h3>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="apr-consent" required>
+          <span class="checkmark"></span>
+          I understand the APR is <span id="consent-apr-value">521.43%</span> and have read the cost breakdown above
+        </label>
+        
+        <label class="checkbox-label">
+          <input type="checkbox" id="alternatives-acknowledged" required>
+          <span class="checkmark"></span>
+          I acknowledge I have been informed of alternatives to payday lending
+        </label>
+        
+        <label class="checkbox-label">
+          <input type="checkbox" id="terms-consent" required>
+          <span class="checkmark"></span>
+          I consent to the terms and conditions of this loan
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" onclick="backToStep1()">
+        ← Back to Personal Info
+      </button>
+      <button type="button" class="btn-tertiary" onclick="showAlternatives()">
+        Show Alternatives Instead
+      </button>
+      <button type="submit" class="btn-primary" onclick="proceedToFinalStep()">
+        Continue to Final Review
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Update calculations in real-time
+document.getElementById('loan-amount').addEventListener('input', updateCalculations);
+document.getElementById('loan-term').addEventListener('change', updateCalculations);
+
+function updateCalculations() {
+  const amount = parseInt(document.getElementById('loan-amount').value);
+  const term = parseInt(document.getElementById('loan-term').value);
+  
+  // Calculate costs (simplified for demo)
+  const financeCharge = amount * 0.15; // 15% of principal
+  const processingFee = 25;
+  const total = amount + financeCharge + processingFee;
+  
+  // Calculate APR
+  const apr = ((financeCharge + processingFee) / amount) * (365 / term) * 100;
+  
+  // Update displays
+  document.getElementById('amount-value').textContent = amount;
+  document.getElementById('display-principal').textContent = `$${amount}`;
+  document.getElementById('display-finance-charge').textContent = `$${financeCharge.toFixed(2)}`;
+  document.getElementById('display-processing-fee').textContent = `$${processingFee}`;
+  document.getElementById('display-total').textContent = `$${total.toFixed(2)}`;
+  document.getElementById('display-apr').textContent = `${apr.toFixed(2)}%`;
+  document.getElementById('consent-apr-value').textContent = `${apr.toFixed(2)}%`;
+}
+
+function backToStep1() {
+  document.getElementById('ethical-form-step2').style.display = 'none';
+  document.getElementById('ethical-form').style.display = 'block';
+  document.getElementById('ethical-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+function proceedToFinalStep() {
+  const requiredCheckboxes = document.querySelectorAll('#ethical-form-step2 input[type="checkbox"][required]');
+  let allChecked = true;
+  
+  requiredCheckboxes.forEach(checkbox => {
+    if (!checkbox.checked) {
+      allChecked = false;
+    }
+  });
+  
+  if (allChecked) {
+    document.getElementById('ethical-form-step2').style.display = 'none';
+    document.getElementById('ethical-final-review').style.display = 'block';
+    document.getElementById('ethical-final-review').scrollIntoView({ behavior: 'smooth' });
+  } else {
+    alert('Please review and check all required consent boxes to continue.');
+  }
+}
+
+// Initialize calculations
+updateCalculations();
+</script>
