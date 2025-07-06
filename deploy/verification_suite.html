@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lotus Integration Verification Suite</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+    }
+    
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .test-card {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .test-card.success {
+      border-color: #28a745;
+      background: rgba(40, 167, 69, 0.2);
+    }
+    
+    .test-card.error {
+      border-color: #dc3545;
+      background: rgba(220, 53, 69, 0.2);
+    }
+    
+    .test-card.warning {
+      border-color: #ffc107;
+      background: rgba(255, 193, 7, 0.2);
+    }
+    
+    .test-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .status-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    .status-icon.success { background: #28a745; }
+    .status-icon.error { background: #dc3545; }
+    .status-icon.warning { background: #ffc107; }
+    .status-icon.pending { background: #6c757d; }
+    
+    .test-details {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    
+    .file-list {
+      max-height: 200px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+    }
+    
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .control-panel {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+    
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+    
+    .btn-warning {
+      background: #ffc107;
+      color: black;
+    }
+    
+    .summary {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #28a745;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌸 Lotus Platform Verification Suite</h1>
+    
+    <div class="control-panel">
+      <button class="btn btn-primary" onclick="runAllTests()">Run All Tests</button>
+      <button class="btn btn-success" onclick="testFileIntegrity()">Check File Integrity</button>
+      <button class="btn btn-warning" onclick="testPartialLoading()">Test Partial Loading</button>
+      <a href="index_master_comprehensive.html" class="btn btn-primary">Open Master Platform</a>
+      <a href="index_complete_github_pages.html" class="btn btn-success">Open GitHub Pages Version</a>
+    </div>
+    
+    <div class="test-grid" id="test-grid">
+      <!-- Test cards will be populated by JavaScript -->
+    </div>
+    
+    <div class="summary">
+      <h3>Integration Summary</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" id="overall-progress"></div>
+      </div>
+      <p id="summary-text">Click "Run All Tests" to begin verification</p>
+    </div>
+  </div>
+
+  <script>
+    // Test configuration
+    const tests = [
+      {
+        id: 'core-files',
+        title: 'Core Application Files',
+        description: 'Checking for main application files',
+        files: [
+          'index_master_comprehensive.html',
+          'index_complete_github_pages.html',
+          'app.js',
+          'ui.js',
+          'assets/global.js',
+          'assets/global.css',
+          'style.css'
+        ]
+      },
+      {
+        id: 'engine-modules',
+        title: 'Engine Modules',
+        description: 'Verifying all engine components',
+        files: [
+          'engine/autonomy_theater.js',
+          'engine/behavioralPsychology.js',
+          'engine/echo.js',
+          'engine/kant.js'
+        ]
+      },
+      {
+        id: 'predatory-ui',
+        title: 'Predatory UI Components',
+        description: 'Checking predatory lending UI partials',
+        files: [
+          'predatory/hero.html',
+          'predatory/form.html',
+          'predatory/slider.html',
+          'predatory/faq.html',
+          'predatory/trust-signals.html',
+          'predatory/terms.html',
+          'predatory/countdown.js',
+          'predatory/styles.css'
+        ]
+      },
+      {
+        id: 'ethical-ui',
+        title: 'Ethical UI Components',
+        description: 'Checking ethical redesign UI partials',
+        files: [
+          'ethical/hero.html',
+          'ethical/form-step1.html',
+          'ethical/form-step2.html',
+          'ethical/apr-display.html',
+          'ethical/education.html',
+          'ethical/styles.css'
+        ]
+      },
+      {
+        id: 'ui-components',
+        title: 'Advanced UI Components',
+        description: 'Verifying all ui_components modules',
+        files: [
+          'ui_components/darkPatternEngine.js',
+          'ui_components/aprCalculator.js',
+          'ui_components/aprTransparencyMeter.js',
+          'ui_components/behaviorReplay.js',
+          'ui_components/consentCheck.js',
+          'ui_components/debtCycleSimulator.js',
+          'ui_components/educationalScaffolding.js',
+          'ui_components/ethicsFeedback.js',
+          'ui_components/legalLoopholeIndex.js',
+          'ui_components/promptEngine.js',
+          'ui_components/trapUIEngine.js'
+        ]
+      },
+      {
+        id: 'research-analytics',
+        title: 'Research & Analytics',
+        description: 'Checking research and analytics modules',
+        files: [
+          'research/research_analytics.js',
+          'research/researchDataCollector.js'
+        ]
+      },
+      {
+        id: 'core-logic',
+        title: 'Core Business Logic',
+        description: 'Verifying core loan simulation logic',
+        files: [
+          'core/loan_core.js',
+          'modes/ethical.js',
+          'modes/exploitative.js'
+        ]
+      },
+      {
+        id: 'docs-education',
+        title: 'Documentation & Education',
+        description: 'Checking educational and documentation files',
+        files: [
+          'docs/academic_references.js',
+          'docs/philosophy.md',
+          'docs/design_notes.md',
+          'docs/README.md'
+        ]
+      },
+      {
+        id: 'partials',
+        title: 'Ethical Partials',
+        description: 'Checking ethical UI partials',
+        files: [
+          'partials/ethical/alternatives.html',
+          'partials/ethical/calculator.html',
+          'partials/ethical/footer.html',
+          'partials/ethical/hero.html'
+        ]
+      },
+      {
+        id: 'tests',
+        title: 'Test Files',
+        description: 'Checking test and integration files',
+        files: [
+          'tests/educationalSystemIntegrationTest.js',
+          'test_comprehensive_features.html'
+        ]
+      }
+    ];
+    
+    let testResults = {};
+    let overallProgress = 0;
+    
+    // Initialize test grid
+    function initializeTestGrid() {
+      const grid = document.getElementById('test-grid');
+      grid.innerHTML = '';
+      
+      tests.forEach(test => {
+        const card = createTestCard(test);
+        grid.appendChild(card);
+      });
+    }
+    
+    // Create test card element
+    function createTestCard(test) {
+      const card = document.createElement('div');
+      card.className = 'test-card';
+      card.id = `test-${test.id}`;
+      
+      card.innerHTML = `
+        <div class="test-title">
+          <span class="status-icon pending" id="status-${test.id}"></span>
+          ${test.title}
+        </div>
+        <div class="test-details">
+          <p>${test.description}</p>
+          <p><strong>Files to check:</strong> ${test.files.length}</p>
+          <div class="file-list" id="files-${test.id}">
+            ${test.files.map(file => `
+              <div class="file-item">
+                <span>${file}</span>
+                <span id="file-status-${file.replace(/[^a-zA-Z0-9]/g, '-')}">⏳</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      return card;
+    }
+    
+    // Run individual test
+    async function runTest(test) {
+      const statusIcon = document.getElementById(`status-${test.id}`);
+      const card = document.getElementById(`test-${test.id}`);
+      
+      statusIcon.className = 'status-icon pending';
+      card.className = 'test-card';
+      
+      let passedFiles = 0;
+      const results = [];
+      
+      for (const file of test.files) {
+        try {
+          const response = await fetch(file, { method: 'HEAD' });
+          const fileId = file.replace(/[^a-zA-Z0-9]/g, '-');
+          const fileStatus = document.getElementById(`file-status-${fileId}`);
+          
+          if (response.ok) {
+            passedFiles++;
+            if (fileStatus) fileStatus.textContent = '✅';
+            results.push({ file, status: 'success' });
+          } else {
+            if (fileStatus) fileStatus.textContent = '❌';
+            results.push({ file, status: 'error', error: `HTTP ${response.status}` });
+          }
+        } catch (error) {
+          const fileId = file.replace(/[^a-zA-Z0-9]/g, '-');
+          const fileStatus = document.getElementById(`file-status-${fileId}`);
+          if (fileStatus) fileStatus.textContent = '❌';
+          results.push({ file, status: 'error', error: error.message });
+        }
+      }
+      
+      // Update test status
+      const successRate = passedFiles / test.files.length;
+      if (successRate === 1) {
+        statusIcon.className = 'status-icon success';
+        card.className = 'test-card success';
+      } else if (successRate > 0.5) {
+        statusIcon.className = 'status-icon warning';
+        card.className = 'test-card warning';
+      } else {
+        statusIcon.className = 'status-icon error';
+        card.className = 'test-card error';
+      }
+      
+      testResults[test.id] = {
+        passed: passedFiles,
+        total: test.files.length,
+        successRate,
+        results
+      };
+      
+      return testResults[test.id];
+    }
+    
+    // Run all tests
+    async function runAllTests() {
+      console.log('Running comprehensive integration tests...');
+      overallProgress = 0;
+      updateProgress(0);
+      
+      for (let i = 0; i < tests.length; i++) {
+        const test = tests[i];
+        console.log(`Running test: ${test.title}`);
+        await runTest(test);
+        
+        overallProgress = ((i + 1) / tests.length) * 100;
+        updateProgress(overallProgress);
+        
+        // Small delay to show progress
+        await new Promise(resolve => setTimeout(resolve, 200));
+      }
+      
+      updateSummary();
+      console.log('All tests completed!', testResults);
+    }
+    
+    // Test file integrity specifically
+    async function testFileIntegrity() {
+      const criticalFiles = [
+        'index_master_comprehensive.html',
+        'app.js',
+        'assets/global.js',
+        'manifest.json'
+      ];
+      
+      console.log('Testing critical file integrity...');
+      let passed = 0;
+      
+      for (const file of criticalFiles) {
+        try {
+          const response = await fetch(file);
+          if (response.ok) {
+            const content = await response.text();
+            if (content.length > 100) { // Basic content check
+              passed++;
+              console.log(`✅ ${file} - OK (${content.length} chars)`);
+            } else {
+              console.log(`⚠️ ${file} - Content too short`);
+            }
+          } else {
+            console.log(`❌ ${file} - HTTP ${response.status}`);
+          }
+        } catch (error) {
+          console.log(`❌ ${file} - ${error.message}`);
+        }
+      }
+      
+      alert(`File Integrity Test: ${passed}/${criticalFiles.length} critical files passed`);
+    }
+    
+    // Test partial loading functionality
+    async function testPartialLoading() {
+      const partialFiles = [
+        'predatory/hero.html',
+        'ethical/hero.html',
+        'partials/ethical/alternatives.html'
+      ];
+      
+      console.log('Testing partial file loading...');
+      let loaded = 0;
+      
+      for (const file of partialFiles) {
+        try {
+          const response = await fetch(file);
+          if (response.ok) {
+            const html = await response.text();
+            if (html.includes('Copilot:') || html.length > 50) {
+              loaded++;
+              console.log(`✅ ${file} loaded successfully`);
+            } else {
+              console.log(`⚠️ ${file} - Unexpected content`);
+            }
+          } else {
+            console.log(`❌ ${file} - Failed to load`);
+          }
+        } catch (error) {
+          console.log(`❌ ${file} - ${error.message}`);
+        }
+      }
+      
+      alert(`Partial Loading Test: ${loaded}/${partialFiles.length} partials loaded successfully`);
+    }
+    
+    // Update progress bar
+    function updateProgress(percent) {
+      const progressFill = document.getElementById('overall-progress');
+      progressFill.style.width = `${percent}%`;
+    }
+    
+    // Update summary
+    function updateSummary() {
+      const totalTests = tests.length;
+      const passedTests = Object.values(testResults).filter(result => result.successRate === 1).length;
+      const warningTests = Object.values(testResults).filter(result => result.successRate > 0.5 && result.successRate < 1).length;
+      
+      const totalFiles = tests.reduce((sum, test) => sum + test.files.length, 0);
+      const passedFiles = Object.values(testResults).reduce((sum, result) => sum + result.passed, 0);
+      
+      const summaryText = document.getElementById('summary-text');
+      summaryText.innerHTML = `
+        <strong>Tests:</strong> ${passedTests}/${totalTests} passed (${warningTests} with warnings)<br>
+        <strong>Files:</strong> ${passedFiles}/${totalFiles} accessible<br>
+        <strong>Overall Status:</strong> ${passedTests === totalTests ? '🟢 All systems operational' : passedFiles > totalFiles * 0.8 ? '🟡 Most components working' : '🔴 Critical issues detected'}
+      `;
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeTestGrid();
+      console.log('Lotus Verification Suite Ready');
+    });
+  </script>
+</body>
+</html>

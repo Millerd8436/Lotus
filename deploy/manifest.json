@@ -1,0 +1,19 @@
+{
+  "name": "Lotus Payday Loan Simulator",
+  "short_name": "Lotus Simulator",
+  "description": "Educational simulation platform for understanding predatory lending practices",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["education", "finance"],
+  "lang": "en",
+  "orientation": "any"
+}

@@ -1,0 +1,88 @@
+# Copilot: Jekyll configuration for Lotus Payday Lending Simulation
+# GitHub Pages deployment configuration
+
+# Site settings
+title: "Lotus Payday Lending Simulation"
+description: "Educational simulation demonstrating predatory vs ethical lending practices"
+url: "https://username.github.io"  # Replace with actual GitHub Pages URL
+baseurl: "/lotus"  # Replace with actual repository name
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# GitHub Pages specific
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - node_modules/
+  - .gitignore
+  - README.md
+  - package.json
+  - package-lock.json
+  - archive/
+  - docs/
+  - tests/
+  - "*.md"
+  - verification/
+  - deployment/
+
+# Include files that start with underscore
+include:
+  - .nojekyll
+  - .htaccess
+
+# Collections for organized content
+collections:
+  predatory:
+    output: true
+    permalink: /:collection/:name/
+  ethical:
+    output: true
+    permalink: /:collection/:name/
+  components:
+    output: false
+
+# Default layouts and front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "default"
+  - scope:
+      path: "predatory"
+      type: "predatory"
+    values:
+      layout: "predatory"
+      mode: "exploitative"
+  - scope:
+      path: "ethical"
+      type: "ethical"
+    values:
+      layout: "ethical"
+      mode: "educational"
+
+# Site configuration
+timezone: America/New_York
+
+# Optimization settings
+sass:
+  sass_dir: css
+  style: compressed
+
+# Security headers (for advanced deployments)
+webrick:
+  headers:
+    Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
+    X-Frame-Options: "SAMEORIGIN"
+    X-Content-Type-Options: "nosniff"
+
+# Development settings
+livereload: true
+incremental: true

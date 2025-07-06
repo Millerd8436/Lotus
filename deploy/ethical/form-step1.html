@@ -1,0 +1,87 @@
+<!-- Copilot: do not overwrite -->
+<div class="ethical-form-container container" id="ethical-form">
+  <div class="form-header">
+    <h2>Step 1: Personal Information</h2>
+    <p class="progress-indicator">Step 1 of 3 - We'll show you all costs upfront</p>
+  </div>
+  
+  <form class="ethical-form" id="ethical-form-step1">
+    <div class="form-group">
+      <label for="eth-name">Full Name *</label>
+      <input type="text" id="eth-name" name="name" required 
+             placeholder="Enter your full legal name">
+      <small class="help-text">Required for identity verification</small>
+    </div>
+    
+    <div class="form-group">
+      <label for="eth-email">Email Address *</label>
+      <input type="email" id="eth-email" name="email" required
+             placeholder="your.email@example.com">
+      <small class="help-text">We'll send you a copy of all terms and conditions</small>
+    </div>
+    
+    <div class="form-group">
+      <label for="eth-phone">Phone Number *</label>
+      <input type="tel" id="eth-phone" name="phone" required
+             placeholder="(555) 123-4567">
+      <small class="help-text">For account verification only - no marketing calls</small>
+    </div>
+    
+    <div class="consent-section">
+      <h3>Privacy & Consent</h3>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="consent-info" required>
+          <span class="checkmark"></span>
+          I consent to my information being used for this loan application only
+        </label>
+        
+        <label class="checkbox-label">
+          <input type="checkbox" id="consent-terms">
+          <span class="checkmark"></span>
+          I want to receive educational materials about financial literacy
+        </label>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" onclick="showAlternatives()">
+        Show Me Alternatives First
+      </button>
+      <button type="submit" class="btn-primary" onclick="proceedToStep2()">
+        Continue to Loan Details
+      </button>
+    </div>
+  </form>
+  
+  <div class="security-notice">
+    <div class="security-icon">🔒</div>
+    <div class="security-text">
+      <strong>Your data is protected</strong><br>
+      SSL encrypted • No data selling • CCPA compliant
+    </div>
+  </div>
+</div>
+
+<script>
+function proceedToStep2() {
+  const form = document.getElementById('ethical-form-step1');
+  if (form.checkValidity()) {
+    // Hide step 1
+    document.getElementById('ethical-form').style.display = 'none';
+    // Show step 2
+    document.getElementById('ethical-form-step2').style.display = 'block';
+    document.getElementById('ethical-form-step2').scrollIntoView({
+      behavior: 'smooth'
+    });
+  } else {
+    form.reportValidity();
+  }
+}
+
+function showAlternatives() {
+  document.getElementById('alternatives-section').scrollIntoView({
+    behavior: 'smooth'
+  });
+}
+</script>

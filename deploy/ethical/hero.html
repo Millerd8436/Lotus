@@ -1,0 +1,55 @@
+<!-- Copilot: do not overwrite -->
+<div class="ethical-redesign hero container">
+  <div class="educational-header">
+    <span class="education-badge">📚 Educational Tool</span>
+    <h1>Review Your Options</h1>
+    <p class="transparency-notice">This simulation shows transparent lending practices and better alternatives.</p>
+  </div>
+  
+  <div class="cost-transparency">
+    <h3>Understand the Real Costs</h3>
+    <div class="cost-breakdown">
+      <div class="cost-item">
+        <label>Typical Payday Loan:</label>
+        <span class="cost-high">$15-30 per $100 borrowed</span>
+      </div>
+      <div class="cost-item">
+        <label>Annual Percentage Rate:</label>
+        <span class="cost-high">400-800% APR</span>
+      </div>
+      <div class="cost-item">
+        <label>Better Alternative:</label>
+        <span class="cost-low">Credit union PAL: 28% APR max</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="cta-section">
+    <button class="cta-button ethical-button" onclick="startEthicalApplication()">
+      Start Transparent Application
+    </button>
+    <p class="ethical-subtext">
+      Full disclosure • No hidden fees • Educational guidance
+    </p>
+  </div>
+  
+  <div class="alternatives-link">
+    <a href="#alternatives" class="link-button">
+      🔍 Explore Better Alternatives First
+    </a>
+  </div>
+</div>
+
+<script>
+function startEthicalApplication() {
+  // Scroll to form with transparency
+  document.getElementById('ethical-form').scrollIntoView({
+    behavior: 'smooth'
+  });
+  
+  // Track ethical application start
+  if (window.LotusApp) {
+    window.LotusApp.analytics.interactions++;
+  }
+}
+</script>

@@ -1,0 +1,294 @@
+<!-- Copilot: do not overwrite -->
+<!-- Predatory Loan Amount Slider - Designed to encourage higher amounts -->
+<div class="loan-slider-section predatory-slider">
+  <div class="slider-container">
+    <div class="slider-header">
+      <h3>💰 How Much Cash Do You Need?</h3>
+      <div class="popular-choice">
+        <span class="popular-badge">🔥 POPULAR CHOICE</span>
+      </div>
+    </div>
+
+    <div class="amount-display">
+      <div class="current-amount">
+        <span class="currency">$</span>
+        <span id="slider-value" class="amount-number">500</span>
+      </div>
+      <div class="amount-subtitle">Get this much in your account today!</div>
+    </div>
+
+    <div class="slider-wrapper">
+      <input type="range" 
+             id="loan-slider" 
+             class="loan-slider" 
+             min="100" 
+             max="1500" 
+             step="50" 
+             value="500">
+      
+      <div class="slider-labels">
+        <span class="min-label">$100</span>
+        <span class="max-label">$1,500</span>
+      </div>
+      
+      <!-- Fake "sweet spot" indicators -->
+      <div class="slider-indicators">
+        <div class="indicator low" style="left: 20%;">
+          <span>Basic</span>
+        </div>
+        <div class="indicator recommended" style="left: 40%;">
+          <span>⭐ Most Popular</span>
+        </div>
+        <div class="indicator high" style="left: 80%;">
+          <span>Max Savings</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manipulative fee display -->
+    <div class="fee-display">
+      <div class="fee-row">
+        <span class="fee-label">Small one-time fee:</span>
+        <span id="fee-amount" class="fee-value">Only $75</span>
+      </div>
+      <div class="fee-subtext">
+        <span class="crossed-out">$150 regular fee</span>
+        <span class="savings">You save $75!</span>
+      </div>
+    </div>
+
+    <!-- Biased recommendation engine -->
+    <div class="recommendation-box">
+      <div class="recommendation-header">
+        <span class="ai-badge">🤖 AI Recommendation</span>
+      </div>
+      <p id="recommendation-text">
+        Based on your profile, we recommend $500 to handle unexpected expenses and have some extra cushion.
+      </p>
+      <button class="use-recommendation-btn" onclick="useRecommendation()">
+        Use AI Recommendation →
+      </button>
+    </div>
+
+    <!-- Social proof manipulation -->
+    <div class="social-proof">
+      <div class="stat-item">
+        <span class="stat-number" id="recent-applications">47</span>
+        <span class="stat-label">people got this amount today</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">4.8★</span>
+        <span class="stat-label">average rating</span>
+      </div>
+      <div class="recent-activity">
+        <div class="activity-item">
+          <span class="user">Jennifer from Texas</span>
+          <span class="action">just got approved for $500</span>
+          <span class="time">2 min ago</span>
+        </div>
+        <div class="activity-item">
+          <span class="user">Michael from Ohio</span>
+          <span class="action">received $750</span>
+          <span class="time">5 min ago</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Continue button with urgency -->
+    <div class="slider-cta">
+      <button class="continue-btn" onclick="proceedWithAmount()">
+        GET MY $<span id="btn-amount">500</span> NOW!
+      </button>
+      <p class="urgency-note">
+        ⚡ Lock in this amount before rates change in <span id="rate-countdown">7:42</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Slider manipulation and psychological pressure
+document.addEventListener('DOMContentLoaded', function() {
+  const slider = document.getElementById('loan-slider');
+  const displayValue = document.getElementById('slider-value');
+  const btnAmount = document.getElementById('btn-amount');
+  const feeAmount = document.getElementById('fee-amount');
+  const recentApps = document.getElementById('recent-applications');
+  const recommendationText = document.getElementById('recommendation-text');
+
+  // Fee calculation (deliberately misleading)
+  function calculateFee(amount) {
+    // Actually 15% but displayed as "small fee"
+    return Math.round(amount * 0.15);
+  }
+
+  // Update displays when slider changes
+  slider.addEventListener('input', function() {
+    const amount = parseInt(this.value);
+    displayValue.textContent = amount;
+    btnAmount.textContent = amount;
+    
+    // Update fee (hide true cost)
+    const fee = calculateFee(amount);
+    feeAmount.textContent = `Only $${fee}`;
+    
+    // Update recommendation based on amount
+    updateRecommendation(amount);
+    
+    // Update "social proof" numbers
+    updateSocialProof(amount);
+    
+    // Trigger visual feedback
+    highlightPopularChoice(amount);
+  });
+
+  function updateRecommendation(amount) {
+    let recommendation = "";
+    
+    if (amount < 300) {
+      recommendation = "Consider increasing to $500 - most customers find this amount covers emergencies better.";
+    } else if (amount <= 500) {
+      recommendation = "Perfect choice! $500 is our most popular amount and gives you flexibility for unexpected costs.";
+    } else if (amount <= 800) {
+      recommendation = "Great selection! This amount provides excellent coverage for larger expenses.";
+    } else {
+      recommendation = "Maximum protection! This amount ensures you're covered for any financial challenge.";
+    }
+    
+    recommendationText.textContent = recommendation;
+  }
+
+  function updateSocialProof(amount) {
+    // Fake increasing numbers based on amount to encourage higher loans
+    const baseCount = 35;
+    const multiplier = Math.floor(amount / 100);
+    recentApps.textContent = baseCount + multiplier;
+  }
+
+  function highlightPopularChoice(amount) {
+    const indicators = document.querySelectorAll('.indicator');
+    indicators.forEach(ind => ind.classList.remove('active'));
+    
+    if (amount >= 400 && amount <= 600) {
+      document.querySelector('.indicator.recommended').classList.add('active');
+      document.querySelector('.popular-badge').style.display = 'inline-block';
+    } else {
+      document.querySelector('.popular-badge').style.display = 'none';
+    }
+  }
+
+  // Start rate countdown
+  startRateCountdown();
+  
+  // Periodically update "recent activity"
+  setInterval(updateRecentActivity, 8000);
+  
+  // Initialize
+  updateRecommendation(500);
+  updateSocialProof(500);
+  highlightPopularChoice(500);
+});
+
+function useRecommendation() {
+  const slider = document.getElementById('loan-slider');
+  let recommendedAmount;
+  
+  // AI always recommends higher amounts
+  const currentAmount = parseInt(slider.value);
+  if (currentAmount < 500) {
+    recommendedAmount = 500;
+  } else if (currentAmount < 800) {
+    recommendedAmount = 800;
+  } else {
+    recommendedAmount = 1200;
+  }
+  
+  // Animate slider to recommended amount
+  slider.value = recommendedAmount;
+  slider.dispatchEvent(new Event('input'));
+  
+  // Show confirmation
+  showRecommendationConfirm(recommendedAmount);
+}
+
+function showRecommendationConfirm(amount) {
+  const popup = document.createElement('div');
+  popup.className = 'recommendation-popup';
+  popup.innerHTML = `
+    <div class="popup-content">
+      <h4>✅ Smart Choice!</h4>
+      <p>AI updated your loan to $${amount} for maximum benefit.</p>
+      <button onclick="this.parentElement.parentElement.remove()">Continue</button>
+    </div>
+  `;
+  document.body.appendChild(popup);
+  
+  setTimeout(() => {
+    if (popup.parentElement) popup.remove();
+  }, 3000);
+}
+
+function startRateCountdown() {
+  let timeLeft = 462; // 7:42
+  const display = document.getElementById('rate-countdown');
+  
+  setInterval(() => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    display.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    timeLeft--;
+    if (timeLeft < 0) timeLeft = 462; // Reset
+  }, 1000);
+}
+
+function updateRecentActivity() {
+  const activities = document.querySelectorAll('.activity-item');
+  const names = ['Jennifer', 'Michael', 'Sarah', 'David', 'Lisa', 'James', 'Ashley', 'Chris'];
+  const states = ['Texas', 'Ohio', 'California', 'Florida', 'New York', 'Illinois', 'Pennsylvania'];
+  const amounts = ['$300', '$500', '$750', '$800', '$1000', '$1200'];
+  
+  activities.forEach(activity => {
+    const userName = activity.querySelector('.user');
+    const action = activity.querySelector('.action');
+    const time = activity.querySelector('.time');
+    
+    const randomName = names[Math.floor(Math.random() * names.length)];
+    const randomState = states[Math.floor(Math.random() * states.length)];
+    const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+    const randomTime = Math.floor(Math.random() * 10) + 1;
+    
+    userName.textContent = `${randomName} from ${randomState}`;
+    action.textContent = `just got approved for ${randomAmount}`;
+    time.textContent = `${randomTime} min ago`;
+  });
+}
+
+function proceedWithAmount() {
+  const amount = document.getElementById('slider-value').textContent;
+  
+  // Scroll to form or next section
+  const form = document.querySelector('.loan-application');
+  if (form) {
+    form.scrollIntoView({ behavior: 'smooth' });
+  }
+  
+  // Store selected amount for form
+  localStorage.setItem('selectedLoanAmount', amount);
+  
+  // Show urgency message
+  setTimeout(() => {
+    const urgencyMsg = document.createElement('div');
+    urgencyMsg.className = 'selection-confirmed';
+    urgencyMsg.innerHTML = `
+      <div class="confirm-content">
+        <h4>🎯 Amount Locked In!</h4>
+        <p>Your $${amount} is reserved for the next 15 minutes.</p>
+      </div>
+    `;
+    document.body.appendChild(urgencyMsg);
+    
+    setTimeout(() => urgencyMsg.remove(), 4000);
+  }, 1000);
+}
+</script>
