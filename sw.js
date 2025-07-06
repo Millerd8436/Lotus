@@ -26,31 +26,31 @@ const STATIC_ASSETS = [
     './predatory/styles.css',
     './ethical/styles.css',
     './predatory/countdown.js',
-    '/predatory/terms.html',
-    '/predatory/trust-signals.html'
+    './predatory/terms.html',
+    './predatory/trust-signals.html'
 ];
 
 // Ethical mode assets
 const ETHICAL_ASSETS = [
-    '/partials/ethical/hero.html',
-    '/partials/ethical/alternatives.html',
-    '/partials/ethical/calculator.html',
-    '/partials/ethical/footer.html'
+    './partials/ethical/hero.html',
+    './partials/ethical/alternatives.html',
+    './partials/ethical/calculator.html',
+    './partials/ethical/footer.html'
 ];
 
 // UI Components
 const UI_COMPONENTS = [
-    '/ui_components/aprCalculator.js',
-    '/ui_components/aprTransparencyMeter.js',
-    '/ui_components/behavioralTriggers.js',
-    '/ui_components/darkPatterns.js',
-    '/ui_components/ethicalAlternatives.js',
-    '/ui_components/ethicalSafeguards.js',
-    '/ui_components/feeObfuscator.js',
-    '/ui_components/promptEngine.js',
-    '/ui_components/riskAssessment.js',
-    '/ui_components/trapUIEngine.js',
-    '/ui_components/urgencyEngine.js'
+    './ui_components/aprCalculator.js',
+    './ui_components/aprTransparencyMeter.js',
+    './ui_components/behavioralTriggers.js',
+    './ui_components/darkPatterns.js',
+    './ui_components/ethicalAlternatives.js',
+    './ui_components/ethicalSafeguards.js',
+    './ui_components/feeObfuscator.js',
+    './ui_components/promptEngine.js',
+    './ui_components/riskAssessment.js',
+    './ui_components/trapUIEngine.js',
+    './ui_components/urgencyEngine.js'
 ];
 
 // All assets to cache
