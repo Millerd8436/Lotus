@@ -2,6 +2,7 @@
 
 import { evaluateConsent } from '../engine/kant.js';
 import { UI } from '../ui.js';
+import { updateConsentBar } from '../ui_components/consentBar.js';
 
 function displayReflection(session, echo, kantAnalysis) {
     const behaviorSummaryEl = document.getElementById('behaviorSummary');
@@ -11,20 +12,31 @@ function displayReflection(session, echo, kantAnalysis) {
 
     // 1. Update Consent Bar
     const consentScore = session.consentScore();
-    consentBar.style.width = `${consentScore}%`;
-    if (consentScore < 50) {
-        consentBar.style.backgroundColor = '#ef4444'; // red-500
-    } else if (consentScore < 80) {
-        consentBar.style.backgroundColor = '#f97316'; // orange-500
-    } else {
-        consentBar.style.backgroundColor = '#22c55e'; // green-500
-    }
+    updateConsentBar(session, consentScore);
 
     // 2. Populate Behavioral Analysis Tab
-    const coercionIndex = session.computeCoercionIndex();
+    const autonomyScore = echo.calculateScore(session);
     let behaviorHTML = `<h3 class="font-bold text-lg text-purple-300 mb-2">Behavioral Analysis</h3>`;
-    behaviorHTML += `<p><span class="font-semibold">Coercion Index:</span> ${coercionIndex}/100</p>`;
-    if (coercionIndex > 50) {
+    behaviorHTML += `<p><span class="font-semibold">Autonomy Score:</span> ${autonomyScore}/100</p>`;
+    behaviorHTML += `<p class="mt-1"><span class="font-semibold">Informed Consent Score:</span> ${consentScore}/100</p>`;
+    
+    // NEW: Add cumulative cost information
+    const cumulativeCost = session.getCumulativeCost();
+    if (cumulativeCost > 0) {
+        const costRatio = ((cumulativeCost / session.amount) * 100).toFixed(1);
+        behaviorHTML += `<p class="mt-1"><span class="font-semibold">Total Cost Paid:</span> $${cumulativeCost.toFixed(2)} (${costRatio}% of loan amount)</p>`;
+        
+        const breakdown = session.getCostBreakdown();
+        if (Object.keys(breakdown).length > 1) {
+            behaviorHTML += `<div class="mt-2 text-sm"><span class="font-semibold">Cost Breakdown:</span><ul class="list-disc list-inside ml-4">`;
+            Object.entries(breakdown).forEach(([type, amount]) => {
+                behaviorHTML += `<li>${type}: $${amount.toFixed(2)}</li>`;
+            });
+            behaviorHTML += `</ul></div>`;
+        }
+    }
+    
+    if (autonomyScore < 50) {
         behaviorHTML += `<p class="mt-2 italic text-red-400">Critique: The simulation used significant manipulative tactics. Your choices may have been heavily influenced by the system's design.</p>`;
     } else {
         behaviorHTML += `<p class="mt-2 italic text-green-400">Critique: The simulation used fewer manipulative tactics, allowing for more autonomous decision-making.</p>`;
@@ -49,17 +61,20 @@ function displayReflection(session, echo, kantAnalysis) {
     } else {
         ethicsHTML += `<p class="text-green-400">No major Kantian ethical violations were detected in this session.</p>`;
     }
+
+    ethicsHTML += `<h4 class="font-semibold text-purple-200 mt-4 mb-2">Informed Consent Pillars Breakdown:</h4>`;
+    ethicsHTML += `<ul class="list-disc list-inside text-sm space-y-1">`;
+    ethicsHTML += `<li><span class="font-semibold">Pillar 1 (Capacity):</span> ${session.capacityConfirmed_Age && session.capacityConfirmed_SoundMind ? '<span class="text-green-400">Confirmed</span>' : '<span class="text-red-400">NOT Confirmed</span>'}</li>`;
+    ethicsHTML += `<li><span class="font-semibold">Pillar 2 (Disclosure):</span> ${session.fullDisclosureProvided ? '<span class="text-green-400">Provided</span>' : '<span class="text-red-400">NOT Provided</span>'}</li>`;
+    ethicsHTML += `<li><span class="font-semibold">Pillar 3 (Comprehension):</span> ${session.quizPassedOverall ? `<span class="text-green-400">Passed (${session.quizQuestionsCorrect}/${session.quizQuestionsTotal})</span>` : `<span class="text-red-400">Failed / Not Conducted</span>`}</li>`;
+    ethicsHTML += `<li><span class="font-semibold">Pillar 4 (Voluntariness):</span> ${session.voluntarinessAffirmedByDeclaration ? '<span class="text-green-400">Affirmed</span>' : '<span class="text-red-400">Not Affirmed / Pressured</span>'}</li>`;
+    ethicsHTML += `<li><span class="font-semibold">Pillar 5 (Authorization):</span> ${session.consentGiven ? '<span class="text-green-400">Given</span>' : '<span class="text-red-400">NOT Given</span>'}</li>`;
+    ethicsHTML += `</ul>`;
+
     autonomyScoreEl.innerHTML = ethicsHTML;
 
     // 4. Ghost Message
     ghostMessageEl.querySelector('p').textContent = "The simulation is over, but the patterns remain. Were you truly in control? Try the other mode to see the contrast.";
-}
-
-function printSummary(session) {
-    // This function can be expanded or used for debugging.
-    // The primary reflection is now handled by displayReflection.
-    console.log("\n--- Loan Simulation Summary ---");
-    console.log(JSON.stringify(session, null, 2));
 }
 
 function generateFollowUpEmail(session, config, modeName) {
@@ -119,4 +134,4 @@ We recommend reviewing resources at consumerfinance.gov for assistance.`;
 }
 
 
-export { displayReflection, printSummary, generateFollowUpEmail };
+export { displayReflection, generateFollowUpEmail };

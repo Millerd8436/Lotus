@@ -6,133 +6,297 @@
     <title>Lotus + Autonomy Theater Capstone</title>
     <!-- Tailwind CSS for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Link to stylesheet in css/ directory -->
-    <link rel="stylesheet" href="css/styles.css">
     <!-- Alpine.js for interactivity -->
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </head>
-<body class="bg-gray-900 text-gray-200 font-mono">
+<body class="bg-gray-900 text-gray-200 font-mono antialiased">
 
-    <div id="container" class="max-w-4xl mx-auto p-4 md:p-8">
-        <header role="banner" class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-purple-400 border-b-2 border-gray-700 pb-4">Lotus + Autonomy Theater</h1>
-            <p class="text-gray-400 mt-2">An Interactive Simulation of Choice, Consent, and Coercion</p>
+    <div id="container" class="max-w-5xl mx-auto p-4 md:p-8">
+        <header role="banner" class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-purple-400">Lotus + Autonomy Theater</h1>
+            <p class="text-gray-400 mt-2 text-lg">An Interactive Simulation of Choice, Consent, and Coercion</p>
         </header>
 
         <!-- Urgency Banner for Exploitative Mode -->
-        <div id="urgency-banner" class="hidden bg-red-800 border-2 border-red-500 text-center p-3 rounded-lg mb-6 shadow-lg">
-            <p class="text-lg font-bold text-yellow-300 animate-pulse">
+        <div id="urgency-banner" class="hidden bg-red-800 border-2 border-red-500 text-center p-3 rounded-lg mb-6 shadow-lg animate-pulse">
+            <p class="text-lg font-bold text-yellow-300">
                 🔥 INSTANT APPROVAL! <span id="timer">05:00</span> LEFT TO LOCK IN YOUR SPECIAL RATE! 🔥
             </p>
         </div>
 
+        <!-- NEW: Cumulative Cost Tracker (visible in ethical mode) -->
+        <div id="cost-tracker" class="hidden bg-blue-900 border-2 border-blue-500 text-center p-3 rounded-lg mb-6 shadow-lg">
+            <h3 class="text-lg font-bold text-blue-300 mb-2">💰 Cumulative Cost Tracker</h3>
+            <div class="flex justify-center space-x-6 text-sm">
+                <div>
+                    <span class="text-blue-200">Total Paid:</span>
+                    <span id="total-paid" class="font-bold text-white">$0.00</span>
+                </div>
+                <div>
+                    <span class="text-blue-200">vs Original Loan:</span>
+                    <span id="cost-ratio" class="font-bold text-white">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Research and Analytics Dashboard -->
+        <div id="research-dashboard" class="hidden bg-gradient-to-r from-indigo-900 to-purple-900 border-2 border-indigo-500 text-center p-4 rounded-lg mb-6 shadow-xl">
+            <h3 class="text-xl font-bold text-indigo-200 mb-3">📊 Research & Analytics Dashboard</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-indigo-800 p-3 rounded">
+                    <span class="text-indigo-200">Session ID:</span>
+                    <span id="session-id" class="font-bold text-white block">#LOADING...</span>
+                </div>
+                <div class="bg-indigo-800 p-3 rounded">
+                    <span class="text-indigo-200">Dark Patterns Detected:</span>
+                    <span id="dark-pattern-count" class="font-bold text-red-300 block">0</span>
+                </div>
+                <div class="bg-indigo-800 p-3 rounded">
+                    <span class="text-indigo-200">Education Modules Shown:</span>
+                    <span id="education-module-count" class="font-bold text-green-300 block">0</span>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button id="export-research-data" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition">
+                    📋 Export Research Data (CSV)
+                </button>
+            </div>
+        </div>
+
+        <!-- NEW: Regulatory Compliance Tracker -->
+        <div id="compliance-tracker" class="hidden bg-gradient-to-r from-green-900 to-teal-900 border-2 border-green-500 text-center p-4 rounded-lg mb-6 shadow-xl">
+            <h3 class="text-xl font-bold text-green-200 mb-3">⚖️ Regulatory Compliance Monitor</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-sm">
+                <div class="bg-green-800 p-2 rounded">
+                    <span class="text-green-200">CFPB Rules:</span>
+                    <span id="cfpb-compliance" class="font-bold block">CHECKING...</span>
+                </div>
+                <div class="bg-green-800 p-2 rounded">
+                    <span class="text-green-200">State Laws:</span>
+                    <span id="state-compliance" class="font-bold block">CHECKING...</span>
+                </div>
+                <div class="bg-green-800 p-2 rounded">
+                    <span class="text-green-200">MLA (Military):</span>
+                    <span id="mla-compliance" class="font-bold block">N/A</span>
+                </div>
+                <div class="bg-green-800 p-2 rounded">
+                    <span class="text-green-200">Usury Violations:</span>
+                    <span id="usury-violations" class="font-bold text-red-300 block">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Educational Progress Tracker -->
+        <div id="education-progress" class="hidden bg-gradient-to-r from-yellow-900 to-orange-900 border-2 border-yellow-500 text-center p-4 rounded-lg mb-6 shadow-xl">
+            <h3 class="text-xl font-bold text-yellow-200 mb-3">🎓 Educational Progress Tracker</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-yellow-800 p-3 rounded">
+                    <h4 class="font-bold text-yellow-200 mb-2">Knowledge Areas Covered:</h4>
+                    <div id="knowledge-areas" class="text-xs text-left space-y-1">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="bg-yellow-800 p-3 rounded">
+                    <h4 class="font-bold text-yellow-200 mb-2">Learning Objectives Met:</h4>
+                    <div class="w-full bg-yellow-600 rounded-full h-4 mt-2">
+                        <div id="learning-progress-bar" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <span id="learning-percentage" class="text-xs text-yellow-200">0% Complete</span>
+                </div>
+            </div>
+        </div>
+
         <main role="main">
             <!-- Section for simulation controls -->
-            <section id="controls" aria-labelledby="controls-heading" class="mb-6 p-6 bg-gray-800 rounded-lg shadow-lg">
-                <h2 id="controls-heading" class="text-xl font-semibold text-center text-purple-300 mb-4">Simulation Setup</h2>
-                <div class="cli-options grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+            <section id="controls" aria-labelledby="controls-heading" class="mb-8 p-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
+                <h2 id="controls-heading" class="text-2xl font-semibold text-center text-purple-300 mb-6">Simulation Setup</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
                     <div class="flex flex-col">
-                        <label for="state-input" class="mb-1 text-sm text-gray-400">State (e.g., CO, TX)</label>
-                        <input type="text" id="state-input" placeholder="State Abbr." class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                        <label for="state-input" class="mb-2 text-sm font-medium text-gray-400">State (e.g., CO, TX)</label>
+                        <input type="text" id="state-input" placeholder="State Abbr." class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
                     </div>
                     <div class="flex flex-col">
-                        <label for="amount-input" class="mb-1 text-sm text-gray-400">Loan Amount ($)</label>
-                        <input type="number" id="amount-input" placeholder="e.g., 500" class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                        <label for="amount-input" class="mb-2 text-sm font-medium text-gray-400">Loan Amount ($)</label>
+                        <input type="number" id="amount-input" placeholder="e.g., 500" class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
                     </div>
                     <div class="flex flex-col">
-                        <label for="term-input" class="mb-1 text-sm text-gray-400">Loan Term (days)</label>
-                        <input type="number" id="term-input" placeholder="e.g., 14" class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                        <label for="term-input" class="mb-2 text-sm font-medium text-gray-400">Loan Term (days)</label>
+                        <input type="number" id="term-input" placeholder="e.g., 14" class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
                     </div>
                     <div class="flex flex-col">
-                        <label for="scenario-select" class="mb-1 text-sm text-gray-400">Empathy Scenario</label>
-                        <select id="scenario-select" class="bg-gray-700 border border-gray-600 rounded p-2 focus:ring-purple-500 focus:border-purple-500">
+                        <label for="scenario-select" class="mb-2 text-sm font-medium text-gray-400">Empathy Scenario</label>
+                        <select id="scenario-select" class="bg-gray-700 border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
                             <option value="">-- Select a Scenario --</option>
                             <option value="singleparent">Single Parent, Car Repair</option>
                             <option value="tempworker">Gig Worker, Medical Bill</option>
                         </select>
                     </div>
                 </div>
-                <div class="mode-selection mt-6 text-center">
-                    <p class="mb-3 font-semibold">Choose a simulation mode:</p>
-                    <div class="flex justify-center gap-4 flex-wrap">
-                        <!-- Button IDs match app.js event listeners -->
-                        <button id="start-regulated" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded shadow-md transition-transform transform hover:scale-105">
-                            Ethical & Regulated Simulation
-                        </button>
-                        <button id="start-exploit" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded shadow-md transition-transform transform hover:scale-105">
-                            Exploitative Simulation
-                        </button>
+
+                <!-- Mode Selection Section -->
+                <div class="mode-selection mt-8 text-center">
+                    <!-- NEW: Advanced Mode Selection with Research Options -->
+                    <div class="mb-6 p-4 bg-gray-700 rounded-lg">
+                        <h3 class="text-lg font-semibold text-purple-300 mb-3">🔬 Research & Education Mode</h3>
+                        <div class="flex justify-center gap-4 flex-wrap mb-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="enable-research-mode" class="mr-2">
+                                <span class="text-sm">Enable Research Dashboard</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="enable-compliance-tracking" class="mr-2">
+                                <span class="text-sm">Track Regulatory Compliance</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="enable-educational-tracking" class="mr-2">
+                                <span class="text-sm">Monitor Educational Progress</span>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-400">
+                            Research mode provides detailed analytics for academic study and policy research.
+                        </div>
+                    </div>
+
+                    <!-- NEW: Simulation Intensity Settings -->
+                    <div class="mb-6 p-4 bg-gray-700 rounded-lg">
+                        <h3 class="text-lg font-semibold text-purple-300 mb-3">⚙️ Simulation Intensity</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="text-center">
+                                <input type="radio" id="basic-simulation" name="simulation-intensity" value="basic" class="mb-2">
+                                <label for="basic-simulation" class="block text-sm font-medium">
+                                    📚 Basic Education
+                                </label>
+                                <p class="text-xs text-gray-400">Core concepts only</p>
+                            </div>
+                            <div class="text-center">
+                                <input type="radio" id="comprehensive-simulation" name="simulation-intensity" value="comprehensive" class="mb-2" checked>
+                                <label for="comprehensive-simulation" class="block text-sm font-medium">
+                                    🎓 Comprehensive
+                                </label>
+                                <p class="text-xs text-gray-400">Full educational content</p>
+                            </div>
+                            <div class="text-center">
+                                <input type="radio" id="research-simulation" name="simulation-intensity" value="research" class="mb-2">
+                                <label for="research-simulation" class="block text-sm font-medium">
+                                    🔬 Research Grade
+                                </label>
+                                <p class="text-xs text-gray-400">Maximum detail + data collection</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="mb-4 font-semibold text-lg">Choose a simulation mode:</p>
+                    <div class="flex justify-center gap-6 flex-wrap">
+                        <!-- Enhanced buttons with research descriptions -->
+                        <div class="text-center">
+                            <button id="start-regulated" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-400 mb-2">
+                                🏛️ Ethical & Regulated Simulation
+                            </button>
+                            <p class="text-xs text-gray-400 max-w-xs">
+                                Demonstrates best practices, Kantian consent, regulatory compliance, and consumer protections
+                            </p>
+                        </div>
+                        <div class="text-center">
+                            <button id="start-exploit" class="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-400 mb-2">
+                                💸 Exploitative Simulation
+                            </button>
+                            <p class="text-xs text-gray-400 max-w-xs">
+                                Shows predatory tactics, dark patterns, and regulatory evasion techniques for educational analysis
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Quick Research Scenarios -->
+                    <div class="mt-6 p-4 bg-gray-700 rounded-lg">
+                        <h3 class="text-lg font-semibold text-purple-300 mb-3">🧪 Pre-Configured Research Scenarios</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button id="scenario-tribal-sovereignty" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded transition text-sm">
+                                🏺 Tribal Sovereignty Loophole Study
+                            </button>
+                            <button id="scenario-earnin-analysis" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded transition text-sm">
+                                📱 Earnin Tip Model Analysis
+                            </button>
+                            <button id="scenario-rent-a-bank" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded transition text-sm">
+                                🏦 Rent-a-Bank Scheme Study
+                            </button>
+                            <button id="scenario-debt-trap-cycle" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded transition text-sm">
+                                🔄 Debt Trap Cycle Analysis
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2">
+                            Pre-configured scenarios for focused research on specific predatory lending tactics
+                        </p>
                     </div>
                 </div>
             </section>
 
             <!-- Container for the live simulation output and input -->
-            <section id="simContainer" aria-labelledby="simulation-heading" class="mb-6">
+            <section id="simContainer" aria-labelledby="simulation-heading" class="mb-8">
                 <h2 id="simulation-heading" class="sr-only">Simulation Output</h2>
-                <pre id="output" class="bg-black p-4 rounded-t-lg min-h-[300px] max-h-[60vh] overflow-y-auto whitespace-pre-wrap break-words font-mono text-sm">Welcome! Please configure your simulation and select a mode to begin.</pre>
+                <pre id="output" class="bg-black p-6 rounded-t-lg min-h-[350px] max-h-[60vh] overflow-y-auto whitespace-pre-wrap break-words font-mono text-sm border-2 border-gray-700 border-b-0">Welcome! Please configure your simulation and select a mode to begin.</pre>
                 <div id="input-area" style="display: none;" class="flex">
-                    <input type="text" id="user-input" placeholder="Enter your response here..." class="flex-grow bg-gray-700 border-t-0 border-gray-600 p-3 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <button id="submit-input" class="bg-purple-600 hover:bg-purple-500 text-white font-bold p-3 rounded-br-lg">Submit</button>
+                    <input type="text" id="user-input" placeholder="Enter your response here..." class="flex-grow bg-gray-800 border-2 border-gray-700 p-3 rounded-bl-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <button id="submit-input" class="bg-purple-600 hover:bg-purple-500 text-white font-bold p-3 rounded-br-lg transition">Submit</button>
                 </div>
             </section>
 
             <!-- Hidden pane for end-of-session reflection, to be populated by reflection.js -->
-            <section id="reflectionPane" x-data="{ tab: 'behavior' }" aria-labelledby="reflection-heading" class="hidden mt-8 p-6 bg-gray-800 rounded-lg shadow-lg">
-                <h2 id="reflection-heading" class="text-xl font-semibold text-center text-purple-300 mb-4">Ethical Reflection & Analysis</h2>
+            <section id="reflectionPane" x-data="{ tab: 'behavior' }" aria-labelledby="reflection-heading" class="hidden mt-10 p-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
+                <h2 id="reflection-heading" class="text-2xl font-semibold text-center text-purple-300 mb-6">Ethical Reflection & Analysis</h2>
 
                 <!-- Tab Navigation -->
-                <div class="border-b border-gray-700">
+                <div class="border-b border-gray-600">
                     <nav class="-mb-px flex justify-center space-x-8" aria-label="Tabs">
-                        <button @click="tab = 'behavior'" :class="{ 'border-purple-400 text-purple-300': tab === 'behavior', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'behavior' }" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-base focus:outline-none">
+                        <button @click="tab = 'behavior'" :class="{ 'border-purple-400 text-purple-300': tab === 'behavior', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'behavior' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base focus:outline-none transition-colors">
                             Behavioral Analysis
                         </button>
-                        <button @click="tab = 'ethics'" :class="{ 'border-purple-400 text-purple-300': tab === 'ethics', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'ethics' }" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-base focus:outline-none">
+                        <button @click="tab = 'ethics'" :class="{ 'border-purple-400 text-purple-300': tab === 'ethics', 'border-transparent text-gray-500 hover:text-gray-300 hover:border-gray-400': tab !== 'ethics' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base focus:outline-none transition-colors">
                             Ethical Report
                         </button>
                     </nav>
                 </div>
 
-                <div id="reflection-content" class="mt-6 space-y-4">
+                <div id="reflection-content" class="mt-6 space-y-6">
                     <!-- Always visible: Consent Score -->
-                    <div class="p-4 bg-gray-700 rounded">
+                    <div class="p-4 bg-gray-700 rounded-lg">
                         <h3 class="font-bold text-lg">Informed Consent Score:</h3>
-                        <div class="w-full bg-gray-600 rounded-full h-4 mt-2">
-                            <div id="consent-bar" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                        <div class="w-full bg-gray-600 rounded-full h-5 mt-2">
+                            <div id="consent-bar" class="bg-green-500 h-5 rounded-full transition-all duration-500" style="width: 0%;"></div>
                         </div>
                     </div>
 
                     <!-- Tab Panels -->
-                    <div x-show="tab === 'behavior'" id="behaviorSummary" class="p-4 bg-gray-700 rounded">
+                    <div x-show="tab === 'behavior'" id="behaviorSummary" class="p-5 bg-gray-700 rounded-lg">
                         <p>Awaiting session data...</p>
                     </div>
-                    <div x-show="tab === 'ethics'" id="autonomyScore" class="p-4 bg-gray-700 rounded">
+                    <div x-show="tab === 'ethics'" id="autonomyScore" class="p-5 bg-gray-700 rounded-lg">
                         <p>Calculating...</p>
                     </div>
                     
                     <!-- Ghost message is separate -->
-                    <div id="ghostMessage" class="p-4 bg-gray-900 border border-dashed border-red-500 rounded">
-                        <h3 class="font-bold text-lg text-red-400">A Voice in the Machine (from ghost.js):</h3>
-                        <p class="italic">Ghost's commentary appears in the main simulation console above.</p>
+                    <div id="ghostMessage" class="p-4 bg-gray-900 border border-dashed border-red-500 rounded-lg">
+                        <h3 class="font-bold text-lg text-red-400">A Voice in the Machine:</h3>
+                        <p class="italic mt-1">Ghost's commentary appears in the main simulation console above.</p>
                     </div>
                 </div>
 
-                <div class="mt-6 text-center">
-                    <button id="emailReportBtn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded">
-                        Generate Follow-up Email Summary
+                <div class="mt-8 text-center">
+                    <button id="emailReportBtn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">
+                        Generate Follow-up Email
                     </button>
-                    <button id="downloadLogBtn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded ml-4">
+                    <button id="downloadLogBtn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg ml-4 transition-transform transform hover:scale-105">
                         Download Session Log (JSON)
                     </button>
-                    <button id="replayBtn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded ml-4">
+                    <button id="replayBtn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg ml-4 transition-transform transform hover:scale-105">
                         Replay Simulation
                     </button>
                 </div>
             </section>
         </main>
 
-        <footer role="contentinfo" class="text-center mt-12 text-gray-500 text-sm">
+        <footer role="contentinfo" class="text-center mt-16 text-gray-500 text-sm">
             <p>This was a simulation. These were not real choices.</p>
-            <p>Lotus + Autonomy Theater Capstone Project</p>
+            <p class="mt-1">Lotus + Autonomy Theater Capstone Project</p>
         </footer>
     </div>
 

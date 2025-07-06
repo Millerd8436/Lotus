@@ -1,0 +1,298 @@
+/**
+ * test_comprehensive_features.html - Test Page for New Dark Pattern Features
+ * 
+ * This file tests all the new features from the exploitative interface guide
+ * without requiring the full application to be running.
+ */
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotus Dark Pattern Feature Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .dark-pattern-flag {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .severity-low { background-color: #4CAF50; }
+        .severity-moderate { background-color: #FF9800; }
+        .severity-high { background-color: #FF5722; }
+        .severity-extreme { background-color: #F44336; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">🧪 Lotus Dark Pattern Feature Test</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- APR Calculator Test -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4">📊 APR Calculator Test</h2>
+                <div id="apr-test-results" class="space-y-2"></div>
+                <button id="test-apr" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded mt-4">Test APR Calculations</button>
+            </div>
+            
+            <!-- Dark Pattern Detection Test -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4">🚩 Dark Pattern Detection Test</h2>
+                <div id="pattern-test-results" class="space-y-2"></div>
+                <button id="test-patterns" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded mt-4">Test Pattern Detection</button>
+            </div>
+            
+            <!-- Legal Loophole Test -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4">⚖️ Legal Loophole Test</h2>
+                <div id="loophole-test-results" class="space-y-2"></div>
+                <button id="test-loopholes" class="bg-yellow-600 hover:bg-yellow-500 px-4 py-2 rounded mt-4">Test Loophole Index</button>
+            </div>
+            
+            <!-- Dark Pattern Engine Test -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4">🎭 Dark Pattern Engine Test</h2>
+                <div id="engine-test-results" class="space-y-2"></div>
+                <button id="test-engine" class="bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded mt-4">Test Full Engine</button>
+            </div>
+            
+        </div>
+        
+        <!-- Full Integration Test -->
+        <div class="bg-gray-800 p-6 rounded-lg mt-6">
+            <h2 class="text-xl font-bold mb-4">🔬 Full Integration Test</h2>
+            <div id="integration-test-results" class="space-y-2 mb-4"></div>
+            <button id="test-integration" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded">Run Full Integration Test</button>
+        </div>
+        
+        <!-- Test Results Summary -->
+        <div class="bg-gray-800 p-6 rounded-lg mt-6">
+            <h2 class="text-xl font-bold mb-4">📋 Test Results Summary</h2>
+            <div id="test-summary" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import all our new modules
+        import { DarkPatternEngine } from './ui_components/darkPatternEngine.js';
+        import { APRCalculator } from './ui_components/aprCalculator.js';
+        import { DarkPatternFlags } from './ui_components/darkPatternFlags.js';
+        import { LegalLoopholeIndex } from './ui_components/legalLoopholeIndex.js';
+
+        // Initialize components
+        const darkPatternEngine = new DarkPatternEngine();
+        const aprCalculator = new APRCalculator();
+        const darkPatternFlags = new DarkPatternFlags();
+        const legalLoopholeIndex = new LegalLoopholeIndex();
+
+        // Test results tracker
+        const testResults = {
+            aprCalculator: false,
+            darkPatternFlags: false,
+            legalLoopholeIndex: false,
+            darkPatternEngine: false,
+            integration: false
+        };
+
+        // Test APR Calculator
+        document.getElementById('test-apr').addEventListener('click', () => {
+            const results = document.getElementById('apr-test-results');
+            results.innerHTML = '<div class="text-yellow-300">Testing APR calculations...</div>';
+            
+            try {
+                // Test flat fee to APR conversion
+                const test1 = aprCalculator.convertFlatFeeToAPR(15, 100, 14);
+                const test2 = aprCalculator.convertTipToAPR(5, 100, 14);
+                const test3 = aprCalculator.convertExpressFeeToAPR(25, 200, 30);
+                
+                // Test comparisons
+                const alternatives = aprCalculator.compareToAlternatives(391);
+                
+                results.innerHTML = `
+                    <div class="text-green-300">✅ APR Calculator Tests Passed</div>
+                    <div class="text-sm">$15 fee on $100 (14 days) = ${test1.apr}% APR</div>
+                    <div class="text-sm">$5 tip on $100 (14 days) = ${test2.apr}% APR</div>
+                    <div class="text-sm">$25 express fee on $200 (30 days) = ${test3.apr}% APR</div>
+                    <div class="text-sm">${alternatives.length} alternative comparisons generated</div>
+                `;
+                
+                testResults.aprCalculator = true;
+                updateSummary();
+            } catch (error) {
+                results.innerHTML = `<div class="text-red-300">❌ APR Calculator Test Failed: ${error.message}</div>`;
+            }
+        });
+
+        // Test Dark Pattern Detection
+        document.getElementById('test-patterns').addEventListener('click', () => {
+            const results = document.getElementById('pattern-test-results');
+            results.innerHTML = '<div class="text-yellow-300">Testing pattern detection...</div>';
+            
+            try {
+                // Test content analysis
+                const testContent = "URGENT! Limited time offer! Only 3 spots left! Get cash now with our express processing fee!";
+                const patterns = darkPatternFlags.analyzeContent(testContent);
+                
+                // Test detection report
+                const report = darkPatternFlags.generateDetectionReport();
+                
+                results.innerHTML = `
+                    <div class="text-green-300">✅ Dark Pattern Detection Tests Passed</div>
+                    <div class="text-sm">${patterns.length} patterns detected in test content</div>
+                    <div class="text-sm">Risk score: ${report.riskScore}/100</div>
+                    <div class="text-sm">Detection rules working: ${Object.keys(darkPatternFlags.detectionRules).length}</div>
+                `;
+                
+                testResults.darkPatternFlags = true;
+                updateSummary();
+            } catch (error) {
+                results.innerHTML = `<div class="text-red-300">❌ Pattern Detection Test Failed: ${error.message}</div>`;
+            }
+        });
+
+        // Test Legal Loophole Index
+        document.getElementById('test-loopholes').addEventListener('click', () => {
+            const results = document.getElementById('loophole-test-results');
+            results.innerHTML = '<div class="text-yellow-300">Testing loophole index...</div>';
+            
+            try {
+                // Test loophole logging
+                legalLoopholeIndex.logLoophole('flatFeeAvoidance', { test: true });
+                legalLoopholeIndex.logLoophole('tribalSovereignty', { test: true });
+                
+                // Test report generation
+                const report = legalLoopholeIndex.generateLoopholeReport();
+                
+                // Test search functionality
+                const searchResults = legalLoopholeIndex.searchLoopholes('tribal');
+                
+                results.innerHTML = `
+                    <div class="text-green-300">✅ Legal Loophole Index Tests Passed</div>
+                    <div class="text-sm">${report.summary.totalLoopholesUsed} loopholes logged</div>
+                    <div class="text-sm">${Object.keys(legalLoopholeIndex.knownLoopholes).length} known loopholes in database</div>
+                    <div class="text-sm">${searchResults.length} results for 'tribal' search</div>
+                    <div class="text-sm">Risk level: ${report.summary.riskProfile.riskLevel}</div>
+                `;
+                
+                testResults.legalLoopholeIndex = true;
+                updateSummary();
+            } catch (error) {
+                results.innerHTML = `<div class="text-red-300">❌ Loophole Index Test Failed: ${error.message}</div>`;
+            }
+        });
+
+        // Test Dark Pattern Engine
+        document.getElementById('test-engine').addEventListener('click', async () => {
+            const results = document.getElementById('engine-test-results');
+            results.innerHTML = '<div class="text-yellow-300">Testing dark pattern engine...</div>';
+            
+            try {
+                // Create mock session
+                const mockSession = {
+                    tagDarkPattern: (pattern) => console.log(`Tagged: ${pattern}`),
+                    sessionId: 'test-session'
+                };
+                
+                // Test individual patterns
+                const feeObfuscation = await darkPatternEngine.implementFeeObfuscation(mockSession, 100, 14);
+                const consentTrap = await darkPatternEngine.implementConsentWithoutContext(mockSession);
+                const defaultBias = await darkPatternEngine.implementDefaultBias(mockSession);
+                
+                // Test comprehensive deployment
+                const comprehensive = await darkPatternEngine.deployComprehensiveDeception(mockSession, {});
+                
+                results.innerHTML = `
+                    <div class="text-green-300">✅ Dark Pattern Engine Tests Passed</div>
+                    <div class="text-sm">Fee obfuscation: ${feeObfuscation.obfuscationLevel}</div>
+                    <div class="text-sm">Consent trap: ${consentTrap.hiddenTerms.length} hidden terms</div>
+                    <div class="text-sm">Default bias: ${defaultBias.preCheckedOptions.length} pre-checked options</div>
+                    <div class="text-sm">Comprehensive patterns: ${comprehensive.length} deployed</div>
+                `;
+                
+                testResults.darkPatternEngine = true;
+                updateSummary();
+            } catch (error) {
+                results.innerHTML = `<div class="text-red-300">❌ Dark Pattern Engine Test Failed: ${error.message}</div>`;
+            }
+        });
+
+        // Test Full Integration
+        document.getElementById('test-integration').addEventListener('click', async () => {
+            const results = document.getElementById('integration-test-results');
+            results.innerHTML = '<div class="text-yellow-300">Running full integration test...</div>';
+            
+            try {
+                // Create comprehensive mock session
+                const mockSession = {
+                    tagDarkPattern: (pattern, data) => console.log(`Tagged: ${pattern}`, data),
+                    sessionId: 'integration-test-' + Date.now(),
+                    amount: 100,
+                    termDays: 14,
+                    fee: 15,
+                    darkPatternsEmployed: [],
+                    usuryLoopholesEmployed: []
+                };
+                
+                // Test all components working together
+                const patterns = await darkPatternEngine.deployComprehensiveDeception(mockSession, {});
+                const aprCalc = aprCalculator.convertFlatFeeToAPR(15, 100, 14);
+                const flags = darkPatternFlags.analyzeContent("URGENT limited time express fee processing!");
+                const loopholes = legalLoopholeIndex.generateLoopholeReport();
+                
+                // Test cross-component integration
+                const trapReport = darkPatternEngine.generateTrapReport(mockSession);
+                const detectionReport = darkPatternFlags.generateDetectionReport();
+                
+                results.innerHTML = `
+                    <div class="text-green-300">✅ Full Integration Test Passed</div>
+                    <div class="text-sm">Dark patterns deployed: ${patterns.length}</div>
+                    <div class="text-sm">APR calculated: ${aprCalc.apr}%</div>
+                    <div class="text-sm">Flags detected: ${flags.length}</div>
+                    <div class="text-sm">Manipulation level: ${trapReport.manipulationLevel}</div>
+                    <div class="text-sm">Risk score: ${detectionReport.riskScore}</div>
+                `;
+                
+                testResults.integration = true;
+                updateSummary();
+            } catch (error) {
+                results.innerHTML = `<div class="text-red-300">❌ Integration Test Failed: ${error.message}</div>`;
+            }
+        });
+
+        // Update test summary
+        function updateSummary() {
+            const summary = document.getElementById('test-summary');
+            const totalTests = Object.keys(testResults).length;
+            const passedTests = Object.values(testResults).filter(Boolean).length;
+            
+            let statusColor = 'text-red-300';
+            if (passedTests === totalTests) statusColor = 'text-green-300';
+            else if (passedTests > 0) statusColor = 'text-yellow-300';
+            
+            summary.innerHTML = `
+                <div class="${statusColor} text-lg font-bold">
+                    Test Status: ${passedTests}/${totalTests} components passed
+                </div>
+                <div class="mt-2 space-y-1">
+                    ${Object.entries(testResults).map(([test, passed]) => 
+                        `<div>${passed ? '✅' : '⏳'} ${test}</div>`
+                    ).join('')}
+                </div>
+                ${passedTests === totalTests ? 
+                    '<div class="text-green-300 mt-4 font-bold">🎉 All new dark pattern features are working correctly!</div>' : 
+                    '<div class="text-yellow-300 mt-4">⚠️ Some tests still need to be run or have failed.</div>'
+                }
+            `;
+        }
+
+        // Initialize summary
+        updateSummary();
+    </script>
+</body>
+</html>
