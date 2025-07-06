@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickCash Solutions - Get Cash Fast! Instant Approval | Educational Simulation</title>
+    <meta name="description" content="Educational simulation: Experience authentic payday lending interfaces while learning about financial ethics, behavioral psychology, and predatory lending practices">
+    
+    <!-- Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <!-- Google Fonts for professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Inter', 'Roboto', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .cash-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .ethical-gradient { background: linear-gradient(135deg, #4f46e5 0%, #059669 100%); }
+        .exploitative-gradient { background: linear-gradient(135deg, #dc2626 0%, #7c2d12 100%); }
+        .urgent-pulse { animation: pulse-urgent 1.5s infinite; }
+        .pulse-glow { animation: pulse-glow 2s ease-in-out infinite alternate; }
+        .glass-effect { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+        }
+        @keyframes pulse-urgent {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+            to { box-shadow: 0 0 30px rgba(239, 68, 68, 0.8); }
+        }
+        .slide-in { animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .educational-overlay {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .educational-overlay.open {
+            right: 0;
+        }
+        .educational-toggle {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+        .educational-toggle:hover {
+            background: #475569;
+            transform: translateY(-50%) scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- Educational Mode Toggle -->
+    <div id="educational-toggle" class="educational-toggle" onclick="toggleEducationalMode()">
+        <i class="fas fa-graduation-cap text-xl"></i>
+    </div>
+
+    <!-- Educational Overlay Panel -->
+    <div id="educational-overlay" class="educational-overlay">
+        <div class="p-6 text-white">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-blue-300">
+                    <i class="fas fa-university mr-2"></i>Educational Dashboard
+                </h3>
+                <button onclick="toggleEducationalMode()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Learning Progress -->
+            <div class="mb-6 p-4 bg-slate-800 rounded-lg">
+                <h4 class="font-semibold text-blue-200 mb-3">Learning Progress</h4>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span>Behavioral Psychology</span>
+                        <span id="psych-progress">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div id="psych-bar" class="bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>Financial Ethics</span>
+                        <span id="ethics-progress">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div id="ethics-bar" class="bg-green-500 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span>Predatory Tactics</span>
+                        <span id="tactics-progress">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div id="tactics-bar" class="bg-red-500 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-time Insights -->
+            <div class="mb-6 p-4 bg-slate-800 rounded-lg">
+                <h4 class="font-semibold text-yellow-200 mb-3">
+                    <i class="fas fa-lightbulb mr-2"></i>Current Insights
+                </h4>
+                <div id="current-insights" class="text-sm text-gray-300">
+                    <p>🎯 Notice the urgent language and time pressure tactics</p>
+                    <p>💰 Observe how fees and interest rates are presented</p>
+                    <p>🧠 Pay attention to emotional manipulation techniques</p>
+                </div>
+            </div>
+
+            <!-- Dark Pattern Detection -->
+            <div class="mb-6 p-4 bg-slate-800 rounded-lg">
+                <h4 class="font-semibold text-red-200 mb-3">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Dark Patterns Detected
+                </h4>
+                <div id="dark-patterns" class="space-y-2 text-sm">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Educational Controls -->
+            <div class="space-y-4">
+                <button id="take-quiz" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                    <i class="fas fa-clipboard-question mr-2"></i>Take Assessment
+                </button>
+                <button id="view-analytics" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                    <i class="fas fa-chart-bar mr-2"></i>View Analytics
+                </button>
+                <button id="export-data" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export Research Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Navigation Header -->
+    <nav class="bg-white shadow-lg border-b-4 border-green-500 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-dollar-sign text-green-600 text-2xl"></i>
+                        <span class="text-2xl font-bold text-gray-800">QuickCash</span>
+                        <span class="text-lg text-green-600 font-semibold">Solutions</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-1 text-xs bg-green-100 px-2 py-1 rounded-full">
+                        <i class="fas fa-shield-alt text-green-600"></i>
+                        <span class="text-green-700 font-medium">SSL Secured</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-6 text-sm">
+                    <a href="#rates" class="text-gray-600 hover:text-green-600 font-medium transition-colors">Rates</a>
+                    <a href="#how-it-works" class="text-gray-600 hover:text-green-600 font-medium transition-colors">How It Works</a>
+                    <a href="#faq" class="text-gray-600 hover:text-green-600 font-medium transition-colors">FAQ</a>
+                    <div class="flex items-center space-x-2 text-green-600 font-semibold">
+                        <i class="fas fa-phone"></i>
+                        <span>1-800-QUICKCASH</span>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="text-gray-600 hover:text-green-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Urgency Banner (Exploitative Mode) -->
+    <div id="urgency-banner" class="hidden cash-green text-white text-center py-4 urgent-pulse shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <p class="text-lg font-bold">
+                🔥 LIMITED TIME: Get $1,500 in 15 MINUTES! <span id="countdown-timer" class="text-yellow-300">04:59</span> LEFT! 🔥
+            </p>
+            <p class="text-sm mt-1 opacity-90">*Subject to approval. Don't miss out!</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                Get <span class="text-green-600">Cash Fast</span> When You Need It Most
+            </h1>
+            <p class="text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
+                Quick approval, fast funding, and trusted by thousands. Get up to $1,500 deposited in your account today.
+            </p>
+            
+            <!-- Trust Indicators -->
+            <div class="flex justify-center items-center space-x-8 text-sm text-gray-500 mb-8">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clock text-green-500"></i>
+                    <span>15-Minute Approval</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-users text-green-500"></i>
+                    <span>250K+ Happy Customers</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-star text-yellow-500"></i>
+                    <span>4.8/5 Rating</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-lock text-green-500"></i>
+                    <span>Bank-Level Security</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two-Column Layout -->
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+            
+            <!-- Left Column: Loan Application Form -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Get Started in 3 Easy Steps</h2>
+                    <p class="text-gray-600">No paperwork, no waiting, no hassle</p>
+                </div>
+
+                <!-- Step Indicators -->
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                        <span class="ml-2 text-sm font-medium text-gray-700">Basic Info</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                        <span class="ml-2 text-sm font-medium text-gray-500">Verify</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                        <span class="ml-2 text-sm font-medium text-gray-500">Get Cash</span>
+                    </div>
+                </div>
+
+                <!-- Loan Amount Selection -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">How much do you need?</label>
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <button class="amount-btn bg-gray-100 hover:bg-green-100 border-2 border-gray-200 hover:border-green-400 rounded-lg p-4 text-center transition-all" data-amount="300">
+                            <div class="text-2xl font-bold text-gray-800">$300</div>
+                            <div class="text-xs text-gray-500">Popular</div>
+                        </button>
+                        <button class="amount-btn bg-gray-100 hover:bg-green-100 border-2 border-gray-200 hover:border-green-400 rounded-lg p-4 text-center transition-all" data-amount="500">
+                            <div class="text-2xl font-bold text-gray-800">$500</div>
+                            <div class="text-xs text-gray-500">Most chosen</div>
+                        </button>
+                        <button class="amount-btn bg-gray-100 hover:bg-green-100 border-2 border-gray-200 hover:border-green-400 rounded-lg p-4 text-center transition-all" data-amount="1000">
+                            <div class="text-2xl font-bold text-gray-800">$1,000</div>
+                            <div class="text-xs text-gray-500">Max amount</div>
+                        </button>
+                    </div>
+                    <input type="range" id="amount-slider" min="100" max="1500" value="500" step="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-sm text-gray-500 mt-2">
+                        <span>$100</span>
+                        <span id="selected-amount" class="font-bold text-green-600">$500</span>
+                        <span>$1,500</span>
+                    </div>
+                </div>
+
+                <!-- State Selection -->
+                <div class="mb-6">
+                    <label for="state-select" class="block text-sm font-semibold text-gray-700 mb-2">Your State</label>
+                    <select id="state-select" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                        <option value="">Select your state</option>
+                        <option value="CA">California</option>
+                        <option value="TX">Texas</option>
+                        <option value="FL">Florida</option>
+                        <option value="NY">New York</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="IL">Illinois</option>
+                        <option value="OH">Ohio</option>
+                        <option value="GA">Georgia</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="MI">Michigan</option>
+                    </select>
+                </div>
+
+                <!-- Simulation Mode Selector -->
+                <div class="mb-8 p-4 bg-gray-50 rounded-lg border">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Choose Your Experience</label>
+                    <div class="space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="simulation-mode" value="ethical" class="text-green-600 focus:ring-green-500">
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-gray-800">Regulated & Transparent</div>
+                                <div class="text-xs text-gray-500">Experience ethical lending practices with full disclosure</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="simulation-mode" value="exploitative" class="text-red-600 focus:ring-red-500">
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-gray-800">Predatory Tactics</div>
+                                <div class="text-xs text-gray-500">Experience common predatory lending practices (Educational)</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="space-y-4">
+                    <button id="start-regulated" class="w-full ethical-gradient text-white font-bold py-4 px-6 rounded-xl text-lg transition-all transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-shield-check mr-2"></i>
+                        Start Ethical Simulation
+                    </button>
+                    <button id="start-exploit" class="w-full exploitative-gradient text-white font-bold py-4 px-6 rounded-xl text-lg transition-all transform hover:scale-105 shadow-lg pulse-glow">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Experience Predatory Tactics
+                    </button>
+                </div>
+
+                <!-- Fine Print -->
+                <p class="text-xs text-gray-500 mt-6 text-center leading-relaxed">
+                    This is an educational simulation. By proceeding, you agree to participate in a research study about payday lending practices. Your interactions will be anonymously recorded for academic research purposes.
+                </p>
+            </div>
+
+            <!-- Right Column: Information & Trust Building -->
+            <div class="space-y-8">
+                
+                <!-- Benefits Section -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Why Choose QuickCash Solutions?</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-bolt text-green-500 text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Lightning Fast</h4>
+                                <p class="text-sm text-gray-600">Get approved in minutes, not hours. Funds in your account same day.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-user-check text-green-500 text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">No Credit Check</h4>
+                                <p class="text-sm text-gray-600">Bad credit? No problem. We focus on your current situation.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-mobile-alt text-green-500 text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">100% Online</h4>
+                                <p class="text-sm text-gray-600">Complete everything from your phone. No store visits required.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-handshake text-green-500 text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Trusted Partner</h4>
+                                <p class="text-sm text-gray-600">Licensed and regulated. Member of CFSA industry association.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonials -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">What Our Customers Say</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <p class="text-sm text-gray-700 italic">"I needed $400 for car repairs and got approved in 10 minutes. Saved my job!"</p>
+                            <p class="text-xs text-gray-500 mt-2">- Sarah M., Phoenix AZ</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <p class="text-sm text-gray-700 italic">"Fast, easy, and exactly what I needed for my emergency."</p>
+                            <p class="text-xs text-gray-500 mt-2">- Mike R., Dallas TX</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Educational Notice -->
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-info-circle text-blue-500 text-lg mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-blue-800 mb-2">Educational Simulation</h4>
+                            <p class="text-sm text-blue-700 leading-relaxed">
+                                This platform demonstrates real payday lending practices for educational purposes. 
+                                Experience both ethical and predatory lending approaches while learning about 
+                                financial psychology, consumer protection, and loan regulations.
+                            </p>
+                            <button onclick="toggleEducationalMode()" class="mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                Open Learning Dashboard →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulation Output Area -->
+        <div id="simulation-container" class="hidden mt-12">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Loan Application Process</h3>
+                    <div class="flex items-center space-x-4">
+                        <button id="reset-simulation" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-redo mr-2"></i>Reset
+                        </button>
+                        <button id="export-session" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                            <i class="fas fa-download mr-2"></i>Export Data
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="output" class="font-mono text-sm bg-gray-900 text-green-400 p-6 rounded-lg min-h-96 overflow-y-auto">
+                    <!-- Simulation output will appear here -->
+                </div>
+
+                <!-- Real-time Analytics Dashboard -->
+                <div class="mt-8 grid md:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-gray-700 mb-2">Cost Analysis</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Principal:</span>
+                                <span id="principal-amount" class="font-mono">$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Total Fees:</span>
+                                <span id="total-fees" class="font-mono text-red-600">$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>APR:</span>
+                                <span id="effective-apr" class="font-mono text-red-600">0%</span>
+                            </div>
+                            <div class="flex justify-between font-semibold border-t pt-2">
+                                <span>Total Repayment:</span>
+                                <span id="total-repayment" class="font-mono">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-gray-700 mb-2">Dark Patterns</h4>
+                        <div id="dark-pattern-counter" class="space-y-2 text-sm">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-gray-700 mb-2">Decision Points</h4>
+                        <div id="decision-tracker" class="space-y-2 text-sm">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        let educationalMode = false;
+        let currentSimulation = null;
+
+        function toggleEducationalMode() {
+            educationalMode = !educationalMode;
+            const overlay = document.getElementById('educational-overlay');
+            
+            if (educationalMode) {
+                overlay.classList.add('open');
+            } else {
+                overlay.classList.remove('open');
+            }
+        }
+
+        // Amount slider functionality
+        document.getElementById('amount-slider').addEventListener('input', function(e) {
+            document.getElementById('selected-amount').textContent = '$' + e.target.value;
+        });
+
+        // Amount button selection
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.amount-btn').forEach(b => {
+                    b.classList.remove('bg-green-100', 'border-green-400');
+                    b.classList.add('bg-gray-100', 'border-gray-200');
+                });
+                this.classList.remove('bg-gray-100', 'border-gray-200');
+                this.classList.add('bg-green-100', 'border-green-400');
+                
+                const amount = this.dataset.amount;
+                document.getElementById('amount-slider').value = amount;
+                document.getElementById('selected-amount').textContent = '$' + amount;
+            });
+        });
+
+        // Simulation mode selection
+        document.querySelectorAll('input[name="simulation-mode"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const mode = this.value;
+                if (mode === 'exploitative') {
+                    document.getElementById('urgency-banner').classList.remove('hidden');
+                    startCountdown();
+                } else {
+                    document.getElementById('urgency-banner').classList.add('hidden');
+                }
+            });
+        });
+
+        function startCountdown() {
+            let timeLeft = 299; // 4:59
+            const timer = document.getElementById('countdown-timer');
+            
+            const countdown = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    timer.textContent = "EXPIRED";
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        // Update insights based on user actions
+        function updateEducationalInsights(action, data) {
+            if (educationalMode) {
+                const insights = document.getElementById('current-insights');
+                // Add real-time educational content based on user actions
+                // This will be connected to the educational modules
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up event listeners and initialize educational systems
+            console.log('QuickCash Educational Simulation initialized');
+        });
+    </script>
+
+    <!-- Load the main application module -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>

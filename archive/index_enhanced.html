@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickCash Solutions - Get Cash Fast! Instant Approval | Educational Simulation</title>
+    <meta name="description" content="Interactive educational simulation of predatory payday lending practices. Experience realistic interface while learning about financial ethics and consumer protection.">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Enhanced Professional Styling -->
+    <style>
+        body { 
+            font-family: 'Inter', 'Roboto', sans-serif; 
+            scroll-behavior: smooth;
+        }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .cash-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .danger-red { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
+        .education-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        
+        .urgent-pulse { animation: pulse-urgent 1.5s infinite; }
+        @keyframes pulse-urgent {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        .slide-in { animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .glow-effect:hover {
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.6);
+        }
+        
+        .educational-overlay {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .dark-pattern-highlight {
+            outline: 2px dashed #ef4444;
+            outline-offset: 2px;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .ethical-highlight {
+            outline: 2px solid #10b981;
+            outline-offset: 2px;
+            background: rgba(16, 185, 129, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- Educational Mode Toggle (Floating) -->
+    <div id="educational-toggle" class="fixed top-4 left-4 z-50 bg-blue-600 text-white p-3 rounded-lg shadow-lg">
+        <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="checkbox" id="enable-educational-mode" class="sr-only">
+            <div class="relative">
+                <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+                <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+            </div>
+            <span class="text-sm font-medium">🎓 Educational Mode</span>
+        </label>
+    </div>
+
+    <!-- Simulation Intensity Control -->
+    <div id="intensity-control" class="fixed top-4 right-4 z-50 bg-purple-600 text-white p-3 rounded-lg shadow-lg">
+        <div class="space-y-2">
+            <span class="text-sm font-medium block">Simulation Intensity:</span>
+            <div class="flex space-x-2 text-xs">
+                <label class="flex items-center">
+                    <input type="radio" name="simulation-intensity" value="basic" class="mr-1" checked>
+                    Basic
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="simulation-intensity" value="comprehensive" class="mr-1">
+                    Full
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="simulation-intensity" value="research" class="mr-1">
+                    Research
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Navigation Header -->
+    <nav class="bg-white shadow-lg border-b-4 border-green-500 sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-dollar-sign text-green-600 text-2xl"></i>
+                        <span class="text-2xl font-bold text-gray-800">QuickCash</span>
+                        <span class="text-lg text-green-600 font-semibold">Solutions</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-1 text-xs bg-green-100 px-2 py-1 rounded-full">
+                        <i class="fas fa-shield-alt text-green-600"></i>
+                        <span class="text-green-700 font-medium">SSL Secured</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-6 text-sm">
+                    <a href="#how-it-works" class="text-gray-600 hover:text-green-600 font-medium">How It Works</a>
+                    <a href="#rates" class="text-gray-600 hover:text-green-600 font-medium">Rates & Terms</a>
+                    <a href="#support" class="text-gray-600 hover:text-green-600 font-medium">Support</a>
+                    <div class="flex items-center space-x-2 text-green-600">
+                        <i class="fas fa-phone"></i>
+                        <span class="font-semibold">1-800-QUICK-$$</span>
+                    </div>
+                </div>
+                
+                <div class="md:hidden">
+                    <button class="text-gray-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Load Application Logic -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
