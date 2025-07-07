@@ -793,4 +793,27 @@ window.switchToMode = switchToMode;
 window.initializePredatoryFeatures = initializePredatoryFeatures;
 window.initializeEthicalFeatures = initializeEthicalFeatures;
 
+// Auto-initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing Lotus App...');
+    window.LotusApp.initialize().then(() => {
+        console.log('Lotus App initialization complete');
+        
+        // Hide loading screen
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => loadingScreen.style.display = 'none', 500);
+            }, 1000);
+        }
+        
+        // Initialize with saved mode or default to ethical
+        const savedMode = localStorage.getItem('lotus-mode') || 'ethical';
+        setMode(savedMode);
+    }).catch(error => {
+        console.error('Failed to initialize Lotus App:', error);
+    });
+});
+
 export { SimulationController, GhostModeController };
