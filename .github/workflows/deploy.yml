@@ -32,21 +32,29 @@ jobs:
         echo "Checking HTML files..."
         # Basic HTML validation
         grep -q "<!DOCTYPE html>" index.html && echo "✅ index.html has DOCTYPE"
-        grep -q "<!DOCTYPE html>" index_professional.html && echo "✅ index_professional.html has DOCTYPE"
+        grep -q "<!DOCTYPE html>" apply.html && echo "✅ apply.html has DOCTYPE"
+        grep -q "<!DOCTYPE html>" reflect.html && echo "✅ reflect.html has DOCTYPE"
         
     - name: Check file structure
       run: |
         echo "Verifying project structure..."
         test -f index.html && echo "✅ index.html exists"
-        test -f index_professional.html && echo "✅ index_professional.html exists"
+        test -f apply.html && echo "✅ apply.html exists"
+        test -f reflect.html && echo "✅ reflect.html exists"
         test -f app.js && echo "✅ app.js exists"
-        test -f ui.js && echo "✅ ui.js exists"
-        test -f style.css && echo "✅ style.css exists"
-        test -d modules && echo "✅ modules/ directory exists"
-        test -d engine && echo "✅ engine/ directory exists"
-        test -d ui_components && echo "✅ ui_components/ directory exists"
-        test -d research && echo "✅ research/ directory exists"
-        test -f modules/lotus_core.js && echo "✅ modules/lotus_core.js exists"
+        test -f lotus_core.js && echo "✅ lotus_core.js exists"
+        test -f global.js && echo "✅ global.js exists"
+        test -f ui-components.js && echo "✅ ui-components.js exists"
+        test -f utils.js && echo "✅ utils.js exists"
+        test -f autonomy_theater.js && echo "✅ autonomy_theater.js exists"
+        test -d assets && echo "✅ assets/ directory exists"
+        test -d data && echo "✅ data/ directory exists"
+        test -f assets/styles/ethical.css && echo "✅ ethical.css exists"
+        test -f assets/styles/deceptive.css && echo "✅ deceptive.css exists"
+        test -f data/quiz_bank.json && echo "✅ quiz_bank.json exists"
+        test -f data/trap_scenarios.json && echo "✅ trap_scenarios.json exists"
+        test -f data/ui_config.json && echo "✅ ui_config.json exists"
+        test -f data/usury_laws.json && echo "✅ usury_laws.json exists"
         echo "🎉 All required files present"
 
   deploy:
