@@ -793,6 +793,158 @@ window.switchToMode = switchToMode;
 window.initializePredatoryFeatures = initializePredatoryFeatures;
 window.initializeEthicalFeatures = initializeEthicalFeatures;
 
+// Additional missing functions for HTML onclick handlers
+window.simulateDebtCycle = (mode = 'predatory') => {
+    console.log(`Simulating debt cycle in ${mode} mode`);
+    if (window.LotusApp?.simulation) {
+        return window.LotusApp.simulation.simulateDebtCycle(mode);
+    }
+    return null;
+};
+
+window.calculateComparison = () => {
+    console.log('Calculating loan comparison');
+    
+    // Get input values
+    const amount = parseFloat(document.getElementById('loan-amount')?.value || 500);
+    const term = parseInt(document.getElementById('loan-term')?.value || 14);
+    
+    // Calculate predatory loan
+    const predatoryFee = amount * 0.15; // 15% fee
+    const predatoryAPR = ((predatoryFee / amount) * (365 / term)) * 100;
+    const predatoryTotal = amount + predatoryFee;
+    
+    // Calculate ethical loan
+    const ethicalAPR = 36; // Federal credit union cap
+    const ethicalFee = (amount * (ethicalAPR / 100) * (term / 365));
+    const ethicalTotal = amount + ethicalFee;
+    
+    // Update comparison display
+    const comparisonResults = document.getElementById('comparison-results');
+    if (comparisonResults) {
+        comparisonResults.innerHTML = `
+            <div class="comparison-grid">
+                <div class="comparison-item predatory">
+                    <h4>Predatory Loan</h4>
+                    <p>Amount: ${formatCurrency(amount)}</p>
+                    <p>Fee: ${formatCurrency(predatoryFee)}</p>
+                    <p>APR: ${predatoryAPR.toFixed(0)}%</p>
+                    <p><strong>Total Cost: ${formatCurrency(predatoryTotal)}</strong></p>
+                </div>
+                <div class="comparison-item ethical">
+                    <h4>Ethical Alternative</h4>
+                    <p>Amount: ${formatCurrency(amount)}</p>
+                    <p>Interest: ${formatCurrency(ethicalFee)}</p>
+                    <p>APR: ${ethicalAPR}%</p>
+                    <p><strong>Total Cost: ${formatCurrency(ethicalTotal)}</strong></p>
+                </div>
+                <div class="savings-highlight">
+                    <h4>You Save: ${formatCurrency(predatoryTotal - ethicalTotal)}</h4>
+                </div>
+            </div>
+        `;
+        comparisonResults.style.display = 'block';
+    }
+    
+    return { predatory: predatoryTotal, ethical: ethicalTotal, savings: predatoryTotal - ethicalTotal };
+};
+
+window.hideEducationalOverlay = () => {
+    const overlay = document.querySelector('.educational-overlay');
+    if (overlay) {
+        overlay.style.display = 'none';
+    }
+};
+
+window.scrollToForm = () => {
+    const form = document.querySelector('.loan-application-form');
+    if (form) {
+        form.scrollIntoView({ behavior: 'smooth' });
+    }
+};
+
+window.handlePredatorySubmit = (event) => {
+    event.preventDefault();
+    console.log('Predatory form submitted - this is a simulation');
+    alert('This is an educational simulation. No real loan application has been submitted.');
+    return false;
+};
+
+// Quiz and reflection functions
+window.startEthicsQuiz = () => {
+    if (window.LotusApp?.quizEngine) {
+        window.LotusApp.quizEngine.startQuiz('ethics');
+    } else {
+        console.log('Quiz engine not initialized');
+    }
+};
+
+window.saveReflection = () => {
+    const reflection = document.getElementById('reflection-text')?.value || '';
+    localStorage.setItem('lotus-reflection', reflection);
+    alert('Reflection saved locally');
+};
+
+window.downloadReflection = () => {
+    const reflection = document.getElementById('reflection-text')?.value || 'No reflection entered';
+    const blob = new Blob([reflection], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'lotus-reflection.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+};
+
+// Educational module functions
+window.loadDarkPatternModule = () => {
+    console.log('Loading dark pattern educational module');
+    if (window.LotusApp?.educationalEngine) {
+        window.LotusApp.educationalEngine.loadModule('dark-patterns');
+    }
+};
+
+window.calculateAPRComparison = () => {
+    return window.calculateComparison();
+};
+
+window.runDebtCycleSimulation = () => {
+    return window.simulateDebtCycle('predatory');
+};
+
+// Quiz system functions
+window.selectAnswer = (answerIndex) => {
+    console.log(`Answer ${answerIndex} selected`);
+    window.selectedAnswer = answerIndex;
+    
+    // Highlight selected answer
+    document.querySelectorAll('.quiz-option').forEach((btn, idx) => {
+        btn.classList.toggle('selected', idx === answerIndex);
+    });
+};
+
+window.nextQuestion = () => {
+    console.log('Moving to next question');
+    if (window.LotusApp?.quizEngine) {
+        window.LotusApp.quizEngine.nextQuestion();
+    }
+};
+
+window.startQuiz = (quizType) => {
+    console.log(`Starting quiz: ${quizType}`);
+    if (window.LotusApp?.quizEngine) {
+        window.LotusApp.quizEngine.startQuiz(quizType);
+    }
+};
+
+// Utils namespace for backward compatibility
+window.LotusUtils = {
+    toggleGhostMode: () => window.toggleGhost(),
+    formatCurrency: formatCurrency,
+    calculateAPR: (principal, fee, term) => ((fee / principal) * (365 / term)) * 100
+};
+
+
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing Lotus App...');
