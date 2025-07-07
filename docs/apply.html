@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for a Loan - Lotus Lending</title>
+    <meta name="description" content="Apply for a payday loan - Fast approval, instant cash">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./assets/styles/deceptive.css">
+    <link rel="stylesheet" href="./assets/styles/ethical.css">
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Urgency Banner -->
+        <div id="urgency-banner" class="urgency-banner" data-deceptive="urgency">
+            <div class="urgency-content">
+                ⚡ FLASH SALE: Only <span id="spots-left">3</span> spots left! 
+                Offer expires in: <span id="countdown-timer">00:04:59</span>
+            </div>
+        </div>
+
+        <!-- Exploitative UI Containers -->
+        <div id="urgency-container"></div>
+        <div id="auto-renew-container"></div>
+        <div id="fee-display-container"></div>
+        <div id="live-feed-container"></div>
+        <div id="consent-bar-container"></div>
+
+        <!-- Enhanced Exploitative UI Containers -->
+        <div id="ach-container"></div>
+        <div id="echo-container"></div>
+        <div id="upsell-container"></div>
+        <div id="harm-metrics-container"></div>
+
+        <!-- Fake Live Feed -->
+        <div id="live-feed" class="live-feed" data-deceptive="social-proof">
+            <div class="feed-item">📍 Loading live activity...</div>
+        </div>
+
+        <!-- Navigation with Mode Switching -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">💰 CashNow Express</a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="apply.html" class="active">Apply</a>
+                    <a href="reflect.html">Learn</a>
+                </div>
+                
+                <!-- Mode Controls -->
+                <div class="nav-controls">
+                    <div class="mode-toggle">
+                        <button class="mode-btn predatory active" data-mode="predatory" onclick="switchToMode('predatory')">
+                            💀 Predatory
+                        </button>
+                        <button class="mode-btn ethical" data-mode="ethical" onclick="switchToMode('ethical')">
+                            ✅ Ethical
+                        </button>
+                    </div>
+                    <button id="ghost-mode-toggle" class="ghost-toggle" onclick="window.LotusUtils.toggleGhostMode()">👻 Ghost Mode</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Application Area - REALISTIC PREDATORY DESIGN -->
+        <main id="main-content">
+            <!-- FRIENDLY MASCOT INTRO (Deceptive calm) -->
+            <div class="friendly-intro" data-deceptive="false-friendliness">
+                <div class="mascot">🤖</div>
+                <div class="friendly-text">
+                    Hi there! I'm CashBot, your friendly financial assistant! 💰<br>
+                    <span style="font-size: 1rem; color: #636e72;">We're here to help when life happens. Quick, easy, and caring.</span>
+                </div>
+                <div class="ghost-warning hidden">
+                    🎭 DECEPTION: Cartoon mascots and friendly language are designed to lower your guard and make predatory loans feel safe and personal.
+                </div>
+            </div>
+
+            <!-- TRANSITION TO URGENCY -->
+            <div class="urgency-transition">
+                <h2 style="color: white; font-size: 1.8rem; margin: 0;">
+                    🚨 EMERGENCY CASH NEEDED? 🚨
+                </h2>
+                <p style="margin: 0.5rem 0; font-size: 1.1rem;">
+                    Don't let unexpected bills stress you out!
+                </p>
+            </div>
+
+            <!-- HIGH PRESSURE ZONE -->
+            <div class="high-pressure-zone">
+                <h1 style="color: white; font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                    💸 GET CASH NOW! 💸
+                </h1>
+                
+                <!-- Buzzwords -->
+                <div class="buzzwords">
+                    <span class="buzzword">Fast!</span>
+                    <span class="buzzword">Easy!</span>
+                    <span class="buzzword">No Credit Check!</span>
+                    <span class="buzzword">Today!</span>
+                    <span class="buzzword">Instant!</span>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div style="margin: 2rem 0;">
+                    <p style="color: white; font-size: 1.4rem; margin-bottom: 1rem;">
+                        ⏰ LIMITED TIME OFFER EXPIRES IN:
+                    </p>
+                    <div class="countdown-timer" id="urgency-timer">04:59</div>
+                </div>
+
+                <!-- Mega Cash Button -->
+                <button class="mega-cash-button" onclick="scrollToForm()">
+                    💰 GET $500 INSTANTLY 💰
+                    <div style="font-size: 1rem; font-weight: normal; margin-top: 0.5rem;">
+                        2-Minute Approval • No Paperwork
+                    </div>
+                </button>
+
+                <!-- Fake Trust Seals -->
+                <div class="trust-seals">
+                    <div class="trust-seal" data-deceptive="fake-trust">BBB<br>A+</div>
+                    <div class="trust-seal" data-deceptive="fake-trust">SSL<br>🔒</div>
+                    <div class="trust-seal" data-deceptive="fake-trust">GOVT<br>✓</div>
+                    <div class="trust-seal" data-deceptive="fake-trust">1M+<br>👥</div>
+                </div>
+                
+                <div class="ghost-warning hidden">
+                    🚨 HIGH PRESSURE TACTICS: Urgent timers, giant buttons, and fake trust seals are designed to pressure you into quick decisions without reading terms.
+                </div>
+            </div>
+
+            <!-- Cash Photos Section -->
+            <div class="cash-photos">
+                <div class="cash-photo">😊💵</div>
+                <div class="cash-photo">🤑💰</div>
+                <div class="cash-photo">😍💸</div>
+            </div>
+
+            <!-- Fake Testimonials -->
+            <div style="background: #f8f9fa; padding: 2rem;">
+                <h3 style="text-align: center; color: #2d3436; margin-bottom: 2rem;">
+                    💬 What Our Happy Customers Say:
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div class="fake-testimonial" data-deceptive="fake-testimonials">
+                        "Got my $500 in just 2 minutes! Life saver!" - Sarah M., Dallas<br>
+                        <small>Verified Customer ✓</small>
+                        <div class="ghost-warning hidden">
+                            🎭 FAKE: These testimonials are fabricated to create false trust and social proof.
+                        </div>
+                    </div>
+                    <div class="fake-testimonial" data-deceptive="fake-testimonials">
+                        "So easy! No embarrassing questions!" - Mike R., Phoenix<br>
+                        <small>Verified Customer ✓</small>
+                    </div>
+                    <div class="fake-testimonial" data-deceptive="fake-testimonials">
+                        "CashBot saved my family!" - Jessica L., Miami<br>
+                        <small>Verified Customer ✓</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Scenarios -->
+            <div class="emergency-hook" data-deceptive="vulnerability-targeting">
+                <h3>🆘 LIFE HAPPENS - WE'RE HERE TO HELP! 🆘</h3>
+                <div style="display: flex; justify-content: space-around; margin-top: 1rem; flex-wrap: wrap;">
+                    <div>� Car Repair</div>
+                    <div>🏥 Medical Bills</div>
+                    <div>⚡ Utilities Due</div>
+                    <div>🏠 Rent Emergency</div>
+                </div>
+                <p style="margin-top: 1rem; font-size: 1.1rem;">
+                    Don't let unexpected expenses ruin your week!
+                </p>
+                <div class="ghost-warning hidden">
+                    🎯 TARGETING: Deliberately targets people in vulnerable financial situations when they're most desperate and least likely to read terms carefully.
+                </div>
+            </div>
+
+            <!-- ACTUAL LOAN APPLICATION (Realistic Predatory Form) -->
+            <div id="loan-form-section" class="loan-application-container" style="max-width: 800px; margin: 2rem auto; padding: 0 1rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #e17055; font-size: 2.5rem;">
+                    💰 INSTANT CASH APPLICATION 💰
+                </h2>
+                
+                <!-- Predatory Form -->
+                <form id="predatory-loan-form" class="predatory-form">
+                    <h3>🚀 Get Your Money in 2 Minutes!</h3>
+                    
+                    <!-- Interactive Loan Amount Slider -->
+                    <div style="margin: 2rem 0;">
+                        <label style="font-size: 1.3rem; font-weight: bold; color: white;">
+                            💵 How much cash do you need right now?
+                        </label>
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <span id="amount-display" style="font-size: 3rem; font-weight: 900; color: #fdcb6e;">$500</span>
+                        </div>
+                        <input type="range" id="amount-slider" class="loan-slider" min="100" max="1000" value="500" step="50" 
+                               oninput="updateAmountDisplay(this.value)">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.5rem;">
+                            <span>$100</span>
+                            <span style="color: #fdcb6e;">Most Popular!</span>
+                            <span>$1000</span>
+                        </div>
+                        <div class="ghost-warning hidden">
+                            🎮 GAMIFICATION: Interactive sliders make borrowing feel like a game, encouraging larger amounts.
+                        </div>
+                    </div>
+
+                    <!-- Simple Form Fields (Minimal friction) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
+                        <div>
+                            <label style="color: white; font-weight: bold;">First Name</label>
+                            <input type="text" name="firstName" placeholder="John" required>
+                        </div>
+                        <div>
+                            <label style="color: white; font-weight: bold;">Last Name</label>
+                            <input type="text" name="lastName" placeholder="Smith" required>
+                        </div>
+                    </div>
+
+                    <div style="margin: 1rem 0;">
+                        <label style="color: white; font-weight: bold;">Email (for instant approval)</label>
+                        <input type="email" name="email" placeholder="john@email.com" required>
+                    </div>
+
+                    <div style="margin: 1rem 0;">
+                        <label style="color: white; font-weight: bold;">Phone Number</label>
+                        <input type="tel" name="phone" placeholder="(555) 123-4567" required>
+                    </div>
+
+                    <!-- Pre-checked Traps -->
+                    <div class="checkbox-trap" data-deceptive="auto-renewal">
+                        <input type="checkbox" id="auto-renew" name="autoRenew" checked>
+                        <label for="auto-renew">
+                            ✅ Automatic renewal for your convenience (recommended)
+                            <div style="font-size: 0.8rem; color: #bbb;">
+                                We'll automatically extend your loan if you need more time
+                            </div>
+                        </label>
+                        <div class="ghost-warning hidden">
+                            🕷️ TRAP: This pre-checked box enables automatic debt rollovers with additional fees!
+                        </div>
+                    </div>
+
+                    <div class="checkbox-trap" data-deceptive="ach-auto-debit">
+                        <input type="checkbox" id="ach-consent" name="achConsent" checked>
+                        <label for="ach-consent">
+                            🏦 Express funding via direct bank access (faster approval)
+                            <div style="font-size: 0.8rem; color: #bbb;">
+                                Allow us to verify funds and process payments automatically
+                            </div>
+                        </label>
+                        <div class="ghost-warning hidden">
+                            ⚠️ DANGER: This gives the lender first-priority access to drain your bank account!
+                        </div>
+                    </div>
+
+                    <div class="checkbox-trap" data-deceptive="marketing-consent">
+                        <input type="checkbox" id="marketing-consent" name="marketingConsent" checked>
+                        <label for="marketing-consent">
+                            📱 Get exclusive offers and financial tips
+                            <div style="font-size: 0.8rem; color: #bbb;">
+                                We partner with trusted financial services to help you
+                            </div>
+                        </label>
+                        <div class="ghost-warning hidden">
+                            📊 DATA SALE: Your information will be sold to other predatory lenders!
+                        </div>
+                    </div>
+
+                    <!-- Fee Display (Prominent but misleading) -->
+                    <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 10px; margin: 2rem 0; text-align: center;">
+                        <div style="font-size: 1.8rem; color: #fdcb6e; font-weight: bold;">
+                            Simple Fee: Just $15 per $100 borrowed!
+                        </div>
+                        <div style="font-size: 1rem; margin-top: 0.5rem;">
+                            No hidden charges • No credit checks • No paperwork
+                        </div>
+                        <!-- Hidden APR -->
+                        <div class="hidden-apr" data-deceptive="apr-evasion">
+                            APR: 391% for 14-day term. Additional fees may apply for rollovers, processing, and collection activities. See terms for full disclosure.
+                        </div>
+                        <div class="ghost-warning hidden">
+                            💰 DECEPTION: "$15 per $100" = 391% APR! This is equivalent to loan shark rates!
+                        </div>
+                    </div>
+
+                    <!-- Massive Submit Button -->
+                    <button type="submit" class="submit-mega-button" onclick="handlePredatorySubmit(event)">
+                        💸 GET MY CASH NOW! 💸
+                        <div style="font-size: 1rem; font-weight: normal; margin-top: 0.5rem;">
+                            Instant Approval • Money in Minutes
+                        </div>
+                    </button>
+
+                    <!-- Tiny Terms Link -->
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="#terms" style="color: #999; font-size: 0.7rem; text-decoration: underline;">
+                            Terms and Conditions • Privacy Policy • State Disclosures
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Mode-specific content containers -->
+            <div id="predatory-mode" class="loan-application">
+                <!-- Content populated by JavaScript -->
+            </div>
+            
+            <div id="ethical-mode" class="loan-application hidden">
+                <!-- Ethical mode content will be loaded by JavaScript -->
+            </div>
+            
+            <!-- Results Container -->
+            <div id="simulation-results" style="margin-top: 2rem;">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+            
+            <!-- Cost Calculator Section -->
+            <div class="cost-calculator-section" style="margin-top: 3rem; background: rgba(0,0,0,0.8); padding: 2rem; border-radius: 15px;">
+                <h2 style="color: white; text-align: center; margin-bottom: 2rem;">
+                    📊 Real Cost Calculator
+                </h2>
+                
+                <!-- Live Calculation Display -->
+                <div class="live-calculation-display">
+                    <div class="calc-columns">
+                        <div class="calc-column predatory-calc">
+                            <h3 style="color: #ff6b6b;">💀 What You're Actually Paying</h3>
+                            <div class="cost-breakdown-live">
+                                <div class="cost-item">
+                                    <span>Loan Amount:</span>
+                                    <span id="live-principal">$500</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Finance Charge (15%):</span>
+                                    <span id="live-finance">$75</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Processing Fee:</span>
+                                    <span id="live-processing">$25</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Fast Funding Fee:</span>
+                                    <span id="live-funding">$30</span>
+                                </div>
+                                <div class="cost-item hidden-fee" data-deceptive="hidden-costs">
+                                    <span>Document Fee (hidden):</span>
+                                    <span id="live-doc">$15</span>
+                                </div>
+                                <div class="cost-item rollover-warning" data-deceptive="rollover-trap">
+                                    <span>Potential Rollover Fee:</span>
+                                    <span id="live-rollover">$75</span>
+                                </div>
+                                <div class="cost-item total-cost">
+                                    <span><strong>Total Due Today:</strong></span>
+                                    <span id="live-total-today"><strong>$645</strong></span>
+                                </div>
+                                <div class="cost-item potential-total">
+                                    <span><strong>Potential Total w/ Rollover:</strong></span>
+                                    <span id="live-total-potential"><strong>$720</strong></span>
+                                </div>
+                                <div class="cost-item apr-display">
+                                    <span><strong>APR:</strong></span>
+                                    <span id="live-apr" class="apr-danger"><strong>634%</strong></span>
+                                </div>
+                            </div>
+                            <div class="predatory-warnings">
+                                <h4>⚠️ Warning Signs:</h4>
+                                <ul>
+                                    <li>APR over 600% (loan shark levels)</li>
+                                    <li>Hidden fees not disclosed upfront</li>
+                                    <li>High rollover probability (80% of loans)</li>
+                                    <li>Debt trap cycle risk</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="calc-column ethical-calc">
+                            <h3 style="color: #4ecdc4;">✅ Ethical Alternative</h3>
+                            <div class="cost-breakdown-live">
+                                <div class="cost-item">
+                                    <span>Loan Amount:</span>
+                                    <span id="eth-live-principal">$500</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Interest (28% APR max):</span>
+                                    <span id="eth-live-interest">$5.48</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Application Fee:</span>
+                                    <span id="eth-live-application">$0</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Processing Fee:</span>
+                                    <span id="eth-live-processing">$0</span>
+                                </div>
+                                <div class="cost-item transparent-fee">
+                                    <span>All Fees Disclosed:</span>
+                                    <span id="eth-live-disclosed">✅ Yes</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Rollover Option:</span>
+                                    <span id="eth-live-rollover">❌ Prohibited</span>
+                                </div>
+                                <div class="cost-item total-cost">
+                                    <span><strong>Total Due:</strong></span>
+                                    <span id="eth-live-total"><strong>$505.48</strong></span>
+                                </div>
+                                <div class="cost-item savings-display">
+                                    <span><strong>You Save:</strong></span>
+                                    <span id="eth-live-savings" class="savings-amount"><strong>$139.52</strong></span>
+                                </div>
+                                <div class="cost-item apr-display">
+                                    <span><strong>APR:</strong></span>
+                                    <span id="eth-live-apr" class="apr-safe"><strong>28%</strong></span>
+                                </div>
+                            </div>
+                            <div class="ethical-benefits">
+                                <h4>✅ Protections:</h4>
+                                <ul>
+                                    <li>APR capped at 28% by regulation</li>
+                                    <li>All costs disclosed transparently</li>
+                                    <li>No rollover traps allowed</li>
+                                    <li>Financial counseling included</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive Slider Impact -->
+                    <div class="slider-impact-display">
+                        <h4 style="color: white; text-align: center;">See How Loan Amount Affects Cost</h4>
+                        <div class="impact-visualization">
+                            <div class="amount-scale">
+                                <div class="scale-item">
+                                    <span>$100</span>
+                                    <div class="cost-comparison">
+                                        <div class="predatory-cost">Predatory: $130</div>
+                                        <div class="ethical-cost">Ethical: $101</div>
+                                    </div>
+                                </div>
+                                <div class="scale-item">
+                                    <span>$300</span>
+                                    <div class="cost-comparison">
+                                        <div class="predatory-cost">Predatory: $390</div>
+                                        <div class="ethical-cost">Ethical: $303</div>
+                                    </div>
+                                </div>
+                                <div class="scale-item highlighted">
+                                    <span>$500</span>
+                                    <div class="cost-comparison">
+                                        <div class="predatory-cost">Predatory: $645</div>
+                                        <div class="ethical-cost">Ethical: $505</div>
+                                    </div>
+                                </div>
+                                <div class="scale-item">
+                                    <span>$800</span>
+                                    <div class="cost-comparison">
+                                        <div class="predatory-cost">Predatory: $1,035</div>
+                                        <div class="ethical-cost">Ethical: $808</div>
+                                    </div>
+                                </div>
+                                <div class="scale-item">
+                                    <span>$1000</span>
+                                    <div class="cost-comparison">
+                                        <div class="predatory-cost">Predatory: $1,295</div>
+                                        <div class="ethical-cost">Ethical: $1,011</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alternative Options Display -->
+                <div class="alternatives-display" style="margin-top: 2rem;">
+                    <h3 style="color: white; text-align: center;">🏦 Better Alternatives Available</h3>
+                    <div class="alternatives-comparison">
+                        <div class="alternative-option">
+                            <h4>Credit Union PAL</h4>
+                            <div class="alt-cost">$505 total</div>
+                            <div class="alt-apr">28% APR</div>
+                            <div class="alt-note">Member-owned, non-profit</div>
+                        </div>
+                        <div class="alternative-option">
+                            <h4>Employer Advance</h4>
+                            <div class="alt-cost">$500-505 total</div>
+                            <div class="alt-apr">0-5% fee</div>
+                            <div class="alt-note">Check with HR department</div>
+                        </div>
+                        <div class="alternative-option">
+                            <h4>Credit Card Advance</h4>
+                            <div class="alt-cost">$510-520 total</div>
+                            <div class="alt-apr">25-30% APR</div>
+                            <div class="alt-note">If available on existing card</div>
+                        </div>
+                        <div class="alternative-option">
+                            <h4>Family/Friends</h4>
+                            <div class="alt-cost">$500 total</div>
+                            <div class="alt-apr">0% interest</div>
+                            <div class="alt-note">Interest-free option</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </main>
+
+        <!-- Ghost Mode Overlay -->
+        <div id="ghost-overlay" class="ghost-overlay hidden">
+            <div class="ghost-content">
+                <h3>🎭 Behind the Curtain</h3>
+                <div id="ghost-insights"></div>
+                <div class="ghost-actions">
+                    <button id="ghost-quiz">Take Quiz</button>
+                    <button id="ghost-close">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Modal -->
+        <div id="quiz-modal" class="quiz-modal hidden">
+            <div class="quiz-content">
+                <div id="quiz-question"></div>
+                <div id="quiz-options"></div>
+                <div class="quiz-controls">
+                    <button id="quiz-submit">Submit</button>
+                    <button id="quiz-close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load main application modules in correct order -->
+    <!-- Note: global.js is not a module, load it as regular script -->
+    <script src="./global.js"></script>
+    <script type="module" src="./utils.js"></script>
+    <script type="module" src="./ui-components.js"></script>
+    <script type="module" src="./lotus_core.js"></script>
+    <script type="module" src="./autonomy_theater.js"></script>
+    <script type="module" src="./app.js"></script>
+    
+    <script type="module">
+        // Set page context
+        window.LOTUS_PAGE_CONTEXT = 'apply';
+        
+        // Initialize the page after all modules load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Wait for LotusApp to be available
+            while (!window.LotusApp) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            // Initialize the application
+            await window.LotusApp.initialize();
+            
+            // Initialize mode switching for this page
+            initializeApplyPageModes();
+            
+            // Initialize predatory UI functions
+            initializePredatoryFunctions();
+        });
+        
+        // Mode switching functions specific to apply page
+        function initializeApplyPageModes() {
+            // Mode toggle buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const mode = this.dataset.mode;
+                    switchToMode(mode);
+                });
+            });
+            
+            // Initialize with saved mode or default to predatory for this page
+            const savedMode = localStorage.getItem('lotus-mode') || 'predatory';
+            switchToMode(savedMode);
+            
+            // Ghost mode toggle
+            const ghostToggle = document.getElementById('ghost-mode-toggle');
+            if (ghostToggle) {
+                ghostToggle.addEventListener('click', function() {
+                    window.LotusUtils.toggleGhostMode();
+                });
+            }
+        }
+        
+        // Initialize predatory UI functions
+        function initializePredatoryFunctions() {
+            // Amount slider real-time update
+            const amountSlider = document.getElementById('amount-slider');
+            if (amountSlider) {
+                amountSlider.addEventListener('input', function() {
+                    updateAmountDisplay(this.value);
+                    updateLiveCostCalculation(parseInt(this.value));
+                });
+            }
+            
+            // Initialize with default values
+            updateLiveCostCalculation(500);
+        }
+        
+        // Update amount display and highlight scale
+        function updateAmountDisplay(amount) {
+            document.getElementById('amount-display').textContent = '$' + amount;
+            highlightScaleItem(amount);
+        }
+        
+        // Real-time cost calculation update
+        function updateLiveCostCalculation(amount) {
+            // Predatory loan calculations
+            const financeRate = 0.15; // 15%
+            const financeCharge = amount * financeRate;
+            const processingFee = 25;
+            const fundingFee = amount > 400 ? 30 : 0;
+            const docFee = 15; // Hidden fee
+            const rolloverFee = financeCharge + processingFee; // Full rollover
+            
+            const totalToday = amount + financeCharge + processingFee + fundingFee + docFee;
+            const totalWithRollover = totalToday + rolloverFee;
+            const apr = ((financeCharge + processingFee + fundingFee + docFee) / amount) * (365 / 14) * 100;
+            
+            // Ethical loan calculations
+            const ethicalAPR = 28; // 28% max
+            const ethicalInterest = (amount * ethicalAPR / 100) * (14 / 365);
+            const ethicalTotal = amount + ethicalInterest;
+            const savings = totalToday - ethicalTotal;
+            
+            // Update predatory display
+            document.getElementById('live-principal').textContent = formatCurrency(amount);
+            document.getElementById('live-finance').textContent = formatCurrency(financeCharge);
+            document.getElementById('live-processing').textContent = formatCurrency(processingFee);
+            document.getElementById('live-funding').textContent = formatCurrency(fundingFee);
+            document.getElementById('live-doc').textContent = formatCurrency(docFee);
+            document.getElementById('live-rollover').textContent = formatCurrency(rolloverFee);
+            document.getElementById('live-total-today').textContent = formatCurrency(totalToday);
+            document.getElementById('live-total-potential').textContent = formatCurrency(totalWithRollover);
+            document.getElementById('live-apr').textContent = apr.toFixed(0) + '%';
+            
+            // Update ethical display
+            document.getElementById('eth-live-principal').textContent = formatCurrency(amount);
+            document.getElementById('eth-live-interest').textContent = formatCurrency(ethicalInterest);
+            document.getElementById('eth-live-total').textContent = formatCurrency(ethicalTotal);
+            document.getElementById('eth-live-savings').textContent = formatCurrency(savings);
+            
+            // Update scale visualization
+            updateScaleVisualization();
+        }
+        
+        // Highlight current amount in scale
+        function highlightScaleItem(amount) {
+            document.querySelectorAll('.scale-item').forEach(item => {
+                item.classList.remove('highlighted');
+            });
+            
+            // Find closest scale item
+            const scaleAmounts = [100, 300, 500, 800, 1000];
+            const closest = scaleAmounts.reduce((prev, curr) => 
+                Math.abs(curr - amount) < Math.abs(prev - amount) ? curr : prev
+            );
+            
+            const scaleItems = document.querySelectorAll('.scale-item');
+            const index = scaleAmounts.indexOf(closest);
+            if (scaleItems[index]) {
+                scaleItems[index].classList.add('highlighted');
+            }
+        }
+        
+        // Update scale visualization with current calculations
+        function updateScaleVisualization() {
+            const scaleAmounts = [100, 300, 500, 800, 1000];
+            const scaleItems = document.querySelectorAll('.scale-item');
+            
+            scaleItems.forEach((item, index) => {
+                const amount = scaleAmounts[index];
+                
+                // Calculate costs for this amount
+                const predFinance = amount * 0.15;
+                const predProcessing = 25;
+                const predFunding = amount > 400 ? 30 : 0;
+                const predDoc = 15;
+                const predTotal = amount + predFinance + predProcessing + predFunding + predDoc;
+                
+                const ethInterest = (amount * 28 / 100) * (14 / 365);
+                const ethTotal = amount + ethInterest;
+                
+                // Update display
+                const predCostDiv = item.querySelector('.predatory-cost');
+                const ethCostDiv = item.querySelector('.ethical-cost');
+                
+                if (predCostDiv) predCostDiv.textContent = `Predatory: ${formatCurrency(predTotal)}`;
+                if (ethCostDiv) ethCostDiv.textContent = `Ethical: ${formatCurrency(ethTotal)}`;
+            });
+        }
+        
+        // Scroll to loan application form
+        function scrollToForm() {
+            const form = document.getElementById('loan-application-form') || document.querySelector('.loan-application');
+            if (form) {
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        // Handle predatory form submission with cost disclosure
+        function handlePredatorySubmit(event) {
+            event.preventDefault();
+            
+            const amount = parseInt(document.getElementById('amount-slider').value);
+            const totalCost = amount + (amount * 0.15) + 25 + (amount > 400 ? 30 : 0) + 15;
+            const apr = ((totalCost - amount) / amount) * (365 / 14) * 100;
+            
+            // Show final cost confirmation
+            const confirmation = confirm(
+                `FINAL COST CONFIRMATION:\n\n` +
+                `Loan Amount: ${formatCurrency(amount)}\n` +
+                `Total You'll Pay: ${formatCurrency(totalCost)}\n` +
+                `APR: ${apr.toFixed(0)}%\n\n` +
+                `This means you'll pay ${formatCurrency(totalCost - amount)} in fees for a ${formatCurrency(amount)} loan.\n\n` +
+                `Are you sure you want to proceed with this high-cost loan?`
+            );
+            
+            if (confirmation) {
+                // Simulate loan processing
+                showLoanProcessingResult(amount, totalCost, apr);
+            }
+        }
+        
+        // Show loan processing simulation
+        function showLoanProcessingResult(amount, totalCost, apr) {
+            const resultsContainer = document.getElementById('simulation-results');
+            resultsContainer.innerHTML = `
+                <div class="loan-result-display" style="background: rgba(220, 38, 38, 0.9); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                    <h2>🎉 Loan Approved!</h2>
+                    <div class="approval-details">
+                        <p><strong>Approved Amount:</strong> ${formatCurrency(amount)}</p>
+                        <p><strong>Total Repayment:</strong> ${formatCurrency(totalCost)}</p>
+                        <p><strong>APR:</strong> ${apr.toFixed(0)}%</p>
+                        <p><strong>Due Date:</strong> ${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
+                    </div>
+                    <div class="trap-activation" style="margin-top: 2rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 10px;">
+                        <h3>⚠️ What Happens Next (Educational Simulation)</h3>
+                        <ul style="text-align: left; margin: 1rem 0;">
+                            <li>Money deposited in your account within 1 hour</li>
+                            <li>Automatic debit scheduled for ${new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString()}</li>
+                            <li>If funds insufficient, automatic rollover with additional fees</li>
+                            <li>Your information shared with lending network partners</li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <button onclick="location.href='reflect.html'" class="btn" style="background: #4ecdc4; color: white; padding: 1rem 2rem; border-radius: 10px; border: none; font-size: 1.1rem;">
+                            Continue to Educational Reflection →
+                        </button>
+                    </div>
+                </div>
+            `;
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Format currency helper
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+        
+        // Make functions globally available
+        window.updateAmountDisplay = updateAmountDisplay;
+        window.handlePredatorySubmit = handlePredatorySubmit;
+        window.updateLiveCostCalculation = updateLiveCostCalculation;
+    </script>
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotus - Payday Lending Educational Simulator</title>
+    <meta name="description" content="Interactive educational platform demonstrating predatory vs ethical lending practices with real-world dark patterns and Ghost Mode ethical guidance">
+    
+    <!-- VERIFICATION: This is the Lotus app we built together - deployed via our custom deploy.yml -->
+    <meta name="lotus-verification" content="custom-deploy-workflow-active">
+    
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href="./assets/styles/deceptive.css">
+    <link rel="stylesheet" href="./assets/styles/ethical.css">
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#dc2626">
+    
+    <!-- SEO and Social -->
+    <meta property="og:title" content="Lotus Payday Lending Educational Simulator">
+    <meta property="og:description" content="Learn about predatory lending through interactive simulation">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="./">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="lotus-logo">🪷</div>
+            <h2>Loading Lotus Educational Platform</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container">
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">
+                    <span class="logo-icon">🪷</span>
+                    <span class="logo-text">Lotus</span>
+                </a>
+                
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link active" data-section="home">Home</a>
+                    <a href="#learn" class="nav-link" data-section="learn">Learn</a>
+                    <a href="#simulate" class="nav-link" data-section="simulate">Simulate</a>
+                    <a href="#compare" class="nav-link" data-section="compare">Compare</a>
+                    <a href="apply.html" class="nav-link">Apply</a>
+                    <a href="reflect.html" class="nav-link">Reflect</a>
+                </div>
+
+                <!-- Mode Controls -->
+                <div class="nav-controls">
+                    <!-- Mode Toggle -->
+                    <div class="mode-toggle">
+                        <button class="mode-btn predatory" data-mode="predatory">
+                            💀 Predatory
+                        </button>
+                        <button class="mode-btn ethical active" data-mode="ethical">
+                            ✅ Ethical
+                        </button>
+                    </div>
+                    
+                    <!-- Ghost Mode Toggle -->
+                    <button id="ghost-mode-toggle" class="ghost-toggle" title="Toggle ethical guidance overlays">
+                        👻 Ghost Mode
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mode Indicator -->
+        <div id="mode-indicator" class="mode-indicator">
+            <span class="mode-text">Ethical Mode Active</span>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Section -->
+            <section id="section-home" class="content-section active">
+                <div class="hero-section">
+                    <div class="container">
+                        <h1 class="hero-title">
+                            Understanding Predatory Lending
+                            <span class="subtitle">An Interactive Educational Experience</span>
+                        </h1>
+                        <p class="hero-description">
+                            Explore the contrast between predatory and ethical lending practices through 
+                            realistic simulations, complete with dark pattern analysis and Ghost Mode guidance.
+                        </p>
+                        <div class="hero-actions">
+                            <button class="btn btn-primary" onclick="showSection('simulate')">
+                                Start Simulation
+                            </button>
+                            <button class="btn btn-secondary" onclick="showSection('learn')">
+                                Learn First
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="features-section">
+                    <div class="container">
+                        <h2>Platform Features</h2>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">🎭</div>
+                                <h3>Dark Pattern Analysis</h3>
+                                <p>Learn to identify psychological manipulation techniques in lending interfaces</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">👻</div>
+                                <h3>Ghost Mode</h3>
+                                <p>Toggle ethical guidance overlays to reveal hidden deceptive elements</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">📊</div>
+                                <h3>APR Transparency</h3>
+                                <p>Compare true costs with interactive calculators and visualizations</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🔄</div>
+                                <h3>Debt Cycle Simulation</h3>
+                                <p>Visualize how payday loans trap borrowers in cycles of debt</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Learn Section -->
+            <section id="section-learn" class="content-section">
+                <div class="container">
+                    <h2>Educational Content</h2>
+                    <div class="education-modules">
+                        <div class="module-card" data-module="dark-patterns">
+                            <h3>Dark Pattern Recognition</h3>
+                            <p>Learn to identify deceptive design elements</p>
+                            <button class="btn btn-outline">Explore Module</button>
+                        </div>
+                        <div class="module-card" data-module="apr-education">
+                            <h3>APR & True Cost</h3>
+                            <p>Understand the real cost of payday loans</p>
+                            <button class="btn btn-outline">Explore Module</button>
+                        </div>
+                        <div class="module-card" data-module="debt-cycles">
+                            <h3>Debt Cycle Mechanics</h3>
+                            <p>How loans become debt traps</p>
+                            <button class="btn btn-outline">Explore Module</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Simulate Section -->
+            <section id="section-simulate" class="content-section">
+                <div class="container">
+                    <h2>Loan Simulation</h2>
+                    <div class="simulation-controls">
+                        <div class="control-group">
+                            <label for="loan-amount">Loan Amount</label>
+                            <input type="range" id="loan-amount" min="100" max="2000" value="500" step="50">
+                            <span class="value-display">$500</span>
+                        </div>
+                        <div class="control-group">
+                            <label for="loan-term">Term (days)</label>
+                            <input type="range" id="loan-term" min="7" max="30" value="14" step="1">
+                            <span class="value-display">14 days</span>
+                        </div>
+                        <div class="control-group">
+                            <label for="user-state">State</label>
+                            <select id="user-state">
+                                <option value="CA">California</option>
+                                <option value="TX">Texas</option>
+                                <option value="NY">New York</option>
+                                <option value="FL">Florida</option>
+                                <option value="GEN" selected>Generic</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-actions">
+                        <button class="btn btn-danger" onclick="runSimulation('predatory')">
+                            Try Predatory Loan
+                        </button>
+                        <button class="btn btn-success" onclick="runSimulation('ethical')">
+                            Try Ethical Alternative
+                        </button>
+                    </div>
+                    
+                    <div id="simulation-results" class="simulation-results">
+                        <!-- Results populated by JavaScript -->
+                    </div>
+                    
+                    <!-- Interest & Cost Breakdown Calculator -->
+                    <div class="cost-breakdown-calculator">
+                        <h3>📊 Real-Time Cost Analysis</h3>
+                        <div class="calculator-controls">
+                            <div class="control-group">
+                                <label for="breakdown-amount">Loan Amount</label>
+                                <input type="range" id="breakdown-amount" min="100" max="2000" value="500" step="50">
+                                <span class="value-display">$500</span>
+                            </div>
+                            <div class="control-group">
+                                <label for="breakdown-term">Term (days)</label>
+                                <input type="range" id="breakdown-term" min="7" max="365" value="14" step="1">
+                                <span class="value-display">14 days</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cost-breakdown-display">
+                            <div class="breakdown-mode predatory-breakdown">
+                                <h4>💀 Predatory Loan Breakdown</h4>
+                                <div class="cost-table">
+                                    <div class="cost-row">
+                                        <span>Principal Amount:</span>
+                                        <span id="pred-breakdown-principal">$500</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>Finance Charge (15%):</span>
+                                        <span id="pred-breakdown-finance">$75</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>Processing Fee:</span>
+                                        <span id="pred-breakdown-processing">$25</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>Fast Funding Fee:</span>
+                                        <span id="pred-breakdown-funding">$30</span>
+                                    </div>
+                                    <div class="cost-row hidden-cost" data-deceptive="hidden-fees">
+                                        <span>Document Fee:</span>
+                                        <span id="pred-breakdown-doc">$15</span>
+                                    </div>
+                                    <div class="cost-row total">
+                                        <span><strong>Total Due:</strong></span>
+                                        <span id="pred-breakdown-total"><strong>$645</strong></span>
+                                    </div>
+                                    <div class="cost-row apr-row">
+                                        <span><strong>APR:</strong></span>
+                                        <span id="pred-breakdown-apr" class="apr-danger"><strong>634%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="cost-warnings">
+                                    <h5>⚠️ Hidden Costs Warning:</h5>
+                                    <ul>
+                                        <li>Document fee only shown in fine print</li>
+                                        <li>APR calculation excludes some fees</li>
+                                        <li>Rollover fees not disclosed upfront</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="breakdown-mode ethical-breakdown">
+                                <h4>✅ Ethical Loan Breakdown</h4>
+                                <div class="cost-table">
+                                    <div class="cost-row">
+                                        <span>Principal Amount:</span>
+                                        <span id="eth-breakdown-principal">$500</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>Interest (28% APR):</span>
+                                        <span id="eth-breakdown-interest">$5.48</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>Application Fee:</span>
+                                        <span id="eth-breakdown-application">$0</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>Additional Fees:</span>
+                                        <span id="eth-breakdown-additional">$0</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>All Fees Disclosed:</span>
+                                        <span id="eth-breakdown-disclosed">✅ Yes</span>
+                                    </div>
+                                    <div class="cost-row total">
+                                        <span><strong>Total Due:</strong></span>
+                                        <span id="eth-breakdown-total"><strong>$505.48</strong></span>
+                                    </div>
+                                    <div class="cost-row apr-row">
+                                        <span><strong>APR:</strong></span>
+                                        <span id="eth-breakdown-apr" class="apr-safe"><strong>28%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="cost-benefits">
+                                    <h5>✅ Transparent Pricing:</h5>
+                                    <ul>
+                                        <li>All costs disclosed upfront</li>
+                                        <li>True APR calculation shown</li>
+                                        <li>No hidden or surprise fees</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Debt Cycle Simulator -->
+                        <div class="debt-cycle-simulator">
+                            <h4>🔄 Debt Cycle Visualization</h4>
+                            <div class="cycle-controls">
+                                <button class="btn btn-danger" onclick="simulateDebtCycle('predatory')">
+                                    Show Predatory Debt Trap
+                                </button>
+                                <button class="btn btn-success" onclick="simulateDebtCycle('ethical')">
+                                    Show Ethical Payoff
+                                </button>
+                            </div>
+                            <div class="cycle-visualization">
+                                <canvas id="debt-cycle-chart" width="600" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Compare Section -->
+            <section id="section-compare" class="content-section">
+                <div class="container">
+                    <h2>Side-by-Side Comparison Calculator</h2>
+                    
+                    <!-- Loan Input Controls -->
+                    <div class="comparison-calculator">
+                        <div class="calculator-inputs">
+                            <div class="input-group">
+                                <label for="comp-loan-amount">Loan Amount</label>
+                                <input type="number" id="comp-loan-amount" value="500" min="100" max="2000" step="50">
+                            </div>
+                            <div class="input-group">
+                                <label for="comp-loan-term">Term (days)</label>
+                                <input type="number" id="comp-loan-term" value="14" min="7" max="365">
+                            </div>
+                            <div class="input-group">
+                                <label for="comp-user-state">State</label>
+                                <select id="comp-user-state">
+                                    <option value="CA">California</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="NY">New York</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GEN" selected>Generic</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="calculateComparison()">Calculate & Compare</button>
+                        </div>
+                        
+                        <!-- Comparison Results -->
+                        <div id="comparison-results" class="comparison-grid">
+                            <div class="comparison-card predatory">
+                                <h3>💀 Predatory Payday Loan</h3>
+                                <div class="loan-details">
+                                    <div class="detail-row">
+                                        <span>Loan Amount:</span>
+                                        <span id="pred-amount">$500</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Finance Charge:</span>
+                                        <span id="pred-fee">$75</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Processing Fee:</span>
+                                        <span id="pred-processing">$25</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Fast Funding Fee:</span>
+                                        <span id="pred-fast-funding">$30</span>
+                                    </div>
+                                    <div class="detail-row hidden-fees" style="display:none;">
+                                        <span>Document Fee:</span>
+                                        <span id="pred-doc-fee">$15</span>
+                                    </div>
+                                    <div class="detail-row total">
+                                        <span><strong>Total Due:</strong></span>
+                                        <span id="pred-total-due"><strong>$645</strong></span>
+                                    </div>
+                                    <div class="detail-row apr-row">
+                                        <span><strong>APR:</strong></span>
+                                        <span id="pred-apr" class="apr-danger"><strong>634%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="loan-warnings">
+                                    <h5>⚠️ Hidden Costs Warning:</h5>
+                                    <ul>
+                                        <li>Document fee only shown in fine print</li>
+                                        <li>APR calculation excludes some fees</li>
+                                        <li>Rollover fees not disclosed upfront</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="comparison-card ethical">
+                                <h3>✅ Ethical Payday Loan</h3>
+                                <div class="loan-details">
+                                    <div class="detail-row">
+                                        <span>Loan Amount:</span>
+                                        <span id="eth-amount">$500</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Interest (28% APR):</span>
+                                        <span id="eth-interest">$5.48</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Application Fee:</span>
+                                        <span id="eth-application-fee">$0</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Additional Fees:</span>
+                                        <span id="eth-additional-fees">$0</span>
+                                    </div>
+                                    <div class="detail-row total">
+                                        <span><strong>Total Due:</strong></span>
+                                        <span id="eth-total-due"><strong>$505.48</strong></span>
+                                    </div>
+                                    <div class="detail-row apr-row">
+                                        <span><strong>APR:</strong></span>
+                                        <span id="eth-apr" class="apr-safe"><strong>28%</strong></span>
+                                    </div>
+                                </div>
+                                <div class="loan-benefits">
+                                    <h5>✅ Transparent Pricing:</h5>
+                                    <ul>
+                                        <li>All costs disclosed upfront</li>
+                                        <li>True APR calculation shown</li>
+                                        <li>No hidden or surprise fees</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Educational Overlay (Hidden by default) -->
+        <div id="educational-overlay" class="educational-overlay" style="display:none;">
+            <div class="overlay-content">
+                <h2>💡 Educational Tip</h2>
+                <p class="tip-text"></p>
+                <button class="btn btn-close" onclick="hideEducationalOverlay()">Got it!</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🪷</span>
+                        <span class="logo-text">Lotus</span>
+                    </div>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="apply.html">Apply Now</a>
+                        <a href="reflect.html">Reflect</a>
+                        <a href="#section-learn">About Us</a>
+                        <a href="#section-learn">Educational Resources</a>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2023 Lotus Educational Simulator. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+    // Currency formatting function
+    function formatCurrency(amount) {
+        return '$' + (amount / 100).toFixed(2);
+    }
+    
+    // Initialize debt cycle chart
+    function initializeDebtCycleChart() {
+        const ctx = document.getElementById('debt-cycle-chart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Debt Amount',
+                    data: [],
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(220, 38, 54, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+    
+    // Update range inputs to show real-time values     
+    document.getElementById('loan-amount')?.addEventListener('input', function() {
+        const valueDisplay = this.parentElement.querySelector('.value-display');
+        if (valueDisplay) {
+            valueDisplay.textContent = formatCurrency(parseInt(this.value));
+        }
+    });
+    
+    document.getElementById('loan-term')?.addEventListener('input', function() {
+        const valueDisplay = this.parentElement.querySelector('.value-display');
+        if (valueDisplay) {
+            valueDisplay.textContent = this.value + ' days';
+        }
+    });
+    
+    // Initialize calculator on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('debt-cycle-chart')) {
+            initializeDebtCycleChart();
+        }
+        
+        // Initialize navigation
+        document.querySelectorAll('[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.dataset.section;
+                showSection(sectionId);
+            });
+        });
+        
+        // Show home section by default
+        showSection('home');
+    });
+    
+    function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        // Update navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        // Show target section
+        const targetSection = document.getElementById(`section-${sectionId}`);
+        const targetLink = document.querySelector(`[data-section="${sectionId}"]`);
+        
+        if (targetSection) targetSection.classList.add('active');
+        if (targetLink) targetLink.classList.add('active');
+    }
+    
+    function runSimulation(mode) {
+        const amount = parseFloat(document.getElementById('loan-amount')?.value) || 500;
+        const term = parseInt(document.getElementById('loan-term')?.value) || 14;
+        const state = document.getElementById('user-state')?.value || 'GEN';
+        
+        const resultsContainer = document.getElementById('simulation-results');
+        
+        if (mode === 'predatory') {
+            const fee = amount * 0.25; // 25% fee
+            const total = amount + fee + 55; // Additional fees
+            const apr = ((fee + 55) / amount) * (365 / term) * 100;
+            
+            resultsContainer.innerHTML = `
+                <div class="result-card predatory">
+                    <h3>💀 Predatory Loan Results</h3>
+                    <div class="result-details">
+                        <p><strong>Loan Amount:</strong> $${amount}</p>
+                        <p><strong>Finance Charge:</strong> $${fee.toFixed(2)}</p>
+                        <p><strong>Additional Fees:</strong> $55</p>
+                        <p><strong>Total Repayment:</strong> $${total.toFixed(2)}</p>
+                        <p class="apr-highlight predatory"><strong>APR:</strong> ${apr.toFixed(0)}%</p>
+                        <div class="warnings">
+                            <h4>⚠️ Warning Signs:</h4>
+                            <ul>
+                                <li>Extremely high interest rate (${apr.toFixed(0)}%)</li>
+                                <li>Risk of debt trap cycles</li>
+                                <li>Hidden fees and charges</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            const ethicalAPR = 28;
+            const interest = (amount * ethicalAPR / 100) * (term / 365);
+            const total = amount + interest;
+            
+            resultsContainer.innerHTML = `
+                <div class="result-card ethical">
+                    <h3>✅ Ethical Loan Results</h3>
+                    <div class="result-details">
+                        <p><strong>Loan Amount:</strong> $${amount}</p>
+                        <p><strong>Interest Charge:</strong> $${interest.toFixed(2)}</p>
+                        <p><strong>Additional Fees:</strong> $0</p>
+                        <p><strong>Total Repayment:</strong> $${total.toFixed(2)}</p>
+                        <p class="apr-highlight ethical"><strong>APR:</strong> ${ethicalAPR}%</p>
+                        <div class="benefits">
+                            <h4>✅ Ethical Protections:</h4>
+                            <ul>
+                                <li>APR capped by regulation</li>
+                                <li>Clear disclosure of all costs</li>
+                                <li>No rollover traps</li>
+                                <li>Financial counseling available</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        resultsContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function simulateDebtCycle(mode) {
+        const ctx = document.getElementById('debt-cycle-chart');
+        if (!ctx) return;
+        
+        const chartCtx = ctx.getContext('2d');
+        const amount = parseFloat(document.getElementById('breakdown-amount')?.value) || 500;
+        
+        // Clear existing chart if any
+        if (window.debtCycleChart) {
+            window.debtCycleChart.destroy();
+        }
+        
+        let data, labels, title;
+        
+        if (mode === 'predatory') {
+            // Simulate debt trap cycle
+            labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'];
+            data = [amount, amount * 1.3, amount * 1.7, amount * 2.1, amount * 2.6, amount * 3.2];
+            title = 'Predatory Debt Trap Cycle';
+        } else {
+            // Simulate ethical payoff
+            labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'];
+            data = [amount, amount * 0.8, amount * 0.6, amount * 0.4, amount * 0.2, 0];
+            title = 'Ethical Loan Payoff';
+        }
+        
+        window.debtCycleChart = new Chart(chartCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: title,
+                    data: data,
+                    borderColor: mode === 'predatory' ? '#dc2626' : '#16a34a',
+                    backgroundColor: mode === 'predatory' ? 'rgba(220, 38, 38, 0.2)' : 'rgba(22, 163, 74, 0.2)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: title
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toFixed(0);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function calculateComparison() {
+        const amount = parseFloat(document.getElementById('comp-loan-amount').value) || 500;
+        const term = parseInt(document.getElementById('comp-loan-term').value) || 14;
+        
+        // Predatory loan calculation
+        const predatoryFeeRate = 0.15; // 15% fee
+        const processingFee = 25;
+        const fastFundingFee = amount > 400 ? 30 : 0;
+        const docFee = 15; // Hidden fee
+        
+        const predatoryFee = amount * predatoryFeeRate;
+        const predatoryTotal = amount + predatoryFee + processingFee + fastFundingFee + docFee;
+        const predatoryAPR = ((predatoryFee + processingFee + fastFundingFee + docFee) / amount) * (365 / term) * 100;
+        
+        // Ethical loan calculation (Credit Union PAL - 28% APR cap)
+        const ethicalAPR = 28; // 28% annual rate
+        const ethicalInterest = (amount * ethicalAPR / 100) * (term / 365);
+        const ethicalTotal = amount + ethicalInterest;
+        
+        // Update predatory display
+        document.getElementById('pred-amount').textContent = '$' + amount;
+        document.getElementById('pred-fee').textContent = '$' + predatoryFee.toFixed(2);
+        document.getElementById('pred-processing').textContent = '$' + processingFee;
+        document.getElementById('pred-fast-funding').textContent = '$' + fastFundingFee;
+        document.getElementById('pred-doc-fee').textContent = '$' + docFee;
+        document.getElementById('pred-total-due').textContent = '$' + predatoryTotal.toFixed(2);
+        document.getElementById('pred-apr').textContent = predatoryAPR.toFixed(0) + '%';
+        
+        // Update ethical display
+        document.getElementById('eth-amount').textContent = '$' + amount;
+        document.getElementById('eth-interest').textContent = '$' + ethicalInterest.toFixed(2);
+        document.getElementById('eth-application-fee').textContent = '$0';
+        document.getElementById('eth-additional-fees').textContent = '$0';
+        document.getElementById('eth-total-due').textContent = '$' + ethicalTotal.toFixed(2);
+        document.getElementById('eth-apr').textContent = ethicalAPR + '%';
+        
+        // Show comparison results
+        document.getElementById('comparison-results').style.display = 'grid';
+        
+        // Show hidden fees in predatory mode
+        const hiddenFees = document.querySelector('.hidden-fees');
+        if (hiddenFees) {
+            hiddenFees.style.display = 'flex';
+        }
+    }
+    
+    function hideEducationalOverlay() {
+        const overlay = document.getElementById('educational-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    }
+    
+    function switchToMode(mode) {
+        const body = document.body;
+        
+        // Remove existing mode classes
+        body.classList.remove('predatory-mode', 'ethical-mode');
+        body.classList.add(`${mode}-mode`);
+        
+        // Update mode indicator
+        const modeText = document.querySelector('.mode-text');
+        if (modeText) {
+            modeText.textContent = mode === 'predatory' ? 
+                '💀 Predatory Mode - Dark Patterns Active' : 
+                '✅ Ethical Mode - Transparent & Safe';
+        }
+        
+        // Update mode buttons
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.mode === mode) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Store mode preference
+        localStorage.setItem('lotus-mode', mode);
+        
+        console.log(`Switched to ${mode} mode`);
+    }
+    
+    // Initialize with saved mode or default to ethical
+    const savedMode = localStorage.getItem('lotus-mode') || 'ethical';
+    switchToMode(savedMode);
+</script>
+
+<!-- Application Scripts -->
+<script src="./global.js"></script>
+<script type="module" src="./utils.js"></script>
+<script type="module" src="./ui-components.js"></script>
+<script type="module" src="./lotus_core.js"></script>
+<script type="module" src="./autonomy_theater.js"></script>
+<script type="module" src="./app.js"></script>
+
+<!-- Service Worker Registration -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(registration => console.log('SW registered:', registration))
+                .catch(error => console.log('SW registration failed:', error));
+        });
+    }
+</script>
+</body>
+</html>
