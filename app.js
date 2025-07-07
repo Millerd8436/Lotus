@@ -476,66 +476,7 @@ window.LotusApp.initialize = async function() {
     }
 };
 
-// ...existing code...
-
-document.addEventListener('DOMContentLoaded', function() {
-    logger.info('🪷 Lotus Payday Loan Simulator - Initializing...');
-    
-    try {
-        // Initialize core systems
-        window.LotusApp.autonomyTheater = new AutonomyTrap(null, new Config(), null, null);
-        window.LotusApp.consentBar = new ConsentBar();
-        window.LotusApp.ghostMode = new GhostModeController();
-        window.LotusApp.simulation = new SimulationController();
-        window.LotusApp.quizEngine = new QuizEngine();
-        
-        // Initialize all exploitative and educational components
-        window.LotusApp.trapUIEngine = new TrapUIEngine();
-        window.LotusApp.educationalEngine = new ComprehensiveEducationalEngine();
-        window.LotusApp.darkPatternEngine = new DarkPatternEngine();
-        window.LotusApp.educationalAssessment = new EducationalAssessment();
-        window.LotusApp.urgencyTimer = new UrgencyTimer();
-        window.LotusApp.liveFeed = new LiveFeed();
-        
-        // Initialize new exploitative engines
-        window.LotusApp.usurySkirter = new UsurySkirterEngine();
-        window.LotusApp.achExploiter = new ACHExploitationEngine();
-        window.LotusApp.echoNarrator = new EchoModeNarrator();
-        window.LotusApp.multiLoanUpseller = new MultiLoanUpsellEngine();
-        
-        // Initialize UI components
-        window.LotusApp.consentBar.initialize();
-        window.LotusApp.trapUIEngine.initialize();
-        window.LotusApp.darkPatternEngine.initialize();
-        
-        // Initialize new exploitative components
-        window.LotusApp.achExploiter.setupACHExploitation();
-        
-        // Create containers for new features
-        this.createRequiredContainers();
-        
-        // Start exploitative features in containers if they exist
-        if (document.getElementById('urgency-container')) {
-            window.LotusApp.urgencyTimer.start('urgency-container');
-        }
-        if (document.getElementById('live-feed-container')) {
-            window.LotusApp.liveFeed.start('live-feed-container');
-        }
-        
-        // Restore preferences
-        const savedGhostMode = localStorage.getItem('lotus-ghost-mode') === 'true';
-        if (savedGhostMode) window.LotusApp.ghostMode.toggle();
-        
-        // Set up event listeners
-        setupEventListeners();
-        
-        window.LotusApp.initialized = true;
-        logger.info('✅ Lotus Educational Simulation - All exploitative features restored and ready');
-        
-    } catch (error) {
-        logger.error('Initialization error', error);
-    }
-});
+// Remove duplicate DOMContentLoaded listener - handled by the one at the bottom
 
 // Event listeners
 function setupEventListeners() {
