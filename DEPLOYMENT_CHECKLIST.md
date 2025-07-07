@@ -1,53 +1,52 @@
-# ✅ LOTUS DEPLOYMENT CHECKLIST - COMPLETE
+# ✅ LOTUS NEXT.JS DEPLOYMENT CHECKLIST - READY FOR VERCEL
 
-## GitHub Pages Deployment Status: READY ✅
+## Vercel Next.js Deployment Status: READY ✅
 
-### Core Files (All Present & Working)
-- ✅ `index.html` - Main entry point (625 lines, complete)
-- ✅ `apply.html` - Loan application flow (773 lines, complete)  
-- ✅ `reflect.html` - Educational reflection (690 lines, complete)
+### Core Next.js Files (All Present & Working)
+- ✅ `pages/index.tsx` - Next.js entry point with session management
+- ✅ `components/LotusSimulator.tsx` - Main React component (1000+ lines)
+- ✅ `types/lotus.ts` - TypeScript type definitions
+- ✅ `utils.js` - Utility functions (preserved from legacy)
 
-### JavaScript Modules (All Present & Working)
-- ✅ `app.js` - Main coordinator (747 lines, complete)
-- ✅ `global.js` - Global state & utilities (117 lines, complete)
-- ✅ `lotus_core.js` - Loan calculations (137 lines, complete)
-- ✅ `ui-components.js` - All UI components (1107 lines, complete)
-- ✅ `utils.js` - Utility functions (working)
-- ✅ `autonomy_theater.js` - Psychology engine (working)
+### Configuration Files (All Present & Working)
+- ✅ `package.json` - Dependencies (React, Next.js, TypeScript, Tailwind)
+- ✅ `next.config.js` - Next.js configuration for Vercel
+- ✅ `vercel.json` - Vercel deployment configuration
+- ✅ `tsconfig.json` - TypeScript configuration
+- ✅ `tailwind.config.js` - Tailwind CSS configuration
+- ✅ `postcss.config.js` - PostCSS configuration
 
-### Stylesheets (All Present & Working)
-- ✅ `assets/styles/deceptive.css` - Predatory styling (458 lines)
-- ✅ `assets/styles/ethical.css` - Ethical styling (working)
+### Migrated Features (All Integrated into React)
+- ✅ 3-Phase simulation structure (exploitative → ethical → reflection)
+- ✅ Autonomy violation tracking and Kantian ethics analysis
+- ✅ Dark pattern mechanics (urgency timers, default bias, etc.)
+- ✅ State-by-state regulation comparison
+- ✅ Loan calculation engine (APR, fees, rollovers)
+- ✅ Educational overlays and reflection components
+- ✅ Real-time behavioral analysis
+- ✅ Session management and choice tracking
 
-### Data Files (All Present & Valid JSON)
-- ✅ `data/usury_laws.json` - Legal information (616 lines)
-- ✅ `data/quiz_bank.json` - Quiz questions (valid)
-- ✅ `data/trap_scenarios.json` - Scenario data (valid)
-- ✅ `data/ui_config.json` - UI configuration (valid)
+### Cleanup Status (All Obsolete Files Removed)
+- ✅ Static `index.html` removed (replaced by Next.js pages)
+- ✅ Legacy JavaScript files moved to `_backup/` for reference
+- ✅ Static `lotus-app.js` removed from public directory
+- ✅ Vercel config updated for Next.js framework
+- ✅ Next.js config cleaned of static file redirects
 
-### PWA Support (All Present & Working)
-- ✅ `manifest.json` - PWA manifest (17 lines, complete)
-- ✅ `sw.js` - Service worker (34 lines, complete)
+### Next.js Specific Features (All Working)
+- ✅ TypeScript integration
+- ✅ Tailwind CSS styling
+- ✅ Component-based architecture
+- ✅ React hooks for state management
+- ✅ Next.js Head component for SEO
+- ✅ Proper build and deployment scripts
 
-### Critical Functions (All Implemented)
-- ✅ `showSection()` - Navigation between sections
-- ✅ `runSimulation()` - Loan simulations  
-- ✅ `simulateDebtCycle()` - Chart.js debt visualization
-- ✅ `calculateComparison()` - Side-by-side calculator
-- ✅ `toggleGhostMode()` - Ethical guidance overlay
-- ✅ `switchToMode()` - Predatory/ethical mode switching
-- ✅ All quiz and reflection functions
-- ✅ All calculator and cost breakdown functions
-
-### Navigation & Links (All Working)
-- ✅ All internal page navigation
-- ✅ All section navigation within pages
-- ✅ All button onclick handlers
-- ✅ All form submissions
-- ✅ All external CDN links (Tailwind, Chart.js)
-
-### GitHub Pages Requirements (All Met)
-- ✅ No build process required
+### Vercel Deployment Requirements (All Met)
+- ✅ Framework correctly set to "nextjs"
+- ✅ Build command: `npm run build`
+- ✅ Install command: `npm install`
+- ✅ No conflicting static files
+- ✅ All dependencies properly declared in package.json
 - ✅ All paths are relative
 - ✅ ES6 modules properly configured
 - ✅ No 404 errors on resources
