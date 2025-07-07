@@ -42,12 +42,11 @@ jobs:
         test -f app.js && echo "✅ app.js exists"
         test -f ui.js && echo "✅ ui.js exists"
         test -f style.css && echo "✅ style.css exists"
-        test -d core && echo "✅ core/ directory exists"
-        test -d modes && echo "✅ modes/ directory exists"
+        test -d modules && echo "✅ modules/ directory exists"
         test -d engine && echo "✅ engine/ directory exists"
         test -d ui_components && echo "✅ ui_components/ directory exists"
         test -d research && echo "✅ research/ directory exists"
-        test -f core/loan_core.js && echo "✅ core/loan_core.js exists"
+        test -f modules/lotus_core.js && echo "✅ modules/lotus_core.js exists"
         echo "🎉 All required files present"
 
   deploy:

@@ -1,0 +1,626 @@
+/* ETHICAL MODE - TRANSPARENT & USER-FOCUSED DESIGN */
+/* Complete opposite of predatory tactics - clean, honest, educational */
+
+/* Global ethical theme - Calm and trustworthy */
+body.ethical-mode {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #2c3e50;
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  animation: none; /* No distracting animations */
+}
+
+/* HONEST INTRO SECTION */
+.ethical-intro {
+  background: linear-gradient(135deg, #e8f5e8, #f0f8ff);
+  padding: 3rem 2rem;
+  text-align: center;
+  border: none;
+  position: relative;
+}
+
+.educational-mascot {
+  font-size: 3rem;
+  color: #27ae60;
+  margin-bottom: 1rem;
+}
+
+.ethical-text {
+  font-family: 'Segoe UI', sans-serif;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin-top: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CALM, INFORMATIVE SECTION */
+.information-zone {
+  background: #ffffff;
+  padding: 3rem 2rem;
+  text-align: center;
+  border: 1px solid #e9ecef;
+  margin: 2rem 0;
+}
+
+.information-zone h2 {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+/* TRANSPARENT COST DISPLAY */
+.ethical-cost-display {
+  background: #f8f9fa;
+  border: 2px solid #17a2b8;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.cost-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.cost-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.cost-item .label {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.cost-item .value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.apr-warning {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  color: #856404;
+}
+
+/* EDUCATIONAL ALTERNATIVES */
+.alternatives-section {
+  background: #e8f5e8;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.alternatives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.alternative-option {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid #27ae60;
+  text-align: left;
+}
+
+.alternative-option h4 {
+  color: #27ae60;
+  margin-bottom: 0.5rem;
+}
+
+.alternative-option .apr {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+/* ETHICAL FORM STYLING */
+.ethical-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 2rem 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ethical-form h3 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.ethical-form label {
+  display: block;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.ethical-form input,
+.ethical-form select {
+  background: white;
+  color: #2c3e50;
+  border: 2px solid #e9ecef;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.ethical-form input:focus,
+.ethical-form select:focus {
+  outline: none;
+  border-color: #17a2b8;
+  box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1);
+}
+
+/* HONEST SLIDER STYLING */
+.ethical-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #e9ecef;
+  outline: none;
+  margin: 1rem 0;
+}
+
+.ethical-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #17a2b8;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* TRANSPARENT CHECKBOX STYLING */
+.ethical-checkbox {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+  border: 1px solid #dee2e6;
+}
+
+.ethical-checkbox input[type="checkbox"] {
+  margin-right: 0.75rem;
+  transform: scale(1);
+}
+
+.ethical-checkbox label {
+  color: #2c3e50;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.ethical-checkbox .explanation {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+/* HONEST SUBMIT BUTTON */
+.ethical-submit-button {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.ethical-submit-button:hover {
+  background: #219a52;
+}
+
+.ethical-submit-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.3);
+}
+
+/* WARNING INDICATORS */
+.ethical-warning {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+}
+
+.info-box {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+}
+
+/* ACCESSIBILITY FEATURES */
+.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .ethical-intro {
+    padding: 2rem 1rem;
+  }
+  
+  .information-zone {
+    padding: 2rem 1rem;
+  }
+  
+  .cost-breakdown {
+    grid-template-columns: 1fr;
+  }
+  
+  .alternatives-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* FOCUS INDICATORS FOR ACCESSIBILITY */
+.ethical-mode *:focus {
+  outline: 2px solid #17a2b8;
+  outline-offset: 2px;
+}
+
+.transparency-notice h3 {
+  color: #856404;
+  margin-top: 0;
+}
+
+/* Cost transparency */
+.cost-transparency {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin: 2rem 0;
+}
+
+.cost-breakdown {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.cost-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.cost-high {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.cost-low {
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Ethical CTA buttons */
+.ethical-button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: none;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.ethical-button:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.ethical-button:focus {
+  outline: 2px solid #28a745;
+  outline-offset: 2px;
+}
+
+/* Warning buttons for potentially harmful actions */
+.warning-button {
+  background: #ffc107;
+  color: #212529;
+  border: 2px solid #e0a800;
+}
+
+.danger-button {
+  background: #dc3545;
+  color: white;
+  border: 2px solid #c82333;
+}
+
+/* Educational overlays */
+.educational-overlay {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #17a2b8;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.educational-overlay::before {
+  content: "💡";
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  background: #17a2b8;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+}
+
+.educational-overlay h4 {
+  color: #17a2b8;
+  margin-top: 0;
+  margin-left: 2rem;
+}
+
+/* Revealed deceptive elements in Ghost Mode */
+body.ghost-mode [data-deceptive] {
+  background: #ffebee !important;
+  border: 2px solid #f44336 !important;
+  padding: 0.5rem !important;
+  border-radius: 5px !important;
+  font-size: 1rem !important;
+  color: #d32f2f !important;
+  opacity: 1 !important;
+  position: relative;
+}
+
+body.ghost-mode [data-deceptive]::before {
+  content: "⚠️ HIDDEN TERM REVEALED";
+  background: #f44336;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  position: absolute;
+  top: -25px;
+  left: 0;
+  z-index: 10;
+}
+
+/* Ethical form styling */
+.ethical-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.ethical-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.ethical-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.ethical-form input,
+.ethical-form select,
+.ethical-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.ethical-form input:focus,
+.ethical-form select:focus,
+.ethical-form textarea:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.2);
+}
+
+/* APR disclosure - prominently displayed */
+.apr-disclosure {
+  background: #f8d7da;
+  border: 2px solid #dc3545;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.apr-disclosure h3 {
+  color: #721c24;
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.apr-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #dc3545;
+  margin: 1rem 0;
+}
+
+/* Ethical navigation */
+.ethical-nav {
+  background: white;
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.ethical-nav .nav-link {
+  color: #495057;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 1rem 1.5rem;
+}
+
+.ethical-nav .nav-link:hover {
+  color: #28a745;
+  background: #f8f9fa;
+}
+
+.ethical-nav .nav-link.active {
+  color: #28a745;
+  border-bottom: 2px solid #28a745;
+}
+
+/* Ghost mode toggle */
+.ghost-toggle {
+  background: #6f42c1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.ghost-toggle:hover {
+  background: #5a2d91;
+  transform: translateY(-2px);
+}
+
+.ghost-toggle.active {
+  background: #ffc107;
+  color: #212529;
+}
+
+/* Quiz components */
+.quiz-container {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin: 2rem 0;
+}
+
+.quiz-question {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #343a40;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.quiz-option {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quiz-option:hover {
+  background: #e9ecef;
+  border-color: #17a2b8;
+}
+
+.quiz-option.selected {
+  background: #d1ecf1;
+  border-color: #17a2b8;
+}
+
+.quiz-option.correct {
+  background: #d4edda;
+  border-color: #28a745;
+}
+
+.quiz-option.incorrect {
+  background: #f8d7da;
+  border-color: #dc3545;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .ethical-hero {
+    padding: 2rem 1rem;
+  }
+  
+  .ethical-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .cost-breakdown {
+    grid-template-columns: 1fr;
+  }
+  
+  .ethical-button {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+  
+  .quiz-container {
+    padding: 1rem;
+  }
+}

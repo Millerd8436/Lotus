@@ -1,0 +1,615 @@
+{
+  "usury_laws": {
+    "introduction": "Usury laws set maximum interest rates that lenders can charge. These laws vary significantly by state and loan type, creating a patchwork of consumer protections.",
+    "federal_regulations": {
+      "military_lending_act": {
+        "description": "Protects active-duty military and dependents",
+        "apr_cap": "36%",
+        "scope": "Payday loans, auto title loans, refund anticipation loans",
+        "effective_date": "2007"
+      },
+      "cfpb_payday_rule": {
+        "description": "Requires ability-to-repay determination",
+        "status": "Rescinded 2020, under review",
+        "key_provisions": [
+          "Full payment test for covered loans",
+          "Principal payoff option for short-term loans",
+          "Restrictions on loan sequences"
+        ]
+      }
+    },
+    "state_laws": {
+      "AL": {
+        "state_name": "Alabama",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 30,
+        "max_fee": "$17.50 per $100",
+        "apr_range": "456%",
+        "cooling_off": "24 hours after 5th loan",
+        "database_required": true,
+        "notes": "One of the most permissive states"
+      },
+      "AK": {
+        "state_name": "Alaska", 
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 14,
+        "max_fee": "$15 per $100",
+        "apr_range": "391%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Limited regulation"
+      },
+      "AZ": {
+        "state_name": "Arizona",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A", 
+        "max_fee": "N/A",
+        "apr_range": "36% general usury cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited since 2010, 36% APR cap"
+      },
+      "AR": {
+        "state_name": "Arkansas",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A", 
+        "apr_range": "17% constitutional cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Constitutional usury limit enforced"
+      },
+      "CA": {
+        "state_name": "California",
+        "payday_legal": true,
+        "max_amount": 300,
+        "max_term_days": 31,
+        "max_fee": "$15 per $100",
+        "apr_range": "460%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Relatively low loan limits"
+      },
+      "CO": {
+        "state_name": "Colorado",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap (as of 2019)",
+        "cooling_off": "N/A", 
+        "database_required": false,
+        "notes": "36% cap passed by ballot initiative"
+      },
+      "CT": {
+        "state_name": "Connecticut",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited, 36% rate cap"
+      },
+      "DC": {
+        "state_name": "District of Columbia",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "24% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Strict usury laws prohibit payday lending"
+      },
+      "DE": {
+        "state_name": "Delaware",
+        "payday_legal": true,
+        "max_amount": 1000,
+        "max_term_days": 60,
+        "max_fee": "$10 per $100 + 5% monthly",
+        "apr_range": "521%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Higher loan limits, tracking database"
+      },
+      "FL": {
+        "state_name": "Florida",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 31,
+        "max_fee": "$10 per $100",
+        "apr_range": "304%",
+        "cooling_off": "24 hours after 3rd consecutive loan",
+        "database_required": true,
+        "notes": "Database prevents multiple loans"
+      },
+      "GA": {
+        "state_name": "Georgia",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A", 
+        "max_fee": "N/A",
+        "apr_range": "60% criminal usury cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Criminal penalties for high-cost lending"
+      },
+      "HI": {
+        "state_name": "Hawaii",
+        "payday_legal": true,
+        "max_amount": 600,
+        "max_term_days": 32,
+        "max_fee": "$15 per $100",
+        "apr_range": "459%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Island state with limited options"
+      },
+      "ID": {
+        "state_name": "Idaho",
+        "payday_legal": true,
+        "max_amount": 1000,
+        "max_term_days": "No limit",
+        "max_fee": "$25 per $100",
+        "apr_range": "652%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Among highest fees permitted"
+      },
+      "IL": {
+        "state_name": "Illinois",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap (as of 2021)",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "36% cap enacted 2021"
+      },
+      "IN": {
+        "state_name": "Indiana",
+        "payday_legal": true,
+        "max_amount": 605,
+        "max_term_days": 14,
+        "max_fee": "$15 per $100",
+        "apr_range": "391%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database tracking system"
+      },
+      "IA": {
+        "state_name": "Iowa",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 31,
+        "max_fee": "$15 per $100",
+        "apr_range": "433%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Moderate regulations"
+      },
+      "KS": {
+        "state_name": "Kansas",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 30,
+        "max_fee": "$15 per $100",
+        "apr_range": "391%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Industry-friendly regulations"
+      },
+      "KY": {
+        "state_name": "Kentucky",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 60,
+        "max_fee": "$15 per $100",
+        "apr_range": "459%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database prevents rollovers"
+      },
+      "LA": {
+        "state_name": "Louisiana",
+        "payday_legal": true,
+        "max_amount": 350,
+        "max_term_days": 30,
+        "max_fee": "$16.75 per $100",
+        "apr_range": "391%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Slightly higher fees"
+      },
+      "ME": {
+        "state_name": "Maine",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "30% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited by rate cap"
+      },
+      "MD": {
+        "state_name": "Maryland",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "33% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited since 2002"
+      },
+      "MA": {
+        "state_name": "Massachusetts",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "23% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Strong usury law prohibits payday lending"
+      },
+      "MI": {
+        "state_name": "Michigan",
+        "payday_legal": true,
+        "max_amount": 600,
+        "max_term_days": 31,
+        "max_fee": "$15 per $100",
+        "apr_range": "391%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database tracks borrowing"
+      },
+      "MN": {
+        "state_name": "Minnesota",
+        "payday_legal": true,
+        "max_amount": 350,
+        "max_term_days": 30,
+        "max_fee": "$10 per $100",
+        "apr_range": "390%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Lower fees than most states"
+      },
+      "MS": {
+        "state_name": "Mississippi",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 30,
+        "max_fee": "$20 per $100",
+        "apr_range": "520%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Higher fees permitted"
+      },
+      "MO": {
+        "state_name": "Missouri",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 14,
+        "max_fee": "$75 per $100",
+        "apr_range": "1,955%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Highest APRs in nation"
+      },
+      "MT": {
+        "state_name": "Montana",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "36% cap passed by ballot initiative"
+      },
+      "NE": {
+        "state_name": "Nebraska",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "36% cap passed by ballot initiative"
+      },
+      "NV": {
+        "state_name": "Nevada",
+        "payday_legal": true,
+        "max_amount": "25% of monthly income",
+        "max_term_days": 35,
+        "max_fee": "No limit",
+        "apr_range": "Unlimited",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Few restrictions on fees"
+      },
+      "NH": {
+        "state_name": "New Hampshire",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited by rate cap"
+      },
+      "NJ": {
+        "state_name": "New Jersey",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "30% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited by usury law"
+      },
+      "NM": {
+        "state_name": "New Mexico",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 35,
+        "max_fee": "$15.50 per $100",
+        "apr_range": "400%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database prevents excessive borrowing"
+      },
+      "NY": {
+        "state_name": "New York",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "25% civil cap, 16% criminal cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Strong usury laws prohibit payday lending"
+      },
+      "NC": {
+        "state_name": "North Carolina",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "30% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited since 2006"
+      },
+      "ND": {
+        "state_name": "North Dakota",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 60,
+        "max_fee": "$20 per $100",
+        "apr_range": "520%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Longer terms available"
+      },
+      "OH": {
+        "state_name": "Ohio",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "28% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Short-Term Loan Act of 2018 effectively banned payday loans"
+      },
+      "OK": {
+        "state_name": "Oklahoma",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 45,
+        "max_fee": "$15 per $100",
+        "apr_range": "390%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database prevents abuse"
+      },
+      "OR": {
+        "state_name": "Oregon",
+        "payday_legal": true,
+        "max_amount": 50000,
+        "max_term_days": 60,
+        "max_fee": "36% APR cap (as of 2021)",
+        "apr_range": "36%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Rate cap enacted 2021"
+      },
+      "PA": {
+        "state_name": "Pennsylvania",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "24% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited by usury law"
+      },
+      "RI": {
+        "state_name": "Rhode Island",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 13,
+        "max_fee": "$10 per $100",
+        "apr_range": "260%",
+        "cooling_off": "13 days",
+        "database_required": false,
+        "notes": "Shorter terms, mandatory cooling off"
+      },
+      "SC": {
+        "state_name": "South Carolina",
+        "payday_legal": true,
+        "max_amount": 550,
+        "max_term_days": 31,
+        "max_fee": "$15 per $100",
+        "apr_range": "391%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database prevents excessive use"
+      },
+      "SD": {
+        "state_name": "South Dakota",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "36% cap passed by ballot initiative"
+      },
+      "TN": {
+        "state_name": "Tennessee",
+        "payday_legal": true,
+        "max_amount": 500,
+        "max_term_days": 31,
+        "max_fee": "$15 per $100",
+        "apr_range": "460%",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database tracks borrowing patterns"
+      },
+      "TX": {
+        "state_name": "Texas",
+        "payday_legal": true,
+        "max_amount": "No limit",
+        "max_term_days": "No limit",
+        "max_fee": "No limit",
+        "apr_range": "Unlimited",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Minimal regulations, local ordinances may apply"
+      },
+      "UT": {
+        "state_name": "Utah",
+        "payday_legal": true,
+        "max_amount": "No limit",
+        "max_term_days": 70,
+        "max_fee": "No limit",
+        "apr_range": "Unlimited",
+        "cooling_off": "None",
+        "database_required": true,
+        "notes": "Database required but few other restrictions"
+      },
+      "VT": {
+        "state_name": "Vermont",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "18% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited by usury law"
+      },
+      "VA": {
+        "state_name": "Virginia",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "36% cap (as of 2020)",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Rate cap enacted 2020"
+      },
+      "WA": {
+        "state_name": "Washington",
+        "payday_legal": true,
+        "max_amount": 700,
+        "max_term_days": 45,
+        "max_fee": "$15 per $100",
+        "apr_range": "391%",
+        "cooling_off": "1 day after 8th loan",
+        "database_required": true,
+        "notes": "Database prevents excessive borrowing"
+      },
+      "WV": {
+        "state_name": "West Virginia",
+        "payday_legal": false,
+        "max_amount": "N/A",
+        "max_term_days": "N/A",
+        "max_fee": "N/A",
+        "apr_range": "31% cap",
+        "cooling_off": "N/A",
+        "database_required": false,
+        "notes": "Prohibited by rate cap"
+      },
+      "WI": {
+        "state_name": "Wisconsin",
+        "payday_legal": true,
+        "max_amount": 1500,
+        "max_term_days": 90,
+        "max_fee": "$15 per $100",
+        "apr_range": "574%",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Higher loan amounts permitted"
+      },
+      "WY": {
+        "state_name": "Wyoming",
+        "payday_legal": true,
+        "max_amount": "No limit",
+        "max_term_days": "No limit",
+        "max_fee": "$30 per $100",
+        "apr_range": "Unlimited",
+        "cooling_off": "None",
+        "database_required": false,
+        "notes": "Minimal regulation, highest fees"
+      }
+    }
+  },
+  "analysis": {
+    "permissive_states": [
+      "Texas", "Wyoming", "Utah", "Idaho", "Missouri", "Nevada"
+    ],
+    "prohibited_states": [
+      "Arizona", "Arkansas", "Colorado", "Connecticut", "Georgia", "Illinois", 
+      "Maine", "Maryland", "Massachusetts", "Montana", "Nebraska", "New Hampshire",
+      "New Jersey", "New York", "North Carolina", "Ohio", "Pennsylvania", 
+      "South Dakota", "Vermont", "Virginia", "West Virginia"
+    ],
+    "regulated_states": [
+      "Alabama", "Alaska", "California", "Delaware", "Florida", "Hawaii",
+      "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Michigan",
+      "Minnesota", "Mississippi", "New Mexico", "North Dakota", "Oklahoma",
+      "Oregon", "Rhode Island", "South Carolina", "Tennessee", "Washington",
+      "Wisconsin"
+    ],
+    "trends": {
+      "toward_prohibition": "Increasing number of states adopting 36% APR caps",
+      "ballot_initiatives": "Voter-initiated rate caps passed in CO, MT, NE, SD",
+      "federal_movement": "Growing support for national 36% APR cap",
+      "industry_response": "Shift toward longer-term installment products"
+    },
+    "enforcement_challenges": [
+      "Online lending across state lines",
+      "Tribal lending jurisdictional issues", 
+      "Complex fee structures obscuring true rates",
+      "Alternative product proliferation"
+    ]
+  }
+}
