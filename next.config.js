@@ -3,16 +3,16 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  
+
   // Enable experimental features for better performance
   experimental: {
     // Enable edge runtime for better performance
-    runtime: 'experimental-edge',
+    runtime: "experimental-edge",
   },
 
   // Static file serving from public directory
   trailingSlash: false,
-  
+
   // Environment variables
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
@@ -27,8 +27,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: '/api/:path*',
+        source: "/api/:path*",
+        destination: "/api/:path*",
       },
     ];
   },
@@ -40,17 +40,17 @@ const nextConfig = {
   },
 
   // Output configuration for Vercel
-  output: 'standalone',
-  
+  output: "standalone",
+
   // Webpack configuration for custom modules
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Allow importing from lib directory
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@/lib': './lib',
-      '@/components': './components',
-      '@/pages': './pages',
-      '@/public': './public',
+      "@/lib": "./lib",
+      "@/components": "./components",
+      "@/pages": "./pages",
+      "@/public": "./public",
     };
 
     return config;

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import LotusSimulator from '../components/LotusSimulator';
-import { simulatorCSS } from '../components/LotusStyles';
+import { useState, useEffect } from "react";
+import Head from "next/head";
+import LotusSimulator from "../components/LotusSimulator";
+import { simulatorCSS } from "../components/LotusStyles";
 
 interface ComprehensiveLotusSession {
   id: string;
@@ -12,7 +12,7 @@ interface ComprehensiveLotusSession {
   analysisData: any;
   userChoices: any[];
   coercionIndex: number;
-  
+
   // Advanced analytics tracking
   behavioralMetrics: any;
   manipulationEvents: any[];
@@ -23,20 +23,22 @@ interface ComprehensiveLotusSession {
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [session, setSession] = useState<ComprehensiveLotusSession | null>(null);
+  const [session, setSession] = useState<ComprehensiveLotusSession | null>(
+    null,
+  );
   const [systemReady, setSystemReady] = useState(false);
 
   useEffect(() => {
     // Initialize comprehensive session with advanced analytics
     const initializeAdvancedSession = async () => {
-      console.log('🌺 Initializing Lotus Advanced System...');
-      console.log('📊 Total System Lines: 10,789+');
-      console.log('🧠 Behavioral Analysis: Ready');
-      console.log('⚖️ Legal Loophole Engine: Ready');
-      console.log('🔄 Rollover Trap System: Ready');
-      console.log('📚 Case Studies Database: Ready');
-      console.log('📖 Educational Content: Ready');
-      
+      console.log("🌺 Initializing Lotus Advanced System...");
+      console.log("📊 Total System Lines: 10,789+");
+      console.log("🧠 Behavioral Analysis: Ready");
+      console.log("⚖️ Legal Loophole Engine: Ready");
+      console.log("🔄 Rollover Trap System: Ready");
+      console.log("📚 Case Studies Database: Ready");
+      console.log("📖 Educational Content: Ready");
+
       const newSession: ComprehensiveLotusSession = {
         id: `lotus_advanced_${Date.now()}`,
         startTime: new Date(),
@@ -46,52 +48,52 @@ export default function Home() {
         analysisData: null,
         userChoices: [],
         coercionIndex: 0,
-        
+
         // Advanced analytics initialization
         behavioralMetrics: {
           initialized: true,
           trackingEnabled: true,
-          manipulationDetection: true
+          manipulationDetection: true,
         },
         manipulationEvents: [],
         psychologicalProfile: {
-          vulnerabilityAssessment: 'pending',
-          manipulationSusceptibility: 'pending',
-          decisionMakingStyle: 'pending'
+          vulnerabilityAssessment: "pending",
+          manipulationSusceptibility: "pending",
+          decisionMakingStyle: "pending",
         },
         legalAnalysis: {
-          jurisdiction: 'pending',
+          jurisdiction: "pending",
           loopholesApplicable: [],
-          complianceViolations: []
+          complianceViolations: [],
         },
         educationalProgress: {
-          personalizedCurriculum: 'pending',
+          personalizedCurriculum: "pending",
           protectionRecommendations: [],
-          learningObjectives: []
-        }
+          learningObjectives: [],
+        },
       };
-      
+
       // Simulate system warmup
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setSession(newSession);
       setSystemReady(true);
       setIsLoading(false);
-      
-      console.log('✅ Lotus Advanced System Ready for Education');
+
+      console.log("✅ Lotus Advanced System Ready for Education");
     };
-    
+
     initializeAdvancedSession();
   }, []);
 
   const handlePhaseCompletion = (phase: number, data: any) => {
     console.log(`📊 Phase ${phase} completed with advanced analytics:`, data);
-    
+
     if (session) {
       const updatedSession = {
         ...session,
         currentPhase: phase + 1,
-        [`phase${phase}Data`]: data
+        [`phase${phase}Data`]: data,
       };
       setSession(updatedSession);
     }
@@ -101,17 +103,30 @@ export default function Home() {
     return (
       <>
         <Head>
-          <title>🪷 Lotus Advanced Payday Loan Simulator - Comprehensive Educational Platform</title>
-          <meta name="description" content="Advanced educational platform with 10,789+ lines of behavioral analysis, legal simulation, and real-world case integration for understanding predatory lending practices" />
-          <meta name="keywords" content="payday loans, predatory lending, financial education, behavioral analysis, dark patterns, consumer protection, debt traps" />
+          <title>
+            🪷 Lotus Advanced Payday Loan Simulator - Comprehensive Educational
+            Platform
+          </title>
+          <meta
+            name="description"
+            content="Advanced educational platform with 10,789+ lines of behavioral analysis, legal simulation, and real-world case integration for understanding predatory lending practices"
+          />
+          <meta
+            name="keywords"
+            content="payday loans, predatory lending, financial education, behavioral analysis, dark patterns, consumer protection, debt traps"
+          />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <style jsx global>{`${simulatorCSS}`}</style>
+        <style jsx global>{`
+          ${simulatorCSS}
+        `}</style>
         <div className="loading-container">
           <div className="loading-content">
             <h1>🪷</h1>
             <h2>Loading Comprehensive Lotus System...</h2>
-            <p>Advanced educational platform for understanding predatory lending</p>
+            <p>
+              Advanced educational platform for understanding predatory lending
+            </p>
             <div className="system-status">
               <div>📊 10,789+ lines of advanced code</div>
               <div>🧠 Psychological analysis engine</div>
@@ -151,15 +166,24 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>🪷 Lotus Payday Loan Simulator - 3-Phase Educational Experience</title>
-        <meta name="description" content="Experience predatory lending mechanics, then see ethical alternatives, then analyze your behavioral responses in this comprehensive educational simulator." />
+        <title>
+          🪷 Lotus Payday Loan Simulator - 3-Phase Educational Experience
+        </title>
+        <meta
+          name="description"
+          content="Experience predatory lending mechanics, then see ethical alternatives, then analyze your behavioral responses in this comprehensive educational simulator."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <style jsx global>{`${simulatorCSS}`}</style>
-      <LotusSimulator 
-        phase={session.currentPhase} 
+      <style jsx global>{`
+        ${simulatorCSS}
+      `}</style>
+      <LotusSimulator
+        phase={session.currentPhase}
         onPhaseComplete={(results: any) => {
-          setSession(prev => prev ? { ...prev, analysisData: results } : null);
+          setSession((prev) =>
+            prev ? { ...prev, analysisData: results } : null,
+          );
         }}
       />
     </>

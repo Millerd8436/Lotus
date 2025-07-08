@@ -12,26 +12,26 @@ export interface LotusSession {
   sessionId: string;
   userId?: string;
   timestamp: Date;
-  
+
   // Loan Details
   amount: number;
   state: string;
-  mode: 'exploitative' | 'ethical' | 'comparison';
+  mode: "exploitative" | "ethical" | "comparison";
   termDays: number;
-  
+
   // Financial Data
   fee: number;
   apr: number;
   totalCost: number;
   rolloverCount: number;
-  
+
   // Advanced Analytics
   psychologicalProfile: PsychologicalProfile;
   vulnerabilityScore: number;
   coercionTimeline: CoercionEvent[];
   manipulationExposure: ManipulationEvent[];
   behavioralMetrics: BehavioralMetrics;
-  
+
   // Session Metadata
   createdAt: string;
   updatedAt: string;
@@ -54,8 +54,13 @@ export interface PsychologicalProfile {
 }
 
 export interface VulnerabilityFactor {
-  type: 'financial_stress' | 'debt_cycle_risk' | 'inexperience' | 'financial_literacy' | 'situational_pressure';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  type:
+    | "financial_stress"
+    | "debt_cycle_risk"
+    | "inexperience"
+    | "financial_literacy"
+    | "situational_pressure";
+  severity: "low" | "medium" | "high" | "critical";
   description: string;
   exploitationRisk: string;
   evidenceSources: string[];
@@ -82,15 +87,15 @@ export interface ManipulationSusceptibility {
 }
 
 export interface DecisionMakingStyle {
-  type: 'impulsive' | 'deliberative' | 'balanced' | 'stressed' | 'overwhelmed';
+  type: "impulsive" | "deliberative" | "balanced" | "stressed" | "overwhelmed";
   characteristics: string[];
   exploitationRisk: string;
   timeToDecision: number;
-  informationProcessingStyle: 'fast' | 'slow' | 'mixed';
+  informationProcessingStyle: "fast" | "slow" | "mixed";
 }
 
 export interface StressResponse {
-  level: 'low' | 'moderate' | 'high' | 'extreme';
+  level: "low" | "moderate" | "high" | "extreme";
   indicators: string[];
   vulnerability: string;
   physiologicalMarkers: PhysiologicalMarkers;
@@ -106,7 +111,7 @@ export interface PhysiologicalMarkers {
 }
 
 export interface FinancialLiteracy {
-  level: 'basic' | 'intermediate' | 'advanced' | 'expert';
+  level: "basic" | "intermediate" | "advanced" | "expert";
   knowledgeAreas: FinancialKnowledgeArea[];
   overallScore: number;
   deficits: string[];
@@ -143,26 +148,26 @@ export interface ManipulationEvent {
   type: ManipulationType;
   element: string;
   description: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   effectiveness: ManipulationEffectiveness;
   userResponse: UserResponse;
   ethicalViolation: EthicalViolation;
   legalImplications: LegalImplication[];
 }
 
-export type ManipulationType = 
-  | 'artificial_scarcity'
-  | 'fake_social_proof'
-  | 'pre_selected_consent'
-  | 'obfuscated_pricing'
-  | 'countdown_pressure'
-  | 'false_authority'
-  | 'commitment_escalation'
-  | 'sunk_cost_exploitation'
-  | 'debt_cycle_encouragement'
-  | 'rollover_pressure'
-  | 'upsell_manipulation'
-  | 'emergency_exploitation';
+export type ManipulationType =
+  | "artificial_scarcity"
+  | "fake_social_proof"
+  | "pre_selected_consent"
+  | "obfuscated_pricing"
+  | "countdown_pressure"
+  | "false_authority"
+  | "commitment_escalation"
+  | "sunk_cost_exploitation"
+  | "debt_cycle_encouragement"
+  | "rollover_pressure"
+  | "upsell_manipulation"
+  | "emergency_exploitation";
 
 export interface ManipulationEffectiveness {
   score: number;
@@ -178,7 +183,7 @@ export interface EffectivenessFactor {
 }
 
 export interface UserResponse {
-  responseType: 'influenced' | 'resistant' | 'neutral' | 'confused';
+  responseType: "influenced" | "resistant" | "neutral" | "confused";
   responseTime: number;
   hesitationLevel: number;
   subsequentBehavior: string[];
@@ -194,7 +199,7 @@ export interface EmotionalState {
 
 export interface EthicalViolation {
   type: string;
-  severity: 'minor' | 'moderate' | 'severe' | 'egregious';
+  severity: "minor" | "moderate" | "severe" | "egregious";
   description: string;
   kantianAnalysis: KantianAnalysis;
   utilitarianAnalysis: UtilitarianAnalysis;
@@ -256,15 +261,15 @@ export interface CoercionEvent {
   ethicalAnalysis: EthicalAnalysis;
 }
 
-export type CoercionType = 
-  | 'economic_duress'
-  | 'time_pressure'
-  | 'information_asymmetry'
-  | 'psychological_pressure'
-  | 'social_pressure'
-  | 'authority_coercion'
-  | 'desperation_exploitation'
-  | 'cognitive_overload';
+export type CoercionType =
+  | "economic_duress"
+  | "time_pressure"
+  | "information_asymmetry"
+  | "psychological_pressure"
+  | "social_pressure"
+  | "authority_coercion"
+  | "desperation_exploitation"
+  | "cognitive_overload";
 
 export interface CoercionContext {
   situationalFactors: string[];
@@ -297,7 +302,7 @@ export interface EthicalAnalysis {
 
 export interface AutonomyViolation {
   type: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   description: string;
   kantianViolation: string;
   hiddenFromUser: boolean;
@@ -358,17 +363,17 @@ export interface ClickPattern {
 }
 
 export interface ScrollBehavior {
-  direction: 'up' | 'down';
+  direction: "up" | "down";
   speed: number;
   timestamp: number;
   position: number;
   smoothness: number;
-  purpose: 'reading' | 'scanning' | 'searching' | 'confused';
+  purpose: "reading" | "scanning" | "searching" | "confused";
 }
 
 export interface FormInteraction {
   field: string;
-  actionType: 'focus' | 'blur' | 'input' | 'delete' | 'paste';
+  actionType: "focus" | "blur" | "input" | "delete" | "paste";
   timestamp: number;
   timeSpent: number;
   errors: number;
@@ -425,7 +430,7 @@ export interface AttentionPattern {
   duration: number;
   intensity: number;
   timestamp: number;
-  type: 'focused' | 'scanning' | 'confused' | 'distracted';
+  type: "focused" | "scanning" | "confused" | "distracted";
 }
 
 // ====================
@@ -461,7 +466,7 @@ export interface ContentSection {
 
 export interface Assessment {
   id: string;
-  type: 'quiz' | 'scenario' | 'case_study' | 'simulation';
+  type: "quiz" | "scenario" | "case_study" | "simulation";
   questions: Question[];
   passingScore: number;
   adaptive: boolean;
@@ -469,7 +474,7 @@ export interface Assessment {
 
 export interface Question {
   id: string;
-  type: 'multiple_choice' | 'true_false' | 'scenario' | 'open_ended';
+  type: "multiple_choice" | "true_false" | "scenario" | "open_ended";
   question: string;
   options?: string[];
   correctAnswer: string | string[];
@@ -479,7 +484,7 @@ export interface Question {
 
 export interface InteractiveElement {
   id: string;
-  type: 'calculator' | 'simulator' | 'game' | 'visualization';
+  type: "calculator" | "simulator" | "game" | "visualization";
   parameters: Record<string, any>;
   learningGoals: string[];
 }
@@ -618,7 +623,11 @@ export interface EnforcementAction {
 
 export interface RegulatoryChange {
   date: Date;
-  type: 'new_regulation' | 'amendment' | 'interpretation' | 'enforcement_change';
+  type:
+    | "new_regulation"
+    | "amendment"
+    | "interpretation"
+    | "enforcement_change";
   description: string;
   impact: string;
   industry_response: string;
@@ -631,7 +640,7 @@ export interface RegulatoryChange {
 export interface CaseStudy {
   id: string;
   title: string;
-  type: 'criminal' | 'civil' | 'regulatory' | 'bankruptcy' | 'class_action';
+  type: "criminal" | "civil" | "regulatory" | "bankruptcy" | "class_action";
   jurisdiction: string;
   date: Date;
   parties: Party[];
@@ -644,7 +653,7 @@ export interface CaseStudy {
 
 export interface Party {
   name: string;
-  role: 'plaintiff' | 'defendant' | 'regulator' | 'witness';
+  role: "plaintiff" | "defendant" | "regulator" | "witness";
   description: string;
 }
 
@@ -715,10 +724,10 @@ export interface UserChoice {
   choice: string;
   context: string;
   manipulationPresent: boolean;
-  autonomyImpact: 'low' | 'medium' | 'high';
+  autonomyImpact: "low" | "medium" | "high";
   coercionLevel: number;
   alternatives_presented: boolean;
-  information_quality: 'poor' | 'adequate' | 'good' | 'excellent';
+  information_quality: "poor" | "adequate" | "good" | "excellent";
 }
 
 export interface Example {
@@ -732,12 +741,12 @@ export interface Example {
 export interface Exercise {
   title: string;
   description: string;
-  type: 'practice' | 'quiz' | 'simulation';
+  type: "practice" | "quiz" | "simulation";
   difficulty: number;
 }
 
 export interface MediaElement {
-  type: 'image' | 'video' | 'audio' | 'animation';
+  type: "image" | "video" | "audio" | "animation";
   url: string;
   caption: string;
   accessibility: string;
@@ -745,7 +754,7 @@ export interface MediaElement {
 
 export interface Resource {
   title: string;
-  type: 'website' | 'document' | 'video' | 'tool';
+  type: "website" | "document" | "video" | "tool";
   url: string;
   description: string;
 }
@@ -765,7 +774,7 @@ export interface Reference {
 export interface DarkPatternComponentProps {
   isEnabled: boolean;
   onInteraction: (event: ManipulationEvent) => void;
-  severity: 'low' | 'medium' | 'high';
+  severity: "low" | "medium" | "high";
   ghostMode?: boolean;
 }
 

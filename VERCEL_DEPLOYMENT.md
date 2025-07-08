@@ -25,6 +25,7 @@ The Lotus Payday Loan Simulator has been successfully migrated from a static HTM
 ## ✅ Migration Complete
 
 ### Integrated Features
+
 - **3-Phase Educational Structure**: Exploitative → Ethical → Reflection
 - **Comprehensive Dark Patterns**: Time pressure, default bias, artificial scarcity, etc.
 - **Autonomy Violation Tracking**: Kantian ethics analysis and psychological manipulation detection
@@ -35,6 +36,7 @@ The Lotus Payday Loan Simulator has been successfully migrated from a static HTM
 - **Reflection Dashboard**: Comprehensive analysis of user experience and decision patterns
 
 ### Removed Obsolete Files
+
 - ✅ Static `index.html` (replaced by Next.js pages)
 - ✅ Legacy JavaScript files (logic integrated into React components)
 - ✅ Static `public/lotus-app.js` (replaced by component architecture)
@@ -44,6 +46,7 @@ The Lotus Payday Loan Simulator has been successfully migrated from a static HTM
 ## 🔧 Technical Configuration
 
 ### Vercel Configuration (`vercel.json`)
+
 ```json
 {
   "framework": "nextjs",
@@ -76,6 +79,7 @@ The Lotus Payday Loan Simulator has been successfully migrated from a static HTM
 ```
 
 ### Dependencies
+
 - **React 18.2+**: Modern React with hooks
 - **Next.js 14+**: Full-stack React framework
 - **TypeScript 5+**: Type safety and developer experience
@@ -83,6 +87,7 @@ The Lotus Payday Loan Simulator has been successfully migrated from a static HTM
 - **Lucide React**: Icon library for UI elements
 
 ### Build Scripts
+
 - `npm run dev` - Development server
 - `npm run build` - Production build
 - `npm run start` - Production server
@@ -91,12 +96,14 @@ The Lotus Payday Loan Simulator has been successfully migrated from a static HTM
 ## 🚀 Deployment Instructions
 
 ### Option 1: Vercel Dashboard (Recommended)
+
 1. Push code to GitHub repository
 2. Connect repository to Vercel dashboard
 3. Vercel will auto-detect Next.js and deploy
 4. Custom domain can be configured in dashboard
 
 ### Option 2: Vercel CLI
+
 ```bash
 npm install -g vercel
 vercel login
@@ -104,6 +111,7 @@ vercel --prod
 ```
 
 ### Option 3: Git Integration
+
 1. Connect GitHub repo to Vercel
 2. Every push to `main` branch auto-deploys
 3. Pull requests get preview deployments
@@ -113,7 +121,7 @@ vercel --prod
 This simulator provides a comprehensive educational experience:
 
 1. **Phase 1 (Exploitative)**: Exposes users to real predatory lending tactics
-2. **Phase 2 (Ethical)**: Shows transparent, ethical lending alternatives  
+2. **Phase 2 (Ethical)**: Shows transparent, ethical lending alternatives
 3. **Phase 3 (Reflection)**: Analyzes manipulation tactics and educates about consumer protection
 
 The application tracks over 15 different types of psychological manipulation and provides detailed analysis of how choice architecture affects decision-making.
@@ -134,7 +142,7 @@ All valuable functionality from the original 15,000+ lines of legacy code has be
 ## 📈 Performance & Scalability
 
 - **Edge Functions**: Serverless execution at edge locations
-- **Automatic Scaling**: Handles traffic spikes seamlessly  
+- **Automatic Scaling**: Handles traffic spikes seamlessly
 - **Global CDN**: Fast content delivery worldwide
 - **Build Optimization**: Next.js optimizes bundle size and performance
 - **TypeScript**: Compile-time error detection and IDE support

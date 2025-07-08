@@ -15,7 +15,7 @@
       "difficulty": "basic"
     },
     {
-      "id": "ethics_002", 
+      "id": "ethics_002",
       "question": "Under Kantian ethics, which principle is most violated by predatory lending?",
       "options": [
         "Categorical imperative - treating people as means only",
@@ -31,12 +31,7 @@
     {
       "id": "ethics_003",
       "question": "What APR cap do most consumer advocates recommend for small-dollar loans?",
-      "options": [
-        "36%",
-        "100%", 
-        "200%",
-        "No cap needed"
-      ],
+      "options": ["36%", "100%", "200%", "No cap needed"],
       "correct": 0,
       "explanation": "The 36% APR cap is widely supported by consumer advocates as it allows for reasonable profit while preventing debt traps.",
       "category": "regulation",
@@ -59,12 +54,7 @@
     {
       "id": "ethics_005",
       "question": "What percentage of payday borrowers are in debt for more than 5 months per year?",
-      "options": [
-        "25%",
-        "50%",
-        "75%",
-        "90%"
-      ],
+      "options": ["25%", "50%", "75%", "90%"],
       "correct": 2,
       "explanation": "CFPB research shows that 75% of payday borrowers are in debt for at least 5 months of the year, indicating chronic debt cycles.",
       "category": "research",
@@ -161,7 +151,7 @@
       },
       "ethical_considerations": [
         "Financial vulnerability due to low income",
-        "Dependents relying on borrower's employment", 
+        "Dependents relying on borrower's employment",
         "Essential transportation need",
         "Limited alternatives due to poor credit"
       ],
@@ -173,7 +163,7 @@
       ]
     },
     {
-      "id": "scenario_002", 
+      "id": "scenario_002",
       "name": "Medical Emergency",
       "description": "Uninsured worker needs $800 for emergency dental work",
       "borrower_profile": {
@@ -344,7 +334,7 @@
       },
       {
         "loan_amount": 300,
-        "term_days": 14, 
+        "term_days": 14,
         "fee": 45,
         "apr": 391.07,
         "comparison": "Personal loan from credit union: ~10-18% APR"
@@ -366,7 +356,7 @@
       },
       {
         "name": "Employee Assistance Programs",
-        "apr_range": "0% - 6%", 
+        "apr_range": "0% - 6%",
         "max_amount": 1000,
         "description": "Employer-sponsored emergency loans or advances"
       },

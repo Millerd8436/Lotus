@@ -1,7 +1,7 @@
 // Core Lotus Types for Comprehensive 3-Phase System
 // Re-exports from advanced type system for comprehensive 96,000+ line codebase
 
-export * from './advanced-lotus';
+export * from "./advanced-lotus";
 
 // Legacy compatibility types (maintained for backward compatibility)
 export interface LotusSession {
@@ -15,7 +15,7 @@ export interface LotusSession {
   coercionIndex: number;
   autonomyViolations: AutonomyViolation[];
   trapEngineState: TrapEngineState;
-  
+
   // Enhanced 3-phase tracking
   darkPatterns?: DarkPatternEvent[];
   amount?: number;
@@ -25,7 +25,7 @@ export interface LotusSession {
   totalCost?: number;
   termDays?: number;
   rolloverCount?: number;
-  mode?: 'exploitative' | 'ethical';
+  mode?: "exploitative" | "ethical";
   createdAt?: string;
 }
 
@@ -72,18 +72,18 @@ export interface UserChoice {
   phase: number;
   timeFromStart: number;
   manipulationPresent: boolean;
-  autonomyImpact: 'low' | 'medium' | 'high';
+  autonomyImpact: "low" | "medium" | "high";
   coercionLevel: number;
 }
 
 export interface AutonomyViolation {
   type: string;
   description: string;
-  severity: 'low' | 'medium' | 'medium-high' | 'high';
+  severity: "low" | "medium" | "medium-high" | "high";
   kantianViolation: string;
   timestamp: string;
   hiddenFromUser: boolean;
-  
+
   // Enhanced 3-phase tracking
   phase?: 1 | 2 | 3;
   coercionLevel?: number;
@@ -103,7 +103,7 @@ export interface TrapEngineState {
 export interface RolloverTrap {
   trigger: string;
   message: string;
-  coercionLevel: 'medium' | 'high' | 'extreme' | 'predatory';
+  coercionLevel: "medium" | "high" | "extreme" | "predatory";
   psychologyUsed: string;
   successRate: number;
 }
@@ -130,7 +130,7 @@ export interface UpsellOffer {
 }
 
 export interface LoopholeStrategy {
-  currentLoophole: 'flatFee' | 'csoBrokerage' | 'tribalCharter' | 'rentABank';
+  currentLoophole: "flatFee" | "csoBrokerage" | "tribalCharter" | "rentABank";
   legalJustification: string;
   stateApplicable: string[];
   aprBypass: number;
@@ -221,10 +221,10 @@ export interface TimelineEvent {
 }
 
 export interface KantianEthicsAnalysis {
-  universalizabilityTest: 'PASSED' | 'FAILED';
-  humanityFormula: 'PASSED' | 'FAILED';
-  autonomyFormula: 'PASSED' | 'FAILED';
-  overallAssessment: 'ETHICALLY_SOUND' | 'ETHICALLY_PROBLEMATIC';
+  universalizabilityTest: "PASSED" | "FAILED";
+  humanityFormula: "PASSED" | "FAILED";
+  autonomyFormula: "PASSED" | "FAILED";
+  overallAssessment: "ETHICALLY_SOUND" | "ETHICALLY_PROBLEMATIC";
   ethicalScore: number;
 }
 
@@ -234,9 +234,9 @@ export interface EthicalScorecard {
   consentValidityScore: number;
   informationIntegrityScore: number;
   fairnessScore: number;
-  overallEthicalGrade: 'A' | 'B' | 'C' | 'D' | 'F';
+  overallEthicalGrade: "A" | "B" | "C" | "D" | "F";
   averageScore: number;
-  ethicalStatus: 'ETHICAL' | 'QUESTIONABLE' | 'UNETHICAL';
+  ethicalStatus: "ETHICAL" | "QUESTIONABLE" | "UNETHICAL";
 }
 
 export interface QuizResult {
@@ -284,7 +284,7 @@ export interface LoanCalculation {
 // API Types for Vercel Backend
 export interface LotusAPIRequest {
   sessionId: string;
-  action: 'calculate-loan' | 'track-choice' | 'get-analysis' | 'complete-phase';
+  action: "calculate-loan" | "track-choice" | "get-analysis" | "complete-phase";
   data: any;
 }
 
@@ -311,6 +311,6 @@ export interface DarkPatternEvent {
   type: string;
   timestamp: string;
   phase: 1 | 2 | 3;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   details?: any;
 }

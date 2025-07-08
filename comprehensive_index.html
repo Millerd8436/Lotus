@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lotus - Payday Lending Educational Simulator</title>
+    <meta
+      name="description"
+      content="Interactive educational platform demonstrating predatory vs ethical lending practices with real-world dark patterns and Ghost Mode ethical guidance"
+    />
+
+    <!-- VERIFICATION: This is the Lotus app - comprehensive 3-phase system -->
+    <meta
+      name="lotus-verification"
+      content="comprehensive-3phase-system-active"
+    />
+
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href="./assets/styles/deceptive.css" />
+    <link rel="stylesheet" href="./assets/styles/ethical.css" />
+
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#dc2626" />
+
+    <!-- SEO and Social -->
+    <meta
+      property="og:title"
+      content="Lotus Payday Lending Educational Simulator"
+    />
+    <meta
+      property="og:description"
+      content="Learn about predatory lending through interactive simulation"
+    />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="./" />
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-content">
+        <div class="lotus-logo">🌸</div>
+        <h2>Loading Lotus Educational Platform</h2>
+        <div class="loading-bar">
+          <div class="loading-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container">
+      <!-- Navigation -->
+      <nav class="main-nav">
+        <div class="nav-container">
+          <a href="index.html" class="nav-logo">
+            <span class="logo-icon">🌸</span>
+            <span class="logo-text">Lotus</span>
+          </a>
+
+          <div class="nav-menu">
+            <a href="#home" class="nav-link active" data-section="home">Home</a>
+            <a href="#learn" class="nav-link" data-section="learn">Learn</a>
+            <a href="#simulate" class="nav-link" data-section="simulate"
+              >Simulate</a
+            >
+            <a href="#compare" class="nav-link" data-section="compare"
+              >Compare</a
+            >
+            <a href="#reflection" class="nav-link" data-section="reflection"
+              >Reflect</a
+            >
+          </div>
+
+          <!-- Mode Controls -->
+          <div class="nav-controls">
+            <!-- Mode Toggle -->
+            <div class="mode-toggle">
+              <button class="mode-btn predatory" data-mode="exploitative">
+                🔴 Exploitative
+              </button>
+              <button class="mode-btn ethical active" data-mode="ethical">
+                ✅ Ethical
+              </button>
+            </div>
+
+            <!-- Ghost Mode Toggle -->
+            <button
+              id="ghost-mode-toggle"
+              class="ghost-toggle"
+              title="Toggle ethical guidance overlays"
+            >
+              👻 Ghost Mode
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Phase Indicator -->
+      <div id="phase-indicator" class="phase-indicator">
+        <div class="phase-progress">
+          <div class="phase-step active" data-phase="exploitative">
+            <span class="phase-number">1</span>
+            <span class="phase-name">Exploitative</span>
+          </div>
+          <div class="phase-arrow">→</div>
+          <div class="phase-step" data-phase="ethical">
+            <span class="phase-number">2</span>
+            <span class="phase-name">Ethical</span>
+          </div>
+          <div class="phase-arrow">→</div>
+          <div class="phase-step" data-phase="reflection">
+            <span class="phase-number">3</span>
+            <span class="phase-name">Reflection</span>
+          </div>
+        </div>
+        <div class="phase-description">
+          <span id="phase-text">Experience predatory lending tactics</span>
+        </div>
+      </div>
+
+      <!-- Coercion Index Display -->
+      <div id="coercion-display" class="coercion-display">
+        <div class="coercion-header">
+          <h4>Coercion Index</h4>
+          <span id="coercion-percentage">0%</span>
+        </div>
+        <div class="coercion-bar">
+          <div id="coercion-progress" class="coercion-progress"></div>
+        </div>
+        <div class="coercion-factors" id="coercion-factors">
+          Monitoring manipulation tactics...
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Home Section -->
+        <section id="section-home" class="content-section active">
+          <div class="hero-section">
+            <div class="container">
+              <h1 class="hero-title">
+                Understanding Predatory Lending
+                <span class="subtitle"
+                  >A Comprehensive 3-Phase Educational Experience</span
+                >
+              </h1>
+              <p class="hero-description">
+                Experience the full spectrum of lending practices through our
+                interactive simulation. Navigate from exploitative tactics
+                through ethical alternatives to deep reflection and analysis
+                with advanced behavioral psychology tracking.
+              </p>
+              <div class="hero-actions">
+                <button
+                  class="btn btn-primary"
+                  onclick="startComprehensiveSimulation()"
+                >
+                  Begin 3-Phase Journey
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  onclick="showSection('learn')"
+                >
+                  Learn First
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Features Grid -->
+          <div class="features-section">
+            <div class="container">
+              <h2>Comprehensive Platform Features</h2>
+              <div class="features-grid">
+                <div class="feature-card">
+                  <div class="feature-icon">🎭</div>
+                  <h3>Dark Pattern Analysis</h3>
+                  <p>
+                    Real-time detection and explanation of psychological
+                    manipulation techniques
+                  </p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">👻</div>
+                  <h3>Ghost Mode</h3>
+                  <p>
+                    Educational overlays revealing hidden deceptive elements and
+                    ethical alternatives
+                  </p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">📊</div>
+                  <h3>Behavioral Psychology</h3>
+                  <p>
+                    Advanced tracking of cognitive biases, decision patterns,
+                    and manipulation vulnerability
+                  </p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">⚖️</div>
+                  <h3>Legal Framework Analysis</h3>
+                  <p>
+                    State-by-state regulatory comparison and legal loophole
+                    identification
+                  </p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">🔄</div>
+                  <h3>Debt Cycle Simulation</h3>
+                  <p>
+                    Interactive visualization of rollover traps and debt spiral
+                    mechanics
+                  </p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">🧠</div>
+                  <h3>Kantian Ethics Engine</h3>
+                  <p>
+                    Informed consent analysis and autonomy violation detection
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Learn Section -->
+        <section id="section-learn" class="content-section">
+          <div class="container">
+            <h2>Educational Modules</h2>
+            <div class="education-modules">
+              <div class="module-card" data-module="dark-patterns">
+                <h3>🎭 Dark Pattern Recognition</h3>
+                <p>
+                  Learn to identify psychological manipulation techniques in
+                  lending interfaces
+                </p>
+                <div class="module-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                  </div>
+                  <span class="progress-text">0% Complete</span>
+                </div>
+                <button
+                  class="btn btn-outline"
+                  onclick="startEducationalModule('dark-patterns')"
+                >
+                  Start Module
+                </button>
+              </div>
+              <div class="module-card" data-module="behavioral-psychology">
+                <h3>🧠 Behavioral Psychology</h3>
+                <p>
+                  Understanding cognitive biases and decision-making
+                  vulnerabilities
+                </p>
+                <div class="module-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                  </div>
+                  <span class="progress-text">0% Complete</span>
+                </div>
+                <button
+                  class="btn btn-outline"
+                  onclick="startEducationalModule('behavioral-psychology')"
+                >
+                  Start Module
+                </button>
+              </div>
+              <div class="module-card" data-module="legal-framework">
+                <h3>⚖️ Legal Framework</h3>
+                <p>State regulations, usury laws, and legal loopholes</p>
+                <div class="module-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                  </div>
+                  <span class="progress-text">0% Complete</span>
+                </div>
+                <button
+                  class="btn btn-outline"
+                  onclick="startEducationalModule('legal-framework')"
+                >
+                  Start Module
+                </button>
+              </div>
+              <div class="module-card" data-module="debt-cycles">
+                <h3>🔄 Debt Cycle Mechanics</h3>
+                <p>How loans become debt traps and rollover dynamics</p>
+                <div class="module-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                  </div>
+                  <span class="progress-text">0% Complete</span>
+                </div>
+                <button
+                  class="btn btn-outline"
+                  onclick="startEducationalModule('debt-cycles')"
+                >
+                  Start Module
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Simulate Section -->
+        <section id="section-simulate" class="content-section">
+          <div class="container">
+            <h2>Comprehensive Loan Simulation</h2>
+
+            <!-- Simulation Controls -->
+            <div class="simulation-controls">
+              <div class="control-group">
+                <label for="loan-amount">Loan Amount</label>
+                <input
+                  type="range"
+                  id="loan-amount"
+                  min="100"
+                  max="2000"
+                  value="500"
+                  step="50"
+                />
+                <span class="value-display" id="amount-display">$500</span>
+              </div>
+              <div class="control-group">
+                <label for="loan-term">Term (days)</label>
+                <input
+                  type="range"
+                  id="loan-term"
+                  min="7"
+                  max="30"
+                  value="14"
+                  step="1"
+                />
+                <span class="value-display" id="term-display">14 days</span>
+              </div>
+              <div class="control-group">
+                <label for="user-state">State</label>
+                <select id="user-state">
+                  <option value="CA">California</option>
+                  <option value="TX">Texas</option>
+                  <option value="NY">New York</option>
+                  <option value="FL">Florida</option>
+                  <option value="NV">Nevada</option>
+                  <option value="DE">Delaware</option>
+                  <option value="UT">Utah</option>
+                  <option value="GEN" selected>Generic</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Phase Actions -->
+            <div class="simulation-actions">
+              <button
+                class="btn btn-danger phase-btn"
+                id="start-exploitative"
+                onclick="startPhase('exploitative')"
+              >
+                🔴 Start Exploitative Phase
+              </button>
+              <button
+                class="btn btn-success phase-btn hidden"
+                id="start-ethical"
+                onclick="startPhase('ethical')"
+              >
+                ✅ Start Ethical Phase
+              </button>
+              <button
+                class="btn btn-info phase-btn hidden"
+                id="start-reflection"
+                onclick="startPhase('reflection')"
+              >
+                🧠 Start Reflection Phase
+              </button>
+            </div>
+
+            <!-- Live Simulation Display -->
+            <div id="simulation-display" class="simulation-display hidden">
+              <!-- Loan Details Panel -->
+              <div class="loan-details-panel">
+                <h3>Current Loan Details</h3>
+                <div class="loan-details-grid">
+                  <div class="detail-item">
+                    <span class="label">Principal:</span>
+                    <span class="value" id="display-principal">$500</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Fee:</span>
+                    <span class="value" id="display-fee">$75</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">APR:</span>
+                    <span class="value critical" id="display-apr">391%</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Total Cost:</span>
+                    <span class="value" id="display-total">$575</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Rollovers:</span>
+                    <span class="value" id="display-rollovers">0</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="label">Cumulative Fees:</span>
+                    <span class="value critical" id="display-cumulative-fees"
+                      >$75</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dark Pattern Detection Panel -->
+              <div class="dark-pattern-panel">
+                <h3>🎭 Dark Patterns Detected</h3>
+                <div id="dark-pattern-list" class="dark-pattern-list">
+                  <p class="no-patterns">No dark patterns detected yet...</p>
+                </div>
+              </div>
+
+              <!-- Behavioral Analysis Panel -->
+              <div class="behavioral-panel">
+                <h3>🧠 Behavioral Analysis</h3>
+                <div id="behavioral-metrics" class="behavioral-metrics">
+                  <div class="metric">
+                    <span class="metric-label">Cognitive Load:</span>
+                    <div class="metric-bar">
+                      <div
+                        class="metric-progress"
+                        id="cognitive-load-bar"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <span class="metric-value" id="cognitive-load-value"
+                      >0%</span
+                    >
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label"
+                      >Manipulation Vulnerability:</span
+                    >
+                    <div class="metric-bar">
+                      <div
+                        class="metric-progress"
+                        id="vulnerability-bar"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <span class="metric-value" id="vulnerability-value"
+                      >0%</span
+                    >
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label">System 1/2 Balance:</span>
+                    <div class="metric-bar">
+                      <div
+                        class="metric-progress"
+                        id="system-thinking-bar"
+                        style="width: 50%"
+                      ></div>
+                    </div>
+                    <span class="metric-value" id="system-thinking-value"
+                      >Balanced</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Compare Section -->
+        <section id="section-compare" class="content-section">
+          <div class="container">
+            <h2>Side-by-Side Comparison</h2>
+            <div class="comparison-grid">
+              <div class="comparison-column exploitative">
+                <h3>🔴 Exploitative Lending</h3>
+                <div id="exploitative-results" class="comparison-results">
+                  <p>Complete exploitative phase to see results</p>
+                </div>
+              </div>
+              <div class="comparison-column ethical">
+                <h3>✅ Ethical Lending</h3>
+                <div id="ethical-results" class="comparison-results">
+                  <p>Complete ethical phase to see results</p>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-analysis">
+              <h3>📊 Comparative Analysis</h3>
+              <div id="comparison-charts"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reflection Section -->
+        <section id="section-reflection" class="content-section">
+          <div class="container">
+            <h2>🧠 Comprehensive Reflection Dashboard</h2>
+
+            <!-- Ethics Analysis -->
+            <div class="reflection-panel">
+              <h3>⚖️ Ethical Analysis</h3>
+              <div id="ethics-analysis" class="ethics-analysis">
+                <div class="ethics-score">
+                  <span class="score-label">Overall Ethics Score:</span>
+                  <span class="score-value" id="ethics-score-value">--</span>
+                </div>
+                <div class="consent-analysis">
+                  <h4>Informed Consent Analysis</h4>
+                  <div id="consent-pillars" class="consent-pillars"></div>
+                </div>
+                <div class="kantian-analysis">
+                  <h4>Kantian Ethics Violations</h4>
+                  <div id="kantian-violations" class="kantian-violations"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Behavioral Insights -->
+            <div class="reflection-panel">
+              <h3>🧠 Behavioral Psychology Insights</h3>
+              <div id="behavioral-insights" class="behavioral-insights">
+                <div class="insights-grid">
+                  <div class="insight-card">
+                    <h4>Cognitive Biases Detected</h4>
+                    <div id="cognitive-biases-list"></div>
+                  </div>
+                  <div class="insight-card">
+                    <h4>Decision-Making Pattern</h4>
+                    <div id="decision-pattern-analysis"></div>
+                  </div>
+                  <div class="insight-card">
+                    <h4>Manipulation Susceptibility</h4>
+                    <div id="manipulation-analysis"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Legal Analysis -->
+            <div class="reflection-panel">
+              <h3>⚖️ Legal & Regulatory Analysis</h3>
+              <div id="legal-analysis" class="legal-analysis">
+                <div class="violations-summary">
+                  <h4>Regulatory Violations Detected</h4>
+                  <div id="regulatory-violations-list"></div>
+                </div>
+                <div class="loopholes-summary">
+                  <h4>Legal Loopholes Exploited</h4>
+                  <div id="legal-loopholes-list"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Debt Trap Analysis -->
+            <div class="reflection-panel">
+              <h3>🔄 Debt Trap Analysis</h3>
+              <div id="debt-trap-analysis" class="debt-trap-analysis">
+                <div class="debt-trap-score">
+                  <span class="score-label">Debt Trap Score:</span>
+                  <span class="score-value" id="debt-trap-score">--</span>
+                </div>
+                <div id="debt-trap-metrics" class="debt-trap-metrics"></div>
+              </div>
+            </div>
+
+            <!-- Action Items -->
+            <div class="reflection-panel">
+              <h3>📋 Personalized Recommendations</h3>
+              <div id="recommendations" class="recommendations-list"></div>
+            </div>
+
+            <!-- Export Options -->
+            <div class="export-options">
+              <h3>📤 Export Your Data</h3>
+              <div class="export-buttons">
+                <button class="btn btn-outline" onclick="exportSessionData()">
+                  📄 Export JSON Report
+                </button>
+                <button class="btn btn-outline" onclick="generatePDFReport()">
+                  📄 Generate PDF Report
+                </button>
+                <button class="btn btn-outline" onclick="emailReport()">
+                  📧 Email Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Modals Container -->
+      <div id="modals-container"></div>
+
+      <!-- Research Analytics Dashboard (Hidden by default) -->
+      <div id="research-dashboard" class="research-dashboard hidden">
+        <div class="dashboard-header">
+          <h3>📊 Research Analytics</h3>
+          <button onclick="toggleResearchDashboard()" class="btn btn-sm">
+            Hide
+          </button>
+        </div>
+        <div class="dashboard-content">
+          <div id="research-metrics" class="research-metrics"></div>
+          <div id="real-time-metrics" class="real-time-metrics"></div>
+        </div>
+      </div>
+
+      <!-- Compliance Tracker (Hidden by default) -->
+      <div id="compliance-tracker" class="compliance-tracker hidden">
+        <div class="tracker-header">
+          <h3>⚖️ Compliance Monitor</h3>
+          <button onclick="toggleComplianceTracker()" class="btn btn-sm">
+            Hide
+          </button>
+        </div>
+        <div class="tracker-content">
+          <div id="compliance-status" class="compliance-status"></div>
+        </div>
+      </div>
+
+      <!-- Educational Progress Tracker -->
+      <div id="education-progress" class="education-progress hidden">
+        <div class="progress-header">
+          <h3>📚 Learning Progress</h3>
+          <button onclick="toggleEducationProgress()" class="btn btn-sm">
+            Hide
+          </button>
+        </div>
+        <div class="progress-content">
+          <div id="education-metrics" class="education-metrics"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script
+      type="module"
+      src="./legacy-recovered/lotus_core_comprehensive.js"
+    ></script>
+    <script
+      type="module"
+      src="./legacy-recovered/behavioral-psychology-engine.js"
+    ></script>
+    <script type="module" src="./legacy-recovered/ethics_engine.js"></script>
+    <script
+      type="module"
+      src="./legacy-recovered/research_analytics.js"
+    ></script>
+    <script type="module" src="./ui-components.js"></script>
+    <script type="module" src="./utils.js"></script>
+    <script type="module" src="./autonomy_theater.js"></script>
+    <script type="module">
+      // Initialize the comprehensive Lotus application
+      import {
+        Config,
+        LoanSession,
+      } from "./legacy-recovered/lotus_core_comprehensive.js";
+      import { BehavioralPsychologyEngine } from "./legacy-recovered/behavioral-psychology-engine.js";
+      import { EthicsEngine } from "./legacy-recovered/ethics_engine.js";
+      import { ResearchAnalytics } from "./legacy-recovered/research_analytics.js";
+
+      // Global application state
+      window.LotusApp = {
+        currentSession: null,
+        currentPhase: "home",
+        config: new Config(),
+        behavioralEngine: null,
+        researchAnalytics: null,
+        initialized: false,
+      };
+
+      // Initialize application
+      document.addEventListener("DOMContentLoaded", () => {
+        initializeLotusApp();
+      });
+
+      function initializeLotusApp() {
+        console.log("🌸 Initializing Comprehensive Lotus Application");
+
+        // Initialize research analytics
+        window.LotusApp.researchAnalytics = new ResearchAnalytics();
+        window.LotusApp.researchAnalytics.initialize();
+
+        // Setup event listeners
+        setupEventListeners();
+
+        // Initialize UI components
+        initializeUIComponents();
+
+        // Hide loading screen
+        hideLoadingScreen();
+
+        window.LotusApp.initialized = true;
+        console.log("🌸 Lotus Application Ready");
+      }
+
+      function setupEventListeners() {
+        // Phase navigation
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const section = link.dataset.section;
+            if (section) showSection(section);
+          });
+        });
+
+        // Ghost mode toggle
+        const ghostToggle = document.getElementById("ghost-mode-toggle");
+        if (ghostToggle) {
+          ghostToggle.addEventListener("click", toggleGhostMode);
+        }
+
+        // Simulation controls
+        const loanAmount = document.getElementById("loan-amount");
+        const loanTerm = document.getElementById("loan-term");
+
+        if (loanAmount) {
+          loanAmount.addEventListener("input", updateLoanDisplay);
+        }
+        if (loanTerm) {
+          loanTerm.addEventListener("input", updateLoanDisplay);
+        }
+      }
+
+      function initializeUIComponents() {
+        // Initialize all UI components
+        updateLoanDisplay();
+        updatePhaseIndicator("home");
+      }
+
+      function hideLoadingScreen() {
+        const loadingScreen = document.getElementById("loading-screen");
+        if (loadingScreen) {
+          loadingScreen.style.opacity = "0";
+          setTimeout(() => {
+            loadingScreen.style.display = "none";
+          }, 500);
+        }
+      }
+
+      // Export global functions
+      window.showSection = showSection;
+      window.startComprehensiveSimulation = startComprehensiveSimulation;
+      window.startPhase = startPhase;
+      window.toggleGhostMode = toggleGhostMode;
+      window.updateLoanDisplay = updateLoanDisplay;
+      window.exportSessionData = exportSessionData;
+      window.generatePDFReport = generatePDFReport;
+      window.emailReport = emailReport;
+    </script>
+
+    <!-- Phase-specific JavaScript -->
+    <script src="./legacy-recovered/comprehensive_app_functions.js"></script>
+  </body>
+</html>

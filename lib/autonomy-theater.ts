@@ -1,27 +1,30 @@
 /**
  * autonomy-theater.ts - Advanced 3-Phase Autonomy Theater Engine
  * TypeScript port of the legacy autonomy_theater.js with enhanced 3-phase integration
- * 
+ *
  * 🎭 PHASE 1: Exploitative - Maximum autonomy violations and manipulation
  * 🌱 PHASE 2: Ethical - Autonomy-preserving ethical lending simulation
  * 🪞 PHASE 3: Reflection - Comprehensive analysis and educational insights
  */
 
-import { LotusSession, AutonomyViolation, UserChoice } from '../types/lotus';
+import { LotusSession, AutonomyViolation, UserChoice } from "../types/lotus";
 
 export interface AutonomyTrapConfig {
   phase: 1 | 2 | 3;
-  maxViolationSeverity: 'low' | 'medium' | 'high' | 'critical';
+  maxViolationSeverity: "low" | "medium" | "high" | "critical";
   enableKantianAnalysis: boolean;
   enableBehavioralProfiling: boolean;
   ghostModeEnabled: boolean;
 }
 
 export interface KantianAnalysis {
-  universalizabilityTest: 'PASSED' | 'FAILED';
-  humanityFormula: 'PASSED' | 'FAILED';
-  autonomyFormula: 'PASSED' | 'FAILED';
-  overallAssessment: 'ETHICALLY_SOUND' | 'ETHICALLY_PROBLEMATIC' | 'SEVERELY_PROBLEMATIC';
+  universalizabilityTest: "PASSED" | "FAILED";
+  humanityFormula: "PASSED" | "FAILED";
+  autonomyFormula: "PASSED" | "FAILED";
+  overallAssessment:
+    | "ETHICALLY_SOUND"
+    | "ETHICALLY_PROBLEMATIC"
+    | "SEVERELY_PROBLEMATIC";
   violationDetails: string[];
 }
 
@@ -40,7 +43,7 @@ export interface TimelineEvent {
   event: string;
   timestamp: string;
   phase: number;
-  autonomyImpact: 'low' | 'medium' | 'high' | 'critical';
+  autonomyImpact: "low" | "medium" | "high" | "critical";
   details: any;
 }
 
@@ -89,7 +92,7 @@ export class ThreePhaseAutonomyTheater {
       cognitiveOverload: false,
       darkPatternUI: false,
       feeObfuscation: false,
-      rolloverEncouragement: false
+      rolloverEncouragement: false,
     };
   }
 
@@ -97,29 +100,34 @@ export class ThreePhaseAutonomyTheater {
    * PHASE 1: EXPLOITATIVE TACTICS
    * Maximum autonomy violations for educational demonstration
    */
-  async applyExploitativeTimePressure(seconds: number, offerId: string): Promise<void> {
+  async applyExploitativeTimePressure(
+    seconds: number,
+    offerId: string,
+  ): Promise<void> {
     if (this.currentPhase !== 1) return;
 
     this.trapTypes.timePressure = true;
     this.choiceIntegrityScore -= 20; // Higher penalty in Phase 1
 
     const violation: AutonomyViolation = {
-      type: 'time_pressure',
+      type: "time_pressure",
       description: `Artificial urgency: ${seconds}s countdown to force quick decisions`,
-      severity: 'high',
-      kantianViolation: 'Undermines rational deliberation and autonomous choice',
+      severity: "high",
+      kantianViolation:
+        "Undermines rational deliberation and autonomous choice",
       timestamp: new Date().toISOString(),
       hiddenFromUser: false,
       phase: 1,
-      coercionLevel: 0.8
+      coercionLevel: 0.8,
     };
 
     this.autonomyViolations.push(violation);
-    this.addTimelineEvent('exploitative_countdown_started', {
+    this.addTimelineEvent("exploitative_countdown_started", {
       offerId,
       duration: seconds,
-      autonomyImpact: 'critical',
-      educationalNote: 'Real payday lenders use countdown timers to prevent careful consideration'
+      autonomyImpact: "critical",
+      educationalNote:
+        "Real payday lenders use countdown timers to prevent careful consideration",
     });
 
     // Log dark pattern for comprehensive tracking
@@ -128,7 +136,7 @@ export class ThreePhaseAutonomyTheater {
       type: `ExploitativeTimePressure_${seconds}sec`,
       timestamp: new Date().toISOString(),
       phase: 1,
-      severity: 'high'
+      severity: "high",
     });
   }
 
@@ -142,22 +150,24 @@ export class ThreePhaseAutonomyTheater {
     this.choiceIntegrityScore -= 15;
 
     const violation: AutonomyViolation = {
-      type: 'misleading_social_proof',
+      type: "misleading_social_proof",
       description: `Fabricated testimonial: "${testimonial}" - ${author}`,
-      severity: 'medium',
-      kantianViolation: 'Deception violates duty to truth and respect for persons',
+      severity: "medium",
+      kantianViolation:
+        "Deception violates duty to truth and respect for persons",
       timestamp: new Date().toISOString(),
       hiddenFromUser: false,
       phase: 1,
-      coercionLevel: 0.6
+      coercionLevel: 0.6,
     };
 
     this.autonomyViolations.push(violation);
-    this.addTimelineEvent('fake_testimonial_displayed', {
+    this.addTimelineEvent("fake_testimonial_displayed", {
       content: testimonial,
       author,
-      autonomyImpact: 'medium',
-      educationalNote: 'Many predatory lenders use fake testimonials to build false trust'
+      autonomyImpact: "medium",
+      educationalNote:
+        "Many predatory lenders use fake testimonials to build false trust",
     });
   }
 
@@ -171,21 +181,22 @@ export class ThreePhaseAutonomyTheater {
     this.choiceIntegrityScore -= 18;
 
     const violation: AutonomyViolation = {
-      type: 'artificial_scarcity',
+      type: "artificial_scarcity",
       description: `False scarcity claim: "${scarcityMessage}"`,
-      severity: 'high',
-      kantianViolation: 'Creates false urgency through deliberate deception',
+      severity: "high",
+      kantianViolation: "Creates false urgency through deliberate deception",
       timestamp: new Date().toISOString(),
       hiddenFromUser: false,
       phase: 1,
-      coercionLevel: 0.7
+      coercionLevel: 0.7,
     };
 
     this.autonomyViolations.push(violation);
-    this.addTimelineEvent('artificial_scarcity_applied', {
+    this.addTimelineEvent("artificial_scarcity_applied", {
       message: scarcityMessage,
-      autonomyImpact: 'high',
-      educationalNote: 'Scarcity tactics exploit cognitive biases to rush decisions'
+      autonomyImpact: "high",
+      educationalNote:
+        "Scarcity tactics exploit cognitive biases to rush decisions",
     });
   }
 
@@ -198,10 +209,11 @@ export class ThreePhaseAutonomyTheater {
 
     this.choiceIntegrityScore += 15; // Positive score for ethical behavior
 
-    this.addTimelineEvent('transparent_pricing_displayed', {
-      autonomyImpact: 'low',
+    this.addTimelineEvent("transparent_pricing_displayed", {
+      autonomyImpact: "low",
       ethicalPractice: true,
-      educationalNote: 'Ethical lenders provide clear, prominent pricing information'
+      educationalNote:
+        "Ethical lenders provide clear, prominent pricing information",
     });
   }
 
@@ -210,10 +222,11 @@ export class ThreePhaseAutonomyTheater {
 
     this.choiceIntegrityScore += 20;
 
-    this.addTimelineEvent('unbiased_education_provided', {
-      autonomyImpact: 'low',
+    this.addTimelineEvent("unbiased_education_provided", {
+      autonomyImpact: "low",
       ethicalPractice: true,
-      educationalNote: 'Ethical lenders educate borrowers about risks and alternatives'
+      educationalNote:
+        "Ethical lenders educate borrowers about risks and alternatives",
     });
   }
 
@@ -228,14 +241,14 @@ export class ThreePhaseAutonomyTheater {
     return {
       choiceIntegrityScore: this.choiceIntegrityScore,
       violations: this.autonomyViolations,
-      activeTrapTypes: Object.keys(this.trapTypes).filter(key => 
-        this.trapTypes[key as keyof TrapType]
+      activeTrapTypes: Object.keys(this.trapTypes).filter(
+        (key) => this.trapTypes[key as keyof TrapType],
       ),
       timeline: this.timelineEvents,
       ethicalAssessment: this.generateEthicalAssessment(),
       kantianAnalysis,
       recommendations: this.generateRestorationRecommendations(),
-      phaseSpecificMetrics
+      phaseSpecificMetrics,
     };
   }
 
@@ -243,67 +256,90 @@ export class ThreePhaseAutonomyTheater {
    * Generate Kantian ethical analysis based on violations
    */
   private generateKantianAnalysis(): KantianAnalysis {
-    const deceptionViolations = this.autonomyViolations.filter(v => 
-      v.kantianViolation.toLowerCase().includes('deception')
+    const deceptionViolations = this.autonomyViolations.filter((v) =>
+      v.kantianViolation.toLowerCase().includes("deception"),
     );
-    const autonomyViolations = this.autonomyViolations.filter(v => 
-      v.kantianViolation.toLowerCase().includes('autonomy')
+    const autonomyViolations = this.autonomyViolations.filter((v) =>
+      v.kantianViolation.toLowerCase().includes("autonomy"),
     );
-    const humanityViolations = this.autonomyViolations.filter(v => 
-      v.kantianViolation.toLowerCase().includes('respect for persons') ||
-      v.kantianViolation.toLowerCase().includes('means')
+    const humanityViolations = this.autonomyViolations.filter(
+      (v) =>
+        v.kantianViolation.toLowerCase().includes("respect for persons") ||
+        v.kantianViolation.toLowerCase().includes("means"),
     );
 
-    const totalViolations = deceptionViolations.length + autonomyViolations.length + humanityViolations.length;
+    const totalViolations =
+      deceptionViolations.length +
+      autonomyViolations.length +
+      humanityViolations.length;
 
     return {
-      universalizabilityTest: deceptionViolations.length > 0 ? 'FAILED' : 'PASSED',
-      humanityFormula: humanityViolations.length > 0 ? 'FAILED' : 'PASSED',
-      autonomyFormula: autonomyViolations.length > 0 ? 'FAILED' : 'PASSED',
-      overallAssessment: totalViolations > 5 ? 'SEVERELY_PROBLEMATIC' : 
-                        totalViolations > 0 ? 'ETHICALLY_PROBLEMATIC' : 'ETHICALLY_SOUND',
-      violationDetails: this.autonomyViolations.map(v => v.kantianViolation)
+      universalizabilityTest:
+        deceptionViolations.length > 0 ? "FAILED" : "PASSED",
+      humanityFormula: humanityViolations.length > 0 ? "FAILED" : "PASSED",
+      autonomyFormula: autonomyViolations.length > 0 ? "FAILED" : "PASSED",
+      overallAssessment:
+        totalViolations > 5
+          ? "SEVERELY_PROBLEMATIC"
+          : totalViolations > 0
+            ? "ETHICALLY_PROBLEMATIC"
+            : "ETHICALLY_SOUND",
+      violationDetails: this.autonomyViolations.map((v) => v.kantianViolation),
     };
   }
 
   private generateEthicalAssessment(): string {
     const score = this.choiceIntegrityScore;
-    if (score >= 90) return 'High autonomy preservation - Ethical choice environment';
-    if (score >= 70) return 'Moderate autonomy concerns - Some manipulation detected';
-    if (score >= 50) return 'Significant autonomy violations - Choice integrity compromised';
-    if (score >= 30) return 'Severe autonomy violations - Highly manipulative environment';
-    return 'Critical autonomy destruction - Predatory manipulation detected';
+    if (score >= 90)
+      return "High autonomy preservation - Ethical choice environment";
+    if (score >= 70)
+      return "Moderate autonomy concerns - Some manipulation detected";
+    if (score >= 50)
+      return "Significant autonomy violations - Choice integrity compromised";
+    if (score >= 30)
+      return "Severe autonomy violations - Highly manipulative environment";
+    return "Critical autonomy destruction - Predatory manipulation detected";
   }
 
   private generateRestorationRecommendations(): string[] {
     const recommendations: string[] = [];
-    
+
     if (this.trapTypes.timePressure) {
-      recommendations.push('Remove artificial time constraints - Allow adequate decision time');
+      recommendations.push(
+        "Remove artificial time constraints - Allow adequate decision time",
+      );
     }
     if (this.trapTypes.defaultBias) {
-      recommendations.push('Make all options explicitly opt-in - No pre-checked boxes');
+      recommendations.push(
+        "Make all options explicitly opt-in - No pre-checked boxes",
+      );
     }
     if (this.trapTypes.socialProof) {
-      recommendations.push('Provide only verified testimonials with consent');
+      recommendations.push("Provide only verified testimonials with consent");
     }
     if (this.trapTypes.scarcityIllusion) {
-      recommendations.push('Remove false scarcity claims - Be honest about availability');
+      recommendations.push(
+        "Remove false scarcity claims - Be honest about availability",
+      );
     }
     if (this.trapTypes.cognitiveOverload) {
-      recommendations.push('Simplify language and information presentation');
+      recommendations.push("Simplify language and information presentation");
     }
     if (this.trapTypes.feeObfuscation) {
-      recommendations.push('Display all fees prominently and clearly');
+      recommendations.push("Display all fees prominently and clearly");
     }
     if (this.trapTypes.rolloverEncouragement) {
-      recommendations.push('Discourage rollovers - Provide debt counseling resources');
+      recommendations.push(
+        "Discourage rollovers - Provide debt counseling resources",
+      );
     }
 
     // Add general ethical recommendations
-    recommendations.push('Implement cooling-off periods for major financial decisions');
-    recommendations.push('Provide independent financial counseling resources');
-    recommendations.push('Display clear warnings about debt trap risks');
+    recommendations.push(
+      "Implement cooling-off periods for major financial decisions",
+    );
+    recommendations.push("Provide independent financial counseling resources");
+    recommendations.push("Display clear warnings about debt trap risks");
 
     return recommendations;
   }
@@ -311,27 +347,33 @@ export class ThreePhaseAutonomyTheater {
   private calculatePhaseMetrics(): any {
     return {
       phase1ExploitativeMetrics: {
-        totalViolations: this.autonomyViolations.filter(v => v.phase === 1).length,
-        averageCoercionLevel: this.autonomyViolations
-          .filter(v => v.phase === 1)
-          .reduce((sum, v) => sum + (v.coercionLevel || 0), 0) / 
-          this.autonomyViolations.filter(v => v.phase === 1).length || 0,
-        manipulationTechniquesUsed: Object.keys(this.trapTypes).filter(key => 
-          this.trapTypes[key as keyof TrapType]
-        ).length
+        totalViolations: this.autonomyViolations.filter((v) => v.phase === 1)
+          .length,
+        averageCoercionLevel:
+          this.autonomyViolations
+            .filter((v) => v.phase === 1)
+            .reduce((sum, v) => sum + (v.coercionLevel || 0), 0) /
+            this.autonomyViolations.filter((v) => v.phase === 1).length || 0,
+        manipulationTechniquesUsed: Object.keys(this.trapTypes).filter(
+          (key) => this.trapTypes[key as keyof TrapType],
+        ).length,
       },
       phase2EthicalMetrics: {
-        ethicalPracticesCount: this.timelineEvents.filter(e => 
-          e.phase === 2 && (e.details as any)?.ethicalPractice
+        ethicalPracticesCount: this.timelineEvents.filter(
+          (e) => e.phase === 2 && (e.details as any)?.ethicalPractice,
         ).length,
-        autonomyPreservationScore: Math.max(0, this.choiceIntegrityScore)
+        autonomyPreservationScore: Math.max(0, this.choiceIntegrityScore),
       },
       phase3ReflectionMetrics: {
         totalEducationalInsights: this.timelineEvents.length,
-        kantianViolationTypes: new Set(this.autonomyViolations.map(v => v.type)).size,
-        learningOpportunities: this.autonomyViolations.length + 
-          this.timelineEvents.filter(e => (e.details as any)?.educationalNote).length
-      }
+        kantianViolationTypes: new Set(
+          this.autonomyViolations.map((v) => v.type),
+        ).size,
+        learningOpportunities:
+          this.autonomyViolations.length +
+          this.timelineEvents.filter((e) => (e.details as any)?.educationalNote)
+            .length,
+      },
     };
   }
 
@@ -340,8 +382,8 @@ export class ThreePhaseAutonomyTheater {
       event,
       timestamp: new Date().toISOString(),
       phase: this.currentPhase,
-      autonomyImpact: details.autonomyImpact || 'low',
-      details
+      autonomyImpact: details.autonomyImpact || "low",
+      details,
     });
   }
 
@@ -351,22 +393,26 @@ export class ThreePhaseAutonomyTheater {
   updatePhase(newPhase: 1 | 2 | 3): void {
     this.currentPhase = newPhase;
     this.config.phase = newPhase;
-    
+
     // Log phase transition
-    this.addTimelineEvent('phase_transition', {
+    this.addTimelineEvent("phase_transition", {
       fromPhase: this.currentPhase,
       toPhase: newPhase,
-      autonomyImpact: 'low',
-      educationalNote: `Transitioning to Phase ${newPhase}: ${this.getPhaseDescription(newPhase)}`
+      autonomyImpact: "low",
+      educationalNote: `Transitioning to Phase ${newPhase}: ${this.getPhaseDescription(newPhase)}`,
     });
   }
 
   private getPhaseDescription(phase: number): string {
     switch (phase) {
-      case 1: return 'Exploitative Lending Experience';
-      case 2: return 'Ethical Lending Alternative';
-      case 3: return 'Comprehensive Reflection and Analysis';
-      default: return 'Unknown Phase';
+      case 1:
+        return "Exploitative Lending Experience";
+      case 2:
+        return "Ethical Lending Alternative";
+      case 3:
+        return "Comprehensive Reflection and Analysis";
+      default:
+        return "Unknown Phase";
     }
   }
 
@@ -396,7 +442,7 @@ export class ThreePhaseAutonomyTheater {
       trapTypes: this.trapTypes,
       timeline: this.timelineEvents,
       kantianAnalysis: this.generateKantianAnalysis(),
-      exportTimestamp: new Date().toISOString()
+      exportTimestamp: new Date().toISOString(),
     };
   }
 }
@@ -405,17 +451,18 @@ export class ThreePhaseAutonomyTheater {
  * Factory function to create phase-specific autonomy theater instances
  */
 export function createPhaseAutonomyTheater(
-  phase: 1 | 2 | 3, 
+  phase: 1 | 2 | 3,
   session: LotusSession,
-  options: Partial<AutonomyTrapConfig> = {}
+  options: Partial<AutonomyTrapConfig> = {},
 ): ThreePhaseAutonomyTheater {
   const config: AutonomyTrapConfig = {
     phase,
-    maxViolationSeverity: phase === 1 ? 'critical' : phase === 2 ? 'low' : 'medium',
+    maxViolationSeverity:
+      phase === 1 ? "critical" : phase === 2 ? "low" : "medium",
     enableKantianAnalysis: true,
     enableBehavioralProfiling: true,
     ghostModeEnabled: options.ghostModeEnabled ?? true,
-    ...options
+    ...options,
   };
 
   return new ThreePhaseAutonomyTheater(session, config);
