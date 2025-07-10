@@ -2,10 +2,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "🌸 Debug Lotus App",
+      "name": "🌸 Debug Lotus App (Direct)",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/next",
+      "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
       "args": ["dev"],
       "console": "integratedTerminal",
       "env": {
@@ -19,11 +19,40 @@
       ]
     },
     {
+      "name": "🌸 Debug Lotus App (NPM Script)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ]
+    },
+    {
+      "name": "🌸 Debug Lotus App (Windows CMD)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "npm", "run", "dev"],
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
       "name": "🧪 Debug Jest Tests",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "args": ["--runInBand", "--no-cache"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "env": {
@@ -35,8 +64,8 @@
       "name": "🎭 Debug Playwright Tests",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/playwright",
-      "args": ["test", "--debug"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test:e2e"],
       "console": "integratedTerminal",
       "env": {
         "PWDEBUG": "1"

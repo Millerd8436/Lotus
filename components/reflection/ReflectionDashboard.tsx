@@ -3859,7 +3859,8 @@ const ComprehensionQuiz: React.FC = () => {
 
   const calculateScore = () => {
     return answers.reduce((score, answer, index) => {
-      return answer === questions[index].correct ? score + 1 : score;
+      const question = questions[index];
+      return question && answer === question.correct ? score + 1 : score;
     }, 0);
   };
 
@@ -4045,7 +4046,10 @@ const ComprehensionQuiz: React.FC = () => {
                     marginBottom: 8,
                   }}
                 >
-                  Your answer: {q.options[answers[index]]}{" "}
+                  Your answer:{" "}
+                  {answers[index] !== undefined
+                    ? q.options[answers[index]]
+                    : "No answer"}{" "}
                   {answers[index] === q.correct ? "✓" : "✗"}
                 </p>
                 {answers[index] !== q.correct && (
@@ -4094,7 +4098,10 @@ const ComprehensionQuiz: React.FC = () => {
                     question: q.question,
                     category: q.category,
                     correct: answers[index] === q.correct,
-                    userAnswer: q.options[answers[index]],
+                    userAnswer:
+                      answers[index] !== undefined
+                        ? q.options[answers[index]]
+                        : "No answer",
                     correctAnswer: q.options[q.correct],
                   })),
                 };
@@ -4122,6 +4129,10 @@ const ComprehensionQuiz: React.FC = () => {
   }
 
   const question = questions[currentQuestion];
+
+  if (!question) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>

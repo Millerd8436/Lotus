@@ -14,47 +14,27 @@ const ModeSelector: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
+
   const getPhase = () => {
     if (pathname === "/ethical") return 2;
     if (pathname === "/reflection") return 3;
     if (pathname === "/comparison") return 4;
     return 1;
   };
-  
+
   const phase = getPhase();
 
   const handlePhaseTransition = async (newPhase: number, route: string) => {
     if (phase === newPhase) return;
-    
+
     setIsTransitioning(true);
-    
+
     // Smooth transition with professional loading
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     router.push(route);
-    
+
     // Reset transition state
     setTimeout(() => setIsTransitioning(false), 500);
-  };
-
-  const getDescription = (mode: string) => {
-    if (mode === 'predatory') {
-      return 'Experience deceptive payday loan tactics';
-    }
-    if (mode === 'ethical') {
-      return 'See transparent, fair lending practices';
-    }
-    if (mode === 'comparison') {
-      return 'Compare both approaches side-by-side';
-    }
-    return '';
-  };
-
-  const getColor = (mode: string) => {
-    if (mode === 'predatory') {
-      return '#ef4444';
-    }
-    return '#10b981';
   };
 
   const phases = [
@@ -65,7 +45,7 @@ const ModeSelector: React.FC = () => {
       subtitle: "Predatory Interface",
       icon: "🏦",
       description: "Experience professional predatory lending",
-      color: "#dc2626"
+      color: "#dc2626",
     },
     {
       id: 2,
@@ -74,7 +54,7 @@ const ModeSelector: React.FC = () => {
       subtitle: "Alternative Interface",
       icon: "✨",
       description: "Compare with ethical lending practices",
-      color: "#16a34a"
+      color: "#16a34a",
     },
     {
       id: 3,
@@ -83,7 +63,7 @@ const ModeSelector: React.FC = () => {
       subtitle: "Behavioral Insights",
       icon: "📊",
       description: "Analyze your behavioral patterns",
-      color: "#7c3aed"
+      color: "#7c3aed",
     },
     {
       id: 4,
@@ -92,8 +72,8 @@ const ModeSelector: React.FC = () => {
       subtitle: "Side-by-Side Analysis",
       icon: "⚖️",
       description: "Compare all phases comprehensively",
-      color: "#0ea5e9"
-    }
+      color: "#0ea5e9",
+    },
   ];
 
   return (
@@ -118,7 +98,7 @@ const ModeSelector: React.FC = () => {
                 Phase {phase} of 4
               </div>
               <div className="w-16 h-1 bg-slate-200 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-pink-500 to-purple-600 transition-all duration-500"
                   style={{ width: `${(phase / 4) * 100}%` }}
                 />
@@ -136,40 +116,41 @@ const ModeSelector: React.FC = () => {
               {phases.map((phaseData) => (
                 <button
                   key={phaseData.id}
-                  onClick={() => handlePhaseTransition(phaseData.id, phaseData.route)}
+                  onClick={() =>
+                    handlePhaseTransition(phaseData.id, phaseData.route)
+                  }
                   disabled={isTransitioning || phase === phaseData.id}
                   className={`
                     relative group flex items-center space-x-3 px-6 py-4 rounded-lg font-medium text-sm transition-all duration-300
-                    ${phase === phaseData.id 
-                      ? 'shadow-lg transform scale-105 text-white' 
-                      : 'hover:bg-slate-50 hover:shadow-md'
+                    ${
+                      phase === phaseData.id
+                        ? "shadow-lg transform scale-105 text-white"
+                        : "hover:bg-slate-50 hover:shadow-md"
                     }
-                    ${isTransitioning ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                    ${isTransitioning ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                   `}
                   style={{
-                    background: phase === phaseData.id 
-                      ? `linear-gradient(135deg, ${phaseData.color}, ${phaseData.color}dd)`
-                      : 'white',
-                    color: phase === phaseData.id 
-                      ? 'white' 
-                      : phaseData.color,
+                    background:
+                      phase === phaseData.id
+                        ? `linear-gradient(135deg, ${phaseData.color}, ${phaseData.color}dd)`
+                        : "white",
+                    color: phase === phaseData.id ? "white" : phaseData.color,
                     border: `2px solid ${phaseData.color}`,
-                    boxShadow: phase === phaseData.id 
-                      ? `0 8px 25px ${phaseData.color}25` 
-                      : '0 2px 8px rgba(0,0,0,0.1)'
+                    boxShadow:
+                      phase === phaseData.id
+                        ? `0 8px 25px ${phaseData.color}25`
+                        : "0 2px 8px rgba(0,0,0,0.1)",
                   }}
                 >
                   {/* Phase Icon */}
-                  <div className="text-xl">
-                    {phaseData.icon}
-                  </div>
+                  <div className="text-xl">{phaseData.icon}</div>
 
                   {/* Phase Info */}
                   <div className="flex flex-col items-start">
-                    <div className="font-bold text-sm">
-                      {phaseData.title}
-                    </div>
-                    <div className={`text-xs ${phase === phaseData.id ? 'text-white/80' : 'text-slate-500'}`}>
+                    <div className="font-bold text-sm">{phaseData.title}</div>
+                    <div
+                      className={`text-xs ${phase === phaseData.id ? "text-white/80" : "text-slate-500"}`}
+                    >
                       {phaseData.subtitle}
                     </div>
                   </div>
@@ -224,7 +205,7 @@ function getCurrentPhaseStatus(phase: number): string {
     1: "🏦 Professional Predatory Interface",
     2: "✨ Ethical Alternative Interface",
     3: "📊 Behavioral Analysis & Insights",
-    4: "⚖️ Comprehensive Comparison"
+    4: "⚖️ Comprehensive Comparison",
   };
   return statuses[phase as keyof typeof statuses] || "Unknown Phase";
 }

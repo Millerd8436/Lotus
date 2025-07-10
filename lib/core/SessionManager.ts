@@ -1,4 +1,4 @@
-import { AutonomyViolation, LoanSession } from '../../types/lotus';
+import { AutonomyViolation, LoanSession } from "../../types/lotus";
 
 export interface UserChoice {
   type: string;
@@ -15,7 +15,7 @@ export interface UserChoice {
 
 export interface LotusSession extends LoanSession {
   id: string;
-  mode: 'exploitative' | 'ethical';
+  mode: "exploitative" | "ethical";
   createdAt: string;
 }
 
@@ -37,7 +37,7 @@ export interface SessionMetrics {
 }
 
 export class SessionManager {
-  private session: LotusSession;
+  private session!: LotusSession; // Use definite assignment assertion since it's initialized in initializeSession
   private config: SessionConfig;
   private metrics: SessionMetrics;
   private userChoices: UserChoice[] = [];
@@ -63,9 +63,9 @@ export class SessionManager {
       id: `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       sessionId: `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       timestamp: new Date().toISOString(),
-      currentPhase: 'exploitative',
+      currentPhase: "exploitative",
       amount: 0,
-      state: 'TX',
+      state: "TX",
       fee: 0,
       apr: 0,
       totalCost: 0,
@@ -73,7 +73,7 @@ export class SessionManager {
       rolloverCount: 0,
       researchConsent: false,
       anonymizedData: false,
-      mode: 'exploitative',
+      mode: "exploitative",
       createdAt: new Date().toISOString(),
       ...initialData,
     };
@@ -81,7 +81,7 @@ export class SessionManager {
     return this.session;
   }
 
-  recordUserChoice(choice: Omit<UserChoice, 'timestamp'>): void {
+  recordUserChoice(choice: Omit<UserChoice, "timestamp">): void {
     const fullChoice: UserChoice = {
       ...choice,
       timestamp: new Date().toISOString(),
@@ -90,7 +90,9 @@ export class SessionManager {
     this.updateMetrics(choice);
   }
 
-  recordAutonomyViolation(violation: Omit<AutonomyViolation, 'timestamp'>): void {
+  recordAutonomyViolation(
+    violation: Omit<AutonomyViolation, "timestamp">
+  ): void {
     const fullViolation: AutonomyViolation = {
       ...violation,
       timestamp: new Date().toISOString(),
@@ -108,9 +110,9 @@ export class SessionManager {
     });
   }
 
-  private updateMetrics(choice: Omit<UserChoice, 'timestamp'>): void {
+  private updateMetrics(choice: Omit<UserChoice, "timestamp">): void {
     // Update coercion index based on choice context
-    if (choice.type === 'loan_application' && this.config.phase === 1) {
+    if (choice.type === "loan_application" && this.config.phase === 1) {
       this.metrics.coercionIndex += 0.1;
     }
 
@@ -128,14 +130,14 @@ export class SessionManager {
   }
 
   private degradeAutonomyScore(severity: string): void {
-    const degradationMap = {
+    const degradationMap: Record<string, number> = {
       low: 5,
       medium: 15,
-      'medium-high': 25,
+      "medium-high": 25,
       high: 35,
       extreme: 50,
     };
-    
+
     this.metrics.autonomyScore = Math.max(
       0,
       this.metrics.autonomyScore - (degradationMap[severity] || 10)
@@ -164,7 +166,7 @@ export class SessionManager {
 
   transitionToPhase(phase: 1 | 2 | 3): void {
     this.config.phase = phase;
-    
+
     // Adjust configuration based on phase
     switch (phase) {
       case 1:

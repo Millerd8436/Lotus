@@ -27,19 +27,19 @@
       "static/chunks/common-ed2c9fc2455990ab.js",
       "static/chunks/app/ethical/page-aa04952dd6bfe106.js"
     ],
+    "/reflection/page": [
+      "static/chunks/webpack-c81f7fd28659d64f.js",
+      "static/chunks/vendors-621f1656232db17f.js",
+      "static/chunks/main-app-05bed74e8f2d4e2c.js",
+      "static/chunks/common-ed2c9fc2455990ab.js",
+      "static/chunks/app/reflection/page-d20837d900b4da86.js"
+    ],
     "/page": [
       "static/chunks/webpack-c81f7fd28659d64f.js",
       "static/chunks/vendors-621f1656232db17f.js",
       "static/chunks/main-app-05bed74e8f2d4e2c.js",
       "static/chunks/common-ed2c9fc2455990ab.js",
       "static/chunks/app/page-66da3288bfa559a0.js"
-    ],
-    "/reflection/page": [
-      "static/chunks/webpack-c81f7fd28659d64f.js",
-      "static/chunks/vendors-621f1656232db17f.js",
-      "static/chunks/main-app-05bed74e8f2d4e2c.js",
-      "static/chunks/common-ed2c9fc2455990ab.js",
-      "static/chunks/app/reflection/page-b52504564687d495.js"
     ]
   }
 }

@@ -2,9 +2,19 @@
   "version": 2,
   "framework": "nextjs",
   "regions": ["iad1", "sfo1"],
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci --frozen-lockfile",
+  "rootDirectory": ".",
+  "outputDirectory": ".next",
   "functions": {
     "app/api/**/*.ts": {
       "maxDuration": 30
+    }
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "NEXT_TELEMETRY_DISABLED": "1"
     }
   },
   "headers": [

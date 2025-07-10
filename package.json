@@ -71,7 +71,15 @@
     "env:setup": "node scripts/setup-env.js",
     "precommit": "npm run lint && npm run type-check",
     "fresh": "npm run clean && npm install && npm run build",
-    "setup": "chmod +x scripts/setup-deployment.sh && ./scripts/setup-deployment.sh"
+    "setup": "chmod +x scripts/setup-deployment.sh && ./scripts/setup-deployment.sh",
+    "debug:api": "next dev --port 3001",
+    "debug:frontend": "next dev --port 3002",
+    "debug:build": "next build --debug",
+    "debug:production": "next start --port 3003",
+    "test:api": "jest app/api --watch",
+    "test:components": "jest components --watch",
+    "lint:api": "eslint app/api/**/*.ts",
+    "lint:components": "eslint components/**/*.tsx"
   },
   "dependencies": {
     "next": "^14.0.0",
