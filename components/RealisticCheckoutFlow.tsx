@@ -324,7 +324,9 @@ const RealisticCheckoutFlow: React.FC = () => {
     const interval = setInterval(() => {
       const randomActivity =
         activities[Math.floor(Math.random() * activities.length)];
-      setFakeApplications((prev) => [randomActivity, ...prev.slice(0, 4)]);
+      if (randomActivity) {
+        setFakeApplications((prev) => [randomActivity, ...prev.slice(0, 4)]);
+      }
     }, 8000);
 
     return () => clearInterval(interval);
@@ -344,7 +346,6 @@ const RealisticCheckoutFlow: React.FC = () => {
 
     // Calculate APR (only shown in final steps)
     if (currentStep >= 11) {
-      const totalCost = formData.loanAmount + fees;
       const apr = (fees / formData.loanAmount) * (365 / 14) * 100; // 2-week loan
       setTotalAPR(Math.round(apr));
     }
@@ -374,7 +375,11 @@ const RealisticCheckoutFlow: React.FC = () => {
     }
   };
 
-  const currentStepData = checkoutSteps[currentStep];
+  const currentStepData = checkoutSteps[currentStep] || checkoutSteps[0];
+
+  if (!currentStepData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 font-sans">
