@@ -68,7 +68,7 @@ const Phase2EthicalWebsite: React.FC = () => {
   
   const [loanTerms, setLoanTerms] = useState<EthicalLoanTerms | null>(null);
   const [canAffordLoan, setCanAffordLoan] = useState(true);
-  const [showAlternatives, setShowAlternatives] = useState(false);
+  // Removed unused showAlternatives state
 
   const alternatives: AlternativeOption[] = [
     {
@@ -127,7 +127,7 @@ const Phase2EthicalWebsite: React.FC = () => {
     const minSafetyBuffer = 300; // Minimum remaining after loan payment
     
     setCanAffordLoan(availableIncome >= loanPayment + minSafetyBuffer);
-    setShowAlternatives(availableIncome < loanPayment + minSafetyBuffer);
+          // Removed setShowAlternatives call (unused)
   }, [formData.monthlyIncome, formData.monthlyExpenses, formData.existingDebt, loanTerms]);
 
   const handleInputChange = (field: keyof EthicalFormData, value: any) => {

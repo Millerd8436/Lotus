@@ -1,22 +1,9 @@
 {
+  "version": 2,
   "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
   "regions": ["iad1", "sfo1"],
   "functions": {
-    "pages/api/lotus/**/*.ts": {
-      "maxDuration": 30
-    },
-    "app/api/lotus/**/*.ts": {
-      "maxDuration": 30
-    },
-    "app/api/phase-one/**/*.ts": {
-      "maxDuration": 30
-    },
-    "app/api/phase-two/**/*.ts": {
-      "maxDuration": 30
-    },
-    "app/api/phase-three/**/*.ts": {
+    "app/api/**/*.ts": {
       "maxDuration": 30
     }
   },
@@ -105,16 +92,6 @@
     {
       "source": "/analytics/:path*",
       "destination": "/api/analytics/:path*"
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/cleanup",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/analytics/daily",
-      "schedule": "0 1 * * *"
     }
   ]
 }

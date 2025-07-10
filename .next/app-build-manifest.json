@@ -11,28 +11,14 @@
       "static/chunks/vendors-621f1656232db17f.js",
       "static/chunks/main-app-05bed74e8f2d4e2c.js",
       "static/css/0f2cb79e6fcbde7a.css",
-      "static/chunks/common-cbd4bedba84aea47.js",
+      "static/chunks/common-9e233abddecab871.js",
       "static/chunks/app/layout-d28191ae2cc6fab4.js"
-    ],
-    "/reflection/page": [
-      "static/chunks/webpack-c81f7fd28659d64f.js",
-      "static/chunks/vendors-621f1656232db17f.js",
-      "static/chunks/main-app-05bed74e8f2d4e2c.js",
-      "static/chunks/common-cbd4bedba84aea47.js",
-      "static/chunks/app/reflection/page-f2c01dd298dbe8e7.js"
-    ],
-    "/page": [
-      "static/chunks/webpack-c81f7fd28659d64f.js",
-      "static/chunks/vendors-621f1656232db17f.js",
-      "static/chunks/main-app-05bed74e8f2d4e2c.js",
-      "static/chunks/common-cbd4bedba84aea47.js",
-      "static/chunks/app/page-983c9804c7bdd7fd.js"
     ],
     "/ethical/page": [
       "static/chunks/webpack-c81f7fd28659d64f.js",
       "static/chunks/vendors-621f1656232db17f.js",
       "static/chunks/main-app-05bed74e8f2d4e2c.js",
-      "static/chunks/common-cbd4bedba84aea47.js",
+      "static/chunks/common-9e233abddecab871.js",
       "static/chunks/app/ethical/page-aa04952dd6bfe106.js"
     ],
     "/comparison/page": [
@@ -40,6 +26,20 @@
       "static/chunks/vendors-621f1656232db17f.js",
       "static/chunks/main-app-05bed74e8f2d4e2c.js",
       "static/chunks/app/comparison/page-49bba5b3d76e3206.js"
+    ],
+    "/reflection/page": [
+      "static/chunks/webpack-c81f7fd28659d64f.js",
+      "static/chunks/vendors-621f1656232db17f.js",
+      "static/chunks/main-app-05bed74e8f2d4e2c.js",
+      "static/chunks/common-9e233abddecab871.js",
+      "static/chunks/app/reflection/page-f2c01dd298dbe8e7.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-c81f7fd28659d64f.js",
+      "static/chunks/vendors-621f1656232db17f.js",
+      "static/chunks/main-app-05bed74e8f2d4e2c.js",
+      "static/chunks/common-9e233abddecab871.js",
+      "static/chunks/app/page-45523f15788c5bb3.js"
     ]
   }
 }

@@ -41,7 +41,6 @@ const IncomeVerificationSimulator: React.FC<IncomeVerificationSimulatorProps> = 
   ]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState('');
-  const [showBankLogin, setShowBankLogin] = useState(false);
   const [verificationComplete, setVerificationComplete] = useState(false);
 
   const popularBanks = [
@@ -63,7 +62,7 @@ const IncomeVerificationSimulator: React.FC<IncomeVerificationSimulatorProps> = 
     ];
 
     for (let i = 0; i < steps.length; i++) {
-      setProcessingStep(steps[i]);
+      setProcessingStep(steps[i] || '');
       await new Promise(resolve => setTimeout(resolve, 1500));
     }
 

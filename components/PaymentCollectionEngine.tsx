@@ -55,24 +55,10 @@ interface CollectionContact {
   violatesFDCPA: boolean;
 }
 
-interface LoanPayment {
-  id: string;
-  loanId: string;
-  dueDate: Date;
-  originalAmount: number;
-  principal: number;
-  fees: number;
-  interest: number;
-  status: 'pending' | 'paid' | 'failed' | 'rolled_over' | 'defaulted';
-  rolloverCount: number;
-  daysPastDue: number;
-}
-
 const PaymentCollectionEngine: React.FC = () => {
   const [accounts, setAccounts] = useState<BankAccount[]>([]);
   const [withdrawalAttempts, setWithdrawalAttempts] = useState<WithdrawalAttempt[]>([]);
   const [collectionContacts, setCollectionContacts] = useState<CollectionContact[]>([]);
-  const [loanPayments, setLoanPayments] = useState<LoanPayment[]>([]);
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentPhase, setCurrentPhase] = useState(0);
   const [totalDamage, setTotalDamage] = useState(0);
@@ -117,21 +103,7 @@ const PaymentCollectionEngine: React.FC = () => {
       }
     ];
 
-    const initialPayment: LoanPayment = {
-      id: 'payment_1',
-      loanId: 'loan_300_001',
-      dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days overdue
-      originalAmount: 345,
-      principal: 300,
-      fees: 45,
-      interest: 0,
-      status: 'pending',
-      rolloverCount: 0,
-      daysPastDue: 2
-    };
-
     setAccounts(initialAccounts);
-    setLoanPayments([initialPayment]);
   }, []);
 
   // Start comprehensive collection exploitation simulation
@@ -455,39 +427,7 @@ const PaymentCollectionEngine: React.FC = () => {
     return '#16a34a';
   };
 
-  const calculateExploitationMetrics = (attempts: WithdrawalAttempt[]) => {
-    const metrics = {
-      totalAttempts: attempts.length,
-      unauthorizedAttempts: 0,
-      successfulWithdrawals: 0,
-      nsfFeesGenerated: 0,
-      totalFeesGenerated: 0,
-      averageAttemptsPerLoan: 0,
-      exploitationScore: 0
-    };
-
-    attempts.forEach(attempt => {
-      if (!attempt.authorized) {
-        metrics.unauthorizedAttempts++;
-      }
-      if (attempt.status === 'success') {
-        metrics.successfulWithdrawals++;
-      }
-      if (attempt.nsfFee) {
-        metrics.nsfFeesGenerated += attempt.nsfFee;
-      }
-      if (attempt.overdraftFee) {
-        metrics.totalFeesGenerated += attempt.overdraftFee;
-      }
-      if (attempt.lenderFee) {
-        metrics.totalFeesGenerated += attempt.lenderFee;
-      }
-    });
-
-    return metrics;
-  };
-
-  const metrics = calculateExploitationMetrics(withdrawalAttempts);
+  // Removed unused calculateExploitationMetrics function
 
   return (
     <div className="payment-collection-engine" style={{ maxWidth: '1000px', margin: '0 auto', padding: '1rem' }}>
