@@ -1,11 +1,11 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/api/phase-one/route": "app/api/phase-one/route.js",
+  "/api/phase-three/route": "app/api/phase-three/route.js",
+  "/api/phase-two/route": "app/api/phase-two/route.js",
   "/comparison/page": "app/comparison/page.js",
   "/ethical/page": "app/ethical/page.js",
-  "/api/phase-three/route": "app/api/phase-three/route.js",
   "/reflection/page": "app/reflection/page.js",
-  "/api/phase-two/route": "app/api/phase-two/route.js",
   "/page": "app/page.js",
   "/api/health/route": "app/api/health/route.js"
 }
