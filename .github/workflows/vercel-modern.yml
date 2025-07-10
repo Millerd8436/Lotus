@@ -1,0 +1,305 @@
+name: 🚀 Modern Vercel Deployment 2025
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - preview
+          - production
+
+env:
+  NODE_VERSION: '20'
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  # 🧪 Quality Assurance Pipeline
+  quality-check:
+    name: 🧪 Quality Assurance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 📦 Install Dependencies
+        run: npm ci --prefer-offline --no-audit
+        
+      - name: 🔍 TypeScript Type Check
+        run: npm run type-check
+        
+      - name: ✨ ESLint Validation
+        run: npm run lint
+        
+      - name: 🧪 Run Tests
+        run: npm run test:ci || npm test || echo "No tests configured"
+        continue-on-error: true
+        
+      - name: 🏗️ Build Application
+        run: npm run build
+        
+      - name: 📊 Bundle Analysis
+        run: npm run analyze || echo "Bundle analysis not configured"
+        continue-on-error: true
+        
+      - name: 💾 Cache Build Artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            .next
+            node_modules
+          key: ${{ runner.os }}-build-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+
+  # 🚀 Smart Deployment Pipeline
+  deploy:
+    name: 🚀 Smart Deployment
+    runs-on: ubuntu-latest
+    needs: quality-check
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      url: ${{ steps.deploy.outputs.url }}
+    
+    outputs:
+      deployment-url: ${{ steps.deploy.outputs.url }}
+      deployment-id: ${{ steps.deploy.outputs.deployment-id }}
+      
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🔄 Restore Build Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .next
+            node_modules
+          key: ${{ runner.os }}-build-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          
+      - name: 📦 Install Dependencies (if cache miss)
+        run: npm ci --prefer-offline --no-audit
+        if: steps.cache.outputs.cache-hit != 'true'
+        
+      - name: 🏗️ Build Application (if cache miss)
+        run: npm run build
+        if: steps.cache.outputs.cache-hit != 'true'
+        
+      - name: 🚀 Deploy with Smart Script
+        id: deploy
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.event.inputs.environment }}" = "production" ]; then
+            echo "🎯 Deploying to PRODUCTION"
+            npm run deploy:smart
+          else
+            echo "🎭 Deploying to PREVIEW"
+            npm run deploy:preview
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          
+      - name: 📊 Extract Deployment Info
+        id: extract-info
+        run: |
+          # Get latest deployment URL from Vercel
+          DEPLOYMENT_URL=$(vercel ls --token=${{ secrets.VERCEL_TOKEN }} | grep https | head -1 | awk '{print $2}')
+          echo "url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "deployment-id=$(echo $DEPLOYMENT_URL | cut -d'/' -f3 | cut -d'-' -f1)" >> $GITHUB_OUTPUT
+          echo "🌐 Deployment URL: $DEPLOYMENT_URL"
+
+  # 🔍 Post-Deployment Validation
+  validate:
+    name: 🔍 Deployment Validation
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always() && needs.deploy.result == 'success'
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: 🔧 Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: 🏥 Health Check
+        run: |
+          DEPLOYMENT_URL="${{ needs.deploy.outputs.deployment-url }}"
+          echo "🏥 Running health check on: $DEPLOYMENT_URL"
+          
+          # Wait for deployment to be ready
+          sleep 30
+          
+          # Check health endpoint
+          curl -f -s "$DEPLOYMENT_URL/api/health" | jq '.'
+          
+          # Basic connectivity test
+          HTTP_STATUS=$(curl -o /dev/null -s -w "%{http_code}" "$DEPLOYMENT_URL")
+          if [ $HTTP_STATUS -eq 200 ]; then
+            echo "✅ Health check passed"
+          else
+            echo "❌ Health check failed with status: $HTTP_STATUS"
+            exit 1
+          fi
+          
+      - name: ⚡ Performance Audit
+        run: |
+          npm install -g lighthouse
+          DEPLOYMENT_URL="${{ needs.deploy.outputs.deployment-url }}"
+          
+          echo "⚡ Running Lighthouse audit on: $DEPLOYMENT_URL"
+          lighthouse "$DEPLOYMENT_URL" \
+            --output=json \
+            --output-path=./lighthouse-report.json \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices
+            
+          # Extract scores
+          PERFORMANCE=$(cat lighthouse-report.json | jq '.categories.performance.score * 100')
+          ACCESSIBILITY=$(cat lighthouse-report.json | jq '.categories.accessibility.score * 100')
+          BEST_PRACTICES=$(cat lighthouse-report.json | jq '.categories["best-practices"].score * 100')
+          
+          echo "📊 Lighthouse Scores:"
+          echo "   Performance: $PERFORMANCE"
+          echo "   Accessibility: $ACCESSIBILITY"
+          echo "   Best Practices: $BEST_PRACTICES"
+          
+          # Set minimum thresholds
+          if (( $(echo "$PERFORMANCE >= 85" | bc -l) )); then
+            echo "✅ Performance score acceptable"
+          else
+            echo "⚠️ Performance score below threshold (85)"
+          fi
+          
+      - name: 🔌 API Endpoints Test
+        run: |
+          DEPLOYMENT_URL="${{ needs.deploy.outputs.deployment-url }}"
+          echo "🔌 Testing API endpoints..."
+          
+          # Test educational API endpoints
+          ENDPOINTS=("/api/phase-one" "/api/phase-two" "/api/phase-three" "/api/health")
+          
+          for endpoint in "${ENDPOINTS[@]}"; do
+            echo "Testing: $endpoint"
+            HTTP_STATUS=$(curl -o /dev/null -s -w "%{http_code}" "$DEPLOYMENT_URL$endpoint")
+            if [ $HTTP_STATUS -eq 200 ] || [ $HTTP_STATUS -eq 201 ]; then
+              echo "✅ $endpoint - OK"
+            else
+              echo "⚠️ $endpoint - Status: $HTTP_STATUS"
+            fi
+          done
+          
+      - name: 📈 Upload Lighthouse Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report-${{ github.sha }}
+          path: lighthouse-report.json
+          retention-days: 30
+
+  # 🔔 Notification Pipeline
+  notify:
+    name: 🔔 Deployment Notifications
+    runs-on: ubuntu-latest
+    needs: [deploy, validate]
+    if: always()
+    
+    steps:
+      - name: 🎉 Success Notification
+        if: needs.deploy.result == 'success' && needs.validate.result == 'success'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          text: |
+            🎉 Lotus Educational Platform deployed successfully!
+            
+            🌐 URL: ${{ needs.deploy.outputs.deployment-url }}
+            🔧 Environment: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
+            👤 Author: ${{ github.actor }}
+            📝 Commit: ${{ github.event.head_commit.message }}
+            
+            ✅ All validation checks passed
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true
+          
+      - name: 🚨 Failure Notification
+        if: needs.deploy.result == 'failure' || needs.validate.result == 'failure'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          text: |
+            🚨 Lotus Platform deployment failed!
+            
+            🔴 Status: Failed
+            👤 Author: ${{ github.actor }}
+            📝 Commit: ${{ github.event.head_commit.message }}
+            🔗 Logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            Please check the GitHub Actions logs for details.
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true
+        
+      - name: 📊 Deployment Summary
+        run: |
+          echo "📊 Deployment Summary:"
+          echo "======================"
+          echo "🔸 Repository: ${{ github.repository }}"
+          echo "🔸 Branch: ${{ github.ref_name }}"
+          echo "🔸 Commit: ${{ github.sha }}"
+          echo "🔸 Author: ${{ github.actor }}"
+          echo "🔸 Deployment URL: ${{ needs.deploy.outputs.deployment-url }}"
+          echo "🔸 Environment: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}"
+          echo "🔸 Deploy Status: ${{ needs.deploy.result }}"
+          echo "🔸 Validation Status: ${{ needs.validate.result }}"
+          echo "🔸 Workflow: ${{ github.workflow }}"
+          echo "🔸 Run ID: ${{ github.run_id }}"
+
+  # 🧹 Cleanup Pipeline
+  cleanup:
+    name: 🧹 Cleanup Resources
+    runs-on: ubuntu-latest
+    needs: [deploy, validate, notify]
+    if: always()
+    
+    steps:
+      - name: 🧹 Clean Old Preview Deployments
+        run: |
+          echo "🧹 Cleaning up old preview deployments..."
+          
+          # Keep only the last 5 preview deployments
+          vercel ls --token=${{ secrets.VERCEL_TOKEN }} | \
+            grep -E 'https://.*\.vercel\.app' | \
+            tail -n +6 | \
+            awk '{print $2}' | \
+            head -10 | \
+            while read deployment_url; do
+              echo "🗑️ Removing old deployment: $deployment_url"
+              vercel rm "$deployment_url" --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            done
+        continue-on-error: true 

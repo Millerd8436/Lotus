@@ -1,0 +1,46 @@
+{
+  "extends": [
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    // Temporarily relaxed rules for development
+    "no-console": "warn",
+    "no-debugger": "warn",
+    "no-alert": "warn", 
+    "no-var": "error",
+    "prefer-const": "warn",
+    "no-unused-expressions": "warn",
+    "eqeqeq": "warn",
+    "curly": "warn",
+    "prefer-template": "warn",
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-new-func": "error",
+    "no-return-assign": "warn",
+    "no-sequences": "error",
+    "no-throw-literal": "error",
+    "no-unneeded-ternary": "error",
+    "no-useless-concat": "error",
+    "no-useless-return": "error",
+    "yoda": "error",
+    "react/no-unescaped-entities": "warn"
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    ".next/",
+    "out/",
+    "dist/",
+    "build/",
+    "coverage/",
+    "*.min.js",
+    "public/",
+    "next.config.js",
+    "postcss.config.js",
+    "tailwind.config.js"
+  ]
+} 

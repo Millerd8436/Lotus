@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+
+import React from "react";
+import { EducationProvider } from "../components/providers/EducationProvider";
+import { SimulationProvider } from "../components/providers/SimulationProvider";
+import ModeSelector from "../components/ui/ModeSelector";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+
 
 export const metadata: Metadata = {
   title: "🌸 Lotus Educational Platform - Comprehensive Payday Loan Simulator",
@@ -36,37 +40,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ec4899" />
       </head>
-      <body className={`${inter.className} antialiased`}>
-        <div id="root">{children}</div>
-
-        {/* Educational Notice */}
-        <div
-          id="educational-notice"
-          className="fixed bottom-4 right-4 max-w-sm bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-xs text-yellow-800 shadow-lg z-50"
-          style={{ display: "none" }}
-        >
-          <div className="flex items-start space-x-2">
-            <span className="text-yellow-500">⚠️</span>
-            <div>
-              <div className="font-medium">Educational Simulation</div>
-              <div className="mt-1">
-                This is a learning tool. No real financial products are offered.
-              </div>
-            </div>
-          </div>
-        </div>
+      <body style={{ background: "#f3f4f6", minHeight: "100vh" }}>
+        <SimulationProvider>
+          <EducationProvider>
+            {/* Mode selector at the top */}
+            <ModeSelector />
+            
+            {/* Render children as-is; mode is now determined by route */}
+            {children}
+          </EducationProvider>
+        </SimulationProvider>
       </body>
     </html>
   );

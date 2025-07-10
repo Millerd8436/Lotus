@@ -9,6 +9,15 @@
     },
     "app/api/lotus/**/*.ts": {
       "maxDuration": 30
+    },
+    "app/api/phase-one/**/*.ts": {
+      "maxDuration": 30
+    },
+    "app/api/phase-two/**/*.ts": {
+      "maxDuration": 30
+    },
+    "app/api/phase-three/**/*.ts": {
+      "maxDuration": 30
     }
   },
   "headers": [

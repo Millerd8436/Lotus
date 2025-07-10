@@ -1,316 +1,429 @@
-// Core Lotus Types for Comprehensive 3-Phase System
-// Re-exports from advanced type system for comprehensive 96,000+ line codebase
+// Core Lotus Type Definitions for the Comprehensive Educational Platform
 
-export * from "./advanced-lotus";
-
-// Legacy compatibility types (maintained for backward compatibility)
-export interface LotusSession {
-  id: string;
-  startTime: Date;
-  currentPhase: 1 | 2 | 3;
-  exploitativeData: ExploitativePhaseData | null;
-  ethicalData: EthicalPhaseData | null;
-  analysisData: AnalysisPhaseData | null;
-  userChoices: UserChoice[];
-  coercionIndex: number;
-  autonomyViolations: AutonomyViolation[];
-  trapEngineState: TrapEngineState;
-
-  // Enhanced 3-phase tracking
-  darkPatterns?: DarkPatternEvent[];
-  amount?: number;
-  state?: string;
-  fee?: number;
-  apr?: number;
-  totalCost?: number;
-  termDays?: number;
-  rolloverCount?: number;
-  mode?: "exploitative" | "ethical";
-  createdAt?: string;
+export interface LoanSession {
+  sessionId: string
+  timestamp: string
+  currentPhase: 'exploitative' | 'ethical' | 'reflection'
+  amount: number
+  termDays: number
+  state: string
+  fee: number
+  apr: number
+  rolloverCount: number
+  totalCost: number
+  researchConsent: boolean
+  anonymizedData: boolean
 }
 
-export interface ExploitativePhaseData {
-  loanAmount: number;
-  state: string;
-  rolloverCount: number;
-  totalFeesAccumulated: number;
-  aprExposed: number;
-  manipulationTacticsUsed: string[];
-  timeUnderPressure: number;
-  autoRenewalAccepted: boolean;
-  achDebitAuthorized: boolean;
-  upsellsPresented: UpsellOffer[];
-  debtTrapEngaged: boolean;
-}
-
-export interface EthicalPhaseData {
-  loanAmount: number;
-  state: string;
-  transparentAPR: number;
-  explicitConsentGiven: string[];
-  ethicalTermsAccepted: boolean;
-  comparisonShown: boolean;
-  educationalModulesCompleted: string[];
-  ethicalScore: number;
-}
-
-export interface AnalysisPhaseData {
-  coercionIndex: number;
-  behavioralMirror: BehavioralMirror;
-  choiceHeatmap: ChoiceHeatmapSlot[];
-  autonomyReport: AutonomyReport;
-  kantianAnalysis: KantianEthicsAnalysis;
-  educationalQuizzes: QuizResult[];
-  ethicalScorecard: EthicalScorecard;
-  recommendationsGenerated: string[];
-}
-
-export interface UserChoice {
-  type: string;
-  data: any;
-  timestamp: string;
-  phase: number;
-  timeFromStart: number;
-  manipulationPresent: boolean;
-  autonomyImpact: "low" | "medium" | "high";
-  coercionLevel: number;
+export interface DarkPatternEvent {
+  type: string
+  timestamp: string
+  phase: string
+  details: Record<string, any>
+  ethicalConcern: 'low' | 'medium' | 'high' | 'critical'
+  userResponse?: any
+  effectiveness?: number
 }
 
 export interface AutonomyViolation {
-  type: string;
-  description: string;
-  severity: "low" | "medium" | "medium-high" | "high";
-  kantianViolation: string;
-  timestamp: string;
-  hiddenFromUser: boolean;
-
-  // Enhanced 3-phase tracking
-  phase?: 1 | 2 | 3;
-  coercionLevel?: number;
+  type: string
+  severity: 'low' | 'medium' | 'high' | 'critical'
+  description: string
+  timestamp: string
+  kantianViolation: string
+  hiddenFromUser?: boolean
+  phase?: 1 | 2 | 3
+  coercionLevel?: number
 }
 
-export interface TrapEngineState {
-  activeTraps: Map<string, boolean>;
-  ghostModeEnabled: boolean;
-  exploitationLevel: number;
-  coercionIndex: number;
-  rolloverTraps: RolloverTrap[];
-  achExploitationActive: boolean;
-  upsellEngineState: UpsellEngineState;
-  usurySkirterActive: LoopholeStrategy;
+export interface BehavioralEvent {
+  eventType: string
+  timestamp: string
+  phase: string
+  data: Record<string, any>
+  psychologicalIndicators: Record<string, string>
+  cognitiveState: CognitiveState
 }
 
-export interface RolloverTrap {
-  trigger: string;
-  message: string;
-  coercionLevel: "medium" | "high" | "extreme" | "predatory";
-  psychologyUsed: string;
-  successRate: number;
+export interface CognitiveState {
+  system1_dominance: boolean
+  cognitive_load: number
+  decision_fatigue: number
+  stress_level: number
+  attention_level: number
 }
 
-export interface UpsellEngineState {
-  loanCount: number;
-  qualificationLevel: string;
-  upsellTriggers: UpsellTrigger[];
-  congratulationMessages: string[];
+export interface KantianAnalysis {
+  universalizability: number
+  humanityPrinciple: number
+  autonomyRespect: number
+  moralWorth: number
+  categoricalImperative: boolean
+  ethicalAssessment: string
 }
 
-export interface UpsellTrigger {
-  trigger: string;
-  amount: number;
-  requiredRollovers: number;
+export interface EducationalProgress {
+  module: string
+  completion: number
+  comprehension: number
+  timestamp: string
 }
 
-export interface UpsellOffer {
-  amount: number;
-  message: string;
-  accepted: boolean;
-  coercionTacticsUsed: string[];
-  timestamp: string;
+export interface LearningOutcome {
+  objective: string
+  achieved: boolean
+  proficiency: number
+  evidence: string[]
 }
 
-export interface LoopholeStrategy {
-  currentLoophole: "flatFee" | "csoBrokerage" | "tribalCharter" | "rentABank";
-  legalJustification: string;
-  stateApplicable: string[];
-  aprBypass: number;
-}
-
-export interface BehavioralMirror {
-  choiceHeatmap: ChoiceHeatmapSlot[];
-  invisibleTraps: InvisibleTrap[];
-  fakeToggles: FakeToggle[];
-  buriedDisclosures: BuriedDisclosure[];
-  youThoughtYouChose: ChoiceIllusion[];
-  coercionTimeline: CoercionTimelineEvent[];
-  autonomyViolationSummary: AutonomyViolationSummary;
-}
-
-export interface ChoiceHeatmapSlot {
-  timeSlot: number;
-  manipulationIntensity: number;
-  violationTypes: string[];
-  violationCount: number;
-  highSeverityCount: number;
-}
-
-export interface InvisibleTrap {
-  trap: string;
-  description: string;
-  hiddenness: number;
-  userLikelyNoticed: boolean;
-  severity: string;
-  kantianViolation: string;
-}
-
-export interface FakeToggle {
-  element: string;
-  appearance: string;
-  reality: string;
-  coercionLevel: string;
-  autonomyImpact: string;
-}
-
-export interface BuriedDisclosure {
-  disclosure: string;
-  buriedMethod: string;
-  shouldHaveBeen: string;
-  ethicalViolation: string;
-  severity: string;
-}
-
-export interface ChoiceIllusion {
-  userThought: string;
-  reality: string;
-  manipulation: string;
-  autonomyImpact: string;
-}
-
-export interface CoercionTimelineEvent {
-  event: string;
-  timestamp: string;
-  cumulativeCoercionScore: number;
-  autonomyImpact: string;
-}
-
-export interface AutonomyViolationSummary {
-  totalViolations: number;
-  violationsByType: Record<string, number>;
-  violationsBySeverity: Record<string, number>;
-  mostCommonViolation: string;
-  averageSeverityScore: number;
-  kantianEthicsAssessment: KantianEthicsAnalysis;
-}
-
-export interface AutonomyReport {
-  choiceIntegrityScore: number;
-  violations: AutonomyViolation[];
-  activeTrapTypes: string[];
-  timeline: TimelineEvent[];
-  ethicalAssessment: string;
-  autonomyViolationSummary: AutonomyViolationSummary;
-}
-
-export interface TimelineEvent {
-  event: string;
-  timestamp: string;
-  choiceIntegrityScore?: number;
-  offerId?: string;
-  duration?: number;
-  autonomyImpact?: string;
-}
-
-export interface KantianEthicsAnalysis {
-  universalizabilityTest: "PASSED" | "FAILED";
-  humanityFormula: "PASSED" | "FAILED";
-  autonomyFormula: "PASSED" | "FAILED";
-  overallAssessment: "ETHICALLY_SOUND" | "ETHICALLY_PROBLEMATIC";
-  ethicalScore: number;
-}
-
-export interface EthicalScorecard {
-  autonomyRespect: number;
-  transparencyScore: number;
-  consentValidityScore: number;
-  informationIntegrityScore: number;
-  fairnessScore: number;
-  overallEthicalGrade: "A" | "B" | "C" | "D" | "F";
-  averageScore: number;
-  ethicalStatus: "ETHICAL" | "QUESTIONABLE" | "UNETHICAL";
-}
-
-export interface QuizResult {
-  moduleId: string;
-  score: number;
-  total: number;
-  percentage: number;
-  completedAt: string;
-}
-
-export interface EducationalModule {
-  title: string;
-  concepts: string[];
-  quiz: Quiz;
-}
-
-export interface Quiz {
-  questions: QuizQuestion[];
-}
-
-export interface QuizQuestion {
-  q: string;
-  options: string[];
-  correct: number;
-  explanation: string;
+export interface ReflectionData {
+  phasesCompared: string[]
+  insights: string[]
+  behavioralChanges: string[]
+  ethicalReflections: string[]
+  futureCommitments: string[]
 }
 
 export interface StateRegulation {
-  maxAPR: number;
-  minTermDays: number;
-  allowRollover: boolean;
-  description: string;
+  state: string
+  maxAPR: number
+  minTermDays: number
+  allowRollover: boolean
+  maxRollovers: number
+  coolingOffPeriod: number
+  description: string
+  consumerProtections: string[]
+  regulatoryAgency: string
+  enforcementStrength: number
+  industryInfluence: number
 }
 
-export interface LoanCalculation {
-  principal: number;
-  termDays: number;
-  fee: number;
-  apr: number;
-  loopholeUsed?: string;
-  legalWorkaround?: string;
-  timestamp: string;
+export interface ComprehensiveSessionState extends LoanSession {
+  darkPatterns: DarkPatternEvent[]
+  complianceViolations: any[]
+  behavioralData: BehavioralEvent[]
+  decisionPoints: any[]
+  coercionIndex: number
+  autonomyViolations: AutonomyViolation[]
+  kantianAnalysis: KantianAnalysis | null
+  ethicsScore: number
+  educationalProgress: EducationalProgress[]
+  learningOutcomes: LearningOutcome[]
+  reflectionData: ReflectionData | null
 }
 
-// API Types for Vercel Backend
-export interface LotusAPIRequest {
-  sessionId: string;
-  action: "calculate-loan" | "track-choice" | "get-analysis" | "complete-phase";
-  data: any;
+// Missing types for LotusSimulator
+export interface UserChoice {
+  type: string
+  data: any
+  timestamp: string
+  phase: number
+  timeFromStart: number
+  manipulationPresent: boolean
+  autonomyImpact: "low" | "medium" | "high"
+  coercionLevel: number
 }
 
-export interface LotusAPIResponse {
-  success: boolean;
-  data?: any;
-  error?: string;
+export interface LotusSession {
+  id: string
+  startTime: Date
+  currentPhase: 1 | 2 | 3
+  exploitativeData: any
+  ethicalData: any
+  analysisData: any
+  userChoices: UserChoice[]
+  coercionIndex: number
+  autonomyViolations: AutonomyViolation[]
+  trapEngineState: TrapEngineState
+  darkPatterns: DarkPatternEvent[]
 }
 
-// Component Props Types
-export interface LotusSimulatorProps {
-  session: LotusSession;
-  onSessionUpdate: (session: LotusSession) => void;
+export interface TrapEngineState {
+  activeTraps: Map<string, any>
+  ghostModeEnabled: boolean
+  exploitationLevel: number
+  coercionIndex: number
+  rolloverTraps: any[]
+  achExploitationActive: boolean
+  upsellEngineState: UpsellEngineState
+  usurySkirterActive: UsurySkirterState
 }
 
-export interface PhaseComponentProps {
-  session: LotusSession;
-  onPhaseComplete: (phaseData: any) => void;
-  onChoiceTracked: (choice: UserChoice) => void;
+export interface UpsellEngineState {
+  loanCount: number
+  qualificationLevel: string
+  upsellTriggers: any[]
+  congratulationMessages: any[]
 }
 
-// Enhanced dark pattern tracking for 3-phase system
-export interface DarkPatternEvent {
-  type: string;
-  timestamp: string;
-  phase: 1 | 2 | 3;
-  severity: "low" | "medium" | "high" | "critical";
-  details?: any;
+export interface UsurySkirterState {
+  currentLoophole: string
+  legalJustification: string
+  stateApplicable: string[]
+  aprBypass: number
 }
+
+export interface ThreePhaseAutonomyTheater {
+  currentPhase: 1 | 2 | 3
+  session: LotusSession
+  options: any
+  applyExploitativeTimePressure: (seconds: number, context: string) => Promise<void>
+  createArtificialScarcity: (message: string) => void
+  generateReport: () => AutonomyReport
+  trackViolation: (violation: AutonomyViolation) => void
+}
+
+export interface AutonomyReport {
+  sessionId: string
+  phase: 1 | 2 | 3
+  totalViolations: number
+  severityBreakdown: Record<string, number>
+  coercionIndex: number
+  autonomyScore: number
+  recommendations: string[]
+  detailedAnalysis: string
+  timestamp: string
+}
+
+// Helper function for creating autonomy theater
+export const createPhaseAutonomyTheater = (
+  phase: 1 | 2 | 3,
+  session: LotusSession,
+  options: any
+): ThreePhaseAutonomyTheater => {
+  return {
+    currentPhase: phase,
+    session,
+    options,
+    applyExploitativeTimePressure: async (seconds: number, context: string) => {
+      // Implementation would go here
+      console.log(`Applying time pressure: ${seconds}s in context: ${context}`);
+    },
+    createArtificialScarcity: (message: string) => {
+      // Implementation would go here
+      console.log(`Creating artificial scarcity: ${message}`);
+    },
+    generateReport: (): AutonomyReport => {
+      return {
+        sessionId: session.id,
+        phase: phase,
+        totalViolations: session.autonomyViolations.length,
+        severityBreakdown: session.autonomyViolations.reduce((acc, v) => {
+          acc[v.severity] = (acc[v.severity] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>),
+        coercionIndex: session.coercionIndex,
+        autonomyScore: Math.max(0, 100 - (session.coercionIndex * 10)),
+        recommendations: ["Practice 24-hour rule", "Verify all claims", "Seek alternatives"],
+        detailedAnalysis: `Phase ${phase} analysis with ${session.autonomyViolations.length} violations detected`,
+        timestamp: new Date().toISOString()
+      };
+    },
+    trackViolation: (violation: AutonomyViolation) => {
+      session.autonomyViolations.push(violation);
+    }
+  };
+};
+
+// Additional missing classes/interfaces
+export interface BehavioralTracker {
+  startTracking: () => void
+  stopTracking: () => void
+  recordManipulationExposure: (type: string, category: string) => void
+  recordInteraction: (data: any) => void
+  getClickPattern: () => any
+  getHesitationEvents: () => any
+  getStressLevel: () => number
+  getCognitiveLoad: () => number
+  getDecisionTime: () => number
+}
+
+export interface PsychologicalManipulationEngine {
+  createUserProfile: (data: any) => any
+}
+
+export interface RealTimeManipulationTracker {
+  analyzeCurrentExposure: (data: any) => any
+  recordManipulationSuccess: (data: any) => void
+}
+
+export interface KantianEthicsAnalyzer {
+  analyzeChoice: (data: any) => any
+}
+
+export interface UserChoiceAnalysisEngine {
+  analyzeDecision: (data: any) => any
+}
+
+export interface LegalLoopholeEngine {
+  identifyApplicableLoopholes: (state: string, data: any) => any
+}
+
+export interface RolloverTrapEngine {
+  calculateRolloverProbability: (data: any) => number
+  calculateOptimalRolloverTiming: (probability: number) => number
+}
+
+export interface CaseStudyDatabase {
+  // Implementation details
+}
+
+export interface EducationalContentEngine {
+  // Implementation details
+}
+
+export interface RegulatoryComplianceEngine {
+  // Implementation details
+}
+
+// Dark Pattern Types
+export interface DarkPattern {
+  id: string
+  name: string
+  description: string
+  category: 'urgency' | 'scarcity' | 'social_proof' | 'obfuscation' | 'coercion'
+  severity: 'low' | 'medium' | 'high' | 'critical'
+  ethicalConcern: string
+  psychologicalBasis: string
+  countermeasures: string[]
+}
+
+export interface DarkPatternInstance {
+  patternId: string
+  timestamp: string
+  context: string
+  userResponse?: any
+  effectiveness: number
+  ethicalViolation: string
+}
+
+// Educational Content Types
+export interface EducationalModule {
+  id: string
+  title: string
+  description: string
+  content: string
+  difficulty: 'beginner' | 'intermediate' | 'advanced'
+  prerequisites: string[]
+  learningObjectives: string[]
+  assessmentQuestions: AssessmentQuestion[]
+}
+
+export interface AssessmentQuestion {
+  id: string
+  question: string
+  type: 'multiple_choice' | 'true_false' | 'short_answer'
+  options?: string[]
+  correctAnswer: string | string[]
+  explanation: string
+  difficulty: 'easy' | 'medium' | 'hard'
+}
+
+// Behavioral Analysis Types
+export interface BehavioralProfile {
+  userId: string
+  sessionId: string
+  vulnerabilityFactors: string[]
+  manipulationSusceptibility: Record<string, number>
+  decisionPatterns: DecisionPattern[]
+  cognitiveBiases: string[]
+  protectiveFactors: string[]
+}
+
+export interface DecisionPattern {
+  type: string
+  frequency: number
+  context: string
+  outcome: string
+  timestamp: string
+}
+
+// Research and Analytics Types
+export interface ResearchData {
+  sessionId: string
+  timestamp: string
+  anonymizedData: boolean
+  consentGiven: boolean
+  dataType: 'behavioral' | 'educational' | 'analytical'
+  data: Record<string, any>
+}
+
+export interface AnalyticsEvent {
+  eventType: string
+  timestamp: string
+  sessionId: string
+  userId?: string
+  data: Record<string, any>
+  anonymized: boolean
+}
+
+// UI and Component Types
+export interface UIState {
+  currentPhase: number
+  ghostMode: boolean
+  educationalOverlay: boolean
+  darkPatternHighlights: boolean
+  consentBarVisible: boolean
+  modalOpen: boolean
+  currentModal: string | null
+}
+
+export interface ComponentProps {
+  session: LoanSession
+  onPhaseComplete: (phase: number) => void
+  onSessionUpdate: (session: LoanSession) => void
+  onDarkPatternDetected: (pattern: DarkPatternInstance) => void
+  onEducationalProgress: (progress: EducationalProgress) => void
+}
+
+// Configuration Types
+export interface AppConfig {
+  version: string
+  environment: 'development' | 'staging' | 'production'
+  features: {
+    ghostMode: boolean
+    comprehensiveAnalytics: boolean
+    researchDataCollection: boolean
+    kantianAnalysis: boolean
+    behavioralTracking: boolean
+  }
+  api: {
+    baseUrl: string
+    endpoints: Record<string, string>
+  }
+  analytics: {
+    enabled: boolean
+    anonymization: boolean
+    consentRequired: boolean
+  }
+}
+
+// Error and Validation Types
+export interface ValidationError {
+  field: string
+  message: string
+  severity: 'error' | 'warning' | 'info'
+}
+
+export interface AppError {
+  code: string
+  message: string
+  details?: any
+  timestamp: string
+  sessionId?: string
+}
+
+// Utility functions
+export const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(amount);
+};
+
+export const calculateAPR = (principal: number, fee: number, termDays: number): number => {
+  return ((fee / principal) * (365 / termDays)) * 100;
+};
+
+// All types are already exported above
+
