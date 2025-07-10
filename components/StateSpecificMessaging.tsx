@@ -16,10 +16,10 @@ interface StateRegulation {
   cooling_off: string;
   database_required: boolean;
   rollover_limit: number;
-  compliance_level?: "strict" | "moderate" | "permissive";
-  predatory_messaging?: PredatoryMessage[];
-  regulatory_warnings?: RegulatoryWarning[];
-  enforcement_strength?: number; // 1-10 scale
+  compliance_level?: "strict" | "moderate" | "permissive" | undefined;
+  predatory_messaging?: PredatoryMessage[] | undefined;
+  regulatory_warnings?: RegulatoryWarning[] | undefined;
+  enforcement_strength?: number | undefined; // 1-10 scale
 }
 
 interface PredatoryMessage {
@@ -613,8 +613,8 @@ const StateSpecificMessaging: React.FC<StateSpecificMessagingProps> = ({
         database_required: currentRegulation.database_required ?? false,
         rollover_limit: currentRegulation.rollover_limit ?? 999,
         compliance_level: currentRegulation.compliance_level ?? "moderate",
-        predatory_messaging: currentRegulation.predatory_messaging,
-        regulatory_warnings: currentRegulation.regulatory_warnings,
+        predatory_messaging: currentRegulation.predatory_messaging ?? [],
+        regulatory_warnings: currentRegulation.regulatory_warnings ?? [],
         enforcement_strength: currentRegulation.enforcement_strength ?? 5,
       };
       onStateChange(currentState, normalizedRegulation);
@@ -774,7 +774,9 @@ const StateSpecificMessaging: React.FC<StateSpecificMessagingProps> = ({
               </div>
               <div
                 style={{
-                  background: getAPRSeverity(currentRegulation.apr_range).color,
+                  background: getAPRSeverity(
+                    currentRegulation.apr_range || "500%"
+                  ).color,
                   color: "white",
                   padding: "0.5rem 1rem",
                   borderRadius: "8px",
@@ -785,7 +787,7 @@ const StateSpecificMessaging: React.FC<StateSpecificMessagingProps> = ({
               >
                 {currentRegulation.apr_range}
                 <div style={{ fontSize: "0.7rem", opacity: 0.9 }}>
-                  {getAPRSeverity(currentRegulation.apr_range).level}
+                  {getAPRSeverity(currentRegulation.apr_range || "500%").level}
                 </div>
               </div>
             </div>
@@ -1160,7 +1162,8 @@ const StateSpecificMessaging: React.FC<StateSpecificMessagingProps> = ({
                           <td
                             style={{
                               padding: "0.5rem",
-                              color: getAPRSeverity(state.apr_range).color,
+                              color: getAPRSeverity(state.apr_range || "500%")
+                                .color,
                               fontWeight: "bold",
                             }}
                           >
