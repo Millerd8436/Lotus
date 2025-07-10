@@ -30,7 +30,6 @@
     "vercel:link": "vercel link",
     "vercel:preview": "vercel",
     "vercel:prod": "vercel --prod",
-    
     "deploy:smart": "node scripts/smart-deploy.js",
     "deploy:check": "npm run type-check && npm run lint",
     "deploy:build": "npm run deploy:check && npm run build",
@@ -56,8 +55,6 @@
     "legacy:test": "node scripts/test-legacy-integration.js",
     "orchestrator:test": "node scripts/test-orchestrator.js",
     "comprehensive:validate": "node scripts/validate-comprehensive-system.js",
-    "vercel:env": "vercel env pull .env.local",
-    "vercel:link": "vercel link",
     "clean": "rm -rf .next out dist coverage",
     "clean:all": "npm run clean && rm -rf node_modules",
     "turbo:build": "turbo run build",

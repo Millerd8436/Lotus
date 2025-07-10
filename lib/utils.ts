@@ -1,46 +1,53 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export const formatCurrency = (amount: number): string => {
-  if (typeof amount !== 'number') {
-    return '$0.00';
+  if (typeof amount !== "number") {
+    return "$0.00";
   }
   return `$${amount.toFixed(2)}`;
 };
 
 export function formatPercentage(value: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'percent',
+  return new Intl.NumberFormat("en-US", {
+    style: "percent",
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
-  }).format(value / 100)
+  }).format(value / 100);
 }
 
-export const calculateAPR = (principal: number, fee: number, termDays: number): number => {
+export const calculateAPR = (
+  principal: number,
+  fee: number,
+  termDays: number
+): number => {
   if (principal <= 0 || termDays <= 0) {
     return 0;
   }
   return (fee / principal) * (365 / termDays) * 100;
 };
 
-export const generateLoanTerms = (amount: number, vulnerabilityScore: number = 0) => {
+export const generateLoanTerms = (
+  amount: number,
+  vulnerabilityScore: number = 0
+) => {
   // Base fee structure with vulnerability exploitation
   let fee = amount * 0.15; // 15% base fee
-  
+
   // Exploit vulnerable applicants with higher fees
   if (vulnerabilityScore > 5) {
     fee *= 1.5;
   } else if (vulnerabilityScore > 3) {
     fee *= 1.3;
   }
-  
+
   const total = amount + fee;
   const apr = calculateAPR(amount, fee, 14);
-  
+
   return {
     principal: amount,
     fee: Math.round(fee),
@@ -48,53 +55,57 @@ export const generateLoanTerms = (amount: number, vulnerabilityScore: number = 0
     apr: Math.round(apr),
     termDays: 14,
     rolloverFee: 50,
-    nsfFee: 35
+    nsfFee: 35,
   };
 };
 
 export function generateSessionId(): string {
-  return `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  return `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout
+  let timeout: NodeJS.Timeout;
   return (...args: Parameters<T>) => {
-    clearTimeout(timeout)
-    timeout = setTimeout(() => func(...args), wait)
-  }
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
 }
 
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
-  let inThrottle: boolean
+  let inThrottle: boolean;
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
-      func(...args)
-      inThrottle = true
-      setTimeout(() => (inThrottle = false), limit)
+      func(...args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
     }
-  }
+  };
 }
 
 export function validateLoanAmount(amount: number): boolean {
-  return amount >= 100 && amount <= 2000
+  return amount >= 100 && amount <= 2000;
 }
 
 export function validateTermDays(termDays: number): boolean {
-  return termDays >= 7 && termDays <= 30
+  return termDays >= 7 && termDays <= 30;
 }
 
-export function calculateTotalCost(principal: number, fee: number, rollovers: number = 0): number {
-  const baseCost = principal + fee
-  if (rollovers === 0) return baseCost
-  
+export function calculateTotalCost(
+  principal: number,
+  fee: number,
+  rollovers: number = 0
+): number {
+  const baseCost = principal + fee;
+  if (rollovers === 0) return baseCost;
+
   // Each rollover adds another fee
-  return baseCost + (fee * rollovers)
+  return baseCost + fee * rollovers;
 }
 
 export function getStateRegulation(stateCode: string) {
@@ -103,34 +114,43 @@ export function getStateRegulation(stateCode: string) {
     TX: { maxAPR: 664, maxAmount: 1800, maxTermDays: 7 },
     CA: { maxAPR: 460, maxAmount: 300, maxTermDays: 31 },
     NY: { maxAPR: 25, maxAmount: 0, maxTermDays: 0 }, // Prohibited
-    FL: { maxAPR: 304, maxAmount: 500, maxTermDays: 31 }
-  }
-  
-  return stateRegulations[stateCode as keyof typeof stateRegulations] || stateRegulations.TX
+    FL: { maxAPR: 304, maxAmount: 500, maxTermDays: 31 },
+  };
+
+  return (
+    stateRegulations[stateCode as keyof typeof stateRegulations] ||
+    stateRegulations.TX
+  );
 }
 
 export function detectDarkPattern(element: HTMLElement): string[] {
-  const patterns: string[] = []
-  
+  const patterns: string[] = [];
+
   // Check for urgency indicators
-  if (element.textContent?.includes('limited time') || element.textContent?.includes('expires soon')) {
-    patterns.push('artificial_urgency')
+  if (
+    element.textContent?.includes("limited time") ||
+    element.textContent?.includes("expires soon")
+  ) {
+    patterns.push("artificial_urgency");
   }
-  
+
   // Check for scarcity indicators
-  if (element.textContent?.includes('only') || element.textContent?.includes('last')) {
-    patterns.push('fake_scarcity')
+  if (
+    element.textContent?.includes("only") ||
+    element.textContent?.includes("last")
+  ) {
+    patterns.push("fake_scarcity");
   }
-  
+
   // Check for pre-checked boxes
-  const checkboxes = element.querySelectorAll('input[type="checkbox"]')
-  checkboxes.forEach(checkbox => {
+  const checkboxes = element.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach((checkbox) => {
     if ((checkbox as HTMLInputElement).checked) {
-      patterns.push('pre_checked_boxes')
+      patterns.push("pre_checked_boxes");
     }
-  })
-  
-  return patterns
+  });
+
+  return patterns;
 }
 
 export function calculateCoercionIndex(patterns: string[]): number {
@@ -140,78 +160,95 @@ export function calculateCoercionIndex(patterns: string[]): number {
     pre_checked_boxes: 0.4,
     hidden_fees: 0.5,
     social_proof: 0.2,
-    rollover_trap: 0.6
-  }
-  
+    rollover_trap: 0.6,
+  };
+
   return patterns.reduce((total, pattern) => {
-    return total + (patternWeights[pattern as keyof typeof patternWeights] || 0)
-  }, 0)
+    return (
+      total + (patternWeights[pattern as keyof typeof patternWeights] || 0)
+    );
+  }, 0);
 }
 
 export function anonymizeData(data: any): any {
   // Remove personally identifiable information
-  const { name, email, phone, address, ...anonymized } = data
+  const { name, email, phone, address, ...anonymized } = data;
   return {
     ...anonymized,
     sessionId: generateSessionId(),
-    timestamp: new Date().toISOString()
-  }
+    timestamp: new Date().toISOString(),
+  };
 }
 
 export function validateResearchConsent(consent: boolean): boolean {
-  return consent === true
+  return consent === true;
 }
 
 export function generateEducationalContent(phase: number): string {
   const content = {
     1: "This phase demonstrates predatory lending practices. Notice how information is hidden and urgency is created.",
     2: "This phase shows ethical lending with transparent terms and clear disclosures.",
-    3: "This phase helps you reflect on the differences and learn about consumer protection."
-  }
-  
-  return content[phase as keyof typeof content] || "Educational content not available."
+    3: "This phase helps you reflect on the differences and learn about consumer protection.",
+  };
+
+  return (
+    content[phase as keyof typeof content] ||
+    "Educational content not available."
+  );
 }
 
 export function trackUserBehavior(event: string, data: any): void {
   // In a real implementation, this would send data to analytics
-  console.log('Behavior tracked:', { event, data, timestamp: new Date().toISOString() })
+  console.log("Behavior tracked:", {
+    event,
+    data,
+    timestamp: new Date().toISOString(),
+  });
 }
 
 export function calculateEthicsScore(violations: any[]): number {
-  if (violations.length === 0) return 100
-  
+  if (violations.length === 0) return 100;
+
   const severityWeights = {
     low: 0.1,
     medium: 0.3,
     high: 0.6,
-    critical: 1.0
-  }
-  
+    critical: 1.0,
+  };
+
   const totalPenalty = violations.reduce((sum, violation) => {
-    return sum + (severityWeights[violation.severity as keyof typeof severityWeights] || 0)
-  }, 0)
-  
-  return Math.max(0, 100 - (totalPenalty * 100))
+    return (
+      sum +
+      (severityWeights[violation.severity as keyof typeof severityWeights] || 0)
+    );
+  }, 0);
+
+  return Math.max(0, 100 - totalPenalty * 100);
 }
 
 export function formatAPR(apr: number): string {
   if (apr > 1000) {
-    return `${Math.round(apr / 100)}x`
+    return `${Math.round(apr / 100)}x`;
   }
-  return `${Math.round(apr)}%`
+  return `${Math.round(apr)}%`;
 }
 
 export function isMobileDevice(): boolean {
-  if (typeof window === 'undefined') return false
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  if (typeof window === "undefined") return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
 }
 
 export function getRandomElement<T>(array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)]
+  if (array.length === 0) {
+    throw new Error("Cannot get random element from empty array");
+  }
+  return array[Math.floor(Math.random() * array.length)]!;
 }
 
 export function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export const generateId = () => {
@@ -224,7 +261,7 @@ export const isValidEmail = (email: string): boolean => {
 };
 
 export const formatPhoneNumber = (phone: string): string => {
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replace(/\D/g, "");
   if (cleaned.length === 10) {
     return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
   }
@@ -236,7 +273,10 @@ export const validateSSN = (ssn: string): boolean => {
   return ssnRegex.test(ssn);
 };
 
-export const calculateDebtToIncomeRatio = (monthlyDebt: number, monthlyIncome: number): number => {
+export const calculateDebtToIncomeRatio = (
+  monthlyDebt: number,
+  monthlyIncome: number
+): number => {
   if (monthlyIncome === 0) {
     return 0;
   }
@@ -244,14 +284,14 @@ export const calculateDebtToIncomeRatio = (monthlyDebt: number, monthlyIncome: n
 };
 
 export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text
-  return text.substring(0, maxLength) + '...'
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + "...";
 }
 
 export function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0
-    const v = c == 'x' ? r : (r & 0x3 | 0x8)
-    return v.toString(16)
-  })
-} 
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}

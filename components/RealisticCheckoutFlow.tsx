@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 /**
  * RealisticCheckoutFlow - Enhanced Predatory Checkout Based on 2024 Research
- * 
+ *
  * Based on analysis of actual payday loan websites (MyPaydayLoan.com, SunshineLoans.com, etc.)
  * Implements the exact 15-step checkout process used by real predatory lenders:
- * 
+ *
  * 1. Quick Entry (Name, Phone, ZIP)
- * 2. Loan Amount & Purpose  
+ * 2. Loan Amount & Purpose
  * 3. Personal Information (SSN, DOB, Address)
  * 4. Employment Information (Employer, Income, Pay frequency)
  * 5. Bank Account Details (Bank name, Account type, Routing/Account numbers)
@@ -35,40 +35,40 @@ interface RealisticFormData {
   alternatePhone?: string;
   ssn: string;
   dob: string;
-  
+
   // Address Information
   streetAddress: string;
   city: string;
   state: string;
   zipCode: string;
   timeAtAddress: string;
-  housingType: 'own' | 'rent' | 'other';
+  housingType: "own" | "rent" | "other";
   monthlyRent?: number;
-  
+
   // Employment Information
-  employmentStatus: 'employed' | 'self-employed' | 'benefits' | 'retired';
+  employmentStatus: "employed" | "self-employed" | "benefits" | "retired";
   employer: string;
   jobTitle: string;
   workPhone: string;
   timeAtJob: string;
-  payFrequency: 'weekly' | 'biweekly' | 'monthly' | 'other';
+  payFrequency: "weekly" | "biweekly" | "monthly" | "other";
   nextPayDate: string;
   monthlyIncome: number;
-  incomeSource: 'employment' | 'benefits' | 'other';
-  
+  incomeSource: "employment" | "benefits" | "other";
+
   // Banking Information
   bankName: string;
-  accountType: 'checking' | 'savings';
+  accountType: "checking" | "savings";
   routingNumber: string;
   accountNumber: string;
   bankingTime: string;
   onlineBankingUsername?: string;
-  
+
   // Identity Verification
   driversLicenseNumber: string;
   driversLicenseState: string;
   driversLicenseExp: string;
-  
+
   // References (for collections)
   reference1Name: string;
   reference1Phone: string;
@@ -76,12 +76,12 @@ interface RealisticFormData {
   reference2Name: string;
   reference2Phone: string;
   reference2Relationship: string;
-  
+
   // Loan Information
   loanAmount: number;
   loanPurpose: string;
   previousPaydayLoan: boolean;
-  
+
   // Consents (mostly pre-checked)
   achAuthorization: boolean;
   electronicSignature: boolean;
@@ -106,24 +106,57 @@ interface CheckoutStep {
 const RealisticCheckoutFlow: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<RealisticFormData>({
-    firstName: '', lastName: '', email: '', phone: '', ssn: '', dob: '',
-    streetAddress: '', city: '', state: '', zipCode: '', timeAtAddress: '',
-    housingType: 'rent', employer: '', jobTitle: '', workPhone: '', timeAtJob: '',
-    payFrequency: 'biweekly', nextPayDate: '', monthlyIncome: 0, incomeSource: 'employment',
-    bankName: '', accountType: 'checking', routingNumber: '', accountNumber: '', bankingTime: '',
-    driversLicenseNumber: '', driversLicenseState: '', driversLicenseExp: '',
-    reference1Name: '', reference1Phone: '', reference1Relationship: '',
-    reference2Name: '', reference2Phone: '', reference2Relationship: '',
-    loanAmount: 300, loanPurpose: '', previousPaydayLoan: false,
-    achAuthorization: false, electronicSignature: false, creditCheck: false,
-    dataSharing: true, marketingConsent: true, autoRenewal: true, 
-    loanInsurance: true, expressProcessing: true,
-    employmentStatus: 'employed'
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    ssn: "",
+    dob: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    timeAtAddress: "",
+    housingType: "rent",
+    employer: "",
+    jobTitle: "",
+    workPhone: "",
+    timeAtJob: "",
+    payFrequency: "biweekly",
+    nextPayDate: "",
+    monthlyIncome: 0,
+    incomeSource: "employment",
+    bankName: "",
+    accountType: "checking",
+    routingNumber: "",
+    accountNumber: "",
+    bankingTime: "",
+    driversLicenseNumber: "",
+    driversLicenseState: "",
+    driversLicenseExp: "",
+    reference1Name: "",
+    reference1Phone: "",
+    reference1Relationship: "",
+    reference2Name: "",
+    reference2Phone: "",
+    reference2Relationship: "",
+    loanAmount: 300,
+    loanPurpose: "",
+    previousPaydayLoan: false,
+    achAuthorization: false,
+    electronicSignature: false,
+    creditCheck: false,
+    dataSharing: true,
+    marketingConsent: true,
+    autoRenewal: true,
+    loanInsurance: true,
+    expressProcessing: true,
+    employmentStatus: "employed",
   });
 
   const [timeLeft, setTimeLeft] = useState(1847); // Fake urgency timer
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [showFakeActivity, setShowFakeActivity] = useState(true);
+  const [_isProcessing, _setIsProcessing] = useState(false);
+  const [showFakeActivity, _setShowFakeActivity] = useState(true);
   const [fakeApplications, setFakeApplications] = useState<string[]>([]);
   const [currentFees, setCurrentFees] = useState(0);
   const [totalAPR, setTotalAPR] = useState(0);
@@ -131,146 +164,146 @@ const RealisticCheckoutFlow: React.FC = () => {
   // Realistic checkout steps based on actual payday loan websites
   const checkoutSteps: CheckoutStep[] = [
     {
-      id: 'quick-entry',
-      title: '💰 GET CASH FAST! $100-$2,000',
-      subtitle: 'NO CREDIT CHECK • INSTANT APPROVAL',
-      description: 'Get started with just 3 quick details:',
+      id: "quick-entry",
+      title: "💰 GET CASH FAST! $100-$2,000",
+      subtitle: "NO CREDIT CHECK • INSTANT APPROVAL",
+      description: "Get started with just 3 quick details:",
       progressPercent: 7,
-      darkPattern: 'Bait with simplicity - hide 14 more required steps',
-      mobileOptimized: true
+      darkPattern: "Bait with simplicity - hide 14 more required steps",
+      mobileOptimized: true,
     },
     {
-      id: 'loan-details',
-      title: 'How Much Cash Do You Need?',
-      subtitle: 'Choose your loan amount and purpose',
-      description: 'Select the amount that works for you:',
+      id: "loan-details",
+      title: "How Much Cash Do You Need?",
+      subtitle: "Choose your loan amount and purpose",
+      description: "Select the amount that works for you:",
       progressPercent: 14,
       darkPattern: 'Hide true fees - show only "small fee" language',
-      mobileOptimized: true
+      mobileOptimized: true,
     },
     {
-      id: 'personal-info',
-      title: 'Personal Information',
-      subtitle: 'Quick verification for your security',
-      description: 'We need to verify your identity:',
+      id: "personal-info",
+      title: "Personal Information",
+      subtitle: "Quick verification for your security",
+      description: "We need to verify your identity:",
       progressPercent: 21,
-      darkPattern: 'Normalize excessive data collection',
-      mobileOptimized: true
+      darkPattern: "Normalize excessive data collection",
+      mobileOptimized: true,
     },
     {
-      id: 'employment-info',
-      title: 'Employment Details',
-      subtitle: 'Verify your income source',
-      description: 'Tell us about your job:',
+      id: "employment-info",
+      title: "Employment Details",
+      subtitle: "Verify your income source",
+      description: "Tell us about your job:",
       progressPercent: 28,
-      darkPattern: 'Vulnerability scoring - target desperate workers',
-      mobileOptimized: true
+      darkPattern: "Vulnerability scoring - target desperate workers",
+      mobileOptimized: true,
     },
     {
-      id: 'banking-info',
-      title: 'Banking Information',
-      subtitle: 'Secure account setup',
-      description: 'Where should we send your money?',
+      id: "banking-info",
+      title: "Banking Information",
+      subtitle: "Secure account setup",
+      description: "Where should we send your money?",
       progressPercent: 35,
-      darkPattern: 'Broad ACH authorization for exploitation',
-      mobileOptimized: true
+      darkPattern: "Broad ACH authorization for exploitation",
+      mobileOptimized: true,
     },
     {
-      id: 'identity-verification',
-      title: 'Identity Verification',
-      subtitle: 'Upload your driver\'s license',
-      description: 'Quick photo upload for verification:',
+      id: "identity-verification",
+      title: "Identity Verification",
+      subtitle: "Upload your driver's license",
+      description: "Quick photo upload for verification:",
       progressPercent: 42,
-      darkPattern: 'Legitimize extensive data collection',
-      mobileOptimized: true
+      darkPattern: "Legitimize extensive data collection",
+      mobileOptimized: true,
     },
     {
-      id: 'income-verification',
-      title: 'Income Verification',
-      subtitle: 'Connect your bank OR upload pay stub',
-      description: 'Choose your verification method:',
+      id: "income-verification",
+      title: "Income Verification",
+      subtitle: "Connect your bank OR upload pay stub",
+      description: "Choose your verification method:",
       progressPercent: 49,
-      darkPattern: 'Bank login credentials harvesting',
-      mobileOptimized: true
+      darkPattern: "Bank login credentials harvesting",
+      mobileOptimized: true,
     },
     {
-      id: 'references',
-      title: 'Emergency Contacts',
-      subtitle: 'People who can reach you',
-      description: 'Provide 2 contacts (for your security):',
+      id: "references",
+      title: "Emergency Contacts",
+      subtitle: "People who can reach you",
+      description: "Provide 2 contacts (for your security):",
       progressPercent: 56,
-      darkPattern: 'Collection harassment contact list',
-      mobileOptimized: true
+      darkPattern: "Collection harassment contact list",
+      mobileOptimized: true,
     },
     {
-      id: 'electronic-signature',
-      title: 'Electronic Signature',
-      subtitle: 'Sign your loan documents',
-      description: 'Review and sign your agreement:',
+      id: "electronic-signature",
+      title: "Electronic Signature",
+      subtitle: "Sign your loan documents",
+      description: "Review and sign your agreement:",
       progressPercent: 63,
-      darkPattern: 'Rushed signature on buried terms',
-      mobileOptimized: true
+      darkPattern: "Rushed signature on buried terms",
+      mobileOptimized: true,
     },
     {
-      id: 'ach-authorization',
-      title: 'Payment Authorization',
-      subtitle: 'Authorize automatic payments',
-      description: 'Set up automatic loan repayment:',
+      id: "ach-authorization",
+      title: "Payment Authorization",
+      subtitle: "Authorize automatic payments",
+      description: "Set up automatic loan repayment:",
       progressPercent: 70,
-      darkPattern: 'Broad ACH exploitation permissions',
-      mobileOptimized: true
+      darkPattern: "Broad ACH exploitation permissions",
+      mobileOptimized: true,
     },
     {
-      id: 'add-ons',
-      title: 'Protect Your Loan',
-      subtitle: 'Recommended services for you',
-      description: 'Smart borrowers choose these protections:',
+      id: "add-ons",
+      title: "Protect Your Loan",
+      subtitle: "Recommended services for you",
+      description: "Smart borrowers choose these protections:",
       progressPercent: 77,
-      darkPattern: 'Pre-selected expensive add-ons',
-      mobileOptimized: true
+      darkPattern: "Pre-selected expensive add-ons",
+      mobileOptimized: true,
     },
     {
-      id: 'final-terms',
-      title: 'Final Terms Review',
-      subtitle: 'Confirm your loan details',
-      description: 'Review your loan terms:',
+      id: "final-terms",
+      title: "Final Terms Review",
+      subtitle: "Confirm your loan details",
+      description: "Review your loan terms:",
       progressPercent: 84,
-      darkPattern: 'APR finally disclosed in tiny text',
-      mobileOptimized: true
+      darkPattern: "APR finally disclosed in tiny text",
+      mobileOptimized: true,
     },
     {
-      id: 'processing',
-      title: 'Processing Your Application',
-      subtitle: 'Contacting our network of lenders',
-      description: 'Please wait while we process your application...',
+      id: "processing",
+      title: "Processing Your Application",
+      subtitle: "Contacting our network of lenders",
+      description: "Please wait while we process your application...",
       progressPercent: 91,
-      darkPattern: 'Fake processing to simulate legitimacy',
-      mobileOptimized: true
+      darkPattern: "Fake processing to simulate legitimacy",
+      mobileOptimized: true,
     },
     {
-      id: 'funding-options',
-      title: 'Choose Your Funding Speed',
-      subtitle: 'How fast do you need your cash?',
-      description: 'Select your preferred funding method:',
+      id: "funding-options",
+      title: "Choose Your Funding Speed",
+      subtitle: "How fast do you need your cash?",
+      description: "Select your preferred funding method:",
       progressPercent: 98,
-      darkPattern: 'Upsell expensive instant funding',
-      mobileOptimized: true
+      darkPattern: "Upsell expensive instant funding",
+      mobileOptimized: true,
     },
     {
-      id: 'rollover-setup',
-      title: 'Congratulations! You\'re Approved!',
-      subtitle: 'Your money is on the way',
-      description: 'Set up renewal options for convenience:',
+      id: "rollover-setup",
+      title: "Congratulations! You're Approved!",
+      subtitle: "Your money is on the way",
+      description: "Set up renewal options for convenience:",
       progressPercent: 100,
-      darkPattern: 'Trap setup - auto-rollover authorization',
-      mobileOptimized: true
-    }
+      darkPattern: "Trap setup - auto-rollover authorization",
+      mobileOptimized: true,
+    },
   ];
 
   // Fake urgency timer
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(prev => {
+      setTimeLeft((prev) => {
         if (prev <= 0) return 1847; // Reset to maintain fake urgency
         return prev - 1;
       });
@@ -285,14 +318,15 @@ const RealisticCheckoutFlow: React.FC = () => {
       "Mike from Houston got $750 in minutes",
       "Jessica from Austin approved for $1,000",
       "Carlos from San Antonio got $300 fast",
-      "Jennifer from Fort Worth approved for $600"
+      "Jennifer from Fort Worth approved for $600",
     ];
-    
+
     const interval = setInterval(() => {
-      const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-      setFakeApplications(prev => [randomActivity, ...prev.slice(0, 4)]);
+      const randomActivity =
+        activities[Math.floor(Math.random() * activities.length)];
+      setFakeApplications((prev) => [randomActivity, ...prev.slice(0, 4)]);
     }, 8000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -300,27 +334,32 @@ const RealisticCheckoutFlow: React.FC = () => {
   useEffect(() => {
     let fees = 0;
     let baseFee = Math.floor(formData.loanAmount * 0.15); // 15% base fee
-    
+
     if (currentStep >= 1) fees += baseFee;
     if (currentStep >= 10 && formData.expressProcessing) fees += 25;
     if (currentStep >= 10 && formData.loanInsurance) fees += 35;
     if (currentStep >= 13) fees += 15; // "Processing fee"
-    
+
     setCurrentFees(fees);
-    
+
     // Calculate APR (only shown in final steps)
     if (currentStep >= 11) {
       const totalCost = formData.loanAmount + fees;
-      const apr = ((fees / formData.loanAmount) * (365 / 14) * 100); // 2-week loan
+      const apr = (fees / formData.loanAmount) * (365 / 14) * 100; // 2-week loan
       setTotalAPR(Math.round(apr));
     }
-  }, [currentStep, formData.loanAmount, formData.expressProcessing, formData.loanInsurance]);
+  }, [
+    currentStep,
+    formData.loanAmount,
+    formData.expressProcessing,
+    formData.loanInsurance,
+  ]);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleNext = () => {
@@ -362,11 +401,15 @@ const RealisticCheckoutFlow: React.FC = () => {
       {/* Progress bar */}
       <div className="bg-white shadow-sm px-4 py-3">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">Step {currentStep + 1} of {checkoutSteps.length}</span>
-          <span className="text-sm font-medium text-orange-600">{currentStepData.progressPercent}% Complete</span>
+          <span className="text-sm font-medium text-gray-700">
+            Step {currentStep + 1} of {checkoutSteps.length}
+          </span>
+          <span className="text-sm font-medium text-orange-600">
+            {currentStepData.progressPercent}% Complete
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
+          <div
             className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
             style={{ width: `${currentStepData.progressPercent}%` }}
           />
@@ -414,7 +457,9 @@ const RealisticCheckoutFlow: React.FC = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
                     placeholder="John Smith"
                     value={formData.firstName}
-                    onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
                   />
                 </div>
                 <div>
@@ -426,7 +471,9 @@ const RealisticCheckoutFlow: React.FC = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
                     placeholder="(555) 123-4567"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                   />
                 </div>
                 <div>
@@ -438,7 +485,9 @@ const RealisticCheckoutFlow: React.FC = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
                     placeholder="75201"
                     value={formData.zipCode}
-                    onChange={(e) => setFormData({...formData, zipCode: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, zipCode: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -457,12 +506,19 @@ const RealisticCheckoutFlow: React.FC = () => {
                       max="2000"
                       step="50"
                       value={formData.loanAmount}
-                      onChange={(e) => setFormData({...formData, loanAmount: parseInt(e.target.value)})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          loanAmount: parseInt(e.target.value),
+                        })
+                      }
                       className="w-full"
                     />
                     <div className="flex justify-between text-sm text-gray-600 mt-2">
                       <span>$100</span>
-                      <span className="font-bold text-2xl text-orange-600">${formData.loanAmount}</span>
+                      <span className="font-bold text-2xl text-orange-600">
+                        ${formData.loanAmount}
+                      </span>
                       <span>$2,000</span>
                     </div>
                   </div>
@@ -477,7 +533,9 @@ const RealisticCheckoutFlow: React.FC = () => {
                   <select
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
                     value={formData.loanPurpose}
-                    onChange={(e) => setFormData({...formData, loanPurpose: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, loanPurpose: e.target.value })
+                    }
                   >
                     <option value="">Select purpose</option>
                     <option value="emergency">Emergency expense</option>
@@ -518,7 +576,9 @@ const RealisticCheckoutFlow: React.FC = () => {
               onClick={handleNext}
               className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-bold hover:from-orange-600 hover:to-red-600 transition-all transform hover:scale-105"
             >
-              {currentStep === checkoutSteps.length - 1 ? 'Complete Application' : 'Continue'}
+              {currentStep === checkoutSteps.length - 1
+                ? "Complete Application"
+                : "Continue"}
             </button>
           </div>
 
@@ -542,9 +602,11 @@ const RealisticCheckoutFlow: React.FC = () => {
           {currentStep >= 1 && (
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
               <p className="text-sm text-blue-800">
-                <strong>Loan Details:</strong> ${formData.loanAmount} 
+                <strong>Loan Details:</strong> ${formData.loanAmount}
                 {currentFees > 0 && <span> + ${currentFees} fees</span>}
-                {totalAPR > 0 && <span className="text-xs"> ({totalAPR}% APR)</span>}
+                {totalAPR > 0 && (
+                  <span className="text-xs"> ({totalAPR}% APR)</span>
+                )}
               </p>
             </div>
           )}
@@ -554,4 +616,4 @@ const RealisticCheckoutFlow: React.FC = () => {
   );
 };
 
-export default RealisticCheckoutFlow; 
+export default RealisticCheckoutFlow;

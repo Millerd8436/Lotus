@@ -1,27 +1,33 @@
 "use client";
 
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 // Mock implementations for removed legacy files
 class Echo {
   logAction(event: string, data?: any) {
-    console.log('Echo:', event, data);
+    console.log("Echo:", event, data);
   }
 }
 
 class ResearchAnalytics {
   recordUserInteraction(event: string, element: string, value: any) {
-    console.log('Research Analytics:', event, element, value);
+    console.log("Research Analytics:", event, element, value);
   }
 }
 
 class ComprehensiveEthicsEngine {
-  constructor(session: any, behavioralEngine: any) {
+  constructor(_session: any, _behavioralEngine: any) {
     // Mock constructor
   }
-  
+
   analyzeUIInteraction(event: string, data: any) {
-    console.log('Ethics Engine:', event, data);
+    console.log("Ethics Engine:", event, data);
     return { ethicalScore: 0.5, concerns: [] };
   }
 }
@@ -48,29 +54,32 @@ interface SimulationContextType {
   // State management
   simulationState: SimulationState;
   metrics: SimulationMetrics;
-  
+
   // Actions
   startSimulation: () => void;
   pauseSimulation: () => void;
   resumeSimulation: () => void;
   resetSimulation: () => void;
   transitionToPhase: (phase: 1 | 2 | 3) => void;
-  
+
   // Metrics tracking
   updateMetrics: (updates: Partial<SimulationMetrics>) => void;
   recordEvent: (eventType: string, data: any) => void;
-  
+
   // Analysis
   getSimulationReport: () => any;
   getPhaseAnalysis: (phase: number) => any;
 }
 
-const SimulationContext = createContext<SimulationContextType & {
-  echo: Echo;
-  researchAnalytics: ResearchAnalytics;
-  ethicsEngine: any;
-  logAction: (event: string, data?: any) => void;
-} | undefined>(undefined);
+const SimulationContext = createContext<
+  | (SimulationContextType & {
+      echo: Echo;
+      researchAnalytics: ResearchAnalytics;
+      ethicsEngine: any;
+      logAction: (event: string, data?: any) => void;
+    })
+  | undefined
+>(undefined);
 
 interface SimulationProviderProps {
   children: ReactNode;
@@ -106,12 +115,18 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
   const [echo] = useState(() => new Echo());
   const [researchAnalytics] = useState(() => new ResearchAnalytics());
   // For demo, pass nulls for session/behavioralEngine; in real use, wire session
-  const [ethicsEngine] = useState(() => new ComprehensiveEthicsEngine({}, null));
+  const [ethicsEngine] = useState(
+    () => new ComprehensiveEthicsEngine({}, null)
+  );
 
   // Phase-aware logAction
   const logAction = (event: string, data?: any) => {
     echo.logAction(event, data);
-    researchAnalytics.recordUserInteraction(event, data?.element || '', data?.value);
+    researchAnalytics.recordUserInteraction(
+      event,
+      data?.element || "",
+      data?.value
+    );
     ethicsEngine.analyzeUIInteraction(event, data);
   };
 
@@ -121,7 +136,7 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
 
     if (simulationState.isActive && !simulationState.isPaused) {
       interval = setInterval(() => {
-        setSimulationState(prev => ({
+        setSimulationState((prev) => ({
           ...prev,
           elapsedTime: Date.now() - prev.startTime,
         }));
@@ -133,11 +148,15 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
         clearInterval(interval);
       }
     };
-  }, [simulationState.isActive, simulationState.isPaused, simulationState.startTime]);
+  }, [
+    simulationState.isActive,
+    simulationState.isPaused,
+    simulationState.startTime,
+  ]);
 
   const startSimulation = () => {
     const startTime = Date.now();
-    setSimulationState(prev => ({
+    setSimulationState((prev) => ({
       ...prev,
       isActive: true,
       isPaused: false,
@@ -145,19 +164,19 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
       elapsedTime: 0,
     }));
 
-    recordEvent('simulation_started', {
+    recordEvent("simulation_started", {
       phase: simulationState.currentPhase,
       timestamp: new Date().toISOString(),
     });
   };
 
   const pauseSimulation = () => {
-    setSimulationState(prev => ({
+    setSimulationState((prev) => ({
       ...prev,
       isPaused: true,
     }));
 
-    recordEvent('simulation_paused', {
+    recordEvent("simulation_paused", {
       phase: simulationState.currentPhase,
       elapsedTime: simulationState.elapsedTime,
       timestamp: new Date().toISOString(),
@@ -165,19 +184,19 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
   };
 
   const resumeSimulation = () => {
-    setSimulationState(prev => ({
+    setSimulationState((prev) => ({
       ...prev,
       isPaused: false,
     }));
 
-    recordEvent('simulation_resumed', {
+    recordEvent("simulation_resumed", {
       phase: simulationState.currentPhase,
       timestamp: new Date().toISOString(),
     });
   };
 
   const resetSimulation = () => {
-    setSimulationState(prev => ({
+    setSimulationState((prev) => ({
       ...prev,
       isActive: false,
       isPaused: false,
@@ -198,25 +217,25 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
     setEvents([]);
     setPhaseData({});
 
-    recordEvent('simulation_reset', {
+    recordEvent("simulation_reset", {
       timestamp: new Date().toISOString(),
     });
   };
 
   const transitionToPhase = (phase: 1 | 2 | 3) => {
     // Save current phase data
-    setPhaseData(prev => ({
+    setPhaseData((prev) => ({
       ...prev,
       [simulationState.currentPhase]: {
         duration: simulationState.elapsedTime,
         metrics: { ...metrics },
-        events: events.filter(e => e.phase === simulationState.currentPhase),
+        events: events.filter((e) => e.phase === simulationState.currentPhase),
         timestamp: new Date().toISOString(),
       },
     }));
 
     // Transition to new phase
-    setSimulationState(prev => ({
+    setSimulationState((prev) => ({
       ...prev,
       currentPhase: phase,
       startTime: Date.now(),
@@ -233,7 +252,7 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
       psychologicalStress: phase === 1 ? 0 : phase === 2 ? 20 : 40,
     });
 
-    recordEvent('phase_transition', {
+    recordEvent("phase_transition", {
       fromPhase: simulationState.currentPhase,
       toPhase: phase,
       timestamp: new Date().toISOString(),
@@ -241,12 +260,12 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
   };
 
   const updateMetrics = (updates: Partial<SimulationMetrics>) => {
-    setMetrics(prev => ({
+    setMetrics((prev) => ({
       ...prev,
       ...updates,
     }));
 
-    recordEvent('metrics_updated', {
+    recordEvent("metrics_updated", {
       updates,
       currentMetrics: { ...metrics, ...updates },
       timestamp: new Date().toISOString(),
@@ -262,15 +281,18 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
       data,
     };
 
-    setEvents(prev => [...prev, event]);
+    setEvents((prev) => [...prev, event]);
   };
 
   const getSimulationReport = () => {
     const totalEvents = events.length;
-    const phaseEvents = events.reduce((acc, event) => {
-      acc[event.phase] = (acc[event.phase] || 0) + 1;
-      return acc;
-    }, {} as Record<number, number>);
+    const phaseEvents = events.reduce(
+      (acc, event) => {
+        acc[event.phase] = (acc[event.phase] || 0) + 1;
+        return acc;
+      },
+      {} as Record<number, number>
+    );
 
     const avgMetrics = {
       autonomyScore: metrics.autonomyScore,
@@ -297,7 +319,7 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
   };
 
   const getPhaseAnalysis = (phase: number) => {
-    const phaseEvents = events.filter(e => e.phase === phase);
+    const phaseEvents = events.filter((e) => e.phase === phase);
     const phaseMetrics = phaseData[phase]?.metrics || metrics;
 
     return {
@@ -330,7 +352,9 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
     }
 
     if (simulationState.currentPhase === 3) {
-      insights.push("Reflection phase allows comparison of different approaches");
+      insights.push(
+        "Reflection phase allows comparison of different approaches"
+      );
     }
 
     return insights;
@@ -351,14 +375,22 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
       recommendations.push("Take time to make informed decisions");
     }
 
-    recommendations.push("Compare multiple options before making financial decisions");
-    recommendations.push("Understand your rights under consumer protection laws");
+    recommendations.push(
+      "Compare multiple options before making financial decisions"
+    );
+    recommendations.push(
+      "Understand your rights under consumer protection laws"
+    );
     recommendations.push("Seek financial counseling if needed");
 
     return recommendations;
   };
 
-  const analyzePhase = (phase: number, events: any[], metrics: SimulationMetrics) => {
+  const analyzePhase = (
+    phase: number,
+    _events: any[],
+    _metrics: SimulationMetrics
+  ) => {
     switch (phase) {
       case 1:
         return {
@@ -431,7 +463,8 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
 
 export const useSimulation = () => {
   const ctx = useContext(SimulationContext);
-  if (!ctx) throw new Error('useSimulation must be used within SimulationProvider');
+  if (!ctx)
+    throw new Error("useSimulation must be used within SimulationProvider");
   return ctx;
 };
 
@@ -451,34 +484,45 @@ export const SimulationControlPanel: React.FC = () => {
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">Simulation Control</h3>
+        <h3 className="text-lg font-semibold text-gray-900">
+          Simulation Control
+        </h3>
         <div className="text-sm text-gray-600">
-          Phase {simulationState.currentPhase} • {formatTime(simulationState.elapsedTime)}
+          Phase {simulationState.currentPhase} •{" "}
+          {formatTime(simulationState.elapsedTime)}
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
           <div className="text-sm text-gray-600">Autonomy Score</div>
-          <div className="text-lg font-semibold text-blue-600">{Math.round(metrics.autonomyScore)}%</div>
+          <div className="text-lg font-semibold text-blue-600">
+            {Math.round(metrics.autonomyScore)}%
+          </div>
         </div>
         <div>
           <div className="text-sm text-gray-600">Coercion Index</div>
-          <div className="text-lg font-semibold text-red-600">{metrics.coercionIndex.toFixed(2)}</div>
+          <div className="text-lg font-semibold text-red-600">
+            {metrics.coercionIndex.toFixed(2)}
+          </div>
         </div>
         <div>
           <div className="text-sm text-gray-600">Manipulation Exposure</div>
-          <div className="text-lg font-semibold text-orange-600">{metrics.manipulationExposure}</div>
+          <div className="text-lg font-semibold text-orange-600">
+            {metrics.manipulationExposure}
+          </div>
         </div>
         <div>
           <div className="text-sm text-gray-600">Decision Quality</div>
-          <div className="text-lg font-semibold text-green-600">{Math.round(metrics.decisionQuality)}%</div>
+          <div className="text-lg font-semibold text-green-600">
+            {Math.round(metrics.decisionQuality)}%
+          </div>
         </div>
       </div>
 
@@ -505,7 +549,7 @@ export const SimulationControlPanel: React.FC = () => {
             Pause
           </button>
         )}
-        
+
         <button
           onClick={resetSimulation}
           className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded transition-colors"
@@ -521,8 +565,8 @@ export const SimulationControlPanel: React.FC = () => {
             onClick={() => transitionToPhase(phase as 1 | 2 | 3)}
             className={`flex-1 py-2 px-4 rounded font-medium transition-colors ${
               simulationState.currentPhase === phase
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
           >
             Phase {phase}
