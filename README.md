@@ -3,7 +3,7 @@
 > **The World's Most Comprehensive Payday Loan Educational Simulator**  
 > **15,000+ Lines of Realistic Code • 3-Phase Educational Journey • 100% Vercel Ready**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/lotus)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMillerd8436%2FLotus)
 
 ## 🚀 **VERCEL DEPLOYMENT - OPTIMIZED FOR TYPESCRIPT**
 
