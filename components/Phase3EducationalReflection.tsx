@@ -226,60 +226,7 @@ const Phase3EducationalReflection: React.FC = () => {
         </p>
       </div>
 
-      {/* Autonomy Theater Summary */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-        <h3 className="text-2xl font-bold text-red-800 mb-4">
-          🎭 Autonomy Theater Detection
-        </h3>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <p className="text-red-700 mb-4">
-              "Autonomy Theater" refers to the illusion of choice and control
-              while actually constraining user decisions through manipulation.
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>Manipulation Patterns Detected:</span>
-                <span className="font-bold">
-                  {autonomyTheaterMetrics.length}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span>Average Severity:</span>
-                <span className="font-bold text-red-600">High</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Autonomy Violation Score:</span>
-                <span className="font-bold text-red-600">
-                  {autonomyScore}/100
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-lg">
-            <h4 className="font-bold text-gray-800 mb-2">
-              Most Common Violations:
-            </h4>
-            <div className="space-y-2 text-sm">
-              {autonomyTheaterMetrics.slice(0, 3).map((metric, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <span
-                    className={`w-2 h-2 rounded-full ${
-                      metric.severity === "Critical"
-                        ? "bg-red-600"
-                        : metric.severity === "High"
-                          ? "bg-orange-500"
-                          : "bg-yellow-500"
-                    }`}
-                  ></span>
-                  <span>{metric.pattern}</span>
-                  <span className="text-gray-500">({metric.frequency}%)</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Autonomy Theater summary removed to streamline analysis and avoid redundancy */}
 
       {/* Phase Comparison Grid */}
       <div className="bg-white rounded-lg shadow-lg p-6">
@@ -328,12 +275,7 @@ const Phase3EducationalReflection: React.FC = () => {
 
       {/* Navigation Buttons */}
       <div className="flex justify-center space-x-4">
-        <button
-          onClick={() => setCurrentView("autonomy")}
-          className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg"
-        >
-          🎭 Autonomy Theater Analysis
-        </button>
+        {/* Autonomy Theater button removed */}
         <button
           onClick={() => setCurrentView("quiz")}
           className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
@@ -345,89 +287,6 @@ const Phase3EducationalReflection: React.FC = () => {
           className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg"
         >
           📊 Research Findings
-        </button>
-      </div>
-    </div>
-  );
-
-  const renderAutonomyTheater = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-red-600 mb-4">
-          🎭 Autonomy Theater Analysis
-        </h2>
-        <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-          How predatory lenders create the illusion of choice while manipulating
-          your decisions
-        </p>
-      </div>
-
-      {/* Autonomy Metrics */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {autonomyTheaterMetrics.map((metric, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-red-500"
-          >
-            <div className="flex justify-between items-start mb-3">
-              <h3 className="text-lg font-bold text-gray-800">
-                {metric.pattern}
-              </h3>
-              <span
-                className={`px-2 py-1 rounded text-xs font-bold ${
-                  metric.severity === "Critical"
-                    ? "bg-red-600 text-white"
-                    : metric.severity === "High"
-                      ? "bg-orange-500 text-white"
-                      : metric.severity === "Medium"
-                        ? "bg-yellow-500 text-white"
-                        : "bg-gray-400 text-white"
-                }`}
-              >
-                {metric.severity}
-              </span>
-            </div>
-            <p className="text-gray-600 text-sm mb-3">{metric.description}</p>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm">Frequency:</span>
-                <span className="font-bold">{metric.frequency}%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-red-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${metric.frequency}%` }}
-                ></div>
-              </div>
-              <div className="text-sm text-gray-700 mt-2">
-                <strong>Impact:</strong> {metric.impact}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Autonomy Score */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
-        <h3 className="text-2xl font-bold text-red-800 mb-4">
-          Overall Autonomy Violation Score
-        </h3>
-        <div className="text-6xl font-black text-red-600 mb-4">
-          {autonomyScore}/100
-        </div>
-        <p className="text-red-700 text-lg">
-          This score represents the cumulative impact of manipulation tactics on
-          user autonomy. Higher scores indicate more severe violations of user
-          agency and informed consent.
-        </p>
-      </div>
-
-      <div className="text-center">
-        <button
-          onClick={() => setCurrentView("overview")}
-          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg"
-        >
-          Back to Overview
         </button>
       </div>
     </div>
@@ -629,21 +488,28 @@ const Phase3EducationalReflection: React.FC = () => {
           </h3>
           <div className="space-y-4">
             <div className="bg-red-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">32%</div>
-              <div className="text-red-700">
-                of borrowers suffer unauthorized ACH withdrawals
+              <div className="text-3xl font-bold text-red-600">
+                50%<sup className="text-xs">[1]</sup>
+              </div>
+              <div className="text-red-700 text-sm">
+                of online payday borrowers experience at least one debit attempt
+                that overdraws their account
               </div>
             </div>
             <div className="bg-orange-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-orange-600">$35</div>
-              <div className="text-orange-700">
-                average NSF fee per failed attempt
+              <div className="text-3xl font-bold text-orange-600">
+                $34<sup className="text-xs">[1]</sup>
+              </div>
+              <div className="text-orange-700 text-sm">
+                median NSF fee charged per failed withdrawal
               </div>
             </div>
             <div className="bg-yellow-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-yellow-600">5.7</div>
-              <div className="text-yellow-700">
-                average withdrawal attempts per failed payment
+              <div className="text-3xl font-bold text-yellow-600">
+                3.8<sup className="text-xs">[1]</sup>
+              </div>
+              <div className="text-yellow-700 text-sm">
+                average repeated debit attempts per failed payment
               </div>
             </div>
           </div>
@@ -655,26 +521,47 @@ const Phase3EducationalReflection: React.FC = () => {
           </h3>
           <div className="space-y-4">
             <div className="bg-red-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">80%</div>
-              <div className="text-red-700">
-                of payday loan revenue comes from borrowers trapped in debt
-                cycles
+              <div className="text-3xl font-bold text-red-600">
+                80%<sup className="text-xs">[2]</sup>
+              </div>
+              <div className="text-red-700 text-sm">
+                of payday loans are renewed or followed by another loan within
+                14&nbsp;days
               </div>
             </div>
             <div className="bg-orange-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-orange-600">10</div>
-              <div className="text-orange-700">
-                average number of rollovers per borrower per year
+              <div className="text-3xl font-bold text-orange-600">
+                10<sup className="text-xs">[2]</sup>
+              </div>
+              <div className="text-orange-700 text-sm">
+                median number of loans a typical borrower takes per year
               </div>
             </div>
             <div className="bg-yellow-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-yellow-600">$520</div>
-              <div className="text-yellow-700">
-                average annual fees paid by chronic borrowers
+              <div className="text-3xl font-bold text-yellow-600">
+                $520<sup className="text-xs">[2]</sup>
+              </div>
+              <div className="text-yellow-700 text-sm">
+                average annual fees paid by frequent payday borrowers
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Citations */}
+      <div className="text-xs text-gray-500 max-w-3xl mx-auto">
+        <p className="mb-1 font-semibold">Sources</p>
+        <ol className="list-decimal ml-4 space-y-1">
+          <li>
+            Consumer Financial Protection Bureau. "Online Payday Loan Payments."
+            Apr&nbsp;2016.
+          </li>
+          <li>
+            The Pew Charitable Trusts. "Payday Lending in America: How Borrowers
+            Choose and Repay" (Report&nbsp;#2). Feb&nbsp;2013.
+          </li>
+        </ol>
       </div>
 
       <div className="text-center">
@@ -694,8 +581,7 @@ const Phase3EducationalReflection: React.FC = () => {
 
   // Main render logic
   switch (currentView) {
-    case "autonomy":
-      return renderAutonomyTheater();
+    // Autonomy view removed
     case "quiz":
       return renderQuiz();
     case "research":
