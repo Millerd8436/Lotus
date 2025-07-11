@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import DarkPatternUI from "./DarkPatternUI";
 
 /**
  * Phase 3: Educational Reflection & Autonomy Theater
@@ -315,6 +316,14 @@ const Phase3EducationalReflection: React.FC = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Interactive Side-by-Side UI Demonstration */}
+      <div className="bg-gray-50 rounded-lg p-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+          Interactive Interface Comparison
+        </h3>
+        <DarkPatternUI mode="comparison" />
       </div>
 
       {/* Navigation Buttons */}
