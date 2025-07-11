@@ -58,7 +58,7 @@ const ModeSelector: React.FC = () => {
       id: 3,
       route: "/reflection",
       title: "Analysis",
-      subtitle: "Behavioral Insights & Comparison",
+      subtitle: "Analysis & Comparison",
       icon: "📊",
       description: "Analyze patterns & compare all phases",
       color: "#7c3aed",
@@ -193,7 +193,7 @@ function getCurrentPhaseStatus(phase: number): string {
   const statuses = {
     1: "🏦 Professional Predatory Interface",
     2: "✨ Ethical Alternative Interface",
-    3: "📊 Behavioral Analysis & Insights",
+    3: "📊 Analysis & Comparison",
   };
   return statuses[phase as keyof typeof statuses] || "Unknown Phase";
 }
