@@ -57,7 +57,7 @@ const RealtimeProcessingSimulator: React.FC<
   const [steps, setSteps] = useState<ProcessingStep[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingComplete, setProcessingComplete] = useState(false);
-  const [_showLiveUpdates, _setShowLiveUpdates] = useState(true);
+  const [showLiveUpdates, setShowLiveUpdates] = useState(true);
   const [liveMessages, setLiveMessages] = useState<string[]>([]);
 
   const initializeSteps = (): ProcessingStep[] => [
@@ -110,6 +110,14 @@ const RealtimeProcessingSimulator: React.FC<
       critical: false,
     },
     {
+      id: "final_review",
+      name: "Final Review",
+      description: "A senior loan officer is reviewing your application.",
+      duration: 5000,
+      status: "pending",
+      critical: true,
+    },
+    {
       id: "final_approval",
       name: "Final Decision",
       description: "Generating final approval decision and terms",
@@ -124,7 +132,10 @@ const RealtimeProcessingSimulator: React.FC<
   }, []);
 
   const addLiveMessage = (message: string) => {
-    setLiveMessages((prev) => [...prev.slice(-4), message]);
+    setLiveMessages((prev) => [
+      ...prev.slice(-4),
+      `[${new Date().toLocaleTimeString()}] ${message}`,
+    ]);
   };
 
   const processStep = async (stepIndex: number): Promise<void> => {
@@ -148,12 +159,12 @@ const RealtimeProcessingSimulator: React.FC<
     switch (step.id) {
       case "identity_verification":
         result = `Identity confirmed: ${applicationData.name}`;
-        addLiveMessage("✓ Identity verified successfully");
+        addLiveMessage("✅ Identity verified successfully");
         break;
       case "income_verification":
         result = `Income verified: $${applicationData.income}/month`;
         addLiveMessage(
-          `✓ Monthly income confirmed: $${applicationData.income}`
+          `✅ Monthly income confirmed: $${applicationData.income}`
         );
         break;
       case "credit_check":
@@ -161,11 +172,11 @@ const RealtimeProcessingSimulator: React.FC<
           applicationData.vulnerabilityScore > 7
             ? "Poor credit score detected"
             : "Fair credit profile";
-        addLiveMessage(`✓ Credit assessment complete`);
+        addLiveMessage(`- Credit assessment complete`);
         break;
       case "bank_verification":
         result = "Active checking account verified";
-        addLiveMessage("✓ Bank account validated");
+        addLiveMessage("✅ Bank account validated");
         break;
       case "risk_assessment":
         const riskLevel =
@@ -173,15 +184,21 @@ const RealtimeProcessingSimulator: React.FC<
             ? "High Value Customer"
             : "Standard Risk";
         result = `Risk level: ${riskLevel}`;
-        addLiveMessage(`✓ Risk analysis: ${riskLevel}`);
+        addLiveMessage(`- Risk analysis: ${riskLevel}`);
         break;
       case "compliance_check":
         result = "All regulatory requirements met";
-        addLiveMessage("✓ Compliance verified");
+        addLiveMessage("- Compliance verified");
+        break;
+      case "final_review":
+        result = "Senior underwriter approved application.";
+        addLiveMessage(
+          "🎉 CONGRATULATIONS! A senior loan officer has APPROVED your application!"
+        );
         break;
       case "final_approval":
         result = "Application approved with conditions";
-        addLiveMessage("🎉 Application approved!");
+        addLiveMessage("🚀 Your funds are being prepared for deposit!");
         break;
     }
 
@@ -254,379 +271,98 @@ const RealtimeProcessingSimulator: React.FC<
     setLiveMessages([]);
   };
 
+  const progress = (currentStep / (steps.length - 1)) * 100;
+
   return (
-    <div
-      className="realtime-processing-simulator"
-      style={{
-        maxWidth: "800px",
-        margin: "0 auto",
-        padding: "1rem",
-        fontFamily: "system-ui, -apple-system, sans-serif",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #059669, #10b981)",
-          color: "white",
-          padding: "2rem",
-          borderRadius: "12px",
-          marginBottom: "2rem",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{
-            margin: "0 0 0.5rem 0",
-            fontSize: "1.8rem",
-            fontWeight: "bold",
-          }}
-        >
-          ⚡ Real-Time Application Processing
+    <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white p-8 rounded-2xl shadow-2xl max-w-2xl mx-auto border-4 border-purple-500">
+      <div className="text-center mb-6">
+        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
+          {processingComplete
+            ? "✅ Processing Complete!"
+            : "⚙️ Processing Your Loan..."}
         </h2>
-        <p style={{ margin: 0, fontSize: "1rem", opacity: 0.9 }}>
-          Your application is being processed using advanced verification
-          systems
+        <p className="text-gray-400">
+          This should only take a few moments. Please do not close this window.
         </p>
       </div>
 
       {!isProcessing && !processingComplete && (
-        <div
-          style={{
-            background: "white",
-            borderRadius: "12px",
-            padding: "2rem",
-            marginBottom: "2rem",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <h3
-            style={{
-              margin: "0 0 1.5rem 0",
-              fontSize: "1.3rem",
-              fontWeight: "bold",
-            }}
-          >
-            📋 Application Summary
-          </h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "1rem",
-              marginBottom: "2rem",
-            }}
-          >
-            <div>
-              <strong>Applicant:</strong> {applicationData.name}
-            </div>
-            <div>
-              <strong>Monthly Income:</strong> ${applicationData.income}
-            </div>
-            <div>
-              <strong>Employment:</strong> {applicationData.employment}
-            </div>
-            <div>
-              <strong>Requested Amount:</strong> $
-              {applicationData.requestedAmount}
-            </div>
-          </div>
-
+        <div className="text-center">
           <button
             onClick={runProcessing}
-            style={{
-              width: "100%",
-              padding: "1rem",
-              background: "linear-gradient(90deg, #059669, #10b981)",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
-            🚀 Start Real-Time Processing
+            🚀 Start Secure Processing
           </button>
         </div>
       )}
 
-      {(isProcessing || processingComplete) && (
-        <>
-          {/* Processing Steps */}
-          <div
-            style={{
-              background: "white",
-              borderRadius: "12px",
-              padding: "2rem",
-              marginBottom: "2rem",
-              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 1.5rem 0",
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-              }}
+      {isProcessing && !processingComplete && (
+        <div>
+          {/* Animated Progress Bar */}
+          <div className="w-full bg-gray-700 rounded-full h-8 mb-6 border-2 border-gray-600 overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-green-400 to-blue-500 h-full rounded-full transition-all duration-1000 ease-in-out text-right pr-2 text-sm font-bold flex items-center justify-end"
+              style={{ width: `${progress}%` }}
             >
-              🔄 Processing Steps
-            </h3>
-
-            <div style={{ display: "grid", gap: "1rem" }}>
-              {steps.map((step, index) => (
-                <div
-                  key={step.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "1rem",
-                    background:
-                      step.status === "complete"
-                        ? "#f0f9ff"
-                        : step.status === "processing"
-                          ? "#fffbeb"
-                          : step.status === "failed"
-                            ? "#fef2f2"
-                            : "#f9fafb",
-                    border: `1px solid ${
-                      step.status === "complete"
-                        ? "#0ea5e9"
-                        : step.status === "processing"
-                          ? "#f59e0b"
-                          : step.status === "failed"
-                            ? "#ef4444"
-                            : "#e5e7eb"
-                    }`,
-                    borderRadius: "8px",
-                    opacity:
-                      index <= currentStep || processingComplete ? 1 : 0.5,
-                  }}
-                >
-                  <div style={{ marginRight: "1rem", fontSize: "1.5rem" }}>
-                    {step.status === "complete"
-                      ? "✅"
-                      : step.status === "processing"
-                        ? "⏳"
-                        : step.status === "failed"
-                          ? "❌"
-                          : "⚪"}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div
-                      style={{ fontWeight: "bold", marginBottom: "0.25rem" }}
-                    >
-                      {step.name}
-                      {step.critical && (
-                        <span
-                          style={{
-                            background: "#ef4444",
-                            color: "white",
-                            padding: "0.125rem 0.375rem",
-                            borderRadius: "3px",
-                            fontSize: "0.7rem",
-                            marginLeft: "0.5rem",
-                          }}
-                        >
-                          REQUIRED
-                        </span>
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.9rem",
-                        color: "#666",
-                        marginBottom: "0.25rem",
-                      }}
-                    >
-                      {step.description}
-                    </div>
-                    {step.result && (
-                      <div
-                        style={{
-                          fontSize: "0.8rem",
-                          color: "#059669",
-                          fontWeight: "500",
-                        }}
-                      >
-                        ✓ {step.result}
-                      </div>
-                    )}
-                  </div>
-                  {step.status === "processing" && (
-                    <div
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        border: "2px solid #f3f4f6",
-                        borderTop: "2px solid #f59e0b",
-                        borderRadius: "50%",
-                        animation: "spin 1s linear infinite",
-                      }}
-                    />
-                  )}
-                </div>
-              ))}
+              {Math.round(progress)}%
             </div>
           </div>
 
-          {/* Live Updates */}
-          {_showLiveUpdates && (
-            <div
-              style={{
-                background: "white",
-                borderRadius: "12px",
-                padding: "1.5rem",
-                marginBottom: "2rem",
-                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <h4
-                style={{
-                  margin: "0 0 1rem 0",
-                  fontSize: "1.1rem",
-                  fontWeight: "bold",
-                }}
-              >
-                📡 Live Processing Updates
+          {/* Current Step Display */}
+          <div className="text-center mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <div className="text-lg font-bold text-yellow-400 animate-pulse">
+              {steps[currentStep]?.name || "Finalizing..."}
+            </div>
+            <div className="text-gray-300 text-sm">
+              {steps[currentStep]?.description}
+            </div>
+          </div>
+
+          {/* Live Update Ticker */}
+          {showLiveUpdates && (
+            <div className="bg-black bg-opacity-50 p-4 rounded-lg border border-gray-700 h-48 overflow-hidden relative">
+              <h4 className="font-bold text-gray-300 mb-2 text-sm">
+                Live Status Updates:
               </h4>
-              <div
-                style={{
-                  background: "#000",
-                  color: "#00ff00",
-                  padding: "1rem",
-                  borderRadius: "6px",
-                  fontFamily: "Courier, monospace",
-                  fontSize: "0.85rem",
-                  minHeight: "120px",
-                  overflow: "hidden",
-                }}
-              >
-                {liveMessages.map((message, index) => (
-                  <div key={index} style={{ marginBottom: "0.25rem" }}>
-                    [{new Date().toLocaleTimeString()}] {message}
+              <div className="space-y-2">
+                {liveMessages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className="text-sm text-green-300 font-mono animate-fade-in-up"
+                  >
+                    {msg}
                   </div>
                 ))}
-                {isProcessing && (
-                  <div style={{ opacity: 0.7 }}>
-                    <span style={{ animation: "blink 1s infinite" }}>▋</span>
-                  </div>
-                )}
               </div>
             </div>
           )}
-
-          {/* Processing Complete */}
-          {processingComplete && (
-            <div
-              style={{
-                background: "white",
-                borderRadius: "12px",
-                padding: "2rem",
-                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-                <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎉</div>
-                <h3
-                  style={{
-                    margin: "0 0 0.5rem 0",
-                    fontSize: "1.5rem",
-                    fontWeight: "bold",
-                    color: "#059669",
-                  }}
-                >
-                  Application Approved!
-                </h3>
-                <p style={{ margin: 0, fontSize: "1rem", color: "#666" }}>
-                  Your loan has been processed and approved in real-time
-                </p>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  justifyContent: "center",
-                }}
-              >
-                <button
-                  onClick={resetProcessing}
-                  style={{
-                    padding: "0.75rem 1.5rem",
-                    background: "#6c757d",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  🔄 Process Another Application
-                </button>
-                <button
-                  style={{
-                    padding: "0.75rem 1.5rem",
-                    background: "linear-gradient(90deg, #059669, #10b981)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontSize: "0.9rem",
-                    fontWeight: "bold",
-                  }}
-                >
-                  ✍️ Proceed to Document Signing
-                </button>
-              </div>
-            </div>
-          )}
-        </>
+        </div>
       )}
 
-      {/* Educational Overlay */}
-      <div
-        style={{
-          position: "fixed",
-          top: "10px",
-          right: "10px",
-          background: "rgba(255, 255, 255, 0.95)",
-          padding: "1rem",
-          borderRadius: "8px",
-          fontSize: "0.8rem",
-          maxWidth: "250px",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-          zIndex: 999,
-        }}
-      >
-        <strong>🎓 Educational: Real-Time Processing</strong>
-        <br />• Simulated automated decision making
-        <br />• Shows how vulnerability scoring works
-        <br />• Demonstrates speed vs. thoroughness
-        <br />• Real lenders use similar algorithms
-      </div>
-
-      {/* CSS Animations */}
-      <style jsx>{`
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-        @keyframes blink {
-          0%,
-          50% {
-            opacity: 1;
-          }
-          51%,
-          100% {
-            opacity: 0;
-          }
-        }
-      `}</style>
+      {processingComplete && (
+        <div className="text-center p-8 bg-green-500 bg-opacity-20 rounded-xl border-2 border-green-500">
+          <h3 className="text-3xl font-bold text-green-300 mb-2">
+            🎉 Congratulations, {applicationData.name}! 🎉
+          </h3>
+          <p className="text-lg text-gray-200">
+            You've been APPROVED for{" "}
+            <span className="font-bold text-yellow-300">
+              ${applicationData.requestedAmount}
+            </span>
+            !
+          </p>
+          <p className="text-gray-300 mt-2">
+            Your funds are being prepared for an instant bank deposit.
+          </p>
+          <button
+            onClick={resetProcessing}
+            className="mt-6 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+          >
+            Process Another
+          </button>
+        </div>
+      )}
     </div>
   );
 };
