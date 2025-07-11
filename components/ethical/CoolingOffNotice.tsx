@@ -57,6 +57,14 @@ const CoolingOffNotice: React.FC = () => {
         We believe in responsible lending. This pause is designed to protect you
         from impulsive decisions.
       </p>
+      <div className="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-r-lg shadow-md">
+        <h4 className="font-bold">Your Right to Reconsider</h4>
+        <p className="text-sm mt-2">
+          You have a 24-hour cooling-off period. This means you can cancel your
+          loan within 24 hours for any reason without penalty. It&apos;s your
+          right to make a thoughtful decision.
+        </p>
+      </div>
     </div>
   );
 };

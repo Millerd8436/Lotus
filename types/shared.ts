@@ -100,7 +100,7 @@ export interface UserProfile {
 export interface LotusSession {
   id: string;
   startTime: Date;
-  exploitativeData: Partial<RealisticFormData>;
+  exploitativeData: RealisticFormData; // No longer partial, expects a full object.
   ethicalData: any; // Placeholder for ethical phase data
   autonomyViolations: AutonomyViolation[];
   darkPatterns: DarkPatternEvent[];

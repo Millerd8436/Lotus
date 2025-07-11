@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  LotusSession,
-  RealisticFormData,
-  getInitialFormData,
-} from "@/types/shared"; // Import LotusSession, RealisticFormData, and helper
+import { LotusSession } from "@/types/shared"; // Import LotusSession, RealisticFormData, and helper
 import React, { useState } from "react";
 import { useEducation } from "../providers/EducationProvider";
 import { useSimulation } from "../providers/SimulationProvider";
@@ -1747,53 +1743,116 @@ const ComparisonView: React.FC = () => {
 const BehavioralAnalysis: React.FC<{ session: LotusSession }> = ({
   session,
 }) => {
-  // This is the definitive fix. We create a new, guaranteed-complete object
-  // by spreading the (potentially partial) session data over a complete default object.
-  // This removes all ambiguity for the TypeScript compiler.
-  const exploitativeData: RealisticFormData = {
-    ...getInitialFormData(),
-    ...session?.exploitativeData,
-  };
-  const autonomyViolations = session?.autonomyViolations || [];
+  // With the corrected types, we can now safely destructure the data.
+  // The session object and its properties are guaranteed to be defined.
+  const { exploitativeData, ethicalData, autonomyViolations, darkPatterns } =
+    session;
 
-  // All accesses are now safe and do not require optional chaining.
-  const vulnerabilityScore =
-    exploitativeData.monthlyIncome && exploitativeData.monthlyRent
-      ? (exploitativeData.monthlyRent / exploitativeData.monthlyIncome) * 100
-      : 0;
+  // Example of using the now-safe data
+  const exploitativeAPR = calculateAPR(exploitativeData.loanAmount, 14, 15);
+  const ethicalAPR = ethicalData?.apr || 28; // Ethical data might still be evolving
+
+  const metrics = [
+    {
+      title: "Autonomy Score",
+      value: `${(1 - autonomyViolations.length / 5) * 100}%`,
+      color: "#ef4444",
+      description:
+        "Measures how much your decisions were influenced by manipulative tactics vs. your own free choice.",
+    },
+    {
+      title: "Financial Cost (APR)",
+      value: `${exploitativeAPR.toFixed(0)}% vs. ${ethicalAPR.toFixed(0)}%`,
+      color: "#f59e0b",
+      description:
+        "The annualized percentage rate of the exploitative loan compared to a typical ethical alternative.",
+    },
+    {
+      title: "Dark Patterns Encountered",
+      value: darkPatterns.length.toString(),
+      color: "#dc2626",
+      description:
+        "The number of deceptive UI/UX tricks you faced during the exploitative process.",
+    },
+    {
+      title: "Cognitive Load",
+      value: "High vs. Low",
+      color: "#8b5cf6",
+      description:
+        "The mental effort required to understand the exploitative loan was high, while the ethical loan was clear.",
+    },
+    {
+      title: "Data Privacy Intrusion",
+      value: exploitativeData.dataSharing ? "High" : "Low",
+      color: "#be123c",
+      description:
+        "The exploitative model collected and shared extensive personal data, unlike the ethical model.",
+    },
+    {
+      title: "Debt Trap Risk",
+      value: exploitativeData.autoRenewal ? "Extreme" : "None",
+      color: "#991b1b",
+      description:
+        "The exploitative loan was designed to automatically roll over, trapping you in a cycle of debt.",
+    },
+  ];
+
+  const concepts = [
+    {
+      title: "Autonomy Theater",
+      content:
+        "The exploitative interface created an illusion of choice. While you clicked buttons, the design heavily steered you towards the most profitable outcome for the lender, not for you. Your autonomy was respected only when it aligned with the lender's goals.",
+    },
+    {
+      title: "Weaponized Psychology",
+      content:
+        "Urgency, scarcity, and emotional appeals were used to rush your decision-making. This bypasses the rational part of your brain, making you more likely to accept poor terms under perceived pressure. The ethical site did the opposite, encouraging slow, rational thought.",
+    },
+    {
+      title: "Information Asymmetry",
+      content:
+        "The lender had all the information (true cost, risks) while presenting you with a confusing, incomplete picture. The ethical model seeks to correct this imbalance by providing total transparency and educational resources, leveling the playing field.",
+    },
+  ];
 
   return (
     <div>
       <h2 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: 24 }}>
-        🧠 Behavioral Analysis
+        🧠 Behavioral Analysis: Your Decision-Making Deep Dive
       </h2>
+
+      {/* Metrics Grid */}
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
           gap: 24,
+          marginBottom: 48,
         }}
       >
-        <MetricCard
-          title="Inferred Vulnerability"
-          value={`${Math.round(vulnerabilityScore)}%`}
-          color="#be123c"
-          description="Based on your provided income and rent, we infer a vulnerability score. Higher scores attract more predatory tactics."
-        />
-        <MetricCard
-          title="Autonomy Violations"
-          value={autonomyViolations.length.toString()}
-          color="#7c3aed"
-          description="Number of times deceptive patterns were used to undermine your ability to make a free choice."
-        />
-        <MetricCard
-          title="Loan Amount Selected"
-          value={`$${exploitativeData.loanAmount || 0}`}
-          color="#f59e0b"
-          description="The final loan amount you proceeded with in the exploitative phase."
-        />
+        {metrics.map((metric, index) => (
+          <MetricCard key={index} {...metric} />
+        ))}
       </div>
-      {/* Further analysis and charts can be built out here using session data */}
+
+      {/* Key Concepts */}
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          padding: "2rem",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+        }}
+      >
+        <h3 style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: 20 }}>
+          Key Psychological Concepts in Play
+        </h3>
+        <div style={{ display: "grid", gap: 20 }}>
+          {concepts.map((concept, index) => (
+            <ConceptCard key={index} {...concept} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -3320,77 +3379,74 @@ const ComprehensionQuiz: React.FC = () => {
           </div>
 
           <div style={{ display: "grid", gap: 20 }}>
-            {questions.map((q, index) => (
-              <div
-                key={index}
-                style={{ padding: 16, background: "#f9fafb", borderRadius: 8 }}
-              >
+            {questions.map((q, index) => {
+              const userAnswerIndex = answers[index];
+              const isCorrect = userAnswerIndex === q.correct;
+              const category = q.category || "General";
+
+              const userAnswerText =
+                userAnswerIndex !== undefined
+                  ? (q.options?.[userAnswerIndex] ?? "Invalid Answer")
+                  : "No answer";
+              const correctAnswerText = q.options?.[q.correct] ?? "N/A";
+
+              return (
                 <div
+                  key={index}
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    marginBottom: 8,
+                    padding: 16,
+                    background: "#f9fafb",
+                    borderRadius: 8,
                   }}
                 >
-                  <p style={{ fontWeight: 600, flex: 1 }}>{q.question}</p>
-                  <span
+                  <div
                     style={{
-                      background:
-                        q.category === "Emotional Manipulation"
-                          ? "#dc2626"
-                          : q.category === "Hidden Costs"
-                            ? "#f59e0b"
-                            : q.category === "Forced Continuity"
-                              ? "#7c2d12"
-                              : q.category === "Fake Trust Signals"
-                                ? "#059669"
-                                : q.category === "Deceptive Interface"
-                                  ? "#7c3aed"
-                                  : q.category === "Predatory Targeting"
-                                    ? "#be123c"
-                                    : q.category === "Modern Techniques"
-                                      ? "#1e40af"
-                                      : "#6b7280",
-                      color: "#fff",
-                      padding: "0.25rem 0.5rem",
-                      borderRadius: 4,
-                      fontSize: "0.75rem",
-                      fontWeight: 500,
-                      marginLeft: 8,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      marginBottom: 8,
                     }}
                   >
-                    {q.category}
-                  </span>
-                </div>
-                <p
-                  style={{
-                    color: answers[index] === q.correct ? "#16a34a" : "#dc2626",
-                    marginBottom: 8,
-                  }}
-                >
-                  Your answer:{" "}
-                  {answers[index] !== undefined
-                    ? q.options[answers[index]]
-                    : "No answer"}{" "}
-                  {answers[index] === q.correct ? "✓" : "✗"}
-                </p>
-                {answers[index] !== q.correct && (
-                  <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
-                    Correct answer: {q.options[q.correct]}
+                    <p style={{ fontWeight: 600, flex: 1 }}>{q.question}</p>
+                    <span
+                      style={{
+                        background: getCategoryColor(category),
+                        color: "#fff",
+                        padding: "0.25rem 0.5rem",
+                        borderRadius: 4,
+                        fontSize: "0.75rem",
+                        fontWeight: 500,
+                        marginLeft: 8,
+                      }}
+                    >
+                      {category}
+                    </span>
+                  </div>
+                  <p
+                    style={{
+                      color: isCorrect ? "#16a34a" : "#dc2626",
+                      marginBottom: 8,
+                    }}
+                  >
+                    Your answer: {userAnswerText} {isCorrect ? "✓" : "✗"}
                   </p>
-                )}
-                <p
-                  style={{
-                    fontSize: "0.875rem",
-                    color: "#6b7280",
-                    marginTop: 8,
-                  }}
-                >
-                  {q.explanation}
-                </p>
-              </div>
-            ))}
+                  {!isCorrect && (
+                    <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+                      Correct answer: {correctAnswerText}
+                    </p>
+                  )}
+                  <p
+                    style={{
+                      fontSize: "0.875rem",
+                      color: "#6b7280",
+                      marginTop: 8,
+                    }}
+                  >
+                    {q.explanation}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           <div style={{ display: "flex", gap: 16, marginTop: 24 }}>
@@ -3417,16 +3473,23 @@ const ComprehensionQuiz: React.FC = () => {
                 const results = {
                   score: percentage,
                   categoryPerformance,
-                  detailedResults: questions.map((q, index) => ({
-                    question: q.question,
-                    category: q.category,
-                    correct: answers[index] === q.correct,
-                    userAnswer:
-                      answers[index] !== undefined
-                        ? q.options[answers[index]]
-                        : "No answer",
-                    correctAnswer: q.options[q.correct],
-                  })),
+                  detailedResults: questions.map((q, index) => {
+                    const userAnswerIndex = answers[index];
+                    const isCorrect = userAnswerIndex === q.correct;
+                    const userAnswer =
+                      userAnswerIndex !== undefined
+                        ? (q.options?.[userAnswerIndex] ?? "Invalid Answer")
+                        : "No answer";
+                    const correctAnswer = q.options?.[q.correct] ?? "N/A";
+
+                    return {
+                      question: q.question,
+                      category: q.category || "General",
+                      correct: isCorrect,
+                      userAnswer: userAnswer,
+                      correctAnswer: correctAnswer,
+                    };
+                  }),
                 };
                 console.log("Quiz Results:", results);
                 alert(
@@ -3583,5 +3646,36 @@ const ConceptCard: React.FC<{
     <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>{content}</p>
   </div>
 );
+
+function calculateAPR(loanAmount: number, loanTermInDays: number, fee: number) {
+  if (loanAmount <= 0) return 0;
+  const totalPaid = loanAmount + fee;
+  const dailyRate = (totalPaid / loanAmount - 1) / loanTermInDays;
+  return dailyRate * 365 * 100;
+}
+
+/**
+ * Returns a color code based on the quiz question category.
+ */
+function getCategoryColor(category: string): string {
+  switch (category) {
+    case "Emotional Manipulation":
+      return "#dc2626";
+    case "Hidden Costs":
+      return "#f59e0b";
+    case "Forced Continuity":
+      return "#7c2d12";
+    case "Fake Trust Signals":
+      return "#059669";
+    case "Deceptive Interface":
+      return "#7c3aed";
+    case "Predatory Targeting":
+      return "#be123c";
+    case "Modern Techniques":
+      return "#1e40af";
+    default:
+      return "#6b7280";
+  }
+}
 
 export default ReflectionDashboard;

@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   typescript: {
     // We're handling type checking separately, so we can ignore build errors here.
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   compiler: {
     // Disabling these for the build to avoid potential issues
