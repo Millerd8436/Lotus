@@ -1,7 +1,6 @@
 "use client";
 
-import { createPhaseAutonomyTheater } from "@/lib/core/autonomy-theater";
-import { LotusSession } from "@/types/lotus";
+import { LotusSession } from "@/types/shared";
 import React, { useMemo, useState } from "react";
 import {
   Bar,
@@ -13,102 +12,59 @@ import {
   YAxis,
 } from "recharts";
 import DarkPatternUI from "./DarkPatternUI";
+import { useSimulation } from "./providers/SimulationProvider";
 
-// Mock Session Data - In a real app, this would come from a provider or API
-const mockSession: LotusSession = {
-  id: "session-123",
-  startTime: new Date(),
-  currentPhase: 1,
-  exploitativeData: {},
-  ethicalData: {},
-  analysisData: {},
-  userChoices: [],
-  coercionIndex: 2.5,
-  autonomyViolations: [
-    {
-      type: "Fake Urgency Creation",
-      severity: "high",
-      description: "Countdown timer pressure",
-      timestamp: "",
-      kantianViolation: "",
-    },
-    {
-      type: "Drip Pricing Concealment",
-      severity: "critical",
-      description: "Fees hidden until last step",
-      timestamp: "",
-      kantianViolation: "",
-    },
-    {
-      type: "Fake Urgency Creation",
-      severity: "high",
-      description: "Artificial scarcity claims",
-      timestamp: "",
-      kantianViolation: "",
-    },
-    {
-      type: "Preselection Manipulation",
-      severity: "high",
-      description: "Pre-checked add-ons",
-      timestamp: "",
-      kantianViolation: "",
-    },
-    {
-      type: "Roach Motel Process",
-      severity: "medium",
-      description: "Hard to exit application",
-      timestamp: "",
-      kantianViolation: "",
-    },
-    {
-      type: "Authority Deception",
-      severity: "high",
-      description: "Fake trust badges",
-      timestamp: "",
-      kantianViolation: "",
-    },
-  ],
-  trapEngineState: {} as any,
-  darkPatterns: [],
-};
+// The component now gets the session from the provider.
+// No more mock data or initial session generation here.
 
-const Phase3EducationalReflection: React.FC = () => {
-  const [showAnnotations, setShowAnnotations] = useState(true);
-
-  const autonomyTheater = useMemo(
-    () => createPhaseAutonomyTheater(1, mockSession, {}),
-    []
-  );
-
-  const report = useMemo(
-    () => autonomyTheater.generateReport(),
-    [autonomyTheater]
-  );
-
-  const violationData = useMemo(() => {
-    const total = report.totalViolations;
-    if (total === 0) return [];
-
-    const violationMap: { [key: string]: string } = {
-      "Fake Urgency Creation": "Fake Urgency",
-      "Drip Pricing Concealment": "Drip Pricing",
-      "Preselection Manipulation": "Preselection",
-      "Roach Motel Process": "Roach Motel",
-      "Authority Deception": "Deceptive Authority",
+// --- Helper function to analyze violations from the session ---
+function analyzeViolations(violations: LotusSession["autonomyViolations"]) {
+  const totalViolations = violations.length;
+  if (totalViolations === 0) {
+    return {
+      totalViolations: 0,
+      autonomyScore: 100,
+      violationData: [],
     };
+  }
 
-    const aggregatedCounts: { [key: string]: number } = {};
-    mockSession.autonomyViolations.forEach((v) => {
-      const key = violationMap[v.type] || v.type;
-      aggregatedCounts[key] = (aggregatedCounts[key] || 0) + 1;
-    });
+  const violationMap: { [key: string]: string } = {
+    "Fake Urgency Creation": "Fake Urgency",
+    "Drip Pricing Concealment": "Drip Pricing",
+    "Preselection Manipulation": "Preselection",
+    "Roach Motel Process": "Roach Motel",
+    "Authority Deception": "Deceptive Authority",
+  };
 
-    return Object.entries(aggregatedCounts).map(([name, count]) => ({
+  const aggregatedCounts: { [key: string]: number } = {};
+  violations.forEach((v) => {
+    const key = violationMap[v.type] || v.type;
+    aggregatedCounts[key] = (aggregatedCounts[key] || 0) + 1;
+  });
+
+  const violationData = Object.entries(aggregatedCounts).map(
+    ([name, count]) => ({
       name,
       value: count,
-      percent: Math.round((count / total) * 100),
-    }));
-  }, [report, mockSession.autonomyViolations]);
+      percent: Math.round((count / totalViolations) * 100),
+    })
+  );
+
+  // A simple scoring mechanism
+  const autonomyScore = Math.max(0, 100 - totalViolations * 10);
+
+  return { totalViolations, autonomyScore, violationData };
+}
+
+const Phase3EducationalReflection: React.FC = () => {
+  const { session } = useSimulation(); // Get the live session from the context
+  const [showAnnotations, setShowAnnotations] = useState(true);
+
+  // Directly analyze the session data from the provider
+  const { totalViolations, autonomyScore, violationData } = useMemo(
+    () => analyzeViolations(session.autonomyViolations),
+    [session.autonomyViolations]
+  );
 
   const comparisonData = [
     {
@@ -184,7 +140,7 @@ const Phase3EducationalReflection: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-6 text-center">
             <div className="bg-red-50 p-4 rounded-lg">
               <div className="text-4xl font-bold text-red-600">
-                {report.totalViolations}
+                {totalViolations}
               </div>
               <div className="text-sm font-medium text-red-800">
                 Manipulation Patterns Detected
@@ -198,7 +154,7 @@ const Phase3EducationalReflection: React.FC = () => {
             </div>
             <div className="bg-purple-50 p-4 rounded-lg">
               <div className="text-4xl font-bold text-purple-600">
-                {100 - report.autonomyScore}
+                {100 - autonomyScore}
                 <span className="text-2xl">/100</span>
               </div>
               <div className="text-sm font-medium text-purple-800">

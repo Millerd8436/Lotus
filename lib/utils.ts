@@ -1,4 +1,4 @@
-import { type ClassValue, clsx } from "clsx";
+import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -295,3 +295,43 @@ export function generateUUID(): string {
     return v.toString(16);
   });
 }
+
+// --- Initialization Helpers -------------------------------------------------
+
+import type { UserProfile } from "@/types/shared";
+
+/**
+ * Returns a neutral starting behavioural profile for the simulation.
+ */
+export const getInitialBehavioralProfile = (): UserProfile => ({
+  vulnerabilityScore: 0,
+  decisionMaking: "hesitant", // neutral default
+  emotionalState: "calm",
+  trustLevel: "medium",
+  cognitiveLoad: "low",
+  decisionFatigue: 0,
+  interactionPattern: "focused",
+  inferredGoal: "exploring",
+  financialLiteracy: 0.5,
+  debtToIncomeRatio: 0,
+  dehumanizationScore: 0,
+  netUtilityScore: 0,
+});
+
+/**
+ * Returns an empty-but-valid initial form data structure so components can
+ * safely initialize their state without undefined checks.
+ */
+export const getInitialFormData = () =>
+  ({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    // Financial basics
+    monthlyIncome: 0,
+    monthlyRent: 0,
+    loanAmount: 500,
+    // Minimal required fields used elsewhere in the app
+    previousPaydayLoan: false,
+  }) as any;

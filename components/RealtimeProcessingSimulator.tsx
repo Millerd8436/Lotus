@@ -57,7 +57,7 @@ const RealtimeProcessingSimulator: React.FC<
   const [steps, setSteps] = useState<ProcessingStep[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingComplete, setProcessingComplete] = useState(false);
-  const [showLiveUpdates, setShowLiveUpdates] = useState(true);
+  // const [showLiveUpdates, setShowLiveUpdates] = useState(true); // This state is no longer used
   const [liveMessages, setLiveMessages] = useState<string[]>([]);
 
   const initializeSteps = (): ProcessingStep[] => [
@@ -320,23 +320,23 @@ const RealtimeProcessingSimulator: React.FC<
           </div>
 
           {/* Live Update Ticker */}
-          {showLiveUpdates && (
-            <div className="bg-black bg-opacity-50 p-4 rounded-lg border border-gray-700 h-48 overflow-hidden relative">
-              <h4 className="font-bold text-gray-300 mb-2 text-sm">
-                Live Status Updates:
-              </h4>
-              <div className="space-y-2">
-                {liveMessages.map((msg, index) => (
-                  <div
-                    key={index}
-                    className="text-sm text-green-300 font-mono animate-fade-in-up"
-                  >
-                    {msg}
-                  </div>
-                ))}
-              </div>
+          {/* {showLiveUpdates && ( */}
+          <div className="bg-black bg-opacity-50 p-4 rounded-lg border border-gray-700 h-48 overflow-hidden relative">
+            <h4 className="font-bold text-gray-300 mb-2 text-sm">
+              Live Status Updates:
+            </h4>
+            <div className="space-y-2">
+              {liveMessages.map((msg, index) => (
+                <div
+                  key={index}
+                  className="text-sm text-green-300 font-mono animate-fade-in-up"
+                >
+                  {msg}
+                </div>
+              ))}
             </div>
-          )}
+          </div>
+          {/* )} */}
         </div>
       )}
 
