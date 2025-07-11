@@ -616,4 +616,5 @@ npm run deploy:production # Production environment
 **Ready to deploy? Start with the [Quick Start Guide](./QUICK_START_DEPLOYMENT.md) 🚀**
 #   D e p l o y m e n t   t r i g g e r   0 7 / 1 0 / 2 0 2 5   2 1 : 2 6 : 3 4  
  #   F o r c e   V e r c e l   d e p l o y m e n t   0 7 / 1 0 / 2 0 2 5   2 1 : 5 8 : 3 2  
+ #   T e s t   w e b h o o k   c o n n e c t i o n   0 7 / 1 0 / 2 0 2 5   2 2 : 0 6 : 2 9  
  
