@@ -86,7 +86,6 @@ const Phase3EducationalReflection: React.FC = () => {
   );
 
   const violationData = useMemo(() => {
-    const counts = report.severityBreakdown;
     const total = report.totalViolations;
     if (total === 0) return [];
 
@@ -109,7 +108,7 @@ const Phase3EducationalReflection: React.FC = () => {
       value: count,
       percent: Math.round((count / total) * 100),
     }));
-  }, [report]);
+  }, [report, mockSession.autonomyViolations]);
 
   const comparisonData = [
     {
@@ -236,7 +235,7 @@ const Phase3EducationalReflection: React.FC = () => {
                   }}
                 />
                 <Bar dataKey="percent" barSize={30}>
-                  {violationData.map((entry, index) => (
+                  {violationData.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -319,6 +318,7 @@ const Phase3EducationalReflection: React.FC = () => {
           <DarkPatternUI
             mode="comparison"
             showEducationalAnnotations={showAnnotations}
+            onShowAnnotationsChange={setShowAnnotations}
           />
         </div>
       </div>

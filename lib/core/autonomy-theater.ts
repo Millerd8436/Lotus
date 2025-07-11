@@ -1,14 +1,22 @@
-import {
-  AutonomyReport,
-  AutonomyViolation,
-  LotusSession,
-} from "../../types/lotus";
+import { AutonomyViolation, LotusSession } from "../../types/lotus";
 
 /**
  * @file Centralized logic for the Autonomy Theater educational framework.
  * This module manages the state, violations, and reporting for the three-phase
  * analysis of user autonomy during the lending simulation.
  */
+
+export interface AutonomyReport {
+  sessionId: string;
+  phase: 1 | 2 | 3;
+  totalViolations: number;
+  severityBreakdown: Record<string, number>;
+  coercionIndex: number;
+  autonomyScore: number;
+  recommendations: string[];
+  detailedAnalysis: string;
+  timestamp: string;
+}
 
 export interface ThreePhaseAutonomyTheater {
   currentPhase: 1 | 2 | 3;

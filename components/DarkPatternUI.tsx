@@ -7,408 +7,277 @@
 "use client";
 
 import React, { useState } from "react";
-// import UrgencyTimer from "./predatory/UrgencyTimer"; // Optionally add to any step
+import { Button } from "./ui/Button";
 
-/**
- * DarkPatternUI - Educational component demonstrating dark patterns vs ethical alternatives
- * Shows side-by-side comparison of manipulative vs transparent UI design
- */
 const DarkPatternUI: React.FC<{
   mode?: "comparison" | "predatory" | "ethical";
   onModeChange?: (mode: string) => void;
-}> = ({ mode = "comparison", onModeChange }) => {
+  showEducationalAnnotations?: boolean;
+  onShowAnnotationsChange?: (value: boolean) => void;
+}> = ({
+  mode = "comparison",
+  onModeChange,
+  showEducationalAnnotations = true,
+  onShowAnnotationsChange,
+}) => {
   const [selectedAmount, setSelectedAmount] = useState(300);
-  const [showEducational, setShowEducational] = useState(true);
 
   const renderPredatoryInterface = () => (
-    <div style={{
-      background: "linear-gradient(135deg, #fee2e2, #fecaca)",
-      padding: "1.5rem",
-      borderRadius: "12px",
-      border: "2px solid #f87171",
-      position: "relative"
-    }}>
-      <div style={{
-        position: "absolute",
-        top: "0.5rem",
-        right: "0.5rem",
-        background: "#dc2626",
-        color: "white",
-        padding: "0.25rem 0.75rem",
-        borderRadius: "12px",
-        fontSize: "0.8rem",
-        fontWeight: 600
-      }}>
+    <div className="bg-gradient-to-br from-red-100 to-red-200 p-6 rounded-lg border-2 border-red-300 relative">
+      <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
         PREDATORY
       </div>
-
-      <h3 style={{ color: "#dc2626", fontWeight: 800, fontSize: "1.5rem", marginBottom: "1rem" }}>
+      <h3 className="text-red-700 font-extrabold text-2xl mb-4">
         🚨 EMERGENCY CASH - ACT NOW!
       </h3>
-
-      {/* Fake countdown timer */}
-      <div style={{
-        background: "#fecaca",
-        padding: "1rem",
-        borderRadius: "8px",
-        marginBottom: "1rem",
-        textAlign: "center",
-        border: "2px dashed #dc2626"
-      }}>
-        <div style={{ color: "#7f1d1d", fontWeight: 700, fontSize: "1.2rem" }}>
+      <div className="bg-red-200 p-4 rounded-md mb-4 text-center border-2 border-dashed border-red-500">
+        <div className="text-red-800 font-bold text-lg">
           ⏰ OFFER EXPIRES IN: 04:37
         </div>
-        <div style={{ color: "#991b1b", fontSize: "0.9rem" }}>
+        <div className="text-red-700 text-sm">
           Only 2 spots left for instant approval!
         </div>
       </div>
-
-      {/* Manipulative amount selector */}
-      <div style={{ marginBottom: "1rem" }}>
-        <label style={{ color: "#7f1d1d", fontWeight: 600, marginBottom: "0.5rem", display: "block" }}>
+      <div className="mb-4">
+        <label className="text-red-800 font-semibold mb-2 block">
           How much cash do you need RIGHT NOW? 💰
         </label>
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          {[100, 300, 500, 750, 1000].map(amount => (
-            <button
+        <div className="flex gap-2 flex-wrap">
+          {[100, 300, 500, 750, 1000].map((amount) => (
+            <Button
               key={amount}
               onClick={() => setSelectedAmount(amount)}
-              style={{
-                background: selectedAmount === amount ? "#dc2626" : "#fff",
-                color: selectedAmount === amount ? "#fff" : "#dc2626",
-                border: "2px solid #dc2626",
-                padding: "0.75rem 1rem",
-                borderRadius: "8px",
-                fontWeight: 700,
-                cursor: "pointer",
-                fontSize: amount === 1000 ? "1.2rem" : "1rem",
-                transform: amount === 1000 ? "scale(1.1)" : "scale(1)"
-              }}
+              variant={selectedAmount === amount ? "danger" : "secondary"}
+              className={amount === 1000 ? "transform scale-110" : ""}
             >
               ${amount}
-              {amount === 1000 && <div style={{ fontSize: "0.7rem" }}>POPULAR!</div>}
-            </button>
+              {amount === 1000 && <div className="text-xs">POPULAR!</div>}
+            </Button>
           ))}
         </div>
       </div>
-
-      {/* Hidden cost presentation */}
-      <div style={{
-        background: "#fee2e2",
-        padding: "1rem",
-        borderRadius: "8px",
-        marginBottom: "1rem"
-      }}>
-        <div style={{ color: "#059669", fontWeight: 700, fontSize: "1.5rem" }}>
+      <div className="bg-red-100 p-4 rounded-md mb-4">
+        <div className="text-green-700 font-bold text-2xl">
           You Get: ${selectedAmount}
         </div>
-        <div style={{ color: "#6b7280", fontSize: "0.9rem" }}>
+        <div className="text-gray-600">
           Simple payment: ${(selectedAmount * 1.25).toFixed(0)} in 2 weeks
         </div>
-        <div style={{ color: "#9ca3af", fontSize: "0.7rem" }}>
+        <div className="text-gray-500 text-xs">
           (Fee: $15 per $100 borrowed - just $1/day!)
         </div>
       </div>
-
-      {/* Pre-checked harmful options */}
-      <div style={{ marginBottom: "1rem" }}>
-        <label style={{ display: "flex", alignItems: "center", marginBottom: "0.5rem", fontSize: "0.9rem" }}>
-          <input type="checkbox" defaultChecked style={{ marginRight: "0.5rem" }} />
-          <span>Auto-renew if I can&apos;t pay (saves late fees!)</span>
+      <div className="mb-4 text-sm">
+        <label className="flex items-center mb-2">
+          <input type="checkbox" defaultChecked className="mr-2" />
+          <span>Auto-renew if I can't pay (saves late fees!)</span>
         </label>
-        <label style={{ display: "flex", alignItems: "center", marginBottom: "0.5rem", fontSize: "0.9rem" }}>
-          <input type="checkbox" defaultChecked style={{ marginRight: "0.5rem" }} />
+        <label className="flex items-center mb-2">
+          <input type="checkbox" defaultChecked className="mr-2" />
           <span>Share with partner lenders for better deals</span>
         </label>
-        <label style={{ display: "flex", alignItems: "center", fontSize: "0.9rem" }}>
-          <input type="checkbox" defaultChecked style={{ marginRight: "0.5rem" }} />
+        <label className="flex items-center">
+          <input type="checkbox" defaultChecked className="mr-2" />
           <span>Get exclusive offers via phone & SMS</span>
         </label>
       </div>
-
-      <button style={{
-        width: "100%",
-        background: "linear-gradient(90deg, #dc2626 0%, #ef4444 100%)",
-        color: "white",
-        fontWeight: 800,
-        fontSize: "1.5rem",
-        border: "none",
-        borderRadius: "8px",
-        padding: "1rem",
-        cursor: "pointer",
-        animation: "pulse 2s infinite"
-      }}>
+      <Button
+        variant="danger"
+        fullWidth
+        className="text-2xl font-extrabold animate-pulse"
+      >
         GET MY ${selectedAmount} NOW! 🔥
-      </button>
-
-      <div style={{ fontSize: "0.6rem", color: "#6b7280", marginTop: "0.5rem", textAlign: "center" }}>
+      </Button>
+      <div className="text-xs text-gray-500 mt-2 text-center">
         *Terms, conditions, and 391% APR apply. See buried fine print.
       </div>
     </div>
   );
 
   const renderEthicalInterface = () => (
-    <div style={{
-      background: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
-      padding: "1.5rem",
-      borderRadius: "12px",
-      border: "2px solid #16a34a",
-      position: "relative"
-    }}>
-      <div style={{
-        position: "absolute",
-        top: "0.5rem",
-        right: "0.5rem",
-        background: "#16a34a",
-        color: "white",
-        padding: "0.25rem 0.75rem",
-        borderRadius: "12px",
-        fontSize: "0.8rem",
-        fontWeight: 600
-      }}>
+    <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border-2 border-green-300 relative">
+      <div className="absolute top-2 right-2 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold">
         ETHICAL
       </div>
-
-      <h3 style={{ color: "#16a34a", fontWeight: 700, fontSize: "1.3rem", marginBottom: "1rem" }}>
+      <h3 className="text-green-800 font-bold text-xl mb-4">
         🌟 Explore Your Financial Options
       </h3>
-
-      {/* Calm informational banner */}
-      <div style={{
-        background: "#dcfce7",
-        padding: "1rem",
-        borderRadius: "8px",
-        marginBottom: "1rem",
-        border: "1px solid #86efac"
-      }}>
-        <div style={{ color: "#166534", fontWeight: 600, fontSize: "1rem", marginBottom: "0.5rem" }}>
+      <div className="bg-green-100 p-4 rounded-md mb-4 border border-green-200">
+        <div className="text-green-800 font-semibold text-base mb-1">
           💡 Take Your Time - No Rush
         </div>
-        <div style={{ color: "#15803d", fontSize: "0.9rem" }}>
-          We&apos;ll help you find the best solution for your needs. Consider all options before borrowing.
+        <div className="text-green-700 text-sm">
+          We'll help you find the best solution for your needs. Consider all
+          options before borrowing.
         </div>
       </div>
-
-      {/* Transparent amount selector */}
-      <div style={{ marginBottom: "1rem" }}>
-        <label style={{ color: "#166534", fontWeight: 600, marginBottom: "0.5rem", display: "block" }}>
+      <div className="mb-4">
+        <label className="text-green-800 font-semibold mb-2 block">
           What amount would help your situation?
         </label>
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          {[100, 300, 500, 750, 1000].map(amount => (
-            <button
+        <div className="flex gap-2 flex-wrap">
+          {[100, 300, 500, 750, 1000].map((amount) => (
+            <Button
               key={amount}
               onClick={() => setSelectedAmount(amount)}
-              style={{
-                background: selectedAmount === amount ? "#16a34a" : "#fff",
-                color: selectedAmount === amount ? "#fff" : "#16a34a",
-                border: "2px solid #16a34a",
-                padding: "0.75rem 1rem",
-                borderRadius: "8px",
-                fontWeight: 600,
-                cursor: "pointer",
-                fontSize: "1rem"
-              }}
+              variant={selectedAmount === amount ? "success" : "secondary"}
             >
               ${amount}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
-
-      {/* Transparent cost breakdown */}
-      <div style={{
-        background: "#f0fdf4",
-        padding: "1rem",
-        borderRadius: "8px",
-        marginBottom: "1rem",
-        border: "1px solid #16a34a"
-      }}>
-        <h4 style={{ color: "#16a34a", fontWeight: 700, marginBottom: "0.75rem" }}>
+      <div className="bg-green-50 p-4 rounded-md mb-4 border border-green-200">
+        <h4 className="text-green-800 font-bold mb-2">
           Complete Cost Breakdown
         </h4>
-        <div style={{ fontSize: "0.9rem", color: "#166534", marginBottom: "0.5rem" }}>
-          Amount you receive: <strong>${selectedAmount}</strong>
-        </div>
-        <div style={{ fontSize: "0.9rem", color: "#166534", marginBottom: "0.5rem" }}>
-          Fee (15%): <strong>${(selectedAmount * 0.15).toFixed(0)}</strong>
-        </div>
-        <div style={{ fontSize: "0.9rem", color: "#166534", marginBottom: "0.5rem" }}>
-          Total repayment: <strong>${(selectedAmount * 1.15).toFixed(0)}</strong>
-        </div>
-        <div style={{ fontSize: "0.9rem", color: "#dc2626", fontWeight: 700 }}>
-          APR: <strong>143%</strong> (for comparison: credit cards ~25%)
+        <div className="text-sm text-green-800 space-y-1">
+          <div>
+            Amount you receive: <strong>${selectedAmount}</strong>
+          </div>
+          <div>
+            Fee (15%): <strong>${(selectedAmount * 0.15).toFixed(0)}</strong>
+          </div>
+          <div>
+            Total repayment:{" "}
+            <strong>${(selectedAmount * 1.15).toFixed(0)}</strong>
+          </div>
+          <div className="font-bold text-red-600">
+            APR: <strong>143%</strong> (for comparison: credit cards ~25%)
+          </div>
         </div>
       </div>
-
-      {/* Alternatives first */}
-      <div style={{
-        background: "#fef3c7",
-        padding: "1rem",
-        borderRadius: "8px",
-        marginBottom: "1rem",
-        border: "1px solid #f59e0b"
-      }}>
-        <h4 style={{ color: "#92400e", fontWeight: 700, marginBottom: "0.5rem" }}>
+      <div className="bg-yellow-50 p-4 rounded-md mb-4 border border-yellow-200">
+        <h4 className="text-yellow-800 font-bold mb-2">
           💡 Consider These Alternatives First:
         </h4>
-        <ul style={{ color: "#92400e", fontSize: "0.9rem", paddingLeft: "1.5rem", margin: 0 }}>
+        <ul className="text-yellow-800 text-sm list-disc list-inside space-y-1">
           <li>Credit union emergency loan (typically 28% APR)</li>
           <li>Employer salary advance or assistance program</li>
           <li>Payment plan with creditor</li>
           <li>Local assistance programs</li>
         </ul>
       </div>
-
-      {/* Honest consent options */}
-      <div style={{ marginBottom: "1rem" }}>
-        <label style={{ display: "flex", alignItems: "center", marginBottom: "0.5rem", fontSize: "0.9rem" }}>
-          <input type="checkbox" style={{ marginRight: "0.5rem" }} />
+      <div className="mb-4 text-sm">
+        <label className="flex items-center mb-2">
+          <input type="checkbox" className="mr-2" />
           <span>I have reviewed alternative options above</span>
         </label>
-        <label style={{ display: "flex", alignItems: "center", marginBottom: "0.5rem", fontSize: "0.9rem" }}>
-          <input type="checkbox" style={{ marginRight: "0.5rem" }} />
-          <span>Send me educational resources about building emergency savings</span>
+        <label className="flex items-center">
+          <input type="checkbox" className="mr-2" />
+          <span>
+            Send me educational resources about building emergency savings
+          </span>
         </label>
       </div>
-
-      <button style={{
-        width: "100%",
-        background: "linear-gradient(90deg, #16a34a 0%, #059669 100%)",
-        color: "white",
-        fontWeight: 700,
-        fontSize: "1.2rem",
-        border: "none",
-        borderRadius: "8px",
-        padding: "1rem",
-        cursor: "pointer"
-      }}>
+      <Button variant="success" fullWidth>
         Get Guidance & Explore Options
-      </button>
-
-      <div style={{ fontSize: "0.8rem", color: "#166534", marginTop: "0.75rem", textAlign: "center" }}>
-        Take your time. We&apos;ll help you make the best financial decision for your situation.
+      </Button>
+      <div className="text-sm text-green-700 mt-2 text-center">
+        Take your time. We'll help you make the best financial decision for your
+        situation.
       </div>
     </div>
   );
 
-  const renderComparisonMode = () => (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", minHeight: "600px" }}>
-      {renderPredatoryInterface()}
-      {renderEthicalInterface()}
-    </div>
-  );
+  const renderEducationalAnalysis = () => {
+    if (!showEducationalAnnotations) return null;
+    return (
+      <div className="mt-6 p-6 bg-gray-100 rounded-lg border border-gray-200">
+        <h3 className="font-bold mb-4 text-gray-800">
+          🎓 Educational Analysis
+        </h3>
+        <div
+          className={`grid ${mode === "comparison" ? "md:grid-cols-2" : ""} gap-8`}
+        >
+          {(mode === "comparison" || mode === "predatory") && (
+            <div>
+              <h4 className="text-red-600 font-semibold mb-2">
+                🕷️ Dark Patterns Demonstrated:
+              </h4>
+              <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
+                <li>Artificial urgency (fake countdown timer)</li>
+                <li>False scarcity (“Only 2 spots left”)</li>
+                <li>Hidden APR (presenting as daily fee)</li>
+                <li>Pre-checked harmful options</li>
+                <li>Emotional manipulation (emergency framing)</li>
+                <li>Anchoring bias (largest amount highlighted)</li>
+                <li>Misleading cost presentation</li>
+              </ul>
+            </div>
+          )}
+          {(mode === "comparison" || mode === "ethical") && (
+            <div>
+              <h4 className="text-green-600 font-semibold mb-2">
+                ✨ Ethical Design Principles:
+              </h4>
+              <ul className="text-sm text-gray-700 list-disc list-inside space-y-1">
+                <li>No artificial time pressure</li>
+                <li>Complete cost transparency upfront</li>
+                <li>Alternatives presented first</li>
+                <li>Honest consent options</li>
+                <li>Calm, supportive messaging</li>
+                <li>Educational context provided</li>
+                <li>User autonomy respected</li>
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
 
-  const renderSingleMode = () => {
-    if (mode === "predatory") {
-      return renderPredatoryInterface();
+  const renderContent = () => {
+    if (mode === "comparison") {
+      return (
+        <div className="grid md:grid-cols-2 gap-8 min-h-[600px]">
+          {renderPredatoryInterface()}
+          {renderEthicalInterface()}
+        </div>
+      );
     }
-    if (mode === "ethical") {
-      return renderEthicalInterface();
-    }
-    return renderComparisonMode();
+    return mode === "predatory"
+      ? renderPredatoryInterface()
+      : renderEthicalInterface();
   };
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem" }}>
-      {/* Mode Toggle */}
-      <div style={{ marginBottom: "2rem", textAlign: "center" }}>
-        <h2 style={{ fontSize: "1.8rem", fontWeight: 800, marginBottom: "1rem", color: "#374151" }}>
+    <div className="max-w-7xl mx-auto p-4">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-extrabold mb-4 text-gray-800">
           🎭 Dark Patterns vs Ethical Design
         </h2>
-        
-        <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", marginBottom: "1rem" }}>
-          {["comparison", "predatory", "ethical"].map(modeOption => (
-            <button
+        <div className="flex justify-center gap-2 mb-4">
+          {["comparison", "predatory", "ethical"].map((modeOption) => (
+            <Button
               key={modeOption}
               onClick={() => onModeChange?.(modeOption)}
-              style={{
-                background: mode === modeOption ? "#7c3aed" : "#fff",
-                color: mode === modeOption ? "#fff" : "#7c3aed",
-                border: "2px solid #7c3aed",
-                padding: "0.75rem 1.5rem",
-                borderRadius: "8px",
-                fontWeight: 600,
-                cursor: "pointer",
-                textTransform: "capitalize"
-              }}
+              variant={mode === modeOption ? "primary" : "secondary"}
+              className="capitalize"
             >
               {modeOption}
-            </button>
+            </Button>
           ))}
         </div>
-        
-        <div style={{ fontSize: "0.9rem", color: "#6b7280", maxWidth: "600px", margin: "0 auto" }}>
-          Compare how the same loan product can be presented in manipulative vs transparent ways
-        </div>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Compare how the same loan product can be presented in manipulative vs
+          transparent ways
+        </p>
       </div>
-
-      {/* Educational Toggle */}
-      <div style={{ marginBottom: "1rem", textAlign: "center" }}>
-        <label style={{ fontSize: "0.9rem", color: "#6b7280" }}>
+      <div className="text-center mb-4">
+        <label className="inline-flex items-center text-sm text-gray-600">
           <input
             type="checkbox"
-            checked={showEducational}
-            onChange={(e) => setShowEducational(e.target.checked)}
-            style={{ marginRight: "0.5rem" }}
+            checked={showEducationalAnnotations}
+            onChange={(e) => onShowAnnotationsChange?.(e.target.checked)}
+            className="mr-2"
           />
           Show educational annotations
         </label>
       </div>
 
-      {/* Main Interface */}
-      {mode === "comparison" ? renderComparisonMode() : renderSingleMode()}
-
-      {/* Educational Annotations */}
-      {showEducational && (
-        <div style={{
-          marginTop: "2rem",
-          background: "#f8fafc",
-          padding: "2rem",
-          borderRadius: "12px",
-          border: "1px solid #e2e8f0"
-        }}>
-          <h3 style={{ fontWeight: 700, marginBottom: "1rem", color: "#1e293b" }}>
-            🎓 Educational Analysis
-          </h3>
-          
-          <div style={{ display: "grid", gridTemplateColumns: mode === "comparison" ? "1fr 1fr" : "1fr", gap: "2rem" }}>
-            {(mode === "comparison" || mode === "predatory") && (
-              <div>
-                <h4 style={{ color: "#dc2626", fontWeight: 600, marginBottom: "0.75rem" }}>
-                  🕷️ Dark Patterns Demonstrated:
-                </h4>
-                <ul style={{ fontSize: "0.9rem", color: "#374151", paddingLeft: "1.5rem" }}>
-                  <li>Artificial urgency (fake countdown timer)</li>
-                  <li>False scarcity (&ldquo;Only 2 spots left&rdquo;)</li>
-                  <li>Hidden APR (presenting as daily fee)</li>
-                  <li>Pre-checked harmful options</li>
-                  <li>Emotional manipulation (emergency framing)</li>
-                  <li>Anchoring bias (largest amount highlighted)</li>
-                  <li>Misleading cost presentation</li>
-                </ul>
-              </div>
-            )}
-            
-            {(mode === "comparison" || mode === "ethical") && (
-              <div>
-                <h4 style={{ color: "#16a34a", fontWeight: 600, marginBottom: "0.75rem" }}>
-                  ✨ Ethical Design Principles:
-                </h4>
-                <ul style={{ fontSize: "0.9rem", color: "#374151", paddingLeft: "1.5rem" }}>
-                  <li>No artificial time pressure</li>
-                  <li>Complete cost transparency upfront</li>
-                  <li>Alternatives presented first</li>
-                  <li>Honest consent options</li>
-                  <li>Calm, supportive messaging</li>
-                  <li>Educational context provided</li>
-                  <li>User autonomy respected</li>
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {renderContent()}
+      {renderEducationalAnalysis()}
     </div>
   );
 };
