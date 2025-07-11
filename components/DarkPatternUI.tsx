@@ -21,7 +21,6 @@ const DarkPatternUI: React.FC<DarkPatternUIProps> = ({ pattern }) => {
       }, 1000);
       return () => clearInterval(timer);
     }
-    return; // Explicitly return undefined if the condition is not met.
   }, [pattern]);
 
   useEffect(() => {
@@ -32,7 +31,6 @@ const DarkPatternUI: React.FC<DarkPatternUIProps> = ({ pattern }) => {
       }, 15000);
       return () => clearInterval(notificationTimer);
     }
-    return; // Explicitly return undefined if the condition is not met.
   }, [pattern]);
 
   const formatTime = (seconds: number) => {
