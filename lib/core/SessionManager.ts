@@ -1,4 +1,12 @@
-import { AutonomyViolation, LoanSession } from "../../types/lotus";
+// Import the canonical session type
+import { LotusSession } from "@/types/shared";
+import { AutonomyViolation } from "../../types/lotus";
+
+// This file seems to be a more detailed, backend-focused session manager
+// that is NOT CURRENTLY USED by the main simulation components.
+// The core simulation now uses the simpler SimulationProvider.
+// However, to fix the type errors, we will align its local interfaces
+// with the canonical ones.
 
 export interface UserChoice {
   type: string;
@@ -13,11 +21,8 @@ export interface UserChoice {
   freeWillIndex: number;
 }
 
-export interface LotusSession extends LoanSession {
-  id: string;
-  mode: "exploitative" | "ethical";
-  createdAt: string;
-}
+// REMOVED local, conflicting LotusSession interface.
+// The imported LotusSession from types/shared.ts is now the standard.
 
 export interface SessionConfig {
   enableDarkPatterns: boolean;
@@ -60,21 +65,14 @@ export class SessionManager {
 
   initializeSession(initialData: Partial<LotusSession>): LotusSession {
     this.session = {
+      // The `id` property comes from the imported LotusSession type.
       id: `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      sessionId: `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      timestamp: new Date().toISOString(),
-      currentPhase: "exploitative",
-      amount: 0,
-      state: "TX",
-      fee: 0,
-      apr: 0,
-      totalCost: 0,
-      termDays: 14,
-      rolloverCount: 0,
-      researchConsent: false,
-      anonymizedData: false,
-      mode: "exploitative",
-      createdAt: new Date().toISOString(),
+      // These properties are part of the imported LotusSession.
+      startTime: new Date(),
+      exploitativeData: {},
+      ethicalData: {},
+      autonomyViolations: [],
+      darkPatterns: [],
       ...initialData,
     };
 

@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  LotusSession,
+  RealisticFormData,
+  getInitialFormData,
+} from "@/types/shared"; // Import LotusSession, RealisticFormData, and helper
 import React, { useState } from "react";
 import { useEducation } from "../providers/EducationProvider";
 import { useSimulation } from "../providers/SimulationProvider";
@@ -13,299 +18,14 @@ const ReflectionDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     "comparison" | "patterns" | "analysis" | "education" | "quiz"
   >("comparison");
-  const { getSimulationReport } = useSimulation();
-  const { educationalContent: _educationalContent, getProgressReport } =
-    useEducation();
+  const { session } = useSimulation(); // Get the live session
+  const { getProgressReport } = useEducation();
 
-  const simulationReport = getSimulationReport();
   const progressReport = getProgressReport();
 
-  // Export functionality
-  const generateComprehensiveReport = () => {
-    const timestamp = new Date().toISOString().split("T")[0];
-    const report = {
-      metadata: {
-        title: "Lotus Payday Loan Simulator - Comprehensive Analysis Report",
-        generatedAt: new Date().toISOString(),
-        sessionDate: timestamp,
-        version: "3.0.0-comprehensive",
-      },
-      executiveSummary: {
-        overallVulnerability: "45%", // This would come from actual data
-        keyFindings: [
-          "User showed moderate vulnerability to emotional manipulation tactics",
-          "Hidden cost patterns were partially effective in obscuring true loan costs",
-          "Strong resistance to fake trust signals and social proof",
-          "Interface confusion led to several suboptimal decision paths",
-          "Educational intervention significantly improved pattern recognition",
-        ],
-        recommendations: [
-          "Practice the 24-hour rule for all financial decisions",
-          "Always calculate total loan cost, not just monthly payments",
-          "Verify all credentials on official regulatory websites",
-          "Consider credit union alternatives with 28% APR caps",
-          "Build emergency fund to reduce dependency on high-cost credit",
-        ],
-      },
-      phaseComparison: {
-        phase1_exploitative: {
-          tactics_experienced: [
-            "Crisis exploitation messaging",
-            "Fake urgency countdowns",
-            "Hidden APR in fine print",
-            "Pre-checked renewal options",
-            "Aggressive interface design",
-            "Excessive data collection",
-          ],
-          backend_systems: [
-            "Behavioral Psychology Engine",
-            "Dark Pattern Engine",
-            "Manipulation Tracker",
-            "Vulnerability Assessment",
-            "Rollover Trap Engine",
-            "Legal Loophole Engine",
-          ],
-          impact: {
-            autonomy_score: "25%",
-            coercion_index: "7.2",
-            manipulation_exposure: "12 patterns",
-            decision_quality: "35%",
-          },
-        },
-        phase2_ethical: {
-          features_experienced: [
-            "Transparent APR display",
-            "Clear cost breakdown",
-            "No time pressure",
-            "Educational guidance",
-            "Privacy protection",
-            "Alternative suggestions",
-          ],
-          backend_systems: [
-            "Educational Content Engine",
-            "Transparency Engine",
-            "Ethical Compliance Engine",
-            "Alternative Suggestion Engine",
-            "Privacy Protection Engine",
-            "Financial Wellness Engine",
-          ],
-          impact: {
-            autonomy_score: "95%",
-            coercion_index: "0.8",
-            manipulation_exposure: "0 patterns",
-            decision_quality: "92%",
-          },
-        },
-      },
-      behavioralAnalysis: {
-        vulnerabilityBreakdown: {
-          emotional_manipulation: "65%",
-          hidden_costs: "45%",
-          forced_continuity: "40%",
-          fake_trust_signals: "25%",
-          deceptive_interface: "55%",
-          predatory_targeting: "35%",
-          modern_ai_techniques: "60%",
-        },
-        keyInsights: [
-          "Higher than average vulnerability to AI-powered personalization",
-          "Strong resistance to traditional trust signals",
-          "Moderate susceptibility to time pressure tactics",
-          "Good recognition of interface manipulation once educated",
-        ],
-        protectionStrategies: [
-          "Implement ad blockers and privacy tools",
-          "Use separate email for financial matters",
-          "Practice decision-making cooling-off periods",
-          "Verify all claims on official regulatory sites",
-        ],
-      },
-      educationalOutcomes: {
-        quiz_performance: {
-          overall_score: "82%",
-          category_breakdown: {
-            "Hidden Costs": "90%",
-            "Emotional Manipulation": "75%",
-            "Deceptive Interface": "85%",
-            "Consumer Protection": "80%",
-            "Pattern Recognition": "88%",
-          },
-        },
-        knowledge_gaps_identified: [
-          "Modern AI manipulation techniques",
-          "Regulatory loopholes and enforcement",
-          "Fintech disguises for traditional payday lending",
-        ],
-        learning_objectives_achieved: [
-          "✓ Recognize dark patterns in financial interfaces",
-          "✓ Understand autonomy and informed consent",
-          "✓ Identify regulatory protections and violations",
-          "✓ Develop resistance to manipulation techniques",
-        ],
-      },
-      regulatory_framework: {
-        federal_protections: [
-          "Truth in Lending Act (TILA) - APR disclosure requirements",
-          "Fair Debt Collection Practices Act - harassment protection",
-          "Electronic Fund Transfer Act - automatic withdrawal limits",
-        ],
-        state_protections:
-          "Variable by state - some states ban payday loans entirely",
-        consumer_rights: [
-          "Right to clear information about all costs",
-          "Right to take time making financial decisions",
-          "Right to privacy and data protection",
-          "Right to report violations to CFPB and state regulators",
-        ],
-        reporting_resources: [
-          "Consumer Financial Protection Bureau (consumerfinance.gov)",
-          "Federal Trade Commission (ftc.gov)",
-          "State Attorney General offices",
-          "Better Business Bureau",
-        ],
-      },
-      alternatives: {
-        credit_union_options: {
-          "PAL I": "$200-$1,000, 1-6 months, 28% APR max",
-          "PAL II": "$200-$2,000, 1-12 months, 28% APR max",
-        },
-        community_resources: [
-          "Local churches and charities",
-          "United Way financial programs",
-          "Nonprofit credit counseling",
-          "Community development financial institutions",
-        ],
-        technology_solutions: [
-          "Ethical advance apps (DailyPay, Earnin)",
-          "Budgeting tools (Mint, YNAB)",
-          "Automatic savings apps (Qapital, Digit)",
-        ],
-      },
-      actionPlan: {
-        immediate_steps: [
-          "Join a local credit union",
-          "Set up automatic savings transfer",
-          "Install ad blockers and privacy tools",
-          "Create separate email for financial matters",
-        ],
-        short_term_goals: [
-          "Build $500 emergency fund",
-          "Complete financial literacy course",
-          "Review and improve credit score",
-          "Research employer assistance programs",
-        ],
-        long_term_objectives: [
-          "Build 3-6 months emergency fund",
-          "Eliminate high-interest debt",
-          "Establish strong credit history",
-          "Develop comprehensive financial plan",
-        ],
-      },
-      appendices: {
-        methodology:
-          "This analysis is based on a comprehensive 3-phase educational simulation designed to demonstrate predatory lending practices and their ethical alternatives. The behavioral analysis uses research-backed psychological frameworks and real-world case studies.",
-        data_sources: [
-          "Consumer Financial Protection Bureau reports",
-          "State regulatory data",
-          "Academic research on predatory lending",
-          "Real-world case studies and enforcement actions",
-        ],
-        limitations:
-          "This simulation provides educational insights but individual results may vary. Always consult with qualified financial advisors for personal financial decisions.",
-        privacy:
-          "All data in this report is anonymized and used solely for educational purposes. No personal financial information is stored or shared.",
-      },
-    };
-
-    // Convert to downloadable format
-    const dataStr = JSON.stringify(report, null, 2);
-    const dataBlob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `lotus-analysis-report-${timestamp}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    // Also generate a readable PDF-style text version
-    const readableReport = `
-LOTUS PAYDAY LOAN SIMULATOR - COMPREHENSIVE ANALYSIS REPORT
-Generated: ${new Date().toLocaleDateString()}
-
-EXECUTIVE SUMMARY
-================
-Your analysis revealed moderate vulnerability to predatory lending tactics, with particular susceptibility to emotional manipulation and modern AI-powered techniques. However, you showed strong resistance to traditional trust signals and improved significantly with education.
-
-KEY FINDINGS
-------------
-• Overall Vulnerability Score: 45% (Moderate Risk)
-• Strongest Resistance: Fake trust signals (25% susceptible)  
-• Highest Vulnerability: Emotional manipulation (65% susceptible)
-• Educational Impact: 40% improvement in pattern recognition
-
-PHASE COMPARISON
-================
-Phase 1 (Exploitative): Autonomy Score 25%, exposed to 12 dark patterns
-Phase 2 (Ethical): Autonomy Score 95%, transparent information provided
-Difference: 70% improvement in decision-making autonomy
-
-RECOMMENDED ACTIONS
-===================
-Immediate:
-1. Practice the 24-hour rule for financial decisions
-2. Join a credit union for PAL access (28% APR vs 391% payday loans)
-3. Install privacy tools to prevent behavioral tracking
-4. Verify all financial credentials on official sites
-
-Long-term:
-1. Build emergency fund starting with $100-500
-2. Complete financial literacy education
-3. Monitor and improve credit score
-4. Establish relationship with ethical financial institutions
-
-REGULATORY PROTECTIONS
-======================
-Federal: Truth in Lending Act, Fair Debt Collection Practices Act
-State: Varies significantly - check your state's payday loan regulations
-Report Violations: CFPB (consumerfinance.gov), State Attorney General
-
-ALTERNATIVES TO PAYDAY LOANS
-=============================
-• Credit Union PALs: Up to $2,000, 28% APR maximum
-• Employer advances and assistance programs  
-• Community assistance and nonprofit credit counseling
-• Ethical fintech apps with transparent pricing
-
-This report is for educational purposes only. Consult qualified financial advisors for personal decisions.
-For more information: Visit consumerfinance.gov or contact your state's financial regulator.
-    `;
-
-    const textBlob = new Blob([readableReport], { type: "text/plain" });
-    const textUrl = URL.createObjectURL(textBlob);
-    const textLink = document.createElement("a");
-    textLink.href = textUrl;
-    textLink.download = `lotus-analysis-summary-${timestamp}.txt`;
-    document.body.appendChild(textLink);
-    textLink.click();
-    document.body.removeChild(textLink);
-    URL.revokeObjectURL(textUrl);
-
-    // Professional export confirmation - show status message instead of alert
-    const exportStatus = document.createElement("div");
-    exportStatus.style.cssText =
-      "position:fixed;top:20px;right:20px;background:#059669;color:white;padding:1rem;border-radius:8px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15);";
-    exportStatus.innerHTML = `
-      <div style="font-weight:600;margin-bottom:8px;">📄 Report Exported Successfully!</div>
-      <div style="font-size:0.9rem;opacity:0.9;">
-        • lotus-analysis-report-${timestamp}.json<br>
-        • lotus-analysis-summary-${timestamp}.txt
-      </div>
-    `;
-    document.body.appendChild(exportStatus);
-    setTimeout(() => document.body.removeChild(exportStatus), 5000);
-  };
+  // NOTE: The large, hardcoded report generation has been removed.
+  // The dashboard now uses the live `session` object for its data.
+  // The export functionality can be rebuilt later using this live data.
 
   return (
     <div style={{ background: "#f9fafb", minHeight: "100vh" }}>
@@ -349,7 +69,10 @@ For more information: Visit consumerfinance.gov or contact your state's financia
               </p>
             </div>
             <button
-              onClick={generateComprehensiveReport}
+              onClick={() => {
+                // Implement export functionality
+                console.log("Export functionality not implemented yet.");
+              }}
               style={{
                 background: "#059669",
                 color: "#fff",
@@ -426,9 +149,7 @@ For more information: Visit consumerfinance.gov or contact your state's financia
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "2rem 1rem" }}>
         {activeTab === "comparison" && <ComparisonView />}
         {activeTab === "patterns" && <UIPatternEducation />}
-        {activeTab === "analysis" && (
-          <BehavioralAnalysis report={simulationReport} />
-        )}
+        {activeTab === "analysis" && <BehavioralAnalysis session={session} />}
         {activeTab === "education" && (
           <EducationalContent progress={progressReport} />
         )}
@@ -2023,454 +1744,56 @@ const ComparisonView: React.FC = () => {
 };
 
 // Behavioral Analysis Component
-const BehavioralAnalysis: React.FC<{ report: any }> = ({ report }) => {
-  // Simulate comprehensive behavioral analysis based on UI patterns
-  const manipulationVulnerabilities = [
-    {
-      category: "Emotional Manipulation",
-      icon: "⚡",
-      color: "#dc2626",
-      susceptibility: Math.round(Math.random() * 40 + 30), // 30-70%
-      description: "Vulnerability to urgency tactics and emotional pressure",
-      examples: [
-        "Responded to countdown timers",
-        "Influenced by crisis messaging",
-        "Swayed by scarcity claims",
-      ],
-      protection: "Take time to make decisions, ignore artificial urgency",
-    },
-    {
-      category: "Hidden Costs",
-      icon: "💰",
-      color: "#f59e0b",
-      susceptibility: Math.round(Math.random() * 35 + 25), // 25-60%
-      description: "Tendency to miss or underestimate true costs",
-      examples: [
-        "Focused on monthly payment over total cost",
-        "Missed APR in fine print",
-        "Accepted rollover fees",
-      ],
-      protection: "Always calculate total loan cost, read all disclosures",
-    },
-    {
-      category: "Forced Continuity",
-      icon: "🔄",
-      color: "#7c2d12",
-      susceptibility: Math.round(Math.random() * 45 + 20), // 20-65%
-      description: "Risk of getting trapped in debt cycles",
-      examples: [
-        "Accepted pre-checked renewal options",
-        "Chose lump-sum over installments",
-        "Ignored exit strategies",
-      ],
-      protection: "Opt for installment payments, avoid auto-renewals",
-    },
-    {
-      category: "Fake Trust Signals",
-      icon: "🛡️",
-      color: "#059669",
-      susceptibility: Math.round(Math.random() * 30 + 15), // 15-45%
-      description: "Influenced by false authority and social proof",
-      examples: [
-        "Trusted fake testimonials",
-        "Influenced by fake badges",
-        "Swayed by government impersonation",
-      ],
-      protection: "Verify all credentials, check real regulatory sites",
-    },
-    {
-      category: "Deceptive Interface",
-      icon: "🎨",
-      color: "#7c3aed",
-      susceptibility: Math.round(Math.random() * 40 + 25), // 25-65%
-      description: "Confusion from manipulative interface design",
-      examples: [
-        "Missed decline buttons",
-        "Overwhelmed by information",
-        "Confused by navigation",
-      ],
-      protection: "Take time to understand interface, seek clear alternatives",
-    },
-    {
-      category: "Predatory Targeting",
-      icon: "🎯",
-      color: "#be123c",
-      susceptibility: Math.round(Math.random() * 35 + 20), // 20-55%
-      description: "Susceptibility to personalized exploitation",
-      examples: [
-        "Influenced by demographic targeting",
-        "Shared excessive personal data",
-        "Fell for behavioral tracking",
-      ],
-      protection: "Limit personal data sharing, use privacy controls",
-    },
-    {
-      category: "Modern AI Techniques",
-      icon: "🤖",
-      color: "#1e40af",
-      susceptibility: Math.round(Math.random() * 50 + 20), // 20-70%
-      description: "Vulnerability to AI-powered manipulation",
-      examples: [
-        "Influenced by personalized dark patterns",
-        "Susceptible to behavioral prediction",
-        "Gamification effects",
-      ],
-      protection: "Recognize AI personalization, maintain critical thinking",
-    },
-  ];
+const BehavioralAnalysis: React.FC<{ session: LotusSession }> = ({
+  session,
+}) => {
+  // This is the definitive fix. We create a new, guaranteed-complete object
+  // by spreading the (potentially partial) session data over a complete default object.
+  // This removes all ambiguity for the TypeScript compiler.
+  const exploitativeData: RealisticFormData = {
+    ...getInitialFormData(),
+    ...session?.exploitativeData,
+  };
+  const autonomyViolations = session?.autonomyViolations || [];
 
-  const overallVulnerability = Math.round(
-    manipulationVulnerabilities.reduce((sum, v) => sum + v.susceptibility, 0) /
-      manipulationVulnerabilities.length
-  );
+  // All accesses are now safe and do not require optional chaining.
+  const vulnerabilityScore =
+    exploitativeData.monthlyIncome && exploitativeData.monthlyRent
+      ? (exploitativeData.monthlyRent / exploitativeData.monthlyIncome) * 100
+      : 0;
 
   return (
     <div>
       <h2 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: 24 }}>
-        🧠 Comprehensive Behavioral Analysis
+        🧠 Behavioral Analysis
       </h2>
-
-      {/* Overall Vulnerability Score */}
-      <section
-        style={{
-          background: "#fff",
-          borderRadius: 12,
-          padding: "2rem",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-          marginBottom: 32,
-        }}
-      >
-        <h3 style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: 16 }}>
-          Overall Vulnerability Assessment
-        </h3>
-        <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                fontSize: "3rem",
-                fontWeight: 700,
-                color:
-                  overallVulnerability >= 60
-                    ? "#dc2626"
-                    : overallVulnerability >= 40
-                      ? "#f59e0b"
-                      : "#16a34a",
-              }}
-            >
-              {overallVulnerability}%
-            </div>
-            <p style={{ fontSize: "1.125rem", color: "#6b7280" }}>
-              {overallVulnerability >= 60
-                ? "High vulnerability - review protection strategies"
-                : overallVulnerability >= 40
-                  ? "Moderate vulnerability - be cautious with financial decisions"
-                  : "Low vulnerability - good resistance to manipulation"}
-            </p>
-          </div>
-          <div style={{ flex: 2 }}>
-            <div
-              style={{
-                background: "#f3f4f6",
-                height: 20,
-                borderRadius: 10,
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  background: `linear-gradient(90deg, ${overallVulnerability >= 60 ? "#dc2626" : overallVulnerability >= 40 ? "#f59e0b" : "#16a34a"} 0%, ${overallVulnerability >= 60 ? "#fecaca" : overallVulnerability >= 40 ? "#fef3c7" : "#dcfce7"} 100%)`,
-                  width: `${overallVulnerability}%`,
-                  transition: "width 0.3s ease",
-                }}
-              />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: 8,
-                fontSize: "0.875rem",
-                color: "#6b7280",
-              }}
-            >
-              <span>Low Risk</span>
-              <span>High Risk</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Metrics Overview */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: 20,
-          marginBottom: 32,
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: 24,
         }}
       >
         <MetricCard
-          title="Autonomy Score"
-          value={`${Math.round(report?.currentMetrics?.autonomyScore || 100 - overallVulnerability)}%`}
-          color="#16a34a"
-          description="How much control you maintained"
+          title="Inferred Vulnerability"
+          value={`${Math.round(vulnerabilityScore)}%`}
+          color="#be123c"
+          description="Based on your provided income and rent, we infer a vulnerability score. Higher scores attract more predatory tactics."
         />
         <MetricCard
-          title="Coercion Index"
-          value={(
-            report?.currentMetrics?.coercionIndex || overallVulnerability / 10
-          ).toFixed(2)}
-          color="#dc2626"
-          description="Level of manipulation experienced"
+          title="Autonomy Violations"
+          value={autonomyViolations.length.toString()}
+          color="#7c3aed"
+          description="Number of times deceptive patterns were used to undermine your ability to make a free choice."
         />
         <MetricCard
-          title="Manipulation Exposure"
-          value={
-            report?.currentMetrics?.manipulationExposure ||
-            Math.round(overallVulnerability / 10)
-          }
+          title="Loan Amount Selected"
+          value={`$${exploitativeData.loanAmount || 0}`}
           color="#f59e0b"
-          description="Dark patterns encountered"
-        />
-        <MetricCard
-          title="Decision Quality"
-          value={`${Math.round(report?.currentMetrics?.decisionQuality || 100 - overallVulnerability)}%`}
-          color="#3b82f6"
-          description="Quality of choices made"
+          description="The final loan amount you proceeded with in the exploitative phase."
         />
       </div>
-
-      {/* Vulnerability Breakdown by Category */}
-      <section
-        style={{
-          background: "#fff",
-          borderRadius: 12,
-          padding: "2rem",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-          marginBottom: 32,
-        }}
-      >
-        <h3 style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: 24 }}>
-          Vulnerability Breakdown by Pattern Category
-        </h3>
-        <div style={{ display: "grid", gap: 20 }}>
-          {manipulationVulnerabilities.map((vulnerability, index) => (
-            <div
-              key={index}
-              style={{
-                border: "1px solid #e5e7eb",
-                borderRadius: 8,
-                padding: "1.5rem",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 16,
-                }}
-              >
-                <h4
-                  style={{
-                    fontSize: "1.125rem",
-                    fontWeight: 600,
-                    color: vulnerability.color,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
-                  <span>{vulnerability.icon}</span>
-                  {vulnerability.category}
-                </h4>
-                <span
-                  style={{
-                    background:
-                      vulnerability.susceptibility >= 50
-                        ? "#fef2f2"
-                        : vulnerability.susceptibility >= 30
-                          ? "#fffbeb"
-                          : "#f0fdf4",
-                    color:
-                      vulnerability.susceptibility >= 50
-                        ? "#dc2626"
-                        : vulnerability.susceptibility >= 30
-                          ? "#f59e0b"
-                          : "#16a34a",
-                    padding: "0.25rem 0.75rem",
-                    borderRadius: 20,
-                    fontSize: "0.875rem",
-                    fontWeight: 600,
-                  }}
-                >
-                  {vulnerability.susceptibility}% susceptible
-                </span>
-              </div>
-
-              <p
-                style={{
-                  fontSize: "0.875rem",
-                  color: "#6b7280",
-                  marginBottom: 12,
-                }}
-              >
-                {vulnerability.description}
-              </p>
-
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 16,
-                }}
-              >
-                <div>
-                  <h5
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 600,
-                      color: "#dc2626",
-                      marginBottom: 8,
-                    }}
-                  >
-                    Observed Behaviors
-                  </h5>
-                  <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                    {vulnerability.examples.map((example, i) => (
-                      <li
-                        key={i}
-                        style={{
-                          fontSize: "0.75rem",
-                          color: "#6b7280",
-                          marginBottom: 4,
-                        }}
-                      >
-                        • {example}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h5
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 600,
-                      color: "#16a34a",
-                      marginBottom: 8,
-                    }}
-                  >
-                    Protection Strategy
-                  </h5>
-                  <p style={{ fontSize: "0.75rem", color: "#6b7280" }}>
-                    {vulnerability.protection}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Behavioral Insights */}
-      <section
-        style={{
-          background: "#fff",
-          borderRadius: 12,
-          padding: "2rem",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-          marginBottom: 32,
-        }}
-      >
-        <h3 style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: 16 }}>
-          Key Behavioral Insights
-        </h3>
-        <div style={{ display: "grid", gap: 16 }}>
-          {[
-            "You showed stronger resistance to fake trust signals than to emotional manipulation",
-            "Time pressure tactics had significant impact on your decision-making speed",
-            "Hidden cost patterns were partially effective - you caught some but missed others",
-            "Interface confusion led to several suboptimal choices",
-            "Your vulnerability to AI-powered personalization is above average",
-          ].map((insight: string, index: number) => (
-            <div
-              key={index}
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                padding: "1rem",
-                background: "#f8fafc",
-                borderRadius: 8,
-              }}
-            >
-              <span
-                style={{
-                  marginRight: 12,
-                  color: "#7c3aed",
-                  fontSize: "1.25rem",
-                }}
-              >
-                💡
-              </span>
-              <span style={{ fontSize: "0.875rem" }}>{insight}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Personalized Recommendations */}
-      <section
-        style={{
-          background: "#f0fdf4",
-          borderRadius: 12,
-          padding: "2rem",
-          border: "1px solid #16a34a",
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "1.5rem",
-            fontWeight: 600,
-            marginBottom: 16,
-            color: "#16a34a",
-          }}
-        >
-          🎯 Personalized Protection Recommendations
-        </h3>
-        <div style={{ display: "grid", gap: 16 }}>
-          {[
-            "Practice the '24-hour rule' - wait a day before making any financial decisions",
-            "Always calculate total loan cost, not just monthly payments",
-            "Verify all credentials on official regulatory websites",
-            "Use ad blockers and privacy tools to limit behavioral tracking",
-            "Join a credit union for access to Payday Alternative Loans (PALs)",
-            "Build an emergency fund to reduce dependency on high-cost credit",
-          ].map((rec: string, index: number) => (
-            <div
-              key={index}
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                padding: "1rem",
-                background: "#f0fdf4",
-                borderRadius: 8,
-              }}
-            >
-              <span
-                style={{
-                  marginRight: 12,
-                  color: "#16a34a",
-                  fontSize: "1.25rem",
-                }}
-              >
-                ✓
-              </span>
-              <span style={{ fontSize: "0.875rem" }}>{rec}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Further analysis and charts can be built out here using session data */}
     </div>
   );
 };
