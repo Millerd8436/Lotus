@@ -226,7 +226,66 @@ const Phase3EducationalReflection: React.FC = () => {
         </p>
       </div>
 
-      {/* Autonomy Theater summary removed to streamline analysis and avoid redundancy */}
+      {/* Autonomy Theater Analysis Section */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          🎭 Autonomy Theater Analysis
+        </h3>
+        <div className="text-center mb-6">
+          <div className="text-3xl font-bold text-red-600 mb-2">
+            {autonomyScore}% Manipulation Score
+          </div>
+          <p className="text-gray-600">
+            Based on dark patterns detected in Phase 1 exploitative interface
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {autonomyTheaterMetrics.map((metric, index) => (
+            <div key={index} className="border rounded-lg p-4 bg-gray-50">
+              <div className="flex justify-between items-start mb-2">
+                <h4 className="font-semibold text-gray-800">
+                  {(metric as any).pattern || (metric as any).category}
+                </h4>
+                <span
+                  className={`text-xs px-2 py-1 rounded ${
+                    metric.severity === "Critical"
+                      ? "bg-red-100 text-red-800"
+                      : metric.severity === "High"
+                        ? "bg-orange-100 text-orange-800"
+                        : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
+                  {metric.severity}
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 mb-2">
+                {metric.description || (metric as any).description}
+              </p>
+              <p className="text-xs text-gray-500">
+                {(metric as any).realWorldImpact || (metric as any).impact}
+              </p>
+              {(metric as any).frequency && (
+                <div className="mt-2 text-xs text-blue-600">
+                  Frequency: {(metric as any).frequency}% of predatory sites
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+          <h4 className="font-semibold text-blue-800 mb-2">
+            Understanding Autonomy Theater
+          </h4>
+          <p className="text-sm text-blue-700">
+            "Autonomy theater" refers to the illusion of choice and control
+            while systematically removing genuine autonomy. These patterns
+            create the appearance of informed decision-making while actually
+            manipulating users toward predetermined outcomes.
+          </p>
+        </div>
+      </div>
 
       {/* Phase Comparison Grid */}
       <div className="bg-white rounded-lg shadow-lg p-6">
@@ -275,7 +334,12 @@ const Phase3EducationalReflection: React.FC = () => {
 
       {/* Navigation Buttons */}
       <div className="flex justify-center space-x-4">
-        {/* Autonomy Theater button removed */}
+        <button
+          onClick={() => setCurrentView("autonomy")}
+          className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg"
+        >
+          🎭 Autonomy Theater
+        </button>
         <button
           onClick={() => setCurrentView("quiz")}
           className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
@@ -575,13 +639,116 @@ const Phase3EducationalReflection: React.FC = () => {
     </div>
   );
 
+  const renderAutonomyTheater = () => (
+    <div className="space-y-8">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold text-red-600 mb-4">
+          🎭 Autonomy Theater Analysis
+        </h2>
+        <p className="text-xl text-gray-600">
+          Deep dive into manipulation patterns and their psychological impact
+        </p>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto">
+        <div className="text-center mb-8">
+          <div className="text-4xl font-bold text-red-600 mb-4">
+            {autonomyScore}% Manipulation Score
+          </div>
+          <p className="text-lg text-gray-600">
+            Based on dark patterns detected in Phase 1 exploitative interface
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {autonomyTheaterMetrics.map((metric, index) => (
+            <div
+              key={index}
+              className="border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+            >
+              <div className="flex justify-between items-start mb-3">
+                <h4 className="font-semibold text-gray-800">
+                  {(metric as any).pattern || (metric as any).category}
+                </h4>
+                <span
+                  className={`text-xs px-2 py-1 rounded ${
+                    metric.severity === "Critical"
+                      ? "bg-red-100 text-red-800"
+                      : metric.severity === "High"
+                        ? "bg-orange-100 text-orange-800"
+                        : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
+                  {metric.severity}
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                {metric.description || (metric as any).description}
+              </p>
+              <p className="text-xs text-gray-500 mb-2">
+                {(metric as any).realWorldImpact || (metric as any).impact}
+              </p>
+              {(metric as any).frequency && (
+                <div className="text-xs text-blue-600 font-semibold">
+                  Used by {(metric as any).frequency}% of predatory sites
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 p-6 bg-blue-50 rounded-lg">
+          <h4 className="font-semibold text-blue-800 mb-3 text-lg">
+            Understanding Autonomy Theater
+          </h4>
+          <p className="text-blue-700 mb-3">
+            "Autonomy theater" refers to the illusion of choice and control
+            while systematically removing genuine autonomy. These patterns
+            create the appearance of informed decision-making while actually
+            manipulating users toward predetermined outcomes.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4 mt-4">
+            <div className="bg-white p-4 rounded-lg">
+              <h5 className="font-semibold text-red-700 mb-2">
+                🎭 The Illusion
+              </h5>
+              <p className="text-sm text-gray-700">
+                Users feel they're making informed choices, but the interface is
+                designed to guide them toward specific outcomes.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded-lg">
+              <h5 className="font-semibold text-green-700 mb-2">
+                ✅ Real Autonomy
+              </h5>
+              <p className="text-sm text-gray-700">
+                Genuine choice requires clear information, adequate time, and no
+                manipulative pressure tactics.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-center">
+        <button
+          onClick={() => setCurrentView("overview")}
+          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg"
+        >
+          ← Back to Overview
+        </button>
+      </div>
+    </div>
+  );
+
   useEffect(() => {
     calculateAutonomyScore();
   }, [calculateAutonomyScore]);
 
   // Main render logic
   switch (currentView) {
-    // Autonomy view removed
+    case "autonomy":
+      return renderAutonomyTheater();
     case "quiz":
       return renderQuiz();
     case "research":
