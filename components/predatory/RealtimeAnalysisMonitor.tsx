@@ -1,11 +1,15 @@
-import { BehavioralProfile } from "@/lib/core/behavioral-engine";
+import {
+  BehavioralProfile,
+  PredictedAction,
+} from "@/lib/core/behavioral-engine";
 import React from "react";
 
 interface Props {
   profile: BehavioralProfile;
+  prediction: PredictedAction;
 }
 
-const RealtimeAnalysisMonitor: React.FC<Props> = ({ profile }) => {
+const RealtimeAnalysisMonitor: React.FC<Props> = ({ profile, prediction }) => {
   const getScoreColor = (score: number) => {
     if (score > 75) return "text-red-500";
     if (score > 50) return "text-yellow-500";
@@ -54,6 +58,12 @@ const RealtimeAnalysisMonitor: React.FC<Props> = ({ profile }) => {
               style={{ width: `${profile.vulnerabilityScore}%` }}
             ></div>
           </div>
+        </div>
+        <div>
+          <span className="font-semibold text-gray-400">Prediction:</span>
+          <span className="ml-2 font-bold text-cyan-400 animate-pulse">
+            {prediction}
+          </span>
         </div>
       </div>
       <p className="text-xs text-gray-500 mt-3">

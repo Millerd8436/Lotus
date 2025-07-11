@@ -13,6 +13,13 @@ export interface BehavioralProfile {
   decisionFatigue: number; // 0-100
 }
 
+export type PredictedAction =
+  | "Will accept add-ons"
+  | "Will not read terms"
+  | "Will accept loan"
+  | "High churn risk"
+  | "Seeking lowest payment";
+
 const initialState: BehavioralProfile = {
   vulnerabilityScore: 20,
   emotionalState: "calm",
@@ -89,6 +96,27 @@ export class BehavioralPsychologyEngine {
   getProfile(): BehavioralProfile {
     // Return a copy to prevent external mutation
     return { ...this.profile };
+  }
+
+  // Predicts the user's next likely action based on their profile
+  predictNextAction(): PredictedAction {
+    const { vulnerabilityScore, emotionalState, decisionFatigue } =
+      this.profile;
+
+    if (vulnerabilityScore > 70 && emotionalState === "rushed") {
+      return "Will not read terms";
+    }
+    if (vulnerabilityScore > 60 && decisionFatigue > 50) {
+      return "Will accept add-ons";
+    }
+    if (emotionalState === "anxious" && vulnerabilityScore > 50) {
+      return "Will accept loan";
+    }
+    if (emotionalState === "frustrated") {
+      return "High churn risk";
+    }
+
+    return "Seeking lowest payment";
   }
 
   reset() {
