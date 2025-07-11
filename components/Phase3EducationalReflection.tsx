@@ -1,761 +1,329 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { createPhaseAutonomyTheater } from "@/lib/core/autonomy-theater";
+import { LotusSession } from "@/types/lotus";
+import React, { useMemo, useState } from "react";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import DarkPatternUI from "./DarkPatternUI";
 
-/**
- * Phase 3: Educational Reflection & Autonomy Theater
- *
- * Comprehensive analysis and education component featuring:
- * - Side-by-side comparison of Phase 1 vs Phase 2
- * - Autonomy theater detection and analysis
- * - Interactive quizzes and educational content
- * - Behavioral pattern analysis
- * - Research findings about predatory lending
- * - Consumer protection information
- */
-
-interface ComparisonData {
-  category: string;
-  exploitative: string;
-  ethical: string;
-  impact: string;
-  autonomyViolation: "High" | "Medium" | "Low" | "None";
-}
-
-interface QuizQuestion {
-  id: string;
-  question: string;
-  options: string[];
-  correctAnswer: number;
-  explanation: string;
-  category: "dark-patterns" | "fees" | "rights" | "alternatives";
-}
+// Mock Session Data - In a real app, this would come from a provider or API
+const mockSession: LotusSession = {
+  id: "session-123",
+  startTime: new Date(),
+  currentPhase: 1,
+  exploitativeData: {},
+  ethicalData: {},
+  analysisData: {},
+  userChoices: [],
+  coercionIndex: 2.5,
+  autonomyViolations: [
+    {
+      type: "Fake Urgency Creation",
+      severity: "high",
+      description: "Countdown timer pressure",
+      timestamp: "",
+      kantianViolation: "",
+    },
+    {
+      type: "Drip Pricing Concealment",
+      severity: "critical",
+      description: "Fees hidden until last step",
+      timestamp: "",
+      kantianViolation: "",
+    },
+    {
+      type: "Fake Urgency Creation",
+      severity: "high",
+      description: "Artificial scarcity claims",
+      timestamp: "",
+      kantianViolation: "",
+    },
+    {
+      type: "Preselection Manipulation",
+      severity: "high",
+      description: "Pre-checked add-ons",
+      timestamp: "",
+      kantianViolation: "",
+    },
+    {
+      type: "Roach Motel Process",
+      severity: "medium",
+      description: "Hard to exit application",
+      timestamp: "",
+      kantianViolation: "",
+    },
+    {
+      type: "Authority Deception",
+      severity: "high",
+      description: "Fake trust badges",
+      timestamp: "",
+      kantianViolation: "",
+    },
+  ],
+  trapEngineState: {} as any,
+  darkPatterns: [],
+};
 
 const Phase3EducationalReflection: React.FC = () => {
-  const [currentView, setCurrentView] = useState("overview");
-  const [currentQuiz, setCurrentQuiz] = useState(0);
-  const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
-  const [showResults, setShowResults] = useState(false);
-  const [autonomyScore, setAutonomyScore] = useState(0);
+  const [showAnnotations, setShowAnnotations] = useState(true);
 
-  const comparisonData: ComparisonData[] = [
+  const autonomyTheater = useMemo(
+    () => createPhaseAutonomyTheater(1, mockSession, {}),
+    []
+  );
+
+  const report = useMemo(
+    () => autonomyTheater.generateReport(),
+    [autonomyTheater]
+  );
+
+  const violationData = useMemo(() => {
+    const counts = report.severityBreakdown;
+    const total = report.totalViolations;
+    if (total === 0) return [];
+
+    const violationMap: { [key: string]: string } = {
+      "Fake Urgency Creation": "Fake Urgency",
+      "Drip Pricing Concealment": "Drip Pricing",
+      "Preselection Manipulation": "Preselection",
+      "Roach Motel Process": "Roach Motel",
+      "Authority Deception": "Deceptive Authority",
+    };
+
+    const aggregatedCounts: { [key: string]: number } = {};
+    mockSession.autonomyViolations.forEach((v) => {
+      const key = violationMap[v.type] || v.type;
+      aggregatedCounts[key] = (aggregatedCounts[key] || 0) + 1;
+    });
+
+    return Object.entries(aggregatedCounts).map(([name, count]) => ({
+      name,
+      value: count,
+      percent: Math.round((count / total) * 100),
+    }));
+  }, [report]);
+
+  const comparisonData = [
     {
       category: "Initial Hook",
       exploitative: "Fake urgency timers, scarcity claims, aggressive CTAs",
       ethical: "Clear value proposition, honest terms, no pressure",
       impact: "Creates panic decisions vs informed choices",
-      autonomyViolation: "High",
     },
     {
       category: "Fee Disclosure",
       exploitative: "Drip pricing - fees revealed progressively",
       ethical: "Full cost breakdown upfront with APR",
       impact: "Hidden costs vs transparent pricing",
-      autonomyViolation: "High",
     },
     {
       category: "Add-on Services",
       exploitative: "Pre-selected, confirmshaming opt-outs",
       ethical: "All services opt-in only with clear benefits",
       impact: "Unwanted charges vs conscious choices",
-      autonomyViolation: "High",
     },
     {
       category: "Application Process",
       exploitative: "Progressive complexity, roach motel pattern",
       ethical: "Clear steps, easy cancellation available",
       impact: "Trapped in process vs free to leave",
-      autonomyViolation: "Medium",
     },
     {
       category: "Loan Terms",
       exploitative: "664% APR, rollover traps, NSF fees",
       ethical: "36% APR, no rollovers, fair collection",
       impact: "Debt cycle vs manageable repayment",
-      autonomyViolation: "High",
     },
     {
       category: "Data Privacy",
       exploitative: "Pre-consented sharing, lead generation",
       ethical: "No data sharing, explicit consent only",
       impact: "Privacy violation vs data protection",
-      autonomyViolation: "High",
     },
   ];
 
-  const quizQuestions: QuizQuestion[] = [
-    {
-      id: "dark-pattern-1",
-      question: "What is 'confirmshaming' in the context of predatory lending?",
-      options: [
-        "Asking for confirmation before loan approval",
-        "Using guilt-inducing language to prevent opt-outs",
-        "Confirming the borrower's shame about needing money",
-        "Double-checking loan terms for accuracy",
-      ],
-      correctAnswer: 1,
-      explanation:
-        "Confirmshaming uses guilt-inducing language like 'Only irresponsible borrowers skip this protection' to manipulate users into selecting unwanted add-ons.",
-      category: "dark-patterns",
-    },
-    {
-      id: "fees-1",
-      question: "What was the real APR in the exploitative Phase 1 example?",
-      options: ["36%", "391%", "664%", "1,000%"],
-      correctAnswer: 2,
-      explanation:
-        "The exploitative example showed 664% APR, which is typical for predatory payday loans in states with weak usury laws.",
-      category: "fees",
-    },
-    {
-      id: "rights-1",
-      question:
-        "Under the Fair Debt Collection Practices Act, which is prohibited?",
-      options: [
-        "Calling during business hours",
-        "Threatening legal action they can't take",
-        "Sending written notices",
-        "Calling once per day",
-      ],
-      correctAnswer: 1,
-      explanation:
-        "The FDCPA prohibits debt collectors from making threats they cannot or will not carry out, including false legal threats.",
-      category: "rights",
-    },
-    {
-      id: "alternatives-1",
-      question:
-        "What is the maximum APR for Credit Union Payday Alternative Loans (PALs)?",
-      options: ["18%", "28%", "36%", "48%"],
-      correctAnswer: 1,
-      explanation:
-        "Credit Union PALs have a maximum APR of 28%, making them much more affordable than traditional payday loans.",
-      category: "alternatives",
-    },
+  const COLORS = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#ff8042",
+    "#d0ed57",
+    "#ff7300",
   ];
 
-  const autonomyTheaterMetrics = useMemo(
-    () => [
-      {
-        category: "Progressive Disclosure",
-        violation: "Form expands from 3 to 15+ fields",
-        description: "Simple signup becomes complex application",
-        severity: "High" as const,
-        realWorldImpact: "Users invested too much time to quit",
-      },
-      {
-        pattern: "Fake Urgency Creation",
-        description: "Countdown timers that reset, artificial scarcity claims",
-        severity: "High",
-        frequency: 85,
-        impact: "Forces rushed decisions, bypasses rational thinking",
-      },
-      {
-        pattern: "Drip Pricing Concealment",
-        description: "Progressive fee disclosure to hide true costs",
-        severity: "Critical",
-        frequency: 92,
-        impact: "Prevents informed cost comparison, enables price manipulation",
-      },
-      {
-        pattern: "Preselection Manipulation",
-        description: "Pre-checked boxes with confirmshaming language",
-        severity: "High",
-        frequency: 78,
-        impact: "Generates unwanted charges, exploits user inattention",
-      },
-      {
-        pattern: "Roach Motel Process",
-        description: "Easy to enter, difficult to exit application flow",
-        severity: "Medium",
-        frequency: 65,
-        impact: "Traps users in process, prevents backing out",
-      },
-      {
-        pattern: "Authority Deception",
-        description:
-          "Fake trust badges, false testimonials, manufactured credibility",
-        severity: "High",
-        frequency: 89,
-        impact: "Bypasses skepticism, creates false sense of security",
-      },
-    ],
-    []
-  );
-
-  const calculateAutonomyScore = useCallback(() => {
-    const totalViolations = autonomyTheaterMetrics.reduce((sum, metric) => {
-      const severityWeight =
-        metric.severity === "High"
-          ? 4
-          : metric.severity === "Medium"
-            ? 3
-            : metric.severity === "Low"
-              ? 2
-              : 1;
-      return sum + severityWeight;
-    }, 0);
-
-    setAutonomyScore(Math.round(totalViolations * 10));
-  }, [autonomyTheaterMetrics]);
-
-  const submitQuiz = () => {
-    if (currentQuiz < quizQuestions.length - 1) {
-      setCurrentQuiz((prev) => prev + 1);
-    } else {
-      setShowResults(true);
-    }
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-600";
-    if (score >= 60) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const renderOverview = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4">
-          Educational Analysis & Reflection
-        </h2>
-        <p className="text-xl text-gray-600 max-w-4xl mx-auto">
-          Compare the two lending experiences and understand the psychology
-          behind predatory practices
-        </p>
-      </div>
-
-      {/* Autonomy Theater Analysis Section */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          🎭 Autonomy Theater Analysis
-        </h3>
-        <div className="text-center mb-6">
-          <div className="text-3xl font-bold text-red-600 mb-2">
-            {autonomyScore}% Manipulation Score
-          </div>
-          <p className="text-gray-600">
-            Based on dark patterns detected in Phase 1 exploitative interface
+  return (
+    <div className="p-4 md:p-8 lg:p-12 bg-gray-50 font-sans">
+      <div className="max-w-7xl mx-auto space-y-12">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
+            Educational Analysis & Reflection
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">
+            Compare the two lending experiences and understand the psychology
+            behind predatory practices.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {autonomyTheaterMetrics.map((metric, index) => (
-            <div key={index} className="border rounded-lg p-4 bg-gray-50">
-              <div className="flex justify-between items-start mb-2">
-                <h4 className="font-semibold text-gray-800">
-                  {(metric as any).pattern || (metric as any).category}
-                </h4>
-                <span
-                  className={`text-xs px-2 py-1 rounded ${
-                    metric.severity === "Critical"
-                      ? "bg-red-100 text-red-800"
-                      : metric.severity === "High"
-                        ? "bg-orange-100 text-orange-800"
-                        : "bg-yellow-100 text-yellow-800"
-                  }`}
-                >
-                  {metric.severity}
-                </span>
+        {/* Autonomy Theater Section */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 text-center">
+            🎭 Autonomy Theater Detection
+          </h2>
+          <p className="text-center text-gray-500 mb-8">
+            "Autonomy Theater" refers to the illusion of choice and control
+            while actually constraining user decisions through manipulation.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6 text-center">
+            <div className="bg-red-50 p-4 rounded-lg">
+              <div className="text-4xl font-bold text-red-600">
+                {report.totalViolations}
               </div>
-              <p className="text-sm text-gray-600 mb-2">
-                {metric.description || (metric as any).description}
-              </p>
-              <p className="text-xs text-gray-500">
-                {(metric as any).realWorldImpact || (metric as any).impact}
-              </p>
-              {(metric as any).frequency && (
-                <div className="mt-2 text-xs text-blue-600">
-                  Frequency: {(metric as any).frequency}% of predatory sites
-                </div>
-              )}
+              <div className="text-sm font-medium text-red-800">
+                Manipulation Patterns Detected
+              </div>
             </div>
-          ))}
+            <div className="bg-yellow-50 p-4 rounded-lg">
+              <div className="text-4xl font-bold text-yellow-600">High</div>
+              <div className="text-sm font-medium text-yellow-800">
+                Average Severity
+              </div>
+            </div>
+            <div className="bg-purple-50 p-4 rounded-lg">
+              <div className="text-4xl font-bold text-purple-600">
+                {100 - report.autonomyScore}
+                <span className="text-2xl">/100</span>
+              </div>
+              <div className="text-sm font-medium text-purple-800">
+                Autonomy Violation Score
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-gray-700 text-center mb-4">
+              Most Common Violations (%)
+            </h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart
+                data={violationData}
+                layout="vertical"
+                margin={{ top: 5, right: 20, left: 40, bottom: 5 }}
+              >
+                <XAxis type="number" hide />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={150}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fontSize: 12 }}
+                />
+                <Tooltip
+                  cursor={{ fill: "rgba(240, 240, 240, 0.5)" }}
+                  contentStyle={{
+                    background: "#fff",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                  }}
+                />
+                <Bar dataKey="percent" barSize={30}>
+                  {violationData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <h4 className="font-semibold text-blue-800 mb-2">
-            Understanding Autonomy Theater
-          </h4>
-          <p className="text-sm text-blue-700">
-            "Autonomy theater" refers to the illusion of choice and control
-            while systematically removing genuine autonomy. These patterns
-            create the appearance of informed decision-making while actually
-            manipulating users toward predetermined outcomes.
-          </p>
-        </div>
-      </div>
-
-      {/* Phase Comparison Grid */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Phase Comparison Analysis
-        </h3>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="border p-3 text-left">Category</th>
-                <th className="border p-3 text-left bg-red-50">
-                  Phase 1: Exploitative
-                </th>
-                <th className="border p-3 text-left bg-green-50">
-                  Phase 2: Ethical
-                </th>
-                <th className="border p-3 text-left">Impact</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonData.map((row, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="border p-3 font-semibold">{row.category}</td>
-                  <td className="border p-3 text-sm bg-red-50">
-                    {row.exploitative}
-                  </td>
-                  <td className="border p-3 text-sm bg-green-50">
-                    {row.ethical}
-                  </td>
-                  <td className="border p-3 text-sm">{row.impact}</td>
+        {/* Comparison Table Section */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">
+            Phase Comparison Analysis
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-3 font-semibold text-left text-gray-600 border-b-2 border-gray-200">
+                    Category
+                  </th>
+                  <th className="p-3 font-semibold text-left text-gray-600 border-b-2 border-gray-200">
+                    Phase 1: Exploitative
+                  </th>
+                  <th className="p-3 font-semibold text-left text-gray-600 border-b-2 border-gray-200">
+                    Phase 2: Ethical
+                  </th>
+                  <th className="p-3 font-semibold text-left text-gray-600 border-b-2 border-gray-200">
+                    Impact
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Interactive Side-by-Side UI Demonstration */}
-      <div className="bg-gray-50 rounded-lg p-6">
-        <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          Interactive Interface Comparison
-        </h3>
-        <DarkPatternUI mode="comparison" />
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="flex justify-center space-x-4">
-        <button
-          onClick={() => setCurrentView("autonomy")}
-          className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg"
-        >
-          🎭 Autonomy Theater
-        </button>
-        <button
-          onClick={() => setCurrentView("quiz")}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
-        >
-          📝 Knowledge Quiz
-        </button>
-        <button
-          onClick={() => setCurrentView("research")}
-          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg"
-        >
-          📊 Research Findings
-        </button>
-      </div>
-    </div>
-  );
-
-  const renderQuiz = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-blue-600 mb-4">
-          📝 Knowledge Assessment
-        </h2>
-        <p className="text-xl text-gray-600">
-          Test your understanding of predatory lending practices
-        </p>
-      </div>
-
-      {!showResults ? (
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl mx-auto">
-          <div className="mb-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-gray-800">
-                Question {currentQuiz + 1} of {quizQuestions.length}
-              </h3>
-              <div className="text-sm text-gray-600">
-                {Math.round((currentQuiz / quizQuestions.length) * 100)}%
-                Complete
-              </div>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                style={{
-                  width: `${(currentQuiz / quizQuestions.length) * 100}%`,
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h4 className="text-lg font-semibold text-gray-800">
-              {quizQuestions[currentQuiz]?.question}
-            </h4>
-
-            <div className="space-y-3">
-              {quizQuestions[currentQuiz]?.options.map((option, index) => (
-                <label
-                  key={index}
-                  className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
-                >
-                  <input
-                    type="radio"
-                    name={`question-${currentQuiz}`}
-                    value={index}
-                    onChange={() => {
-                      const newAnswers = [...quizAnswers];
-                      newAnswers[currentQuiz] = index;
-                      setQuizAnswers(newAnswers);
-                    }}
-                    className="h-4 w-4 text-blue-600"
-                  />
-                  <span>{option}</span>
-                </label>
-              ))}
-            </div>
-
-            <div className="flex justify-between">
-              <button
-                onClick={() => setCurrentQuiz((prev) => Math.max(0, prev - 1))}
-                disabled={currentQuiz === 0}
-                className="px-6 py-2 border border-gray-300 rounded-lg disabled:opacity-50"
-              >
-                Previous
-              </button>
-
-              {currentQuiz < quizQuestions.length - 1 ? (
-                <button
-                  onClick={() => setCurrentQuiz((prev) => prev + 1)}
-                  disabled={quizAnswers[currentQuiz] === undefined}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
-                >
-                  Next
-                </button>
-              ) : (
-                <button
-                  onClick={submitQuiz}
-                  disabled={quizAnswers[currentQuiz] === undefined}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg disabled:opacity-50"
-                >
-                  Submit Quiz
-                </button>
-              )}
-            </div>
+              </thead>
+              <tbody>
+                {comparisonData.map((row, index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="p-3 border-b border-gray-200 font-semibold">
+                      {row.category}
+                    </td>
+                    <td className="p-3 border-b border-gray-200 text-sm">
+                      {row.exploitative}
+                    </td>
+                    <td className="p-3 border-b border-gray-200 text-sm">
+                      {row.ethical}
+                    </td>
+                    <td className="p-3 border-b border-gray-200 text-sm">
+                      {row.impact}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      ) : (
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl mx-auto">
-          <h3 className="text-2xl font-bold text-center mb-6">Quiz Results</h3>
 
-          <div className="space-y-6">
-            {quizQuestions.map((question, index) => {
-              const userAnswer = quizAnswers[index];
-              const isCorrect = userAnswer === question.correctAnswer;
-
-              return (
-                <div
-                  key={index}
-                  className={`p-4 rounded-lg border-2 ${isCorrect ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}`}
-                >
-                  <div className="flex items-center mb-2">
-                    <span
-                      className={`mr-3 ${isCorrect ? "text-green-600" : "text-red-600"}`}
-                    >
-                      {isCorrect ? "✓" : "✗"}
-                    </span>
-                    <h4 className="font-semibold">{question.question}</h4>
-                  </div>
-
-                  <div className="space-y-2 text-sm">
-                    <div>
-                      <span className="font-medium">Your answer:</span>{" "}
-                      {userAnswer !== undefined
-                        ? question.options[userAnswer]
-                        : "No answer"}
-                    </div>
-                    {!isCorrect && (
-                      <div>
-                        <span className="font-medium">Correct answer:</span>{" "}
-                        {question.options[question.correctAnswer]}
-                      </div>
-                    )}
-                    <div className="text-gray-600">
-                      <span className="font-medium">Explanation:</span>{" "}
-                      {question.explanation}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mt-8 text-center">
-            <div className="text-3xl font-bold mb-4">
-              Score:{" "}
-              <span
-                className={getScoreColor(
-                  Math.round(
-                    (quizAnswers.filter(
-                      (ans, i) =>
-                        ans !== undefined &&
-                        quizQuestions[i] &&
-                        ans === quizQuestions[i].correctAnswer
-                    ).length /
-                      quizQuestions.length) *
-                      100
-                  )
-                )}
-              >
-                {Math.round(
-                  (quizAnswers.filter(
-                    (ans, i) =>
-                      ans !== undefined &&
-                      quizQuestions[i] &&
-                      ans === quizQuestions[i].correctAnswer
-                  ).length /
-                    quizQuestions.length) *
-                    100
-                )}
-                %
+        {/* Interactive UI Comparison */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2 text-center">
+            Interactive Interface Comparison
+          </h2>
+          <p className="text-center text-gray-500 mb-4">
+            Compare how the same loan product can be presented in manipulative
+            vs transparent ways.
+          </p>
+          <div className="flex justify-center items-center my-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showAnnotations}
+                onChange={() => setShowAnnotations(!showAnnotations)}
+                className="sr-only peer"
+              />
+              <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <span className="ms-3 text-sm font-medium text-gray-900">
+                Show educational annotations
               </span>
-            </div>
-
-            <button
-              onClick={() => setCurrentView("overview")}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
-            >
-              Back to Overview
-            </button>
+            </label>
           </div>
+          <DarkPatternUI
+            mode="comparison"
+            showEducationalAnnotations={showAnnotations}
+          />
         </div>
-      )}
-    </div>
-  );
-
-  const renderResearch = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-purple-600 mb-4">
-          📊 Research Findings
-        </h2>
-        <p className="text-xl text-gray-600">
-          Real data about predatory lending practices
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">
-            ACH Exploitation Statistics
-          </h3>
-          <div className="space-y-4">
-            <div className="bg-red-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">
-                50%<sup className="text-xs">[1]</sup>
-              </div>
-              <div className="text-red-700 text-sm">
-                of online payday borrowers experience at least one debit attempt
-                that overdraws their account
-              </div>
-            </div>
-            <div className="bg-orange-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-orange-600">
-                $34<sup className="text-xs">[1]</sup>
-              </div>
-              <div className="text-orange-700 text-sm">
-                median NSF fee charged per failed withdrawal
-              </div>
-            </div>
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-yellow-600">
-                3.8<sup className="text-xs">[1]</sup>
-              </div>
-              <div className="text-yellow-700 text-sm">
-                average repeated debit attempts per failed payment
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">
-            Rollover Trap Statistics
-          </h3>
-          <div className="space-y-4">
-            <div className="bg-red-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">
-                80%<sup className="text-xs">[2]</sup>
-              </div>
-              <div className="text-red-700 text-sm">
-                of payday loans are renewed or followed by another loan within
-                14&nbsp;days
-              </div>
-            </div>
-            <div className="bg-orange-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-orange-600">
-                10<sup className="text-xs">[2]</sup>
-              </div>
-              <div className="text-orange-700 text-sm">
-                median number of loans a typical borrower takes per year
-              </div>
-            </div>
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <div className="text-3xl font-bold text-yellow-600">
-                $520<sup className="text-xs">[2]</sup>
-              </div>
-              <div className="text-yellow-700 text-sm">
-                average annual fees paid by frequent payday borrowers
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Citations */}
-      <div className="text-xs text-gray-500 max-w-3xl mx-auto">
-        <p className="mb-1 font-semibold">Sources</p>
-        <ol className="list-decimal ml-4 space-y-1">
-          <li>
-            Consumer Financial Protection Bureau. "Online Payday Loan Payments."
-            Apr&nbsp;2016.
-          </li>
-          <li>
-            The Pew Charitable Trusts. "Payday Lending in America: How Borrowers
-            Choose and Repay" (Report&nbsp;#2). Feb&nbsp;2013.
-          </li>
-        </ol>
-      </div>
-
-      <div className="text-center">
-        <button
-          onClick={() => setCurrentView("overview")}
-          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg"
-        >
-          Back to Overview
-        </button>
       </div>
     </div>
   );
-
-  const renderAutonomyTheater = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-red-600 mb-4">
-          🎭 Autonomy Theater Analysis
-        </h2>
-        <p className="text-xl text-gray-600">
-          Deep dive into manipulation patterns and their psychological impact
-        </p>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="text-4xl font-bold text-red-600 mb-4">
-            {autonomyScore}% Manipulation Score
-          </div>
-          <p className="text-lg text-gray-600">
-            Based on dark patterns detected in Phase 1 exploitative interface
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {autonomyTheaterMetrics.map((metric, index) => (
-            <div
-              key={index}
-              className="border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
-            >
-              <div className="flex justify-between items-start mb-3">
-                <h4 className="font-semibold text-gray-800">
-                  {(metric as any).pattern || (metric as any).category}
-                </h4>
-                <span
-                  className={`text-xs px-2 py-1 rounded ${
-                    metric.severity === "Critical"
-                      ? "bg-red-100 text-red-800"
-                      : metric.severity === "High"
-                        ? "bg-orange-100 text-orange-800"
-                        : "bg-yellow-100 text-yellow-800"
-                  }`}
-                >
-                  {metric.severity}
-                </span>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">
-                {metric.description || (metric as any).description}
-              </p>
-              <p className="text-xs text-gray-500 mb-2">
-                {(metric as any).realWorldImpact || (metric as any).impact}
-              </p>
-              {(metric as any).frequency && (
-                <div className="text-xs text-blue-600 font-semibold">
-                  Used by {(metric as any).frequency}% of predatory sites
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-          <h4 className="font-semibold text-blue-800 mb-3 text-lg">
-            Understanding Autonomy Theater
-          </h4>
-          <p className="text-blue-700 mb-3">
-            "Autonomy theater" refers to the illusion of choice and control
-            while systematically removing genuine autonomy. These patterns
-            create the appearance of informed decision-making while actually
-            manipulating users toward predetermined outcomes.
-          </p>
-          <div className="grid md:grid-cols-2 gap-4 mt-4">
-            <div className="bg-white p-4 rounded-lg">
-              <h5 className="font-semibold text-red-700 mb-2">
-                🎭 The Illusion
-              </h5>
-              <p className="text-sm text-gray-700">
-                Users feel they're making informed choices, but the interface is
-                designed to guide them toward specific outcomes.
-              </p>
-            </div>
-            <div className="bg-white p-4 rounded-lg">
-              <h5 className="font-semibold text-green-700 mb-2">
-                ✅ Real Autonomy
-              </h5>
-              <p className="text-sm text-gray-700">
-                Genuine choice requires clear information, adequate time, and no
-                manipulative pressure tactics.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-center">
-        <button
-          onClick={() => setCurrentView("overview")}
-          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg"
-        >
-          ← Back to Overview
-        </button>
-      </div>
-    </div>
-  );
-
-  useEffect(() => {
-    calculateAutonomyScore();
-  }, [calculateAutonomyScore]);
-
-  // Main render logic
-  switch (currentView) {
-    case "autonomy":
-      return renderAutonomyTheater();
-    case "quiz":
-      return renderQuiz();
-    case "research":
-      return renderResearch();
-    default:
-      return renderOverview();
-  }
 };
 
 export default Phase3EducationalReflection;
