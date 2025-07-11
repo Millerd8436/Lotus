@@ -7,8 +7,7 @@ import React, { useState } from "react";
  * Professional ModeSelector - Navigate between all phases of the educational platform.
  * Phase 1: Professional Predatory Interface (/)
  * Phase 2: Ethical Alternative Interface (/ethical)
- * Phase 3: Reflection & Analysis (/reflection)
- * Phase 4: Comparative Analysis (/comparison)
+ * Phase 3: Reflection & Analysis (/reflection) - includes comparison functionality
  */
 const ModeSelector: React.FC = () => {
   const router = useRouter();
@@ -18,7 +17,6 @@ const ModeSelector: React.FC = () => {
   const getPhase = () => {
     if (pathname === "/ethical") return 2;
     if (pathname === "/reflection") return 3;
-    if (pathname === "/comparison") return 4;
     return 1;
   };
 
@@ -60,19 +58,10 @@ const ModeSelector: React.FC = () => {
       id: 3,
       route: "/reflection",
       title: "Analysis",
-      subtitle: "Behavioral Insights",
+      subtitle: "Behavioral Insights & Comparison",
       icon: "📊",
-      description: "Analyze your behavioral patterns",
+      description: "Analyze patterns & compare all phases",
       color: "#7c3aed",
-    },
-    {
-      id: 4,
-      route: "/comparison",
-      title: "Comparison",
-      subtitle: "Side-by-Side Analysis",
-      icon: "⚖️",
-      description: "Compare all phases comprehensively",
-      color: "#0ea5e9",
     },
   ];
 
@@ -95,12 +84,12 @@ const ModeSelector: React.FC = () => {
             {/* Professional Progress Indicator */}
             <div className="flex items-center space-x-2">
               <div className="text-xs text-slate-500 font-medium">
-                Phase {phase} of 4
+                Phase {phase} of 3
               </div>
               <div className="w-16 h-1 bg-slate-200 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-gradient-to-r from-pink-500 to-purple-600 transition-all duration-500"
-                  style={{ width: `${(phase / 4) * 100}%` }}
+                  style={{ width: `${(phase / 3) * 100}%` }}
                 />
               </div>
             </div>
@@ -205,7 +194,6 @@ function getCurrentPhaseStatus(phase: number): string {
     1: "🏦 Professional Predatory Interface",
     2: "✨ Ethical Alternative Interface",
     3: "📊 Behavioral Analysis & Insights",
-    4: "⚖️ Comprehensive Comparison",
   };
   return statuses[phase as keyof typeof statuses] || "Unknown Phase";
 }
