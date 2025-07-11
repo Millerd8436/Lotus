@@ -1,5 +1,6 @@
 "use client";
 
+import DarkPatternUI from "@/components/DarkPatternUI";
 import Phase1ExploitativeWebsite from "@/components/Phase1ExploitativeWebsite";
 import Phase2EthicalWebsite from "@/components/Phase2EthicalWebsite";
 import Phase3EducationalReflection from "@/components/Phase3EducationalReflection";
@@ -14,7 +15,7 @@ import React, { useEffect, useState } from "react";
  * - Phase 3: Educational reflection and autonomy theater analysis
  */
 
-type Phase = "phase1" | "phase2" | "phase3";
+type Phase = "phase1" | "phase2" | "phase3" | "phase4";
 
 const LotusSimulator: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState<Phase>("phase1");
@@ -27,7 +28,10 @@ const LotusSimulator: React.FC = () => {
       "lotus-current-phase"
     ) as Phase | null;
     const storedShow = localStorage.getItem("lotus-show-panel");
-    if (storedPhase && ["phase1", "phase2", "phase3"].includes(storedPhase)) {
+    if (
+      storedPhase &&
+      ["phase1", "phase2", "phase3", "phase4"].includes(storedPhase)
+    ) {
       setCurrentPhase(storedPhase);
     }
     if (storedShow === "false") {
@@ -47,27 +51,38 @@ const LotusSimulator: React.FC = () => {
     localStorage.setItem("lotus-show-panel", showPanel.toString());
   }, [showPanel]);
 
-  const phaseDescriptions = {
+  const totalPhases = 4;
+  const phaseDescriptions: Record<
+    Phase,
+    { title: string; description: string; color: string; hoverColor: string }
+  > = {
     phase1: {
-      title: "Phase 1: Exploitative Lending",
+      title: "Phase 1 of 4 · 🏦 Professional Predatory Interface",
       description:
-        "Experience predatory lending practices with hidden fees, rollover traps, and psychological manipulation",
+        "Experience predatory lending practices with hidden fees, rollover traps, and psychological manipulation.",
       color: "bg-red-600",
       hoverColor: "hover:bg-red-700",
     },
     phase2: {
-      title: "Phase 2: Ethical Lending",
+      title: "Phase 2 of 4 · ✨ Ethical Alternative Interface",
       description:
-        "See how transparent, fair lending practices should work with full disclosure and consumer protection",
+        "See how transparent, fair lending practices should work with full disclosure and consumer protection.",
       color: "bg-green-600",
       hoverColor: "hover:bg-green-700",
     },
     phase3: {
-      title: "Phase 3: Educational Analysis",
+      title: "Phase 3 of 4 · 📊 Analysis & Behavioral Insights",
       description:
-        "Analyze both experiences with autonomy theater detection and comprehensive educational content",
+        "Dive into behavioral data and autonomy-theater detection to understand lender tactics.",
       color: "bg-purple-600",
       hoverColor: "hover:bg-purple-700",
+    },
+    phase4: {
+      title: "Phase 4 of 4 · ⚖️ Comparison Side-by-Side Analysis",
+      description:
+        "Compare predatory vs. ethical interfaces simultaneously to observe contrasts in real-time.",
+      color: "bg-blue-600",
+      hoverColor: "hover:bg-blue-700",
     },
   };
 
@@ -103,7 +118,7 @@ const LotusSimulator: React.FC = () => {
           ))}
         </div>
         <div className="mt-4 text-xs text-gray-600">
-          Educational Platform: 3 phases available
+          Educational Platform: {totalPhases} phases available
         </div>
       </div>
     ) : (
@@ -124,6 +139,8 @@ const LotusSimulator: React.FC = () => {
         return <Phase2EthicalWebsite />;
       case "phase3":
         return <Phase3EducationalReflection />;
+      case "phase4":
+        return <DarkPatternUI mode="comparison" />;
       default:
         return <Phase1ExploitativeWebsite />;
     }
