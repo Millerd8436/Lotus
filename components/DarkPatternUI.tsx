@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-return */
 // components/ui/DarkPatternUI.tsx
 "use client";
 
@@ -21,6 +22,7 @@ const DarkPatternUI: React.FC<DarkPatternUIProps> = ({ pattern }) => {
       }, 1000);
       return () => clearInterval(timer);
     }
+    return;
   }, [pattern]);
 
   useEffect(() => {
@@ -31,6 +33,7 @@ const DarkPatternUI: React.FC<DarkPatternUIProps> = ({ pattern }) => {
       }, 15000);
       return () => clearInterval(notificationTimer);
     }
+    return;
   }, [pattern]);
 
   const formatTime = (seconds: number) => {

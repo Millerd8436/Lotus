@@ -271,11 +271,7 @@ const Phase3EducationalReflection: React.FC = () => {
               </span>
             </label>
           </div>
-          <DarkPatternUI
-            mode="comparison"
-            showEducationalAnnotations={showAnnotations}
-            onShowAnnotationsChange={setShowAnnotations}
-          />
+          <DarkPatternUI pattern="urgency" />
         </div>
       </div>
     </div>

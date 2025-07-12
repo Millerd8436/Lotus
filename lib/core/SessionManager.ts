@@ -1,5 +1,5 @@
 // Import the canonical session type
-import { LotusSession } from "@/types/shared";
+import { LotusSession, getInitialFormData } from "@/types/shared";
 import { AutonomyViolation } from "../../types/lotus";
 
 // This file seems to be a more detailed, backend-focused session manager
@@ -69,7 +69,7 @@ export class SessionManager {
       id: `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       // These properties are part of the imported LotusSession.
       startTime: new Date(),
-      exploitativeData: {},
+      exploitativeData: getInitialFormData(), // Use the helper function here.
       ethicalData: {},
       autonomyViolations: [],
       darkPatterns: [],
