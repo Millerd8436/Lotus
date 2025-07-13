@@ -524,7 +524,7 @@ export const simulatorCSS = `
 /* Reflection Phase Styles */
 .reflection {
   background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-  border: 2px solid #8b5cf6;
+  border: 2px solid #1e3a8a;
 }
 
 .reflection .phase-header h2 {

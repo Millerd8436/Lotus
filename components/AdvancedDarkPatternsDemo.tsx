@@ -292,9 +292,9 @@ const AdvancedDarkPatternsDemo: React.FC<AdvancedDarkPatternsDemoProps> = ({
         <div
           style={{
             padding: "1rem",
-            border: "2px solid #9c27b0",
+            border: "2px solid #f59e0b",
             borderRadius: "8px",
-            background: "#f3e5f5",
+            background: "#fffbeb",
           }}
         >
           <h4 style={{ margin: "0 0 1rem 0" }}>
@@ -726,7 +726,7 @@ const AdvancedDarkPatternsDemo: React.FC<AdvancedDarkPatternsDemoProps> = ({
       {/* Educational Summary */}
       <div
         style={{
-          background: "linear-gradient(135deg, #673ab7, #9c27b0)",
+          background: "linear-gradient(135deg, #1e40af, #0369a1)",
           color: "white",
           padding: "2rem",
           borderRadius: "12px",

@@ -64,18 +64,18 @@ const RealtimeAnalysisMonitor: React.FC<RealtimeAnalysisMonitorProps> = ({
 
         {/* Consent Deception */}
         <div>
-          <label className="block text-sm font-semibold text-purple-300">
+          <label className="block text-sm font-semibold text-blue-300">
             Consent Deception Index
           </label>
           <div className="w-full bg-gray-700 rounded-full h-2.5">
             <div
-              className="bg-purple-500 h-2.5 rounded-full"
+              className="bg-blue-500 h-2.5 rounded-full"
               style={{
                 width: `${(profile.trustLevel === "high" ? 20 : 50) + profile.dehumanizationScore * 50}%`,
               }}
             ></div>
           </div>
-          <p className="text-xs text-right text-purple-400 mt-1">
+          <p className="text-xs text-right text-blue-400 mt-1">
             Manufacturing Agreement
           </p>
         </div>

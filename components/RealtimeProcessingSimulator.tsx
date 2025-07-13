@@ -274,9 +274,9 @@ const RealtimeProcessingSimulator: React.FC<
   const progress = (currentStep / (steps.length - 1)) * 100;
 
   return (
-    <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white p-8 rounded-2xl shadow-2xl max-w-2xl mx-auto border-4 border-purple-500">
+    <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white p-8 rounded-2xl shadow-2xl max-w-2xl mx-auto border-4 border-blue-600">
       <div className="text-center mb-6">
-        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
+        <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-slate-500 mb-2">
           {processingComplete
             ? "✅ Processing Complete!"
             : "⚙️ Processing Your Loan..."}
@@ -290,7 +290,7 @@ const RealtimeProcessingSimulator: React.FC<
         <div className="text-center">
           <button
             onClick={runProcessing}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="bg-gradient-to-r from-blue-600 to-slate-600 hover:from-blue-700 hover:to-slate-700 text-white font-bold py-4 px-8 rounded-xl text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
             🚀 Start Secure Processing
           </button>

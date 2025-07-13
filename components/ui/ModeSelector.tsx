@@ -58,10 +58,10 @@ const ModeSelector: React.FC = () => {
       id: 3,
       route: "/reflection",
       title: "Analysis",
-      subtitle: "Analysis & Comparison",
+      subtitle: "Analysis & Education",
       icon: "📊",
       description: "Analyze patterns & compare all phases",
-      color: "#7c3aed",
+      color: "#0284c7", // A professional, serious blue
     },
   ];
 
@@ -73,8 +73,8 @@ const ModeSelector: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo/Brand */}
             <div className="flex items-center space-x-3">
-              <div className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
-                🌸 Lotus
+              <div className="text-2xl font-bold bg-gradient-to-r from-sky-600 to-slate-700 bg-clip-text text-transparent">
+                Lotus
               </div>
               <div className="hidden sm:block text-sm text-slate-600 font-medium">
                 Professional Payday Loan Simulator
@@ -88,7 +88,7 @@ const ModeSelector: React.FC = () => {
               </div>
               <div className="w-16 h-1 bg-slate-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-pink-500 to-purple-600 transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-sky-600 to-slate-700 transition-all duration-500"
                   style={{ width: `${(phase / 3) * 100}%` }}
                 />
               </div>
@@ -147,7 +147,7 @@ const ModeSelector: React.FC = () => {
                   {/* Active Phase Indicator */}
                   {phase === phaseData.id && (
                     <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-white shadow-md">
-                      <div className="w-full h-full rounded-full bg-gradient-to-r from-pink-500 to-purple-600 animate-pulse" />
+                      <div className="w-full h-full rounded-full bg-gradient-to-r from-sky-600 to-slate-700 animate-pulse" />
                     </div>
                   )}
                 </button>
@@ -164,7 +164,7 @@ const ModeSelector: React.FC = () => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span>Professional Simulation Active</span>
+                <span>Simulation Active</span>
               </div>
               <div className="hidden sm:block">
                 Educational Platform • Academic Research • Consumer Protection
@@ -193,7 +193,7 @@ function getCurrentPhaseStatus(phase: number): string {
   const statuses = {
     1: "🏦 Professional Predatory Interface",
     2: "✨ Ethical Alternative Interface",
-    3: "📊 Analysis & Comparison",
+    3: "📊 Analysis & Education",
   };
   return statuses[phase as keyof typeof statuses] || "Unknown Phase";
 }

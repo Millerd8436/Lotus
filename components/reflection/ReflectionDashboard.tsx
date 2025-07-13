@@ -28,7 +28,7 @@ const ReflectionDashboard: React.FC = () => {
       {/* Header */}
       <header
         style={{
-          background: "#7c3aed",
+          background: "#1e3a8a",
           color: "#fff",
           padding: "2rem 0",
           textAlign: "center",
@@ -94,6 +94,94 @@ const ReflectionDashboard: React.FC = () => {
         </div>
       </header>
 
+      {/* Startling Statistics Banner */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #dc2626, #b91c1c)",
+          color: "#fff",
+          padding: "2rem 0",
+          textAlign: "center",
+        }}
+      >
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1rem" }}>
+          <h2
+            style={{
+              fontSize: "2rem",
+              fontWeight: 700,
+              marginBottom: "1rem",
+            }}
+          >
+            ⚠️ The Real Cost of Predatory Lending
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "2rem",
+              marginTop: "1.5rem",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: "3rem",
+                  fontWeight: 800,
+                  marginBottom: "0.5rem",
+                }}
+              >
+                80%
+              </div>
+              <div style={{ fontSize: "1rem", opacity: 0.9 }}>
+                of payday loans are rolled over within 14 days, trapping
+                borrowers in debt cycles
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: "3rem",
+                  fontWeight: 800,
+                  marginBottom: "0.5rem",
+                }}
+              >
+                $391%
+              </div>
+              <div style={{ fontSize: "1rem", opacity: 0.9 }}>
+                average APR on payday loans - 15x higher than credit cards
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: "3rem",
+                  fontWeight: 800,
+                  marginBottom: "0.5rem",
+                }}
+              >
+                75%
+              </div>
+              <div style={{ fontSize: "1rem", opacity: 0.9 }}>
+                of lender revenue comes from borrowers trapped in debt for 5+
+                months
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: "1.5rem",
+              padding: "1rem",
+              background: "rgba(255,255,255,0.1)",
+              borderRadius: "8px",
+              fontSize: "1.1rem",
+              fontWeight: 600,
+            }}
+          >
+            💡 This simulation demonstrates how deceptive technology exploits
+            vulnerable consumers
+          </div>
+        </div>
+      </div>
+
       {/* Tab Navigation */}
       <div
         style={{
@@ -115,12 +203,12 @@ const ReflectionDashboard: React.FC = () => {
                 style={{
                   flex: 1,
                   padding: "1rem",
-                  background: activeTab === tab ? "#7c3aed" : "transparent",
+                  background: activeTab === tab ? "#1e3a8a" : "transparent",
                   color: activeTab === tab ? "#fff" : "#6b7280",
                   border: "none",
                   borderBottom:
                     activeTab === tab
-                      ? "3px solid #7c3aed"
+                      ? "3px solid #1e3a8a"
                       : "3px solid transparent",
                   fontWeight: 600,
                   fontSize: "1rem",
@@ -270,7 +358,7 @@ const UIPatternEducation: React.FC = () => {
       id: "deceptive-interface",
       title: "Deceptive Interface Design",
       icon: "🎨",
-      color: "#7c3aed",
+      color: "#4b5563",
       deceptive: [
         "Predatory UX: Confusing navigation designed to increase borrowing",
         "Mobile Exploitation: Harder to read terms on small screens",
@@ -313,35 +401,9 @@ const UIPatternEducation: React.FC = () => {
       ],
       backendLogic: {
         exploitative:
-          "Targeting engine identifies and exploits user vulnerabilities",
+          "Targeting engine identifies vulnerable users and maximizes data collection",
         ethical:
-          "Privacy engine protects user data and provides transparent controls",
-      },
-    },
-    {
-      id: "modern-techniques",
-      title: "Modern Deceptive Techniques (2024-2025)",
-      icon: "🤖",
-      color: "#1e40af",
-      deceptive: [
-        "AI-Powered Manipulation: Using machine learning to identify and exploit vulnerability",
-        "Gamification: Turning debt into a game to make borrowing feel fun",
-        "Subscription Disguise: Traditional payday lending disguised as subscription services",
-        "Fintech Facades: Predatory lending disguised as innovative fintech",
-        "Personalized dark patterns based on user behavior",
-      ],
-      ethical: [
-        "AI for Good: Using technology to suggest appropriate loan amounts and alternatives",
-        "Educational Gamification: Game elements that reward financial literacy",
-        "Transparent Fintech: Clear about traditional lending nature despite tech interface",
-        "Financial Wellness Focus: Apps that promote saving and budgeting",
-        "Ethical AI that protects rather than exploits users",
-      ],
-      backendLogic: {
-        exploitative:
-          "AI manipulation engine personalizes dark patterns for maximum effectiveness",
-        ethical:
-          "AI assistance engine provides personalized financial education and support",
+          "Privacy-first engine minimizes data collection and provides clear controls",
       },
     },
   ];
@@ -349,102 +411,179 @@ const UIPatternEducation: React.FC = () => {
   const currentPattern =
     patterns.find((p) => p.id === activePattern) || patterns[0];
 
-  if (!currentPattern) {
-    return <div>Loading...</div>;
-  }
+  // Before using currentPattern in JSX:
+  if (!currentPattern) return null;
 
   return (
-    <div>
-      <h2 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: 24 }}>
-        🕷️ Dark Pattern Education: Complete UI Analysis
-      </h2>
-
+    <div style={{ maxWidth: "100%", margin: "0 auto" }}>
       {/* Pattern Navigation */}
       <div
-        style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 32 }}
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "12px",
+          marginBottom: "32px",
+          padding: "16px",
+          background: "#f8fafc",
+          borderRadius: "12px",
+          border: "1px solid #e2e8f0",
+        }}
       >
         {patterns.map((pattern) => (
           <button
             key={pattern.id}
             onClick={() => setActivePattern(pattern.id)}
             style={{
-              padding: "0.75rem 1rem",
+              padding: "12px 16px",
               background:
                 activePattern === pattern.id ? pattern.color : "#f3f4f6",
               color: activePattern === pattern.id ? "#fff" : "#374151",
               border: "none",
-              borderRadius: 8,
+              borderRadius: "8px",
               fontWeight: 600,
               cursor: "pointer",
               transition: "all 0.2s",
               fontSize: "0.875rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              minWidth: "fit-content",
             }}
           >
-            {pattern.icon} {pattern.title}
+            <span style={{ fontSize: "1.125rem" }}>{pattern.icon}</span>
+            <span style={{ whiteSpace: "nowrap" }}>{pattern.title}</span>
           </button>
         ))}
       </div>
 
-      {/* Current Pattern Details */}
+      {/* Pattern Content */}
       <div
         style={{
           background: "#fff",
-          borderRadius: 12,
-          padding: "2rem",
-          marginBottom: 32,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+          borderRadius: "16px",
+          padding: "32px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+          border: "1px solid #e5e7eb",
+          marginBottom: "32px",
         }}
       >
-        <h3
+        {/* Pattern Header */}
+        <div
           style={{
-            fontSize: "1.5rem",
-            fontWeight: 600,
-            marginBottom: 24,
-            color: currentPattern.color,
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            marginBottom: "24px",
+            paddingBottom: "16px",
+            borderBottom: "2px solid #f3f4f6",
           }}
         >
-          {currentPattern.icon} {currentPattern.title}
-        </h3>
+          <div
+            style={{
+              width: "64px",
+              height: "64px",
+              background: currentPattern.color,
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "2rem",
+              color: "#fff",
+            }}
+          >
+            {currentPattern.icon}
+          </div>
+          <div>
+            <h2
+              style={{
+                fontSize: "1.875rem",
+                fontWeight: 700,
+                color: "#1f2937",
+                marginBottom: "4px",
+              }}
+            >
+              {currentPattern.title}
+            </h2>
+            <p
+              style={{
+                fontSize: "1rem",
+                color: "#6b7280",
+                margin: 0,
+              }}
+            >
+              Understanding how this dark pattern works and its ethical
+              alternatives
+            </p>
+          </div>
+        </div>
 
+        {/* Pattern Comparison */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: 24,
-            marginBottom: 32,
+            gap: "24px",
+            marginBottom: "32px",
           }}
         >
           {/* Deceptive Practices */}
           <div
             style={{
               background: "#fef2f2",
-              borderRadius: 8,
-              padding: "1.5rem",
-              border: "1px solid #fecaca",
+              borderRadius: "12px",
+              padding: "24px",
+              border: "2px solid #fecaca",
             }}
           >
-            <h4
+            <h3
               style={{
-                fontSize: "1.125rem",
+                fontSize: "1.25rem",
                 fontWeight: 600,
                 color: "#dc2626",
-                marginBottom: 16,
+                marginBottom: "16px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
               }}
             >
               🚫 Deceptive Practices
-            </h4>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            </h3>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+              }}
+            >
               {currentPattern.deceptive.map((item, index) => (
                 <li
                   key={index}
                   style={{
-                    marginBottom: 12,
                     display: "flex",
                     alignItems: "flex-start",
+                    gap: "8px",
+                    padding: "12px",
+                    background: "#fff",
+                    borderRadius: "8px",
+                    border: "1px solid #fecaca",
                   }}
                 >
-                  <span style={{ marginRight: 8, color: "#dc2626" }}>•</span>
-                  <span style={{ fontSize: "0.875rem" }}>{item}</span>
+                  <span
+                    style={{
+                      color: "#dc2626",
+                      fontSize: "1.125rem",
+                      fontWeight: "bold",
+                      marginTop: "2px",
+                    }}
+                  >
+                    •
+                  </span>
+                  <span style={{ fontSize: "0.875rem", lineHeight: "1.5" }}>
+                    {item}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -454,33 +593,60 @@ const UIPatternEducation: React.FC = () => {
           <div
             style={{
               background: "#f0fdf4",
-              borderRadius: 8,
-              padding: "1.5rem",
-              border: "1px solid #bbf7d0",
+              borderRadius: "12px",
+              padding: "24px",
+              border: "2px solid #bbf7d0",
             }}
           >
-            <h4
+            <h3
               style={{
-                fontSize: "1.125rem",
+                fontSize: "1.25rem",
                 fontWeight: 600,
                 color: "#16a34a",
-                marginBottom: 16,
+                marginBottom: "16px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
               }}
             >
               ✅ Ethical Alternatives
-            </h4>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            </h3>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+              }}
+            >
               {currentPattern.ethical.map((item, index) => (
                 <li
                   key={index}
                   style={{
-                    marginBottom: 12,
                     display: "flex",
                     alignItems: "flex-start",
+                    gap: "8px",
+                    padding: "12px",
+                    background: "#fff",
+                    borderRadius: "8px",
+                    border: "1px solid #bbf7d0",
                   }}
                 >
-                  <span style={{ marginRight: 8, color: "#16a34a" }}>•</span>
-                  <span style={{ fontSize: "0.875rem" }}>{item}</span>
+                  <span
+                    style={{
+                      color: "#16a34a",
+                      fontSize: "1.125rem",
+                      fontWeight: "bold",
+                      marginTop: "2px",
+                    }}
+                  >
+                    •
+                  </span>
+                  <span style={{ fontSize: "0.875rem", lineHeight: "1.5" }}>
+                    {item}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -491,9 +657,10 @@ const UIPatternEducation: React.FC = () => {
         <div
           style={{
             background: "#f8fafc",
-            borderRadius: 8,
-            padding: "1.5rem",
+            borderRadius: "12px",
+            padding: "24px",
             border: "1px solid #e2e8f0",
+            marginBottom: "24px",
           }}
         >
           <h4
@@ -501,121 +668,199 @@ const UIPatternEducation: React.FC = () => {
               fontSize: "1.125rem",
               fontWeight: 600,
               color: "#475569",
-              marginBottom: 16,
+              marginBottom: "16px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
             }}
           >
             ⚙️ Backend Logic Differences
           </h4>
           <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "20px",
+            }}
           >
-            <div>
+            <div
+              style={{
+                background: "#fef2f2",
+                padding: "16px",
+                borderRadius: "8px",
+                border: "1px solid #fecaca",
+              }}
+            >
               <h5
                 style={{
                   fontSize: "1rem",
                   fontWeight: 600,
                   color: "#dc2626",
-                  marginBottom: 8,
+                  marginBottom: "8px",
                 }}
               >
                 Exploitative Backend
               </h5>
-              <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  color: "#6b7280",
+                  lineHeight: "1.5",
+                  margin: 0,
+                }}
+              >
                 {currentPattern.backendLogic.exploitative}
               </p>
             </div>
-            <div>
+            <div
+              style={{
+                background: "#f0fdf4",
+                padding: "16px",
+                borderRadius: "8px",
+                border: "1px solid #bbf7d0",
+              }}
+            >
               <h5
                 style={{
                   fontSize: "1rem",
                   fontWeight: 600,
                   color: "#16a34a",
-                  marginBottom: 8,
+                  marginBottom: "8px",
                 }}
               >
                 Ethical Backend
               </h5>
-              <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  color: "#6b7280",
+                  lineHeight: "1.5",
+                  margin: 0,
+                }}
+              >
                 {currentPattern.backendLogic.ethical}
               </p>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Implementation Guide */}
-      <div
-        style={{
-          background: "#fffbeb",
-          borderRadius: 12,
-          padding: "2rem",
-          border: "1px solid #fed7aa",
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "1.5rem",
-            fontWeight: 600,
-            marginBottom: 16,
-            color: "#92400e",
-          }}
-        >
-          🔧 How This Works in the Simulator
-        </h3>
+        {/* Implementation Guide */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 20,
+            background: "#fffbeb",
+            borderRadius: "12px",
+            padding: "24px",
+            border: "1px solid #fed7aa",
           }}
         >
-          <div>
-            <h4
+          <h3
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: 600,
+              marginBottom: "16px",
+              color: "#92400e",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            🔧 How This Works in the Simulator
+          </h3>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "20px",
+            }}
+          >
+            <div
               style={{
-                fontSize: "1rem",
-                fontWeight: 600,
-                color: "#dc2626",
-                marginBottom: 8,
+                background: "#fff",
+                padding: "16px",
+                borderRadius: "8px",
+                border: "1px solid #fed7aa",
               }}
             >
-              Phase 1: Exploitative
-            </h4>
-            <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
-              You experienced these dark patterns in action. The backend tracked
-              your responses and vulnerability.
-            </p>
-          </div>
-          <div>
-            <h4
+              <h4
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  color: "#92400e",
+                  marginBottom: "8px",
+                }}
+              >
+                Phase 1: Exploitative Implementation
+              </h4>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  fontSize: "0.875rem",
+                  color: "#6b7280",
+                }}
+              >
+                <li style={{ marginBottom: "8px" }}>
+                  • Real-time behavioral tracking
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • Vulnerability scoring algorithms
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • Dynamic fee adjustment
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • ACH exploitation simulation
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • Rollover trap mechanics
+                </li>
+              </ul>
+            </div>
+            <div
               style={{
-                fontSize: "1rem",
-                fontWeight: 600,
-                color: "#16a34a",
-                marginBottom: 8,
+                background: "#fff",
+                padding: "16px",
+                borderRadius: "8px",
+                border: "1px solid #fed7aa",
               }}
             >
-              Phase 2: Ethical
-            </h4>
-            <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
-              You saw the ethical alternatives that protect your autonomy and
-              provide transparent information.
-            </p>
-          </div>
-          <div>
-            <h4
-              style={{
-                fontSize: "1rem",
-                fontWeight: 600,
-                color: "#7c3aed",
-                marginBottom: 8,
-              }}
-            >
-              Phase 3: Reflection
-            </h4>
-            <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
-              Now you understand the differences and can recognize these
-              patterns in real financial products.
-            </p>
+              <h4
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  color: "#92400e",
+                  marginBottom: "8px",
+                }}
+              >
+                Phase 2: Ethical Implementation
+              </h4>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  fontSize: "0.875rem",
+                  color: "#6b7280",
+                }}
+              >
+                <li style={{ marginBottom: "8px" }}>
+                  • Transparent pricing engine
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • Alternative loan suggestions
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • Educational content delivery
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • Cooling-off period enforcement
+                </li>
+                <li style={{ marginBottom: "8px" }}>
+                  • Consumer protection features
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -676,7 +921,7 @@ const ComparisonView: React.FC = () => {
             onClick={() => setActiveComparison(comp.id)}
             style={{
               padding: "0.75rem 1rem",
-              background: activeComparison === comp.id ? "#7c3aed" : "#f3f4f6",
+              background: activeComparison === comp.id ? "#1e3a8a" : "#f3f4f6",
               color: activeComparison === comp.id ? "#fff" : "#374151",
               border: "none",
               borderRadius: 8,
@@ -1777,7 +2022,7 @@ const BehavioralAnalysis: React.FC<{ session: LotusSession }> = ({
     {
       title: "Cognitive Load",
       value: "High vs. Low",
-      color: "#8b5cf6",
+      color: "#0d9488",
       description:
         "The mental effort required to understand the exploitative loan was high, while the ethical loan was clear.",
     },
@@ -1886,7 +2131,7 @@ const EducationalContent: React.FC<{ progress: any }> = ({ progress }) => {
             onClick={() => setActiveEducationTab(tab.id)}
             style={{
               padding: "0.75rem 1rem",
-              background: activeEducationTab === tab.id ? "#0369a1" : "#f3f4f6",
+              background: activeEducationTab === tab.id ? "#1e3a8a" : "#f3f4f6",
               color: activeEducationTab === tab.id ? "#fff" : "#374151",
               border: "none",
               borderRadius: 8,
@@ -1940,7 +2185,7 @@ const EducationalContent: React.FC<{ progress: any }> = ({ progress }) => {
               >
                 <div
                   style={{
-                    background: "#7c3aed",
+                    background: "#1e3a8a",
                     height: "100%",
                     width: `${progress?.completionRate || 75}%`,
                     transition: "width 0.3s",
@@ -2407,7 +2652,7 @@ const EducationalContent: React.FC<{ progress: any }> = ({ progress }) => {
                 style={{
                   fontSize: "1.25rem",
                   fontWeight: 600,
-                  color: "#7c3aed",
+                  color: "#1e3a8a",
                   marginBottom: 12,
                 }}
               >
@@ -2645,7 +2890,7 @@ const EducationalContent: React.FC<{ progress: any }> = ({ progress }) => {
                 style={{
                   fontSize: "1.25rem",
                   fontWeight: 600,
-                  color: "#7c3aed",
+                  color: "#1e3a8a",
                   marginBottom: 12,
                 }}
               >
@@ -3242,7 +3487,9 @@ const ComprehensionQuiz: React.FC = () => {
   const calculateScore = () => {
     return answers.reduce((score, answer, index) => {
       const question = questions[index];
-      return question && answer === question.correct ? score + 1 : score;
+      return question && answer !== undefined && answer === question.correct
+        ? score + 1
+        : score;
     }, 0);
   };
 
@@ -3253,12 +3500,13 @@ const ComprehensionQuiz: React.FC = () => {
     // Calculate category performance
     const categoryPerformance = questions.reduce(
       (acc, q, index) => {
+        if (!q) return acc;
         const category = q.category || "General";
         if (!acc[category]) {
           acc[category] = { correct: 0, total: 0 };
         }
         acc[category].total++;
-        if (answers[index] === q.correct) {
+        if (answers[index] !== undefined && answers[index] === q.correct) {
           acc[category].correct++;
         }
         return acc;
@@ -3380,14 +3628,21 @@ const ComprehensionQuiz: React.FC = () => {
 
           <div style={{ display: "grid", gap: 20 }}>
             {questions.map((q, index) => {
+              if (!q || !q.options) {
+                return null;
+              }
               const userAnswerIndex = answers[index];
+
+              if (userAnswerIndex === undefined) {
+                // Should not happen if quiz is complete, but a good safeguard.
+                return null;
+              }
+
               const isCorrect = userAnswerIndex === q.correct;
               const category = q.category || "General";
 
               const userAnswerText =
-                userAnswerIndex !== undefined
-                  ? (q.options?.[userAnswerIndex] ?? "Invalid Answer")
-                  : "No answer";
+                q.options?.[userAnswerIndex] ?? "Invalid Answer";
               const correctAnswerText = q.options?.[q.correct] ?? "N/A";
 
               return (
@@ -3457,7 +3712,7 @@ const ComprehensionQuiz: React.FC = () => {
                 setShowResults(false);
               }}
               style={{
-                background: "#7c3aed",
+                background: "#1e3a8a",
                 color: "#fff",
                 padding: "0.75rem 1.5rem",
                 borderRadius: 8,
@@ -3559,7 +3814,7 @@ const ComprehensionQuiz: React.FC = () => {
           >
             <div
               style={{
-                background: "#7c3aed",
+                background: "#1e3a8a",
                 height: "100%",
                 width: `${(currentQuestion / questions.length) * 100}%`,
                 transition: "width 0.3s",
@@ -3668,7 +3923,7 @@ function getCategoryColor(category: string): string {
     case "Fake Trust Signals":
       return "#059669";
     case "Deceptive Interface":
-      return "#7c3aed";
+      return "#4b5563";
     case "Predatory Targeting":
       return "#be123c";
     case "Modern Techniques":

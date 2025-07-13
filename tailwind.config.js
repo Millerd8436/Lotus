@@ -32,7 +32,7 @@ module.exports = {
           200: "#fbcfe8",
           300: "#f9a8d4",
           400: "#f472b6",
-          500: "#ec4899",
+          500: "#1e3a8a", // Changed to professional blue
           600: "#db2777",
           700: "#be185d",
           800: "#9d174d",
@@ -229,9 +229,9 @@ module.exports = {
           "--phase-border": theme("colors.ethical.200"),
         },
         ".phase-reflection": {
-          "--phase-color": theme("colors.purple.500"),
-          "--phase-bg": theme("colors.purple.50"),
-          "--phase-border": theme("colors.purple.200"),
+          "--phase-color": theme("colors.blue.600"),
+          "--phase-bg": theme("colors.blue.50"),
+          "--phase-border": theme("colors.blue.200"),
         },
         ".dark-pattern-highlight": {
           "@apply relative border-2 border-red-500 bg-red-50 animate-pulse": {},

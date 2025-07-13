@@ -44,10 +44,10 @@ const EthicalFrameworksExplainer: React.FC = () => {
         {ethicalConcepts.map((concept) => (
           <div
             key={concept.id}
-            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-purple-500"
+            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-blue-600"
             onClick={() => handleConceptClick(concept)}
           >
-            <h4 className="font-bold text-lg text-purple-800">
+            <h4 className="font-bold text-lg text-blue-800">
               {concept.options[concept.correct]}
             </h4>
             <p className="text-sm text-gray-600 mt-2">{concept.question}</p>
@@ -70,7 +70,7 @@ const EthicalFrameworksExplainer: React.FC = () => {
             <p className="text-gray-600 mb-4">
               <strong>Core Question:</strong> {selectedConcept.question}
             </p>
-            <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
               <p className="text-gray-800">
                 <strong>Explanation:</strong> {selectedConcept.explanation}
               </p>
@@ -86,7 +86,7 @@ const EthicalFrameworksExplainer: React.FC = () => {
             </div>
             <button
               onClick={handleClose}
-              className="mt-6 w-full bg-purple-600 text-white font-bold py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              className="mt-6 w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Close
             </button>

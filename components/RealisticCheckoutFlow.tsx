@@ -598,7 +598,7 @@ const RealisticCheckoutFlow: React.FC = () => {
               <span>BBB Accredited</span>
             </div>
             <div className="flex items-center">
-              <div className="w-3 h-3 bg-purple-500 rounded-full mr-1"></div>
+              <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
               <span>Licensed Lender</span>
             </div>
           </div>
