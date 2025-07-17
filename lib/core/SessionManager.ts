@@ -1,6 +1,7 @@
 // Import the canonical session type
-import { LotusSession, getInitialFormData } from "@/types/shared";
-import { AutonomyViolation } from "../../types/lotus";
+import { LotusSession, getInitialFormData } from "@/types";
+
+import { AutonomyViolation } from "@/types";
 
 // This file seems to be a more detailed, backend-focused session manager
 // that is NOT CURRENTLY USED by the main simulation components.
@@ -65,14 +66,33 @@ export class SessionManager {
 
   initializeSession(initialData: Partial<LotusSession>): LotusSession {
     this.session = {
-      // The `id` property comes from the imported LotusSession type.
       id: `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      // These properties are part of the imported LotusSession.
-      startTime: new Date(),
-      exploitativeData: getInitialFormData(), // Use the helper function here.
+      sessionId: `session_${Date.now()}_${Math.random()
+        .toString(36)
+        .substr(2, 9)}`,
+      timestamp: new Date().toISOString(),
+      startTime: new Date().toISOString(),
+      exploitativeData: getInitialFormData(),
       ethicalData: {},
       autonomyViolations: [],
       darkPatterns: [],
+      amount: 0,
+      state: "",
+      mode: "exploitative",
+      termDays: 0,
+      fee: 0,
+      apr: 0,
+      totalCost: 0,
+      rolloverCount: 0,
+      psychologicalProfile: {} as any,
+      vulnerabilityScore: 0,
+      coercionTimeline: [],
+      manipulationExposure: [],
+      behavioralMetrics: {} as any,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      completed: false,
+      phase: 1,
       ...initialData,
     };
 

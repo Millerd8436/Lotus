@@ -1,6 +1,6 @@
 "use client";
 
-import { LotusSession } from "@/types/shared"; // Import LotusSession, RealisticFormData, and helper
+import { LotusSession } from "@/types"; // Import LotusSession, RealisticFormData, and helper
 import React, { useState } from "react";
 import { useEducation } from "../providers/EducationProvider";
 import { useSimulation } from "../providers/SimulationProvider";

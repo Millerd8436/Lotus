@@ -1,7 +1,7 @@
 // components/predatory/RealtimeAnalysisMonitor.tsx
 "use client";
 
-import { UserProfile } from "@/types/shared";
+import { UserProfile } from "@/types";
 import React from "react";
 
 interface RealtimeAnalysisMonitorProps {

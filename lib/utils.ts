@@ -263,7 +263,9 @@ export const isValidEmail = (email: string): boolean => {
 export const formatPhoneNumber = (phone: string): string => {
   const cleaned = phone.replace(/\D/g, "");
   if (cleaned.length === 10) {
-    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(
+      6
+    )}`;
   }
   return phone;
 };
@@ -298,7 +300,7 @@ export function generateUUID(): string {
 
 // --- Initialization Helpers -------------------------------------------------
 
-import type { UserProfile } from "@/types/shared";
+import type { UserProfile } from "@/types";
 
 /**
  * Returns a neutral starting behavioural profile for the simulation.
@@ -316,6 +318,11 @@ export const getInitialBehavioralProfile = (): UserProfile => ({
   debtToIncomeRatio: 0,
   dehumanizationScore: 0,
   netUtilityScore: 0,
+  financialLiteracyLevel: "basic",
+  learningStyle: "visual",
+  vulnerabilities: [],
+  strengths: [],
+  goals: [],
 });
 
 /**
@@ -334,4 +341,4 @@ export const getInitialFormData = () =>
     loanAmount: 500,
     // Minimal required fields used elsewhere in the app
     previousPaydayLoan: false,
-  }) as any;
+  } as any);

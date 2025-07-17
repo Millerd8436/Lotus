@@ -1,6 +1,6 @@
 "use client";
 
-import { getInitialLotusSession, LotusSession } from "@/types/shared";
+import { getInitialLotusSession, LotusSession } from "@/types";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 // The context now provides the full session and a way to update it.

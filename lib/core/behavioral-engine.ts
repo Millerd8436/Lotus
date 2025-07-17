@@ -1,6 +1,6 @@
 // lib/core/behavioral-engine.ts
 
-import { RealisticFormData, UserProfile } from "@/types/shared";
+import { RealisticFormData, UserProfile } from "@/types";
 
 // NOTE: All local interface definitions for RealisticFormData and UserProfile
 // have been removed. They are now imported from the single source of truth

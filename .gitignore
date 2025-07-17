@@ -6,3 +6,30 @@ node_modules
 # build cache
 .next
 .vercel
+
+# GitHub Copilot
+.copilot-agent.json
+.copilot/
+.github/copilot/
+
+# Reduce tool count
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+
+# IDE and tool directories
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
