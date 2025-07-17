@@ -1,9 +1,8 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
-import ModeSelector from '@/components/ui/ModeSelector';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import WebsitePhase from '@/components/WebsitePhase';
+import { ModeSelector, LoadingSpinner } from '@/components/ui';
+import { WebsitePhase } from '@/components';
 
 export default function HomePage() {
   const [currentPhase, setCurrentPhase] = useState<'exploitative' | 'ethical'>('exploitative');

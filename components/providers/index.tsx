@@ -1,13 +1,4 @@
-"use client";
+// Auto-generated barrel export file
 
-// Export all providers and their hooks
-export { 
-  SimulationProvider, 
-  useSimulation 
-} from "./SimulationProvider";
-
-export { 
-  EducationProvider, 
-  useEducation,
-  EducationalOverlay 
-} from "./EducationProvider";
+export { EducationProvider, EducationalOverlay, useEducation } from './EducationProvider';
+export { SimulationProvider, useSimulation } from './SimulationProvider';

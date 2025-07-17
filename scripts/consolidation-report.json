@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-07-17T06:18:17.823Z",
+  "components": {
+    "total": 41,
+    "byDirectory": {
+      "ui": 11,
+      "ethical": 7,
+      "predatory": 5,
+      "providers": 3,
+      "reflection": 3,
+      "root": 12
+    }
+  },
+  "types": {
+    "files": [
+      "index.ts"
+    ]
+  },
+  "issues": []
+}

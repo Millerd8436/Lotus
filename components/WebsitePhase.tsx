@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import DeceptiveCheckoutFlow from "./DeceptiveCheckoutFlow";
-import LoadingSpinner from "./LoadingSpinner";
+import { LoadingSpinner } from "./ui";
 
 interface WebsitePhaseProps {
   phase: "exploitative" | "ethical";

@@ -2,10 +2,10 @@
 
 export * from "@/components";
 
-// Named exports for specific component groups
-export { PredatoryComponents } from "@/components/predatory";
-export { EthicalComponents } from "@/components/ethical";
-export { ReflectionComponents } from "@/components/reflection";
+// Re-export specific component groups (they export individual components, not a single object)
+export * from "@/components/predatory";
+export * from "@/components/ethical";
+export * from "@/components/reflection";
 
 // Hooks
 export { useSimulation } from "@/components/providers/SimulationProvider";
