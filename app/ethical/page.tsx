@@ -1,7 +1,7 @@
 "use client";
 
-import WebsitePhase from "@/components/shared/WebsitePhase";
+import EthicalHomepage from "@/components/phase4-ethical/EthicalHomepage";
 
 export default function EthicalPage() {
-    return <WebsitePhase phase={4} />;
+    return <EthicalHomepage />;
 }

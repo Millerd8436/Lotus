@@ -1,7 +1,20 @@
 "use client";
 
-import WebsitePhase from "@/components/shared/WebsitePhase";
+import DeceptiveCheckoutFlow from "@/components/phase1-exploitative/DeceptiveCheckoutFlow";
+import React from "react";
 
-export default function TeachingPage() {
-    return <WebsitePhase phase={3} />;
-}
+const TeachingPage = () => {
+  return (
+    <div>
+      <DeceptiveCheckoutFlow
+        initialData={{ loanAmount: 500, state: "TX" }}
+        onComplete={(data) => {
+          console.log("Teaching phase complete:", data);
+        }}
+        phase="teaching"
+      />
+    </div>
+  );
+};
+
+export default TeachingPage;

@@ -1,9 +1,14 @@
 "use client";
 
-import { LotusSession } from "@/types"; // Import LotusSession, RealisticFormData, and helper
-import React, { useState } from "react";
+import { LotusSession, TheaterEvent } from "@/types"; // Import LotusSession, RealisticFormData, and helper
+import React, { useState, useEffect } from "react";
 import { useEducation } from "../providers/EducationProvider";
 import { useSimulation } from "../providers/SimulationProvider";
+import EthicalFrameworksExplainer from "./EthicalFrameworksExplainer";
+import KantianScorecard from "./KianScorecard";
+import { BehavioralManipulationEngine, BehavioralManipulationAssessment } from "@/core/behavioral/BehavioralManipulationEngine";
+import { analyticsEngine, UserProfile, BehavioralData, PsychographicProfile } from "@/core/core/AnalyticsEngine";
+import { AutonomyTheaterEngine } from "@/core/core/AutonomyTheaterEngine";
 
 /**
  * ReflectionDashboard - Phase 3 comprehensive analysis and educational insights.
@@ -12,7 +17,7 @@ import { useSimulation } from "../providers/SimulationProvider";
  */
 const ReflectionDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
-    "comparison" | "patterns" | "analysis" | "education" | "quiz"
+    "comparison" | "patterns" | "analysis" | "education" | "quiz" | "ethics" | "scorecard" | "manipulation" | "data" | "autonomy"
   >("comparison");
   const { session } = useSimulation(); // Get the live session
   const { getProgressReport } = useEducation();
@@ -195,7 +200,7 @@ const ReflectionDashboard: React.FC = () => {
         <div
           style={{ maxWidth: 1200, margin: "0 auto", display: "flex", gap: 0 }}
         >
-          {["comparison", "patterns", "analysis", "education", "quiz"].map(
+          {["comparison", "patterns", "analysis", "education", "quiz", "ethics", "scorecard", "manipulation", "data", "autonomy"].map(
             (tab) => (
               <button
                 key={tab}
@@ -222,6 +227,11 @@ const ReflectionDashboard: React.FC = () => {
                 {tab === "analysis" && "🧠 "}
                 {tab === "education" && "📚 "}
                 {tab === "quiz" && "❓ "}
+                {tab === "ethics" && "⚖️ "}
+                {tab === "scorecard" && "📊 "}
+                {tab === "manipulation" && "⚙️ "}
+                {tab === "data" && "📈 "}
+                {tab === "autonomy" && "🎭 "}
                 {tab}
               </button>
             )
@@ -238,6 +248,197 @@ const ReflectionDashboard: React.FC = () => {
           <EducationalContent progress={progressReport} />
         )}
         {activeTab === "quiz" && <ComprehensionQuiz />}
+        {activeTab === "ethics" && <EthicalFrameworksExplainer />}
+        {activeTab === "scorecard" && <KantianScorecard session={session} />}
+        {activeTab === "manipulation" && <BehavioralManipulationReport session={session} />}
+        {activeTab === "data" && <DataExploitationReport session={session} />}
+        {activeTab === "autonomy" && <AutonomyTheaterReport session={session} />}
+      </div>
+    </div>
+  );
+};
+
+const AutonomyTheaterReport: React.FC<{ session: LotusSession }> = ({ session }) => {
+  // We would get the theater events from the session. For now, we'll mock it.
+  const theaterEvents: TheaterEvent[] = session.theaterEvents || [];
+  const analysis = AutonomyTheaterEngine.analyzeManipulation(theaterEvents);
+
+  return (
+    <div style={{ background: "#fff", borderRadius: 12, padding: "2rem", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+      <h2 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: 24 }}>
+        🎭 Autonomy Theater Analysis
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#9333ea', marginBottom: '1rem' }}>Manipulation Score</h3>
+          <p><strong>Total Manipulation Score:</strong> {analysis.totalManipulation}</p>
+          <p>This score reflects the cumulative impact of the "positive framing" messages you received.</p>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Psychological Tactics Used</h3>
+          <ul>
+            {Object.entries(analysis.tactics).map(([tactic, count]) => (
+              <li key={tactic}>{tactic}: {count} times</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>"Positive Framing" Messages</h3>
+          <ul>
+            {theaterEvents.map((event, index) => (
+              <li key={index}><strong>{event.action}:</strong> "{event.positiveFraming}"</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#10b981', marginBottom: '1rem' }}>Illusion of Progress</h3>
+          <p><strong>Total Progress Manipulated:</strong> {analysis.progressManipulation}%</p>
+          <p>The UI was designed to make you feel like you were making significant progress, even when you were just providing more data.</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DataExploitationReport: React.FC<{ session: LotusSession }> = ({ session }) => {
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
+
+  useEffect(() => {
+    if (session) {
+      const data = analyticsEngine.getUserProfile(session.sessionId);
+      setAnalyticsData(data);
+    }
+  }, [session]);
+
+  if (!analyticsData) {
+    return <div>Loading analytics data...</div>;
+  }
+
+  const { profile, behavioral, psychographic, totalRevenue, exploitationStrategy, dataValue } = analyticsData;
+
+  return (
+    <div style={{ background: "#fff", borderRadius: 12, padding: "2rem", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+      <h2 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: 24 }}>
+        📈 Data Exploitation & Profiling Report
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#be123c', marginBottom: '1rem' }}>Your Data's Monetary Value</h3>
+          <p><strong>Estimated Value of Your Data:</strong> ${dataValue.toFixed(2)}</p>
+          <p><strong>Revenue Generated from Your Data:</strong> ${totalRevenue.toFixed(2)}</p>
+          <p>This is how much your personal and behavioral data was worth to the predatory lender and their partners.</p>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Psychographic Profile</h3>
+          <p><strong>Financial Desperation:</strong> {psychographic.financialDesperation}/10</p>
+          <p><strong>Impulsivity:</strong> {psychographic.impulsivity}/10</p>
+          <p><strong>Emotional State:</strong> {psychographic.emotionalState}</p>
+          <p>This profile was built in real-time by analyzing your behavior on the site.</p>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Data Collected About You</h3>
+          <ul>
+            {Array.from(profile.dataCollected.keys()).map((key: string) => (
+              <li key={key}>{analyticsEngine.apis.get(key)?.name || key}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#dc2626', marginBottom: '1rem' }}>Targeted Exploitation Strategy</h3>
+          <p><strong>Messaging Used:</strong></p>
+          <ul>
+            {exploitationStrategy.messaging.map((msg: string, index: number) => (
+              <li key={index}>{msg}</li>
+            ))}
+          </ul>
+          <p><strong>UI Patterns Deployed:</strong></p>
+          <ul>
+            {exploitationStrategy.uiPatterns.map((pattern: string, index: number) => (
+              <li key={index}>{pattern}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BehavioralManipulationReport: React.FC<{ session: LotusSession }> = ({ session }) => {
+  // In a real application, you would pass the actual session data to the engine.
+  // For this simulation, we'll use placeholder data that mirrors what the
+  // engine expects, based on the session's characteristics.
+  const mockSessionData = {
+    userInterface: {
+      complexTerms: session.darkPatternsEncountered.some(p => p.type === 'buried_terms'),
+      unnecessaryComplexity: session.darkPatternsEncountered.some(p => p.type === 'information_overload'),
+    },
+    marketingMaterials: [
+      { targetsEmergency: true, fakeScarcity: true, fabricatedSocialProof: true }
+    ],
+    disclosures: [
+      { unnecessarilyComplex: true }
+    ],
+    userProfile: {
+      vulnerabilities: session.userProfile?.vulnerabilities || ['financial_desperation'],
+    },
+    interactionPatterns: [],
+    timingData: {
+      artificialDeadlines: true,
+      rushesDecisions: true,
+    },
+    pressureTactics: [],
+    consentFlow: {
+      preCheckedBoxes: session.darkPatternsEncountered.some(p => p.type === 'pre_checked_consent'),
+      buriedInTerms: session.darkPatternsEncountered.some(p => p.type === 'buried_terms'),
+      confusingLanguage: true,
+    },
+  };
+
+  const assessment: BehavioralManipulationAssessment = BehavioralManipulationEngine.assessManipulation(mockSessionData);
+
+  return (
+    <div style={{ background: "#fff", borderRadius: 12, padding: "2rem", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+      <h2 style={{ fontSize: "2rem", fontWeight: 600, marginBottom: 24 }}>
+        ⚙️ Behavioral Manipulation Analysis
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#dc2626', marginBottom: '1rem' }}>Overall Risk: {assessment.riskLevel}</h3>
+          <p><strong>Overall Manipulation Score:</strong> {assessment.overallScore}/100</p>
+          <p>This score reflects the intensity and breadth of manipulative tactics used during the exploitative phase.</p>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Key Findings</h3>
+          <ul>
+            {assessment.detailedFindings.map((finding, index) => (
+              <li key={index}><strong>{finding.technique}:</strong> {finding.description} (Severity: {finding.severity})</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Vulnerability Exploitation</h3>
+          <p><strong>Score:</strong> {assessment.vulnerabilityExploitation.score}/100</p>
+          <p><strong>Tactics Used:</strong> {assessment.vulnerabilityExploitation.exploitationTactics.join(', ')}</p>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Psychological Pressure</h3>
+          <p><strong>Score:</strong> {assessment.psychologicalPressure.score}/100</p>
+          <p><strong>Techniques:</strong> {assessment.psychologicalPressure.pressureTechniques.join(', ')}</p>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Consent Theater</h3>
+          <p><strong>Score:</strong> {assessment.consentTheater.score}/100</p>
+          <p><strong>Tactics:</strong> {assessment.consentTheater.theaterTactics.join(', ')}</p>
+          <p><strong>Genuine Consent Obtained:</strong> {assessment.consentTheater.genuineConsent ? 'No' : 'Yes'}</p>
+        </div>
+        <div>
+          <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '1rem' }}>Protective Recommendations</h3>
+          <ul>
+            {assessment.protectiveRecommendations.map((rec, index) => (
+              <li key={index}>{rec}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

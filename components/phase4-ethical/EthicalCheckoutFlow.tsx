@@ -17,13 +17,13 @@ import {
 import Link from "next/link";
 import React, { useState } from "react";
 import { LoanCalculation } from "./EthicalLoanCalculator";
-import AlternativesStep from "./steps/AlternativesStep";
-import ConfirmationStep from "./steps/ConfirmationStep";
-import CoolingOffStep from "./steps/CoolingOffStep";
-import EthicalPrinciplesStep from "./steps/EthicalPrinciplesStep";
-import FinalConsentStep from "./steps/FinalConsentStep";
-import FinancialEducationStep from "./steps/FinancialEducationStep";
-import LoanTermsStep from "./steps/LoanTermsStep";
+import AlternativesStep from "@/components/steps/AlternativesStep";
+import ConfirmationStep from "@/components/steps/ConfirmationStep";
+import CoolingOffStep from "@/components/steps/CoolingOffStep";
+import EthicalPrinciplesStep from "@/components/steps/EthicalPrinciplesStep";
+import FinalConsentStep from "@/components/steps/FinalConsentStep";
+import FinancialEducationStep from "@/components/steps/FinancialEducationStep";
+import LoanTermsStep from "@/components/steps/LoanTermsStep";
 
 interface BelmontPrinciple {
   name: string;

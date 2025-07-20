@@ -1,19 +1,14 @@
 "use client";
-import ReflectionDashboard from "@/components/reflection/ReflectionDashboard";
-import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
-import { Suspense } from "react";
 
-export default function ReflectionPage() {
-    return (
-        <div>
-            <Suspense fallback={
-                <div className="flex items-center justify-center min-h-screen">
-                    <LoadingSpinner />
-                    <p>Loading reflection dashboard...</p>
-                </div>
-            }>
-                <ReflectionDashboard />
-            </Suspense>
-        </div>
-    );
-}
+import ReflectionDashboard from "@/components/phase2-reflection/ReflectionDashboard";
+import React from "react";
+
+const ReflectionPage = () => {
+  return (
+    <div>
+      <ReflectionDashboard />
+    </div>
+  );
+};
+
+export default ReflectionPage;
