@@ -42,6 +42,7 @@ interface EducationContextType {
   getEducationalInsights: () => string[];
   getRecommendations: () => string[];
   getProgressReport: () => any;
+  recordInteraction: (interaction: any) => void;
 }
 
 const EducationContext = createContext<EducationContextType | undefined>(
@@ -267,13 +268,10 @@ export const EducationProvider: React.FC<EducationProviderProps> = ({
           completedModules.length
         : 0;
 
-    const moduleTypes = educationalContent.reduce(
-      (acc, module) => {
-        acc[module.type] = (acc[module.type] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>
-    );
+    const moduleTypes = educationalContent.reduce((acc, module) => {
+      acc[module.type] = (acc[module.type] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
 
     return {
       totalModules,
@@ -285,6 +283,11 @@ export const EducationProvider: React.FC<EducationProviderProps> = ({
       insights: getEducationalInsights(),
       recommendations: getRecommendations(),
     };
+  };
+
+  const recordInteraction = (interaction: any) => {
+    // For now, we'll just log this. In a real app, this would go to an analytics engine.
+    console.log("Educational Interaction:", interaction);
   };
 
   const value: EducationContextType = {
@@ -302,6 +305,7 @@ export const EducationProvider: React.FC<EducationProviderProps> = ({
     getEducationalInsights,
     getRecommendations,
     getProgressReport,
+    recordInteraction,
   };
 
   return (

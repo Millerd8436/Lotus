@@ -10,7 +10,7 @@ export default function EthicalCompletePage() {
   const router = useRouter();
   const { session } = useSimulation();
 
-  const loanData = session.ethicalData || {
+  const loanData = session.ethicalLoanData || {
     principal: 300,
     total: 307.4,
     termDays: 30,
@@ -23,7 +23,7 @@ export default function EthicalCompletePage() {
         "Act so that you treat humanity, whether in your own person or in that of another, always as an end and never as a means only.",
       principle: "Respect for Persons",
       application:
-        "Throughout this process, you were treated with dignity. No manipulation or pressure was used. Your autonomy was respected at every step.",
+        "Throughout this process, you were treated as a rational individual with the right to make an informed decision. No dark patterns or coercive tactics were used, respecting your autonomy as an end in yourself, not just a means to profit.",
       icon: "🤝",
     },
     {
@@ -32,7 +32,7 @@ export default function EthicalCompletePage() {
         "The only purpose for which power can be rightfully exercised over any member of a civilized community, against his will, is to prevent harm to others.",
       principle: "Harm Principle",
       application:
-        "The loan was structured to minimize harm. Lower rates, longer terms, and affordability checks all work to prevent financial damage.",
+        "This loan was designed to be a tool for your benefit, not a trap. By providing transparent terms, fair rates, and educational resources, we adhere to the principle of preventing the harm that predatory loans typically cause.",
       icon: "🛡️",
     },
     {
@@ -41,7 +41,7 @@ export default function EthicalCompletePage() {
         "Each person has an equal claim to a fully adequate scheme of equal basic liberties, compatible with the same scheme for all.",
       principle: "Justice as Fairness",
       application:
-        "These ethical terms are offered equally to everyone. No discrimination, no special rates based on desperation, just fair treatment for all.",
+        "The terms of this loan are offered fairly to all applicants, without targeting or exploiting vulnerable groups. This commitment to equal and fair treatment ensures that the system is just for everyone, not just a select few.",
       icon: "⚖️",
     },
   ];
@@ -151,13 +151,31 @@ export default function EthicalCompletePage() {
 
           {/* Important notices */}
           <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-8">
-            <h3 className="font-bold mb-3">Important Information</h3>
+            <h3 className="font-bold mb-3">Your Consumer Rights</h3>
             <ul className="space-y-2 text-sm">
-              <li>• You can cancel this loan within 24 hours at no cost</li>
-              <li>• No automatic renewals - the loan ends when you repay</li>
-              <li>• Your information will never be sold to third parties</li>
               <li>
-                • If you face difficulties, contact us for support options
+                • You have the right to cancel this loan within 24 hours at no
+                cost.
+              </li>
+              <li>
+                • You have the right to a clear and transparent breakdown of all
+                fees and charges.
+              </li>
+              <li>
+                • You have the right to be free from harassment or unfair
+                collection practices.
+              </li>
+              <li>
+                • For more information about your rights, visit the{" "}
+                <a
+                  href="https://www.consumerfinance.gov/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline"
+                >
+                  Consumer Financial Protection Bureau (CFPB)
+                </a>
+                .
               </li>
             </ul>
           </div>

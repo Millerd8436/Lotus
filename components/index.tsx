@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 // Phase 1: Exploitative/Dark Pattern Components
 export { default as AdvancedDarkPatternsDemo } from "./AdvancedDarkPatternsDemo";
@@ -48,5 +48,6 @@ export type {
   ReflectionComponentProps,
   Severity,
   StateMessagingProps,
-  ThemeMode,
+  ThemeMode
 } from "./types";
+

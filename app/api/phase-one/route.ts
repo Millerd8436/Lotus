@@ -1,17 +1,9 @@
+import UnifiedLoanCalculator from "@/lib/core/LoanCalculator";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
  * Phase One API - Consolidated Predatory Lending Operations
- *
- * Combines functionality from:
- * - loan-application/route.ts
- * - calculate-fees/route.ts
- * - user-tracking/route.ts
- * - psychological-triggers/route.ts
- * - rollover-mechanism/route.ts
- * - professional-loan/route.ts
- *
- * Based on research findings about predatory practices
+ * Updated 2025 with latest dark patterns and API exploitation
  */
 
 interface LoanApplication {
@@ -117,68 +109,6 @@ function calculateVulnerabilityScore(application: LoanApplication): number {
   // This would be implemented based on additional data points
 
   return Math.min(score, 10);
-}
-
-// Calculate predatory fee structure
-function calculatePredatoryFees(
-  principal: number,
-  state: string,
-  vulnerabilityScore: number
-): FeeStructure {
-  const stateReg =
-    STATE_REGULATIONS[state as keyof typeof STATE_REGULATIONS] ||
-    STATE_REGULATIONS.DEFAULT;
-  const baseRate = stateReg.max_apr / 100;
-  const termDays = stateReg.term_days;
-
-  // Base calculation
-  const base_fee = Math.floor(principal * (baseRate / 365) * termDays);
-
-  // Additional exploitative fees
-  const processing_fee = Math.floor(principal * 0.08); // 8% processing
-  const verification_fee = 25;
-  const ach_fee = 15;
-  const risk_assessment = 30 + vulnerabilityScore * 5; // Higher fees for vulnerable
-  const platform_fee = 20;
-  const insurance_fee = 25; // Often pre-selected
-  const late_fee = 40;
-  const rollover_fee = 50;
-  const nsf_fee = 35;
-
-  const total_fees =
-    base_fee +
-    processing_fee +
-    verification_fee +
-    ach_fee +
-    risk_assessment +
-    platform_fee +
-    insurance_fee;
-  const total_due = principal + total_fees;
-  const actual_apr = Math.floor(
-    (total_fees / principal) * (365 / termDays) * 100
-  );
-
-  // Exploitation multiplier based on vulnerability
-  const exploitation_multiplier = 1 + vulnerabilityScore * 0.1;
-
-  return {
-    principal,
-    base_fee,
-    processing_fee,
-    verification_fee,
-    ach_fee,
-    risk_assessment,
-    platform_fee,
-    insurance_fee,
-    late_fee,
-    rollover_fee,
-    nsf_fee,
-    total_fees: Math.floor(total_fees * exploitation_multiplier),
-    total_due: Math.floor(total_due * exploitation_multiplier),
-    apr: actual_apr,
-    state_max_apr: stateReg.max_apr,
-    exploitation_multiplier,
-  };
 }
 
 // Generate psychological triggers based on vulnerability
@@ -291,11 +221,15 @@ export async function POST(request: NextRequest) {
         const application: LoanApplication = data;
         const vulnerabilityScore = calculateVulnerabilityScore(application);
         const state = "TX"; // Default to Texas (highest APR allowed)
-        const fees = calculatePredatoryFees(
+
+        // Use unified calculator with 2025 dark patterns
+        const fees = UnifiedLoanCalculator.calculatePredatoryFees(
           data.amount || 300,
           state,
-          vulnerabilityScore
+          vulnerabilityScore,
+          ["drip_pricing", "tip_coercion"] // 2025 patterns
         );
+
         const triggers = generatePsychologicalTriggers(vulnerabilityScore);
         const tracking = trackUserBehavior(request);
 
@@ -312,8 +246,7 @@ export async function POST(request: NextRequest) {
               vulnerabilityScore >= 7
                 ? "high_value_vulnerable"
                 : "standard_target",
-            estimated_lifetime_value:
-              fees.total_fees * (2 + vulnerabilityScore),
+            estimated_lifetime_value: fees.totalFees * (2 + vulnerabilityScore),
             rollover_probability: Math.min(80 + vulnerabilityScore * 2, 95),
             extraction_strategy: "maximize_fees_minimize_principal_reduction",
           },
@@ -321,25 +254,21 @@ export async function POST(request: NextRequest) {
 
       case "calculate_fees":
         const { amount, state: userState, vulnerability } = data;
-        const feeStructure = calculatePredatoryFees(
+        const feeStructure = UnifiedLoanCalculator.calculatePredatoryFees(
           amount,
           userState,
-          vulnerability || 0
+          vulnerability || 0,
+          ["drip_pricing", "mca_disguise", "confession_of_judgment"]
         );
 
         return NextResponse.json({
           success: true,
           fee_breakdown: feeStructure,
           comparison: {
-            ethical_alternative: {
-              credit_union_loan: {
-                principal: amount,
-                interest: Math.floor(amount * 0.28 * (14 / 365)), // 28% APR
-                total_due: amount + Math.floor(amount * 0.28 * (14 / 365)),
-                apr: 28,
-                no_rollover_fees: true,
-              },
-            },
+            ethical_alternative: UnifiedLoanCalculator.calculateEthicalFees(
+              amount,
+              60
+            ),
             predatory_reality: feeStructure,
           },
         });

@@ -1,384 +1,624 @@
 "use client";
 
-import { useEducation } from "@/components/providers/EducationProvider";
-import { Button } from "@/components/ui/Button";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card } from "@/components/ui/Card";
-import { Input } from "@/components/ui/Input";
-import { analyticsEngine } from "@/lib/core/AnalyticsEngine";
-import {
-  BoltIcon,
-  CheckCircleIcon,
-  ChevronRightIcon,
-  ClockIcon,
-  ShieldCheckIcon,
-  UserGroupIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
-interface RealisticFormData {
-  // Personal Information
-  firstName: string;
-  lastName: string;
-  middleName?: string;
-  email: string;
-  phone: string;
-  alternatePhone?: string;
-  ssn: string;
-  dob: string;
+interface DeceptiveCheckoutFlowProps {
+  initialData: any;
+  onComplete: (data: any) => void;
+}
 
-  // Address Information
-  streetAddress: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  timeAtAddress: string;
-  housingType: "own" | "rent" | "other";
-  monthlyRent?: number;
-
-  // Employment Information
-  employmentStatus: "employed" | "self-employed" | "benefits" | "retired";
-  employer: string;
-  jobTitle: string;
-  workPhone: string;
-  timeAtJob: string;
-  payFrequency: "weekly" | "biweekly" | "monthly" | "other";
-  nextPayDate: string;
-  monthlyIncome: number;
-  incomeSource: "employment" | "benefits" | "other";
-
-  // Banking Information
-  bankName: string;
-  accountType: "checking" | "savings";
-  routingNumber: string;
-  accountNumber: string;
-  bankingTime: string;
-  onlineBankingUsername?: string;
-
-  // Identity Verification
-  driversLicenseNumber: string;
-  driversLicenseState: string;
-  driversLicenseExp: string;
-
-  // References (for collections)
-  reference1Name: string;
-  reference1Phone: string;
-  reference1Relationship: string;
-  reference2Name: string;
-  reference2Phone: string;
-  reference2Relationship: string;
-
-  // Loan Information
-  loanAmount: number;
-  loanPurpose: string;
-  previousPaydayLoan: boolean;
-
-  // Consents (mostly pre-checked)
-  achAuthorization: boolean;
-  electronicSignature: boolean;
-  creditCheck: boolean;
-  dataSharing: boolean;
-  marketingConsent: boolean;
-  autoRenewal: boolean;
-  loanInsurance: boolean;
-  expressProcessing: boolean;
+interface Fee {
+  label: string;
+  amount: number;
+  type: "principal" | "fee" | "hidden" | "optional" | "penalty";
+  revealed: boolean;
+  justification: string;
+  color: string;
 }
 
 interface CheckoutStep {
   id: string;
   title: string;
-  subtitle: string;
   description: string;
-  progressPercent: number;
-  darkPattern: string;
-  mobileOptimized: boolean;
+  progressLabel: string;
+  cancelDifficulty: number;
+  deceptiveTactic: string;
+  fields: any[];
 }
 
-interface DeceptiveCheckoutFlowProps {
-  loanAmount: number;
-  phase: "exploitative" | "ethical";
-  onBack: () => void;
-  onStepChange?: (step: string) => void;
-}
-
-const DeceptiveCheckoutFlow: React.FC<DeceptiveCheckoutFlowProps> = ({
-  loanAmount,
-  phase,
-  onBack,
-  onStepChange,
+export const DeceptiveCheckoutFlow: React.FC<DeceptiveCheckoutFlowProps> = ({
+  initialData,
+  onComplete,
 }) => {
-  const { showEducationalOverlay } = useEducation();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<RealisticFormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+  const [formData, setFormData] = useState({
+    ...initialData,
     ssn: "",
-    dob: "",
-    streetAddress: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    timeAtAddress: "",
-    housingType: "rent",
-    employmentStatus: "employed",
     employer: "",
-    jobTitle: "",
-    workPhone: "",
-    timeAtJob: "",
-    payFrequency: "biweekly",
-    nextPayDate: "",
-    monthlyIncome: 0,
-    incomeSource: "employment",
+    monthlyIncome: "",
     bankName: "",
-    accountType: "checking",
     routingNumber: "",
     accountNumber: "",
-    bankingTime: "",
-    driversLicenseNumber: "",
-    driversLicenseState: "",
-    driversLicenseExp: "",
-    reference1Name: "",
-    reference1Phone: "",
-    reference1Relationship: "",
-    reference2Name: "",
-    reference2Phone: "",
-    reference2Relationship: "",
-    loanAmount: loanAmount,
-    loanPurpose: "",
-    previousPaydayLoan: false,
-    achAuthorization: true,
-    electronicSignature: true,
-    creditCheck: true,
-    dataSharing: true,
-    marketingConsent: true,
-    autoRenewal: true,
-    loanInsurance: true,
-    expressProcessing: true,
+    expressProcessing: true, // Pre-checked
+    loanInsurance: true, // Pre-checked
+    autoRenewal: true, // Pre-checked
   });
+  const [currentPhase, setCurrentPhase] = useState(1);
+  const [currentField, setCurrentField] = useState(0);
+  const [showFees, setShowFees] = useState(false);
+  const [showAPR, setShowAPR] = useState(false);
+  const [vulnerabilityScore, setVulnerabilityScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(297);
+  const [cancelAttempts, setCancelAttempts] = useState(0);
+  const [showCancelWarning, setShowCancelWarning] = useState(false);
 
-  const [totalCost, setTotalCost] = useState(loanAmount);
-  const [baseFee, setBaseFee] = useState(0);
-  const [additionalFees, setAdditionalFees] = useState({
-    processingFee: 0,
-    originationFee: 0,
-    creditCheckFee: 0,
-    transferFee: 0,
-    insuranceFee: 0,
-    expressFee: 0,
-  });
+  // State-specific data
+  const stateAPRs: Record<string, number> = {
+    TX: 664,
+    CA: 460,
+    FL: 391,
+    NY: 25, // Capped state
+  };
 
-  // Dark pattern: Fake urgency timer
-  const [timer, setTimer] = useState(600); // 10 minutes
-  const [spotsRemaining, setSpotsRemaining] = useState(3);
-  const [viewersCount, setViewersCount] = useState(127);
+  const phases = [
+    { id: 1, name: "Quick Info", fields: 3 },
+    { id: 2, name: "Verification", fields: 8 },
+    { id: 3, name: "Add-ons", fields: 5 },
+    { id: 4, name: "Final Setup", fields: 4 },
+  ];
 
-  // Start urgency timer and fake activity
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
-
-      // Randomly update viewers
-      if (Math.random() > 0.7) {
-        setViewersCount((prev) => prev + Math.floor(Math.random() * 5) - 2);
-      }
-
-      // Randomly decrease spots
-      if (Math.random() > 0.95 && spotsRemaining > 1) {
-        setSpotsRemaining((prev) => prev - 1);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [spotsRemaining]);
-
-  // Dark pattern: Drip pricing - gradually reveal fees
-  useEffect(() => {
-    if (currentStep >= 3) {
-      setBaseFee(loanAmount * 0.15); // 15% base fee
-    }
-    if (currentStep >= 5) {
-      setAdditionalFees((prev) => ({ ...prev, processingFee: 49.99 }));
-    }
-    if (currentStep >= 7) {
-      setAdditionalFees((prev) => ({
-        ...prev,
-        originationFee: loanAmount * 0.05,
-      }));
-    }
-    if (currentStep >= 9) {
-      setAdditionalFees((prev) => ({ ...prev, creditCheckFee: 29.99 }));
-    }
-    if (currentStep >= 11) {
-      setAdditionalFees((prev) => ({ ...prev, transferFee: 14.99 }));
-    }
-    if (formData.loanInsurance && currentStep >= 13) {
-      setAdditionalFees((prev) => ({ ...prev, insuranceFee: 89.99 }));
-    }
-    if (formData.expressProcessing && currentStep >= 14) {
-      setAdditionalFees((prev) => ({ ...prev, expressFee: 59.99 }));
-    }
-  }, [
-    currentStep,
-    loanAmount,
-    formData.loanInsurance,
-    formData.expressProcessing,
-  ]);
-
-  // Calculate total with all fees
-  useEffect(() => {
-    const allFees = Object.values(additionalFees).reduce(
-      (sum, fee) => sum + fee,
-      0
-    );
-    setTotalCost(loanAmount + baseFee + allFees);
-  }, [loanAmount, baseFee, additionalFees]);
-
-  // Call onStepChange when component mounts or step changes
-  useEffect(() => {
-    if (onStepChange && steps[currentStep]) {
-      onStepChange(steps[currentStep].id);
-    }
-  }, [currentStep]);
-
-  const steps: CheckoutStep[] = [
+  const checkoutSteps: CheckoutStep[] = [
     {
-      id: "start",
-      title: "Get Started",
-      subtitle: "Quick 2-minute application",
-      description: "Just 3 simple steps to get your cash",
-      progressPercent: 5,
-      darkPattern: "bait_and_switch",
-      mobileOptimized: true,
+      id: "initial_capture",
+      title: "Get Your Cash Fast!",
+      description: "Just a few quick details to get started",
+      progressLabel: "Quick Start (1/8)",
+      cancelDifficulty: 1,
+      deceptiveTactic: "Minimal initial information to create sunk cost",
+      fields: [
+        {
+          name: "loanAmount",
+          type: "select",
+          label: "How much do you need?",
+          options: ["$100", "$300", "$500", "$1000"],
+          required: true,
+        },
+        {
+          name: "email",
+          type: "email",
+          label: "Email",
+          placeholder: "your@email.com",
+          required: true,
+        },
+        {
+          name: "phone",
+          type: "tel",
+          label: "Phone",
+          placeholder: "(555) 123-4567",
+          required: true,
+        },
+      ],
     },
     {
-      id: "personal",
-      title: "Personal Information",
-      subtitle: "Basic details",
-      description: "We just need some basic info",
-      progressPercent: 10,
-      darkPattern: "foot_in_door",
-      mobileOptimized: true,
+      id: "income_verification",
+      title: "Verify Your Income",
+      description: "Secure your loan with income verification",
+      progressLabel: "Verification (2/8)",
+      cancelDifficulty: 2,
+      deceptiveTactic: "Urgency and necessity of verification",
+      fields: [
+        {
+          name: "income",
+          type: "text",
+          label: "Monthly Income",
+          placeholder: "e.g. 3000",
+          required: true,
+        },
+        {
+          name: "employment",
+          type: "text",
+          label: "Employer Name",
+          placeholder: "e.g. Acme Corp",
+          required: true,
+        },
+        {
+          name: "bankName",
+          type: "text",
+          label: "Bank Name",
+          placeholder: "e.g. Bank of America",
+          required: true,
+        },
+        {
+          name: "accountNumber",
+          type: "text",
+          label: "Bank Account Number",
+          placeholder: "e.g. 123456789",
+          required: true,
+        },
+        {
+          name: "routingNumber",
+          type: "text",
+          label: "Bank Routing Number",
+          placeholder: "e.g. 987654321",
+          required: true,
+        },
+        {
+          name: "incomeProof",
+          type: "file",
+          label: "Upload Income Proof",
+          required: true,
+        },
+        {
+          name: "identityVerification",
+          type: "checkbox",
+          label: "I authorize identity verification",
+          required: true,
+          preChecked: true,
+        },
+        {
+          name: "phoneVerification",
+          type: "checkbox",
+          label: "I authorize phone verification",
+          required: true,
+          preChecked: true,
+        },
+      ],
     },
     {
-      id: "contact",
-      title: "Contact Details",
-      subtitle: "How to reach you",
-      description: "For your loan confirmation only",
-      progressPercent: 15,
-      darkPattern: "data_harvesting",
-      mobileOptimized: true,
+      id: "emergency_contacts",
+      title: "Emergency Contacts & References",
+      description: "Provide contacts for loan approval and safety",
+      progressLabel: "References (3/8)",
+      cancelDifficulty: 2,
+      deceptiveTactic: "Contact harvesting for collection and harassment",
+      fields: [
+        {
+          name: "reference1Name",
+          type: "text",
+          label: "Reference 1: Full Name",
+          placeholder: "Jane Smith",
+          required: true,
+        },
+        {
+          name: "reference1Phone",
+          type: "tel",
+          label: "Reference 1: Phone",
+          placeholder: "(555) 111-2222",
+          required: true,
+        },
+        {
+          name: "reference1Relationship",
+          type: "select",
+          label: "Relationship",
+          placeholder: "Friend",
+          required: true,
+        },
+        {
+          name: "reference2Name",
+          type: "text",
+          label: "Reference 2: Full Name",
+          placeholder: "Bob Johnson",
+          required: true,
+        },
+        {
+          name: "reference2Phone",
+          type: "tel",
+          label: "Reference 2: Phone",
+          placeholder: "(555) 333-4444",
+          required: true,
+        },
+        {
+          name: "reference2Relationship",
+          type: "select",
+          label: "Relationship",
+          placeholder: "Family",
+          required: true,
+        },
+        {
+          name: "emergencyContact",
+          type: "text",
+          label: "Emergency Contact",
+          placeholder: "Name and phone",
+          required: true,
+        },
+        {
+          name: "supervisorContact",
+          type: "text",
+          label: "Work Supervisor Contact",
+          placeholder: "Manager name and phone",
+          required: false,
+          deceptiveLabel: "Speeds approval",
+        },
+      ],
     },
     {
-      id: "address",
-      title: "Current Address",
-      subtitle: "Where you live",
-      description: "Required for verification",
-      progressPercent: 20,
-      darkPattern: "progressive_disclosure",
-      mobileOptimized: true,
+      id: "add_ons_upsells",
+      title: "Loan Protection & Services",
+      description: "Recommended add-ons for your protection",
+      progressLabel: "Protection (4/8)",
+      cancelDifficulty: 3,
+      deceptiveTactic: "Pre-selected expensive add-ons with deceptive labeling",
+      fields: [
+        {
+          name: "loanInsurance",
+          type: "checkbox",
+          label: "Loan Protection Insurance ($25)",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Highly recommended",
+        },
+        {
+          name: "expressProcessing",
+          type: "checkbox",
+          label: "Express Same-Day Processing ($30)",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Most popular",
+        },
+        {
+          name: "creditReporting",
+          type: "checkbox",
+          label: "Report to Credit Bureaus ($15)",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Build credit",
+        },
+        {
+          name: "paymentReminders",
+          type: "checkbox",
+          label: "SMS Payment Reminders ($10)",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Avoid late fees",
+        },
+        {
+          name: "rolloverProtection",
+          type: "checkbox",
+          label: "Auto-Rollover Protection ($5/month)",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Never miss payments",
+        },
+        {
+          name: "identityGuard",
+          type: "checkbox",
+          label: "Identity Monitoring Service ($20)",
+          required: false,
+          preChecked: false,
+          deceptiveLabel: "Limited time offer",
+        },
+      ],
     },
     {
-      id: "employment",
-      title: "Employment Status",
-      subtitle: "Income verification",
-      description: "To ensure you can repay",
-      progressPercent: 25,
-      darkPattern: "data_collection",
-      mobileOptimized: false,
-    },
-    {
-      id: "employer",
-      title: "Employer Details",
-      subtitle: "Work information",
-      description: "For income verification",
-      progressPercent: 30,
-      darkPattern: "privacy_zuckering",
-      mobileOptimized: false,
-    },
-    {
-      id: "income",
-      title: "Income Details",
-      subtitle: "Financial information",
-      description: "Almost there!",
-      progressPercent: 40,
-      darkPattern: "sunk_cost_fallacy",
-      mobileOptimized: false,
-    },
-    {
-      id: "banking",
-      title: "Banking Information",
-      subtitle: "For instant deposit",
-      description: "Get funds in 15 minutes!",
-      progressPercent: 50,
-      darkPattern: "forced_continuity",
-      mobileOptimized: false,
-    },
-    {
-      id: "bank_access",
-      title: "Bank Access",
-      subtitle: "Secure verification",
-      description: "256-bit encryption",
-      progressPercent: 60,
-      darkPattern: "privacy_invasion",
-      mobileOptimized: false,
-    },
-    {
-      id: "identity",
-      title: "Identity Verification",
-      subtitle: "Government ID",
-      description: "Required by law",
-      progressPercent: 70,
-      darkPattern: "false_authority",
-      mobileOptimized: false,
-    },
-    {
-      id: "references",
-      title: "References",
-      subtitle: "Emergency contacts",
-      description: "In case we can't reach you",
-      progressPercent: 80,
-      darkPattern: "social_pyramid",
-      mobileOptimized: false,
-    },
-    {
-      id: "loan_details",
-      title: "Loan Purpose",
-      subtitle: "Tell us why",
-      description: "Help us serve you better",
-      progressPercent: 85,
-      darkPattern: "emotional_manipulation",
-      mobileOptimized: false,
-    },
-    {
-      id: "consents",
-      title: "Agreements",
-      subtitle: "Terms and conditions",
-      description: "Standard authorizations",
-      progressPercent: 90,
-      darkPattern: "roach_motel",
-      mobileOptimized: false,
-    },
-    {
-      id: "insurance",
-      title: "Loan Protection",
-      subtitle: "Protect your loan",
-      description: "Recommended by 9/10 customers",
-      progressPercent: 95,
-      darkPattern: "sneak_into_basket",
-      mobileOptimized: false,
-    },
-    {
-      id: "review",
-      title: "Final Review",
-      subtitle: "Confirm and submit",
-      description: "Get your money now!",
-      progressPercent: 99,
-      darkPattern: "false_urgency",
-      mobileOptimized: true,
+      id: "authorization_complete",
+      title: "Final Authorization & Terms",
+      description: "Review terms and complete your application",
+      progressLabel: "Complete (5/8)",
+      cancelDifficulty: 3,
+      deceptiveTactic: "Buried terms, pre-checked exploitative authorizations",
+      fields: [
+        {
+          name: "achAuthorization",
+          type: "checkbox",
+          label: "I authorize ACH withdrawals for loan repayment",
+          required: true,
+          preChecked: true,
+        },
+        {
+          name: "achMultipleAttempts",
+          type: "checkbox",
+          label: "Allow multiple withdrawal attempts if first payment fails",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Recommended for approval",
+        },
+        {
+          name: "achSavingsAccess",
+          type: "checkbox",
+          label: "Authorize access to savings account if checking fails",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Backup protection",
+        },
+        {
+          name: "dataSharing",
+          type: "checkbox",
+          label:
+            "Share my information with 500+ partner lenders for better rates",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Improves approval odds",
+        },
+        {
+          name: "autoRenewal",
+          type: "checkbox",
+          label: "Enable auto-renewal for convenience",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Can disable anytime",
+        },
+        {
+          name: "rolloverAuthorization",
+          type: "checkbox",
+          label: "Pre-authorize automatic rollover if payment fails ($50 fee)",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Prevents late fees",
+        },
+        {
+          name: "phoneConsent",
+          type: "checkbox",
+          label: "Consent to phone calls, SMS, and emails from us and partners",
+          required: false,
+          preChecked: true,
+        },
+        {
+          name: "creditReportAuth",
+          type: "checkbox",
+          label: "Authorize soft & hard credit report access",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Required for best rates",
+        },
+        {
+          name: "employerContact",
+          type: "checkbox",
+          label: "Authorize contact with employer for verification",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Speeds approval process",
+        },
+        {
+          name: "referenceContact",
+          type: "checkbox",
+          label: "Allow contact with references if payment issues arise",
+          required: false,
+          preChecked: true,
+          deceptiveLabel: "Standard procedure",
+        },
+        {
+          name: "legalArbitration",
+          type: "checkbox",
+          label: "Agree to binding arbitration and waive right to jury trial",
+          required: true,
+          preChecked: true,
+          deceptiveLabel: "Legal requirement",
+        },
+        {
+          name: "electronicSignature",
+          type: "checkbox",
+          label:
+            "Electronic signature has same legal effect as handwritten signature",
+          required: true,
+          preChecked: true,
+        },
+      ],
     },
   ];
+
+  const calculateProgress = () => {
+    return (currentPhase / phases.length) * 100;
+  };
+
+  const handlePhaseComplete = (data: any) => {
+    setFormData({ ...formData, ...data });
+
+    // Add fees progressively
+    if (currentPhase === 2) {
+      setFormData((prev) => ({
+        ...prev,
+        totalFees: (prev.totalFees || 0) + 25, // "Processing fee"
+      }));
+    } else if (currentPhase === 3) {
+      setFormData((prev) => ({
+        ...prev,
+        totalFees: (prev.totalFees || 0) + 35, // "Insurance"
+        totalFees: (prev) => prev + 25, // "Express processing"
+      }));
+    } else if (currentPhase === 4) {
+      setShowAPR(true); // Finally reveal APR
+    }
+
+    if (currentPhase < 4) {
+      setCurrentPhase((prev) => prev + 1);
+    } else {
+      onComplete({
+        ...formData,
+        totalFees: formData.totalFees || 0,
+        apr: stateAPRs[formData.state] || 391,
+      });
+    }
+  };
+
+  // Initialize fees
+  const initializeFees = () => {
+    const baseFees: Fee[] = [
+      {
+        label: "Loan Amount",
+        amount: 300,
+        type: "principal",
+        revealed: true,
+        justification: "Your requested amount",
+        color: "#4caf50",
+      },
+      {
+        label: "Simple Fee",
+        amount: 45,
+        type: "fee",
+        revealed: true,
+        justification: "One-time processing fee",
+        color: "#ff9800",
+      },
+      {
+        label: "Verification Fee",
+        amount: 25,
+        type: "hidden",
+        revealed: false,
+        justification: "Identity verification required",
+        color: "#ff5722",
+      },
+      {
+        label: "ACH Setup Fee",
+        amount: 15,
+        type: "hidden",
+        revealed: false,
+        justification: "Bank connection setup",
+        color: "#ff5722",
+      },
+      {
+        label: "Risk Assessment",
+        amount: 35,
+        type: "hidden",
+        revealed: false,
+        justification: "Automated risk evaluation",
+        color: "#f44336",
+      },
+      {
+        label: "Platform Fee",
+        amount: 20,
+        type: "hidden",
+        revealed: false,
+        justification: "System maintenance",
+        color: "#f44336",
+      },
+      {
+        label: "Insurance (Pre-selected)",
+        amount: 25,
+        type: "optional",
+        revealed: false,
+        justification: "Loan protection insurance",
+        color: "#9c27b0",
+      },
+      {
+        label: "Express Processing",
+        amount: 30,
+        type: "optional",
+        revealed: false,
+        justification: "Same-day funding",
+        color: "#9c27b0",
+      },
+      {
+        label: "Late Payment Fee",
+        amount: 40,
+        type: "penalty",
+        revealed: false,
+        justification: "If payment is late",
+        color: "#d32f2f",
+      },
+      {
+        label: "Rollover Fee",
+        amount: 50,
+        type: "penalty",
+        revealed: false,
+        justification: "If loan is extended",
+        color: "#d32f2f",
+      },
+      {
+        label: "NSF Fee (Per Attempt)",
+        amount: 35,
+        type: "penalty",
+        revealed: false,
+        justification: "Bank rejection fee",
+        color: "#d32f2f",
+      },
+    ];
+    setFormData((prev) => ({ ...prev, fees: baseFees }));
+  };
+
+  // Calculate vulnerability score based on form data
+  const calculateVulnerabilityScore = useCallback(() => {
+    let score = 0;
+    const income = parseInt(formData.income?.replace(/\D/g, "") || "0");
+
+    if (income < 2000) score += 3;
+    if (formData.employment?.toLowerCase().includes("part") ||
+        formData.employment?.toLowerCase().includes("temp")) score += 2;
+    if (formData.bankName?.toLowerCase().includes("check") ||
+        formData.bankName?.toLowerCase().includes("cash")) score += 2;
+    if (currentField >= 2) score += 1;
+
+    setVulnerabilityScore(score);
+  }, [formData.income, formData.employment, formData.bankName, currentField]);
+
+  // Urgency timer countdown
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Progressive fee revelation
+  useEffect(() => {
+    if (currentField >= 1) {
+      setFormData((prev) => ({
+        ...prev,
+        fees: prev.fees.map((fee) =>
+          fee.type === "hidden" &&
+          ["Verification Fee", "ACH Setup Fee"].includes(fee.label)
+            ? { ...fee, revealed: true }
+            : fee
+        ),
+      }));
+    }
+    if (currentField >= 2) {
+      setFormData((prev) => ({
+        ...prev,
+        fees: prev.fees.map((fee) =>
+          fee.type === "hidden" &&
+          ["Risk Assessment", "Platform Fee"].includes(fee.label)
+            ? { ...fee, revealed: true }
+            : fee
+        ),
+      }));
+    }
+    if (currentField >= 3) {
+      setFormData((prev) => ({
+        ...prev,
+        fees: prev.fees.map((fee) =>
+          fee.type === "optional" || fee.type === "penalty"
+            ? { ...fee, revealed: true }
+            : fee
+        ),
+      }));
+    }
+  }, [currentField]);
+
+  // Initialize fees on mount
+  useEffect(() => {
+    initializeFees();
+  }, []);
+
+  // Update vulnerability score when form data changes
+  useEffect(() => {
+    calculateVulnerabilityScore();
+  }, [calculateVulnerabilityScore]);
+
+  const handleFieldChange = (name: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleNext = () => {
+    if (currentField < checkoutSteps.length - 1) {
+      setCurrentField((prev) => prev + 1);
+    }
+  };
+
+  const handleCancel = () => {
+    const currentStepData = checkoutSteps[currentField];
+    setCancelAttempts((prev) => prev + 1);
+
+    if (currentStepData && cancelAttempts < currentStepData.cancelDifficulty) {
+      setShowCancelWarning(true);
+    } else {
+      setCurrentField(0);
+      setFormData({});
+      setCancelAttempts(0);
+      setShowCancelWarning(false);
+    }
+  };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -386,424 +626,600 @@ const DeceptiveCheckoutFlow: React.FC<DeceptiveCheckoutFlowProps> = ({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-      onStepChange?.(steps[currentStep + 1].id);
-
-      // Track progression
-      analyticsEngine.trackBehavior("session123", {
-        type: "form_progression",
-        step: steps[currentStep + 1].id,
-        timeSpent: 600 - timer,
-      });
-    }
+  const calculateTotal = () => {
+    return formData.fees
+      .filter((fee) => fee.revealed)
+      .reduce((sum, fee) => sum + fee.amount, 0);
   };
 
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-      onStepChange?.(steps[currentStep - 1].id);
-    } else {
-      onBack();
-    }
+  const calculateAPR = () => {
+    const principal = 300;
+    const totalFeesAmount = formData.fees
+      .filter((fee) => fee.revealed && fee.type !== "principal")
+      .reduce((sum, fee) => sum + fee.amount, 0);
+    const termDays = 14;
+    const apr = (totalFeesAmount / principal) * (365 / termDays) * 100;
+    return Math.round(apr);
   };
 
-  const renderStepContent = () => {
-    const step = steps[currentStep];
+  const currentStepData = checkoutSteps[currentField];
+  const revealedFees = formData.fees.filter((fee) => fee.revealed);
+  const totalAmount = calculateTotal();
+  const apr = calculateAPR();
 
-    // Render fake urgency warnings
-    const renderUrgencyWarning = () => (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ClockIcon className="h-5 w-5 text-red-600 animate-pulse" />
-            <span className="text-red-800 font-semibold">
-              Offer expires in: {formatTime(timer)}
-            </span>
-          </div>
-          <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-1">
-              <UserGroupIcon className="h-4 w-4 text-red-600" />
-              <span className="text-red-700">{viewersCount} viewing now</span>
-            </div>
-            <div className="text-red-800 font-bold">
-              Only {spotsRemaining} spots left!
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-
-    // Render fake social proof
-    const renderSocialProof = () => (
-      <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
-        <div className="flex items-center gap-2">
-          <CheckCircleIcon className="h-5 w-5 text-green-600" />
-          <span className="text-green-800">
-            <strong>Sarah M.</strong> just received $500! •
-            <strong> John D.</strong> got approved for $750! •
-            <strong> Lisa K.</strong> received funds in 12 minutes!
-          </span>
-        </div>
-      </div>
-    );
-
-    // Render security theater
-    const renderSecurityTheater = () => (
-      <div className="flex items-center gap-6 text-sm text-gray-600 mb-4">
-        <div className="flex items-center gap-1">
-          <ShieldCheckIcon className="h-4 w-4" />
-          <span>256-bit SSL Encryption</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <BoltIcon className="h-4 w-4" />
-          <span>Instant Approval</span>
-        </div>
-      </div>
-    );
-
-    switch (step.id) {
-      case "start":
-        return (
-          <div className="space-y-6">
-            {renderUrgencyWarning()}
-            {renderSocialProof()}
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold">
-                Get ${loanAmount} in Your Account Today!
-              </h2>
-              <p className="text-lg text-gray-600">
-                Approved in 2 minutes • Money in 15 minutes • No hidden fees*
-              </p>
-              <div className="text-xs text-gray-400">
-                *Processing, origination, and transfer fees apply. See terms.
-              </div>
-            </div>
-            {renderSecurityTheater()}
-          </div>
-        );
-
-      case "personal":
-        return (
-          <div className="space-y-4">
-            {renderUrgencyWarning()}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                label="First Name"
-                value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-                required
-              />
-              <Input
-                label="Last Name"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-                required
-              />
-              <Input
-                label="Date of Birth"
-                type="date"
-                value={formData.dob}
-                onChange={(e) =>
-                  setFormData({ ...formData, dob: e.target.value })
-                }
-                required
-              />
-              <Input
-                label="Social Security Number"
-                type="password"
-                placeholder="XXX-XX-XXXX"
-                value={formData.ssn}
-                onChange={(e) =>
-                  setFormData({ ...formData, ssn: e.target.value })
-                }
-                required
-              />
-            </div>
-          </div>
-        );
-
-      case "consents":
-        return (
-          <div className="space-y-4">
-            {renderUrgencyWarning()}
-            <div className="space-y-3">
-              <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
-                <input
-                  type="checkbox"
-                  checked={formData.achAuthorization}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      achAuthorization: e.target.checked,
-                    })
-                  }
-                  className="mt-1"
-                />
-                <div>
-                  <div className="font-semibold">ACH Authorization</div>
-                  <div className="text-sm text-gray-600">
-                    I authorize automatic withdrawals from my account for loan
-                    repayment and any fees
-                  </div>
-                </div>
-              </label>
-
-              <label className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
-                <input
-                  type="checkbox"
-                  checked={formData.autoRenewal}
-                  onChange={(e) =>
-                    setFormData({ ...formData, autoRenewal: e.target.checked })
-                  }
-                  className="mt-1"
-                />
-                <div>
-                  <div className="font-semibold flex items-center gap-2">
-                    Auto-Renewal Service
-                    <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded">
-                      RECOMMENDED
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Automatically renew your loan if you can't pay in full
-                    (saves you from default!)
-                  </div>
-                </div>
-              </label>
-
-              <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
-                <input
-                  type="checkbox"
-                  checked={formData.dataSharing}
-                  onChange={(e) =>
-                    setFormData({ ...formData, dataSharing: e.target.checked })
-                  }
-                  className="mt-1"
-                />
-                <div>
-                  <div className="font-semibold">Data Sharing Agreement</div>
-                  <div className="text-sm text-gray-600">
-                    Share my information with partners for better offers and
-                    services
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
-        );
-
-      case "insurance":
-        return (
-          <div className="space-y-4">
-            {renderUrgencyWarning()}
-            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-3">⚠️ Protect Your Loan</h3>
-              <p className="mb-4">
-                <strong>87% of our customers</strong> choose loan protection
-                insurance. Without it, you're personally liable for the full
-                amount even if you lose your job or get sick!
-              </p>
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.loanInsurance}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      loanInsurance: e.target.checked,
-                    })
-                  }
-                  className="mt-1"
-                />
-                <div>
-                  <div className="font-semibold">
-                    Yes, protect my loan for only $89.99
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Covers job loss, illness, and unexpected emergencies
-                  </div>
-                </div>
-              </label>
-              {!formData.loanInsurance && (
-                <div className="mt-4 text-red-600 font-semibold">
-                  ⚠️ Are you sure? You'll be personally responsible for the full
-                  ${totalCost.toFixed(2)} even in emergencies!
-                </div>
-              )}
-            </div>
-          </div>
-        );
-
-      case "review":
-        return (
-          <div className="space-y-4">
-            {renderUrgencyWarning()}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-4">Loan Summary</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>Loan Amount:</span>
-                  <span className="font-semibold">
-                    ${loanAmount.toFixed(2)}
-                  </span>
-                </div>
-                {baseFee > 0 && (
-                  <div className="flex justify-between">
-                    <span>Finance Charge (391% APR):</span>
-                    <span className="font-semibold">${baseFee.toFixed(2)}</span>
-                  </div>
-                )}
-                {Object.entries(additionalFees).map(
-                  ([key, value]) =>
-                    value > 0 && (
-                      <div
-                        key={key}
-                        className="flex justify-between text-gray-600"
-                      >
-                        <span>
-                          {key
-                            .replace(/([A-Z])/g, " $1")
-                            .replace(/^./, (str) => str.toUpperCase())}
-                          :
-                        </span>
-                        <span>${value.toFixed(2)}</span>
-                      </div>
-                    )
-                )}
-                <div className="border-t pt-2 flex justify-between font-bold text-lg">
-                  <span>Total Amount Due:</span>
-                  <span>${totalCost.toFixed(2)}</span>
-                </div>
-                <div className="text-xs text-gray-500 mt-2">
-                  Due in 14 days. Late fees of $50 apply after grace period.
-                </div>
-              </div>
-            </div>
-
-            <label className="flex items-start gap-3 p-4 bg-green-50 rounded-lg cursor-pointer hover:bg-green-100">
-              <input
-                type="checkbox"
-                checked={formData.expressProcessing}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    expressProcessing: e.target.checked,
-                  })
-                }
-                className="mt-1"
-              />
-              <div>
-                <div className="font-semibold flex items-center gap-2">
-                  Express Processing
-                  <span className="text-xs bg-green-600 text-white px-2 py-1 rounded animate-pulse">
-                    LIMITED TIME
-                  </span>
-                </div>
-                <div className="text-sm text-gray-600">
-                  Get your money in 5 minutes instead of 24 hours for just
-                  $59.99
-                </div>
-              </div>
-            </label>
-          </div>
-        );
-
-      default:
-        // Return placeholder for other steps
-        return (
-          <div className="space-y-4">
-            {renderUrgencyWarning()}
-            <p className="text-gray-600">Step content for: {step.title}</p>
-          </div>
-        );
-    }
-  };
+  // Safety check for currentStepData
+  if (!currentStepData) {
+    return <div>Error: Invalid checkout step</div>;
+  }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      {/* Progress bar with manipulation */}
-      <div className="mb-6">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
-          <span>
-            Step {currentStep + 1} of {steps.length}
-          </span>
-          <span>{steps[currentStep].progressPercent}% Complete</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-3">
-          <div
-            className="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500"
-            style={{ width: `${steps[currentStep].progressPercent}%` }}
-          />
+    <div className="min-h-screen bg-gray-50">
+      {/* Progress Bar */}
+      <div className="sticky top-16 bg-white shadow-sm z-40">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold">Application Progress</h2>
+            <span className="text-sm text-gray-600">
+              Step {currentPhase} of {phases.length}
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full transition-all duration-500"
+              style={{ width: `${calculateProgress()}%` }}
+            />
+          </div>
         </div>
       </div>
 
-      <Card className="p-6">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold">{steps[currentStep].title}</h2>
-          <p className="text-gray-600">{steps[currentStep].subtitle}</p>
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Fake urgency timer */}
+        <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white p-4 rounded-lg mb-6 text-center animate-pulse">
+          <p className="text-xl font-bold">
+            ⏰ Limited Time Pre-Approval Expires In: {formatTime(timeLeft)}
+          </p>
+          <p className="text-sm opacity-90">
+            This exclusive offer may not be available again!
+          </p>
         </div>
 
-        {renderStepContent()}
+        {/* Current step content */}
+        <Card className="p-6">
+          <h3 className="text-2xl font-bold mb-2">{currentStepData.title}</h3>
+          <p className="text-gray-600 mb-6">{currentStepData.description}</p>
 
-        <div className="flex justify-between mt-8">
-          <Button variant="outline" onClick={handleBack} disabled={timer === 0}>
-            Back
-          </Button>
+          {/* Dynamic form fields based on step */}
+          <div className="space-y-4">
+            {currentStepData.fields.map((field: any) => (
+              <div key={field.name}>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {field.label}
+                  {field.required && <span className="text-red-500">*</span>}
+                </label>
+                {field.type === "select" ? (
+                  <select
+                    name={field.name}
+                    className="w-full p-2 border rounded-lg"
+                    onChange={(e) => handleFieldChange(field.name, e.target.value)}
+                  >
+                    <option value="">Select...</option>
+                    {field.options?.map((opt: string) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                ) : field.type === "checkbox" ? (
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name={field.name}
+                      defaultChecked={field.preChecked}
+                      onChange={(e) => handleFieldChange(field.name, e.target.checked)}
+                    />
+                    <span className="text-sm">{field.label}</span>
+                  </label>
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    className="w-full p-2 border rounded-lg"
+                    onChange={(e) => handleFieldChange(field.name, e.target.value)}
+                  />
+                )}
+                {field.deceptiveLabel && (
+                  <p className="text-xs text-gray-500 mt-1">{field.deceptiveLabel}</p>
+                )}
+              </div>
+            ))}
+          </div>
 
-          <div className="flex gap-3">
-            {currentStep === steps.length - 1 ? (
-              <>
+          {/* Fee breakdown (progressive revelation) */}
+          {revealedFees.length > 0 && (
+            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+              <h4 className="font-semibold mb-2">Current Costs:</h4>
+              {revealedFees.map((fee) => (
+                <div key={fee.label} className="flex justify-between py-1">
+                  <span style={{ color: fee.color }}>{fee.label}</span>
+                  <span className="font-medium">${fee.amount}</span>
+                </div>
+              ))}
+              <div className="border-t mt-2 pt-2 flex justify-between font-bold">
+                <span>Total:</span>
+                <span>${totalAmount}</span>
+              </div>
+              {apr > 0 && (
+                <p className="text-xs text-gray-500 mt-2">
+                  APR: {apr}% (annualized percentage rate)
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className="flex gap-4 mt-6">
+            <Button
+              onClick={handleNext}
+              variant="primary"
+              size="large"
+              className="flex-1"
+            >
+              Continue
+            </Button>
+            <Button
+              onClick={handleCancel}
+              variant="outline"
+              size="large"
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+          </div>
+        </Card>
+
+        {/* Cancel warning modal */}
+        {showCancelWarning && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg max-w-md">
+              <h3 className="text-xl font-bold mb-4 text-red-600">
+                ⚠️ Are you sure you want to leave?
+              </h3>
+              <p className="mb-4">
+                You're so close to getting the funds you need! Your pre-approval
+                will be lost if you leave now.
+              </p>
+              <div className="flex gap-4">
                 <Button
-                  variant="outline"
+                  onClick={() => setShowCancelWarning(false)}
+                  variant="primary"
+                  className="flex-1"
+                >
+                  Stay & Get My Money
+                </Button>
+                <Button
                   onClick={() => {
-                    if (showEducationalOverlay) {
-                      showEducationalOverlay(
-                        "Debt Trap Warning",
-                        `You're about to agree to a loan with 391% APR that will cost you $${totalCost.toFixed(
-                          2
-                        )} 
-                        for borrowing $${loanAmount}. This is designed to trap you in a cycle of debt.`
-                      );
-                    }
+                    setShowCancelWarning(false);
+                    handleCancel();
                   }}
-                  className="text-red-600 border-red-600"
+                  variant="outline"
+                  className="flex-1"
                 >
-                  <XMarkIcon className="h-5 w-5 mr-2" />
-                  Decline (Really? Give up ${loanAmount}?)
+                  Leave Anyway
                 </Button>
-                <Button
-                  onClick={handleNext}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  Get My ${loanAmount} Now!
-                  {timer < 60 && (
-                    <span className="ml-2 animate-pulse">⚡ HURRY!</span>
-                  )}
-                </Button>
-              </>
-            ) : (
-              <Button onClick={handleNext} disabled={timer === 0}>
-                Continue
-                <ChevronRightIcon className="h-5 w-5 ml-2" />
-              </Button>
-            )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Educational overlay */}
+        <div className="fixed bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg max-w-xs">
+          <h4 className="font-bold text-sm mb-2">🎓 Dark Pattern Active:</h4>
+          <p className="text-xs">{currentStepData.deceptiveTactic}</p>
+          <p className="text-xs mt-1">Vulnerability Score: {vulnerabilityScore}/8</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DeceptiveCheckoutFlow;
+        style={{
+          background: "linear-gradient(90deg, #ff1744, #ff5722)",
+          color: "white",
+          padding: "1rem",
+          borderRadius: "8px",
+          textAlign: "center",
+          marginBottom: "1rem",
+          boxShadow: "0 4px 15px rgba(255, 23, 68, 0.3)",
+        }}
+      >
+        <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+          ⏰ Limited Time Pre-Approval Expires In: {formatTime(timeLeft)}
+        </div>
+        <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>
+          This exclusive offer may not be available again!
+        </div>
+      </div>
+
+      {/* Social proof banner */}
+      <div
+        style={{
+          background: "#f3f4f6",
+          padding: "1rem",
+          borderRadius: "8px",
+          marginBottom: "1rem",
+          border: "1px solid #e5e7eb",
+        }}
+      >
+        <div style={{ fontSize: "0.9rem", color: "#374151" }}>
+          🔥 <strong>347 people</strong> applied in the last hour •{" "}
+          <strong>Sarah from Dallas</strong> just got approved for $500
+        </div>
+      </div>
+
+      {/* Main form */}
+      <div
+        style={{
+          background: "white",
+          borderRadius: "12px",
+          padding: "2rem",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          border: "2px solid #e5e7eb",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "1.5rem",
+          }}
+        >
+          <h2 style={{ margin: 0, fontSize: "1.5rem", fontWeight: "bold" }}>
+            {currentStepData.title}
+          </h2>
+          <div
+            style={{
+              background: "#4caf50",
+              color: "white",
+              padding: "0.25rem 0.75rem",
+              borderRadius: "12px",
+              fontSize: "0.8rem",
+              fontWeight: "600",
+            }}
+          >
+            {currentStepData.progressLabel}
           </div>
         </div>
-      </Card>
 
-      {/* Fake activity ticker */}
-      <div className="mt-4 text-center text-sm text-gray-500">
-        <span className="inline-flex items-center gap-2">
-          <span className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
-          Live: {Math.floor(Math.random() * 50) + 100} applications being
-          processed
-        </span>
+        <p style={{ color: "#666", marginBottom: "1.5rem" }}>
+          {currentStepData.description}
+        </p>
+
+        {/* Form fields */}
+        <div style={{ marginBottom: "1.5rem" }}>
+          {currentStepData.fields.map((field) => (
+            <div key={field.name} style={{ marginBottom: "1rem" }}>
+              <label
+                style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
+                  fontWeight: "600",
+                }}
+              >
+                {field.label}{" "}
+                {field.required && <span style={{ color: "#f44336" }}>*</span>}
+                {field.deceptiveLabel && (
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#4caf50",
+                      marginLeft: "0.5rem",
+                    }}
+                  >
+                    ({field.deceptiveLabel})
+                  </span>
+                )}
+              </label>
+              {field.type === "checkbox" ? (
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData[field.name] ?? field.preChecked}
+                    onChange={(e) =>
+                      handleInputChange(field.name, e.target.checked)
+                    }
+                  />
+                  <span style={{ fontSize: "0.9rem" }}>{field.label}</span>
+                </label>
+              ) : (
+                <input
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  value={formData[field.name] || ""}
+                  onChange={(e) =>
+                    handleInputChange(field.name, e.target.value)
+                  }
+                  required={field.required}
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem",
+                    border: "1px solid #d1d5db",
+                    borderRadius: "8px",
+                    fontSize: "1rem",
+                  }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Fee breakdown */}
+        {revealedFees.length > 0 && (
+          <div
+            style={{
+              background: "#f8f9fa",
+              padding: "1.5rem",
+              borderRadius: "8px",
+              marginBottom: "1.5rem",
+              border: "1px solid #e9ecef",
+            }}
+          >
+            <h3
+              style={{
+                margin: "0 0 1rem 0",
+                fontSize: "1.1rem",
+                fontWeight: "bold",
+              }}
+            >
+              Loan Summary
+            </h3>
+            {revealedFees.map((fee) => (
+              <div
+                key={fee.label}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "0.5rem 0",
+                  borderBottom: "1px solid #e9ecef",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "8px",
+                      height: "8px",
+                      borderRadius: "50%",
+                      background: fee.color,
+                    }}
+                  />
+                  <span>{fee.label}</span>
+                  {fee.type === "optional" && (
+                    <span style={{ fontSize: "0.8rem", color: "#666" }}>
+                      (optional)
+                    </span>
+                  )}
+                </div>
+                <span style={{ fontWeight: "bold", color: fee.color }}>
+                  ${fee.amount}
+                </span>
+              </div>
+            ))}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "1rem 0 0 0",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+              }}
+            >
+              <span>Total Repayment:</span>
+              <span style={{ color: apr > 300 ? "#f44336" : "#4caf50" }}>
+                ${totalAmount}
+              </span>
+            </div>
+            {apr > 0 && (
+              <div
+                style={{
+                  fontSize: "0.9rem",
+                  color: "#666",
+                  textAlign: "center",
+                  marginTop: "0.5rem",
+                }}
+              >
+                APR: {apr > 300 ? `${apr}%` : "Competitive rate"}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Vulnerability targeting */}
+        {vulnerabilityScore > 3 && (
+          <div
+            style={{
+              background: "#fff3cd",
+              padding: "1rem",
+              borderRadius: "8px",
+              marginBottom: "1.5rem",
+              border: "1px solid #ffeaa7",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "0.9rem",
+                color: "#856404",
+                fontWeight: "600",
+              }}
+            >
+              🎯 Special Offer: Based on your profile, you qualify for emergency
+              funding options!
+            </div>
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div style={{ display: "flex", gap: "1rem" }}>
+          {currentStep > 0 && (
+            <button
+              onClick={handleCancel}
+              style={{
+                flex: 1,
+                padding: "0.75rem",
+                border: "1px solid #d1d5db",
+                borderRadius: "8px",
+                background: "#f9fafb",
+                color: "#374151",
+                fontWeight: "600",
+                cursor: "pointer",
+              }}
+            >
+              {cancelAttempts > 0 ? "Really Cancel?" : "Cancel"}
+            </button>
+          )}
+          <button
+            onClick={handleNext}
+            style={{
+              flex: 2,
+              padding: "0.75rem",
+              border: "none",
+              borderRadius: "8px",
+              background:
+                currentStep === checkoutSteps.length - 1
+                  ? "linear-gradient(90deg, #4caf50, #45a049)"
+                  : "linear-gradient(90deg, #ff5722, #ff9800)",
+              color: "white",
+              fontWeight: "bold",
+              cursor: "pointer",
+              fontSize: "1rem",
+            }}
+          >
+            {currentStep === checkoutSteps.length - 1
+              ? "Complete Application"
+              : "Continue"}
+          </button>
+        </div>
+
+        {/* Progress indicator */}
+        <div
+          style={{
+            marginTop: "1rem",
+            fontSize: "0.8rem",
+            color: "#666",
+            textAlign: "center",
+          }}
+        >
+          ✅{" "}
+          {currentStep === 0
+            ? "Almost done!"
+            : currentStep === 1
+              ? "Great progress!"
+              : currentStep === 2
+                ? "Final step!"
+                : "Ready to fund!"}
+        </div>
+      </div>
+
+      {/* Cancel warning modal */}
+      {showCancelWarning && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "2rem",
+              borderRadius: "12px",
+              maxWidth: "400px",
+              textAlign: "center",
+            }}
+          >
+            <h3 style={{ color: "#f44336", marginBottom: "1rem" }}>
+              ⚠️ Wait! Don't Miss Out!
+            </h3>
+            <p style={{ marginBottom: "1.5rem" }}>
+              You&apos;re about to lose your pre-approved status. This exclusive
+              offer expires in {formatTime(timeLeft)} and cannot be recovered.
+            </p>
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <button
+                onClick={() => setShowCancelWarning(false)}
+                style={{
+                  flex: 1,
+                  padding: "0.75rem",
+                  border: "none",
+                  borderRadius: "8px",
+                  background: "#4caf50",
+                  color: "white",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                Continue
+              </button>
+              <button
+                onClick={handleCancel}
+                style={{
+                  flex: 1,
+                  padding: "0.75rem",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "8px",
+                  background: "#f9fafb",
+                  color: "#374151",
+                  cursor: "pointer",
+                }}
+              >
+                Leave
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Educational overlay */}
+      <div
+        style={{
+          position: "fixed",
+          top: "10px",
+          right: "10px",
+          background: "rgba(255, 255, 255, 0.95)",
+          padding: "1rem",
+          borderRadius: "8px",
+          fontSize: "0.8rem",
+          maxWidth: "250px",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          zIndex: 999,
+        }}
+      >
+        <strong>🎓 Educational: Dark Patterns Active</strong>
+        <br />• {currentStepData.deceptiveTactic}
+        <br />• Vulnerability Score: {vulnerabilityScore}/8
+        <br />• Real APR: {apr}%
+        <br />• Cancel Difficulty: {currentStepData.cancelDifficulty}/3
       </div>
     </div>
   );

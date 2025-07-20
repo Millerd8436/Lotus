@@ -2,10 +2,12 @@
 
 import WebsitePhase from "@/components/WebsitePhase";
 import { useSimulation } from "@/components/providers/SimulationProvider";
+import { LegalCaseNotice } from "@/components/regulated/LegalCaseNotice";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { EnhancedLoanCalculator } from "@/lib/core/EnhancedLoanCalculator";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function EthicalApplicationPage() {
   const router = useRouter();
@@ -14,31 +16,21 @@ export default function EthicalApplicationPage() {
   const [quizAnswer, setQuizAnswer] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [reflectionAnswer, setReflectionAnswer] = useState("");
+  const [feelsPressured, setFeelsPressured] = useState<boolean | null>(null);
+  const [showAffordabilityCheck, setShowAffordabilityCheck] = useState(false);
+  const [bankBalance, setBankBalance] = useState(1000); // Mock bank balance
+  const [hasUsedExtension, setHasUsedExtension] = useState(false);
+  const [inCoolingOffPeriod, setInCoolingOffPeriod] = useState(false);
 
   const assessment = session.ethicalAssessment || { loanAmount: "300" };
   const loanAmount = parseFloat(assessment.loanAmount) || 300;
 
-  // Calculate fees transparently
-  const calculateTransparentFees = () => {
-    const principal = loanAmount;
-    const interestRate = 0.24; // 24% APR (ethical rate)
-    const termDays = 30; // 30-day term instead of 14
-    const dailyRate = interestRate / 365;
-    const interest = principal * dailyRate * termDays;
-    const educationFund = 1; // $1 to financial education
-    const total = principal + interest + educationFund;
+  const regulatedLoan =
+    EnhancedLoanCalculator.calculateRegulatedLoan(loanAmount);
+  const { ethical: fees, exploitative: predatoryFees } =
+    EnhancedLoanCalculator.compareLoans(loanAmount);
 
-    return {
-      principal,
-      interest: parseFloat(interest.toFixed(2)),
-      educationFund,
-      total: parseFloat(total.toFixed(2)),
-      apr: 24,
-      termDays,
-    };
-  };
-
-  const fees = calculateTransparentFees();
+  const canAffordLoan = bankBalance > fees.totalRepaid;
 
   const handleQuizSubmit = () => {
     if (quizAnswer === "C") {
@@ -59,17 +51,59 @@ export default function EthicalApplicationPage() {
     }
   };
 
-  const handleFinalSubmit = () => {
-    updateSession({
-      ethicalLoanData: {
-        ...fees,
-        reflectionAnswer,
-        agreedToTerms,
-        applicationTime: new Date().toISOString(),
-      },
-    });
-    router.push("/ethical/complete");
+  const handleAgreementSubmit = () => {
+    if (agreedToTerms && reflectionAnswer.trim()) {
+      setShowAffordabilityCheck(true);
+    }
   };
+
+  const handleRequestExtension = () => {
+    if (!hasUsedExtension) {
+      setHasUsedExtension(true);
+      alert(
+        "Your one-time 0% extension has been granted. Your new due date is in 30 days."
+      );
+    }
+  };
+
+  const handleMetaConsentSubmit = () => {
+    if (feelsPressured) {
+      router.push("/ethical/counseling");
+    } else {
+      updateSession({
+        ...session,
+        ethicalLoanData: {
+          ...fees,
+          reflectionAnswer,
+          agreedToTerms,
+          applicationTime: new Date().toISOString(),
+          metaConsent: {
+            feelsPressured: false,
+            timestamp: new Date().toISOString(),
+          },
+        },
+        interactionEvents: [
+          ...(session.interactionEvents || []),
+          {
+            type: "completed_ethical_application",
+            timestamp: Date.now(),
+          },
+        ],
+      });
+      setInCoolingOffPeriod(true);
+      router.push("/ethical/complete");
+    }
+  };
+
+  useEffect(() => {
+    if (inCoolingOffPeriod) {
+      const timer = setTimeout(() => {
+        setInCoolingOffPeriod(false);
+      }, 24 * 60 * 60 * 1000); // 24-hour cooling-off period
+
+      return () => clearTimeout(timer);
+    }
+  }, [inCoolingOffPeriod]);
 
   return (
     <WebsitePhase phase={4}>
@@ -82,9 +116,13 @@ export default function EthicalApplicationPage() {
                 Complete Cost Transparency
               </h2>
 
+              <LegalCaseNotice
+                capApplied={regulatedLoan.capApplied}
+                caseNotice={regulatedLoan.caseNotice}
+              />
+
               <div className="bg-blue-50 p-6 rounded-lg mb-6">
                 <h3 className="font-semibold mb-4">Your Loan Breakdown</h3>
-
                 <table className="w-full">
                   <tbody>
                     <tr className="border-b">
@@ -93,7 +131,7 @@ export default function EthicalApplicationPage() {
                         ${fees.principal.toFixed(2)}
                       </td>
                       <td className="py-3 pl-4 text-sm text-gray-600">
-                        → funds for your use
+                        → Funds directly deposited to your account.
                       </td>
                     </tr>
                     <tr className="border-b">
@@ -104,7 +142,16 @@ export default function EthicalApplicationPage() {
                         ${fees.interest.toFixed(2)}
                       </td>
                       <td className="py-3 pl-4 text-sm text-gray-600">
-                        → covers our costs
+                        → Covers our operational costs to provide this service.
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-3">"Transparency Tax"</td>
+                      <td className="py-3 text-right font-mono">
+                        ${fees.transparencyTax.toFixed(2)}
+                      </td>
+                      <td className="py-3 pl-4 text-sm text-gray-600">
+                        → Funds our financial education and outreach programs.
                       </td>
                     </tr>
                     <tr className="border-b">
@@ -113,15 +160,16 @@ export default function EthicalApplicationPage() {
                         ${fees.educationFund.toFixed(2)}
                       </td>
                       <td className="py-3 pl-4 text-sm text-gray-600">
-                        → financial literacy programs
+                        → Contributes to free financial literacy resources for
+                        everyone.
                       </td>
                     </tr>
                     <tr className="font-bold text-lg">
                       <td className="py-3">Total to Repay</td>
                       <td className="py-3 text-right font-mono">
-                        ${fees.total.toFixed(2)}
+                        ${fees.totalRepaid.toFixed(2)}
                       </td>
-                      <td className="py-3"></td>
+                      <td></td>
                     </tr>
                   </tbody>
                 </table>
@@ -133,26 +181,46 @@ export default function EthicalApplicationPage() {
                     ✓ What's Different Here
                   </h4>
                   <ul className="text-sm space-y-1">
-                    <li>• 24% APR vs typical 400%+ payday loan rates</li>
-                    <li>• 30-day term vs typical 14-day term</li>
+                    <li>
+                      • {fees.apr}% APR vs. typical{" "}
+                      {predatoryFees.apr.toFixed(0)}%+ payday loan rates
+                    </li>
+                    <li>• {fees.termDays}-day term vs. typical 14-day term</li>
                     <li>• No hidden fees or surprise charges</li>
                     <li>• No automatic renewals or rollovers</li>
                   </ul>
                 </div>
-
-                <div className="p-4 bg-yellow-50 rounded-lg">
-                  <h4 className="font-semibold mb-2">⚠️ Important Reminders</h4>
+                <div className="p-4 bg-red-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">
+                    Comparison: Predatory Loan
+                  </h4>
                   <ul className="text-sm space-y-1">
-                    <li>• This is still expensive credit</li>
-                    <li>• Only borrow what you can repay</li>
-                    <li>• Consider alternatives first</li>
-                    <li>• You can cancel within 24 hours at no cost</li>
+                    <li>
+                      • Total to Repay: ${predatoryFees.totalRepaid.toFixed(2)}
+                    </li>
+                    <li>• APR: {predatoryFees.apr.toFixed(2)}%</li>
+                    <li>
+                      • Hidden Fees: $
+                      {(
+                        predatoryFees.fees.total -
+                        predatoryFees.fees.origination
+                      ).toFixed(2)}
+                    </li>
                   </ul>
                 </div>
               </div>
 
               <Button className="w-full" onClick={() => setStep(2)}>
                 I Understand the Costs →
+              </Button>
+              <Button
+                onClick={handleRequestExtension}
+                disabled={hasUsedExtension || inCoolingOffPeriod}
+                className="w-full mt-4"
+              >
+                {hasUsedExtension
+                  ? "Extension Used"
+                  : "Request 0% Extension (1-time)"}
               </Button>
             </Card>
           )}
@@ -217,6 +285,23 @@ export default function EthicalApplicationPage() {
                 leading to unexpected costs.
               </p>
 
+              {quizAnswer && quizAnswer !== "C" && (
+                <div className="text-red-600 mb-4">
+                  <p>
+                    That's not correct. The APR is the Annual Percentage Rate,
+                    which is the yearly interest rate.
+                  </p>
+                  <a
+                    href="https://www.consumerfinance.gov/ask-cfpb/what-is-the-difference-between-an-interest-rate-and-the-annual-percentage-rate-apr-en-135/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    Learn more about APR
+                  </a>
+                </div>
+              )}
+
               <div className="flex gap-4">
                 <Button variant="outline" onClick={() => setStep(1)}>
                   ← Review Costs
@@ -250,7 +335,7 @@ export default function EthicalApplicationPage() {
                       You are borrowing ${fees.principal} for {fees.termDays}{" "}
                       days at an APR of {fees.apr}%.
                     </p>
-                    <p>Total repayment amount: ${fees.total}</p>
+                    <p>Total repayment amount: ${fees.totalRepaid}</p>
                     <p>
                       Due date:{" "}
                       {new Date(
@@ -274,7 +359,9 @@ export default function EthicalApplicationPage() {
 
                   <section>
                     <h4 className="font-semibold">3. Repayment</h4>
-                    <p>One payment of ${fees.total} due on the due date.</p>
+                    <p>
+                      One payment of ${fees.totalRepaid} due on the due date.
+                    </p>
                     <p>
                       No automatic renewals. If you cannot pay, contact us to
                       discuss options.
@@ -321,10 +408,96 @@ export default function EthicalApplicationPage() {
 
               <Button
                 className="w-full"
-                onClick={handleFinalSubmit}
+                onClick={handleAgreementSubmit}
                 disabled={!agreedToTerms || !reflectionAnswer.trim()}
               >
-                Complete Application
+                Continue to Final Check →
+              </Button>
+            </Card>
+          )}
+
+          {/* Step 4: Affordability Check */}
+          {showAffordabilityCheck && (
+            <Card className="p-8">
+              <h2 className="text-2xl font-bold mb-6">Affordability Check</h2>
+              <div
+                className={`p-4 rounded ${
+                  canAffordLoan ? "bg-green-100" : "bg-red-100"
+                }`}
+              >
+                <h3 className="font-semibold">Affordability Check Results</h3>
+                <p>
+                  <strong>Mock Bank Balance:</strong> ${bankBalance}
+                </p>
+                <p>
+                  <strong>Loan Repayment:</strong> $
+                  {fees.totalRepaid.toFixed(2)}
+                </p>
+                <p
+                  className={`font-bold ${
+                    canAffordLoan ? "text-green-700" : "text-red-700"
+                  }`}
+                >
+                  {canAffordLoan
+                    ? "✅ Loan appears affordable based on your balance."
+                    : "❌ WARNING: Loan repayment exceeds your current balance."}
+                </p>
+              </div>
+              <Button className="w-full mt-4" onClick={() => setStep(4)}>
+                Continue to Meta-Consent →
+              </Button>
+            </Card>
+          )}
+
+          {/* Step 5: Meta-Consent Confirmation */}
+          {step === 4 && !showAffordabilityCheck && (
+            <Card className="p-8">
+              <h2 className="text-2xl font-bold mb-6">
+                Meta-Consent Confirmation
+              </h2>
+              <p className="text-gray-700 mb-6">
+                As a final step to uphold our ethical commitment, please answer
+                the following question. This ensures your decision is truly
+                voluntary and free from manipulation, a core tenet of respecting
+                your autonomy.
+              </p>
+              <div className="bg-yellow-50 p-6 rounded-lg mb-6">
+                <p className="font-semibold mb-4">
+                  Do you feel any pressure or unfair nudging right now?
+                </p>
+                <div className="flex gap-4">
+                  <Button
+                    variant={feelsPressured === true ? "danger" : "outline"}
+                    className="flex-1"
+                    onClick={() => setFeelsPressured(true)}
+                  >
+                    Yes, I feel pressured
+                  </Button>
+                  <Button
+                    variant={feelsPressured === false ? "primary" : "outline"}
+                    className="flex-1"
+                    onClick={() => setFeelsPressured(false)}
+                  >
+                    No, I feel free to choose
+                  </Button>
+                </div>
+              </div>
+              {feelsPressured === true && (
+                <div className="text-center text-red-600 mb-4">
+                  <p>
+                    If you feel pressured, we recommend exploring our support
+                    resources instead.
+                  </p>
+                </div>
+              )}
+              <Button
+                className="w-full mt-4"
+                onClick={handleMetaConsentSubmit}
+                disabled={feelsPressured === null}
+              >
+                {feelsPressured
+                  ? "Get Support Resources"
+                  : "Complete Application"}
               </Button>
             </Card>
           )}

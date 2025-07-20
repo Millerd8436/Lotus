@@ -100,6 +100,16 @@ export interface LotusSession {
     phase: number;
     timestamp: number;
   }>;
+
+  // Enhanced phase tracking for provider
+  mode?: "ethical" | "exploitative";
+  phase1Results?: {
+    darkPatternsIdentified: string[];
+    ethicalViolations: string[];
+    completedAt: string;
+  };
+  realTimeAnnotationsEnabled?: boolean;
+  checkoutSteps?: any[];
 }
 
 // ==================== FORM DATA ====================
@@ -212,6 +222,45 @@ export interface AutonomyViolation {
   hiddenFromUser?: boolean;
   phase?: 1 | 2 | 3;
   coercionLevel?: number;
+}
+
+export interface LoanDetails {
+  provider: string;
+  apr: number;
+  fees: {
+    origination: number;
+    late: number;
+    nsf: number;
+    rollover: number;
+  };
+  totalCost: number;
+  biweeklyPayment: number;
+  totalInterest: number;
+  effectiveAPR: number;
+}
+
+export interface ExploitativeLoan {
+  principal: number;
+  termDays: number;
+  fees: {
+    origination: number;
+    late: number;
+    nsf: number;
+    rollover: number;
+    total: number;
+  };
+  totalRepaid: number;
+  apr: number;
+}
+
+export interface EthicalLoan {
+  principal: number;
+  termDays: number;
+  interest: number;
+  educationFund: number;
+  transparencyTax: number;
+  totalRepaid: number;
+  apr: number;
 }
 
 // ==================== BEHAVIORAL TRACKING ====================
@@ -438,3 +487,29 @@ export const getInitialLotusSession = (): LotusSession => ({
   detectedDarkPatterns: [],
   phaseHistory: [],
 });
+
+export interface DarkPatternEncounter {
+  type: string;
+  timestamp?: number;
+}
+
+export interface CheckoutStepLog {
+  id: string;
+  title: string;
+  darkPattern: string;
+  timestamp: number;
+}
+
+export interface LoanData {
+  loanAmount: string;
+  fees: {
+    origination: number;
+    late: number;
+    nsf: number;
+    rollover: number;
+  };
+  totalCost: number;
+  biweeklyPayment: number;
+  totalInterest: number;
+  effectiveAPR: number;
+}

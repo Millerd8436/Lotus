@@ -1,12 +1,13 @@
 "use client";
 
-import { getInitialLotusSession, LotusSession } from "@/types";
+import { CheckoutStepLog, getInitialLotusSession, LotusSession } from "@/types";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 // The context now provides the full session and a way to update it.
 interface SimulationContextType {
   session: LotusSession;
   updateSession: (data: Partial<LotusSession>) => void;
+  recordCheckoutStep: (step: CheckoutStepLog) => void;
   // Kept for potential future use, but not the primary mechanism now.
   transitionToPhase: (phase: 1 | 2 | 3) => void;
 }
@@ -33,6 +34,24 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
     setSession((prev) => ({ ...prev, ...data }));
   };
 
+  const recordCheckoutStep = (step: CheckoutStepLog) => {
+    setSession((prev) => {
+      const updatedSteps = [...(prev.checkoutSteps || []), step];
+      const darkPatterns = Array.from(
+        new Set(updatedSteps.map((s) => s.darkPattern))
+      ).map((type) => ({
+        type,
+        // You can add more details here if needed
+      }));
+
+      return {
+        ...prev,
+        checkoutSteps: updatedSteps,
+        darkPatternsEncountered: darkPatterns,
+      };
+    });
+  };
+
   // Kept for now, but direct navigation might be simpler.
   const transitionToPhase = (phase: 1 | 2 | 3) => {
     setSession((prev) => ({
@@ -45,6 +64,7 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
   const value: SimulationContextType = {
     session,
     updateSession,
+    recordCheckoutStep,
     transitionToPhase,
   };
 

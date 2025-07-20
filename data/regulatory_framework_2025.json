@@ -1,0 +1,410 @@
+{
+  "metadata": {
+    "lastUpdated": "2025-01-15",
+    "version": "2.0.0",
+    "sources": [
+      "CFPB Final Rules 2024-2025",
+      "State Consumer Protection Updates 2024-2025",
+      "Fintech Regulatory Guidance 2025",
+      "Truth in Lending Act Amendments 2024"
+    ],
+    "coverage": {
+      "federal_agencies": ["CFPB", "FTC", "OCC", "FDIC"],
+      "state_jurisdictions": 50,
+      "fintech_specific": true,
+      "enforcement_actions": "2024-2025"
+    }
+  },
+
+  "federal_regulations": {
+    "cfpb": {
+      "abusive_practices": {
+        "definition": "Materially interferes with ability to understand or takes unreasonable advantage of consumer vulnerability",
+        "prohibited_practices": [
+          {
+            "id": "material_interference",
+            "description": "Actions that obscure, confuse, or hide information",
+            "examples": [
+              "Dark patterns in user interfaces",
+              "Buried disclosure requirements",
+              "Confusing fee structures",
+              "Misleading progress indicators"
+            ],
+            "penalty_range": "$1,000,000 - $50,000,000",
+            "enforcement_priority": "high"
+          },
+          {
+            "id": "unreasonable_advantage",
+            "description": "Exploiting consumer gaps in understanding or inability to protect interests",
+            "examples": [
+              "Targeting vulnerable populations",
+              "Exploiting financial desperation",
+              "Taking advantage of limited literacy",
+              "Preying on elderly or disabled consumers"
+            ],
+            "penalty_range": "$5,000,000 - $100,000,000",
+            "enforcement_priority": "critical"
+          }
+        ],
+        "2025_updates": [
+          "Algorithmic bias considered abusive practice",
+          "Tip coercion explicitly prohibited",
+          "Data harvesting for targeting vulnerable populations banned",
+          "Confession of judgment clauses in consumer contracts prohibited"
+        ]
+      },
+
+      "deceptive_practices": {
+        "definition": "Likely to mislead consumers acting reasonably under the circumstances",
+        "prohibited_practices": [
+          {
+            "id": "false_advertising",
+            "description": "Misleading claims about loan terms or costs",
+            "examples": [
+              "Advertising 0% APR with mandatory tips",
+              "Hiding true lender identity (rent-a-bank)",
+              "False scarcity claims",
+              "Fake urgency timers"
+            ],
+            "penalty_range": "$500,000 - $25,000,000",
+            "enforcement_priority": "high"
+          },
+          {
+            "id": "bait_and_switch",
+            "description": "Advertising one product but delivering another",
+            "examples": [
+              "Advertised rate not available to typical borrower",
+              "Terms change during application process",
+              "Hidden fee revelation after commitment"
+            ],
+            "penalty_range": "$1,000,000 - $50,000,000",
+            "enforcement_priority": "high"
+          }
+        ]
+      },
+
+      "unfair_practices": {
+        "definition": "Causes substantial injury, not reasonably avoidable, not outweighed by benefits",
+        "prohibited_practices": [
+          {
+            "id": "debt_trap_design",
+            "description": "Business models designed around borrower failure",
+            "examples": [
+              "Short-term loans with balloon payments",
+              "Automatic rollover defaults",
+              "Inadequate underwriting leading to default",
+              "Collection practices causing undue hardship"
+            ],
+            "penalty_range": "$10,000,000 - $200,000,000",
+            "enforcement_priority": "critical"
+          }
+        ]
+      },
+
+      "fintech_specific_rules": {
+        "earned_wage_access": {
+          "tip_requirements": "Tips must be genuinely voluntary with prominent $0 option",
+          "disclosure_requirements": "True APR must be disclosed if tips collected >10% of time",
+          "employer_partnership": "Clear disclosure of data sharing with employers",
+          "frequency_limits": "Maximum 3 advances per pay period"
+        },
+        "algorithmic_lending": {
+          "bias_testing": "Annual testing for discriminatory outcomes required",
+          "explainability": "Consumers have right to understand decision factors",
+          "human_review": "Right to human review of automated adverse decisions",
+          "data_minimization": "Only collect data necessary for lending decision"
+        },
+        "marketplace_lending": {
+          "true_lender_disclosure": "Must clearly identify actual lender",
+          "lead_generation": "Clear disclosure if platform sells consumer data",
+          "broker_fees": "All broker/platform fees must be disclosed",
+          "investor_protection": "Clear separation of consumer and investor interests"
+        }
+      }
+    },
+
+    "ftc": {
+      "section_5_updates": {
+        "dark_patterns": "Explicitly prohibited as deceptive practices",
+        "drip_pricing": "Must disclose total price upfront",
+        "subscription_traps": "Easy cancellation required by law",
+        "fake_reviews": "Prohibited with enhanced penalties"
+      }
+    }
+  },
+
+  "state_regulations": {
+    "usury_caps": {
+      "36_percent_states": {
+        "states": [
+          "CA",
+          "NY",
+          "IL",
+          "NC",
+          "CO",
+          "NJ",
+          "CT",
+          "MA",
+          "VT",
+          "NH",
+          "SD",
+          "MT",
+          "NV",
+          "OR",
+          "WA",
+          "MD",
+          "DC"
+        ],
+        "cap": 36,
+        "enforcement": "Strong",
+        "rent_a_bank_status": "Prohibited or heavily restricted",
+        "payday_lending": "Prohibited",
+        "fintech_coverage": "Explicitly includes app-based lending"
+      },
+
+      "moderate_cap_states": {
+        "states": ["FL", "GA", "AZ", "MN", "WI", "PA", "VA", "MI"],
+        "cap_range": "18-60",
+        "varies_by_amount": true,
+        "enforcement": "Moderate",
+        "rent_a_bank_status": "Some restrictions",
+        "payday_lending": "Regulated"
+      },
+
+      "high_rate_states": {
+        "states": [
+          "TX",
+          "AL",
+          "MS",
+          "SC",
+          "TN",
+          "KS",
+          "MO",
+          "OK",
+          "UT",
+          "ID",
+          "WY"
+        ],
+        "cap": "No effective cap or >100%",
+        "enforcement": "Limited",
+        "rent_a_bank_status": "Generally permitted",
+        "payday_lending": "Permitted with disclosure"
+      }
+    },
+
+    "specific_state_laws": {
+      "california": {
+        "fair_access_to_credit_act": {
+          "effective_date": "2025-01-01",
+          "rate_cap": "36% APR for loans under $2,500",
+          "fintech_coverage": "Includes all digital lending platforms",
+          "tip_prohibition": "Tips cannot exceed 5% of principal",
+          "cooling_off": "24-hour right to cancel"
+        },
+        "consumer_privacy_act": {
+          "data_broker_registration": "Required for financial data brokers",
+          "consumer_rights": "Right to delete, know, opt-out, non-discrimination",
+          "fintech_application": "Covers lending app data practices"
+        }
+      },
+
+      "new_york": {
+        "virtual_currency_businesses": {
+          "bitlicense_requirements": "Crypto-backed lending requires BitLicense",
+          "consumer_protection": "Enhanced disclosures for crypto collateral"
+        },
+        "predatory_lending_prevention": {
+          "confession_of_judgment": "Prohibited in consumer contracts",
+          "automatic_renewals": "Opt-in required for all renewals",
+          "collection_restrictions": "Enhanced FDCPA protections"
+        }
+      },
+
+      "illinois": {
+        "predatory_loan_prevention_act": {
+          "rate_cap": "36% APR for all consumer loans",
+          "database_requirement": "Real-time loan tracking database",
+          "cooling_off": "24-hour cooling-off period mandatory"
+        }
+      },
+
+      "north_carolina": {
+        "payday_lending": "Completely prohibited since 2006",
+        "online_enforcement": "Aggressive prosecution of online lenders",
+        "consumer_protection": "Strong attorney general enforcement"
+      }
+    },
+
+    "emerging_state_laws": {
+      "tip_regulation": {
+        "states_with_laws": ["NY", "CA", "CT", "DC"],
+        "requirements": [
+          "Prominent $0 tip option required",
+          "Cannot suggest tip amounts",
+          "Must disclose if tips affect service",
+          "Annual reporting on tip collection rates"
+        ]
+      },
+
+      "algorithmic_accountability": {
+        "states_considering": ["CA", "NY", "IL", "MA", "WA"],
+        "proposed_requirements": [
+          "Algorithm impact assessments",
+          "Bias testing and reporting",
+          "Consumer right to explanation",
+          "Human review rights"
+        ]
+      },
+
+      "data_dignity_laws": {
+        "comprehensive_privacy": ["CA", "VA", "CO", "CT"],
+        "financial_data_specific": ["NY", "IL"],
+        "requirements": [
+          "Granular consent for data sharing",
+          "Right to delete financial data",
+          "Prohibition on selling to data brokers",
+          "Clear data use disclosures"
+        ]
+      }
+    }
+  },
+
+  "enforcement_trends_2024_2025": {
+    "cfpb_actions": [
+      {
+        "company": "SoLo Funds",
+        "violation": "Deceptive 0% APR advertising with mandatory tips",
+        "penalty": "$15,000,000",
+        "date": "2024-05-17",
+        "precedent": "Tips can constitute interest for TILA purposes"
+      },
+      {
+        "company": "MoneyLion",
+        "violation": "Abusive tip collection practices",
+        "penalty": "$25,000,000",
+        "date": "2024-08-10",
+        "precedent": "Tip coercion violates CFPA abusive standard"
+      },
+      {
+        "company": "Multiple MCA lenders",
+        "violation": "Confession of judgment abuse",
+        "penalty": "$100,000,000+",
+        "date": "2024-ongoing",
+        "precedent": "Confession clauses may violate due process"
+      }
+    ],
+
+    "state_actions": [
+      {
+        "state": "New York",
+        "targets": "Rent-a-bank schemes",
+        "actions": "Multi-lender investigation",
+        "outcome": "Cease and desist orders",
+        "precedent": "State law not preempted by national bank charter"
+      },
+      {
+        "state": "California",
+        "targets": "Fintech payday lenders",
+        "actions": "36% APR enforcement",
+        "outcome": "$50M+ in penalties",
+        "precedent": "App-based lending subject to state usury laws"
+      }
+    ],
+
+    "emerging_enforcement_priorities": [
+      "AI bias in lending algorithms",
+      "Data harvesting for vulnerability targeting",
+      "Rent-a-bank regulatory arbitrage",
+      "Tip coercion and forced gratuities",
+      "Confession of judgment abuse",
+      "Subscription trap models",
+      "Fake urgency and scarcity claims"
+    ]
+  },
+
+  "compliance_framework": {
+    "risk_assessment": {
+      "high_risk_indicators": [
+        "APR > 36%",
+        "Tip collection > 10% of customers",
+        "National bank partnership for rate arbitrage",
+        "Confession of judgment clauses",
+        "Targeting vulnerable demographics",
+        "Dark patterns in UI",
+        "Automatic renewal defaults",
+        "Hidden fee structures"
+      ],
+
+      "medium_risk_indicators": [
+        "APR 18-36%",
+        "Limited state licensing",
+        "Complex fee structures",
+        "Aggressive marketing tactics",
+        "Limited customer service options",
+        "Unclear cancellation processes"
+      ],
+
+      "low_risk_indicators": [
+        "APR < 18%",
+        "Transparent pricing",
+        "Strong consumer protections",
+        "Financial counseling offered",
+        "Clear alternatives presented",
+        "Easy cancellation process"
+      ]
+    },
+
+    "best_practices": {
+      "ethical_design": [
+        "Prominent total cost disclosure",
+        "No dark patterns in UI",
+        "Genuine $0 tip option",
+        "24-48 hour cooling-off period",
+        "Clear alternative options",
+        "Financial counseling access",
+        "Easy cancellation process"
+      ],
+
+      "regulatory_compliance": [
+        "State licensing in all operating states",
+        "TILA-compliant disclosures",
+        "Fair lending policy implementation",
+        "Regular bias testing",
+        "Consumer complaint tracking",
+        "Data privacy compliance",
+        "Appropriate collection practices"
+      ],
+
+      "consumer_protection": [
+        "Ability-to-repay assessment",
+        "Income verification",
+        "Debt-to-income limits",
+        "Alternative resource referrals",
+        "Financial education materials",
+        "Hardship payment plans",
+        "Clear complaint process"
+      ]
+    }
+  },
+
+  "international_standards": {
+    "eu_regulations": {
+      "consumer_credit_directive": "Clear pre-contractual information required",
+      "gdpr": "Strict data protection for financial services",
+      "digital_services_act": "Prohibits dark patterns in digital interfaces"
+    },
+
+    "uk_regulations": {
+      "fca_rules": "Treating customers fairly principle",
+      "consumer_duty": "Good outcomes for consumers requirement",
+      "affordability_assessments": "Mandatory for all consumer credit"
+    },
+
+    "convergence_trends": [
+      "Global movement toward 36% APR caps",
+      "International cooperation on fintech regulation",
+      "Harmonized dark pattern prohibitions",
+      "Cross-border enforcement coordination"
+    ]
+  }
+}
