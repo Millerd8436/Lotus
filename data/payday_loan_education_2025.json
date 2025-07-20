@@ -1,0 +1,264 @@
+{
+  "industry_statistics_2025": {
+    "market_size": {
+      "annual_revenue": "$9.3 billion",
+      "number_of_borrowers": "12 million Americans",
+      "number_of_storefronts": "14,348 (declining due to online shift)",
+      "online_lenders": "300+ operating across state lines"
+    },
+    "borrower_demographics": {
+      "average_income": "$30,000/year",
+      "median_age": "34 years",
+      "gender_split": "52% female, 48% male",
+      "education": "68% have some college or degree",
+      "race_ethnicity": {
+        "white": "55%",
+        "black": "19%",
+        "hispanic": "17%",
+        "other": "9%"
+      },
+      "employment": "74% employed full-time"
+    },
+    "loan_characteristics": {
+      "average_loan_amount": "$375",
+      "average_fee": "$55",
+      "typical_term": "14 days",
+      "average_apr_range": "391% - 664%",
+      "highest_documented_apr": "950% (online tribal lenders)"
+    },
+    "debt_trap_statistics": {
+      "rollover_rate": "80% of loans are rolled over or renewed",
+      "average_debt_duration": "5 months per year",
+      "chronic_borrowers": "75% in debt 5+ months annually",
+      "average_rollovers": "10 times before payoff",
+      "total_fees_paid": "Average $520 to borrow $375"
+    },
+    "collection_practices": {
+      "default_rate": "50% default within 2 years",
+      "bank_overdraft_fees": "$185 average per borrower",
+      "account_closures": "36% lose bank account access",
+      "workplace_calls": "41% receive calls at work",
+      "threats_of_arrest": "20% threatened with arrest (illegal)"
+    }
+  },
+  "regulatory_landscape_2025": {
+    "federal_level": {
+      "cfpb_rule": "36% APR cap proposed but not enacted",
+      "military_lending_act": "36% cap for service members enforced",
+      "fdic_guidance": "Enhanced scrutiny on bank partnerships"
+    },
+    "state_regulations": {
+      "banned_states": [
+        "Arizona",
+        "Arkansas",
+        "Colorado",
+        "Connecticut",
+        "Georgia",
+        "Maryland",
+        "Massachusetts",
+        "Montana",
+        "New Hampshire",
+        "New Jersey",
+        "New York",
+        "North Carolina",
+        "Pennsylvania",
+        "South Dakota",
+        "Vermont",
+        "West Virginia",
+        "District of Columbia"
+      ],
+      "capped_states": {
+        "36_percent_or_less": [
+          "Illinois",
+          "Minnesota",
+          "New Mexico",
+          "Oregon",
+          "Virginia"
+        ],
+        "higher_caps": {
+          "California": "460% APR cap",
+          "Florida": "304% APR cap",
+          "Wisconsin": "No cap on APR"
+        }
+      }
+    },
+    "loopholes_2025": {
+      "rent_a_bank": "Lenders partner with banks to evade state caps",
+      "tribal_sovereignty": "Claim immunity from state laws",
+      "credit_service_organizations": "Disguise loans as credit repair",
+      "open_end_credit": "Structure as credit lines to avoid caps"
+    }
+  },
+  "dark_patterns_catalog": {
+    "ui_manipulation": [
+      "Fake urgency timers",
+      "Pre-selected expensive options",
+      "Hidden fee disclosures",
+      "Confusing APR calculations",
+      "Misleading 'per $100' pricing"
+    ],
+    "psychological_tactics": [
+      "Artificial scarcity messaging",
+      "Social proof fabrication",
+      "Authority mimicry (bank-like appearance)",
+      "Shame and stigma exploitation",
+      "Cognitive overload techniques"
+    ],
+    "technical_deceptions": [
+      "Auto-renewal defaults",
+      "Broad ACH authorizations",
+      "Data selling without clear consent",
+      "Cross-default provisions",
+      "Mandatory arbitration clauses"
+    ],
+    "collection_harassment": [
+      "Excessive contact frequency",
+      "Threats of criminal prosecution",
+      "Contact with employers",
+      "Public shaming tactics",
+      "Misrepresentation as government"
+    ]
+  },
+  "consumer_protection_resources": {
+    "federal_agencies": {
+      "cfpb": {
+        "name": "Consumer Financial Protection Bureau",
+        "phone": "855-411-2372",
+        "website": "consumerfinance.gov",
+        "complaint_portal": "consumerfinance.gov/complaint"
+      },
+      "ftc": {
+        "name": "Federal Trade Commission",
+        "phone": "877-382-4357",
+        "website": "consumer.ftc.gov"
+      }
+    },
+    "nonprofit_organizations": {
+      "nclc": {
+        "name": "National Consumer Law Center",
+        "website": "nclc.org",
+        "resources": "Model state legislation, research reports"
+      },
+      "center_for_responsible_lending": {
+        "name": "Center for Responsible Lending",
+        "website": "responsiblelending.org",
+        "resources": "State fact sheets, policy briefs"
+      }
+    },
+    "alternatives_to_payday_loans": [
+      {
+        "option": "Credit Union PALs",
+        "apr": "28% max",
+        "requirements": "Membership for 1+ month"
+      },
+      {
+        "option": "Employer advances",
+        "apr": "0%",
+        "requirements": "Participating employer"
+      },
+      {
+        "option": "Payment plans",
+        "apr": "0%",
+        "requirements": "Negotiate with creditors"
+      },
+      {
+        "option": "Local nonprofits",
+        "apr": "0-36%",
+        "requirements": "Varies by organization"
+      },
+      {
+        "option": "Cash advance apps",
+        "apr": "0-15%*",
+        "requirements": "*Tips/fees can equal high APR"
+      }
+    ]
+  },
+  "ethical_lending_principles": {
+    "transparency": [
+      "All fees disclosed upfront",
+      "APR clearly displayed",
+      "Total repayment amount prominent",
+      "Plain language terms",
+      "No hidden conditions"
+    ],
+    "affordability": [
+      "Ability to repay assessment",
+      "Income verification",
+      "Expense consideration",
+      "Maximum 5% of monthly income",
+      "No debt trap design"
+    ],
+    "fair_treatment": [
+      "No discrimination",
+      "Reasonable collection practices",
+      "Hardship accommodations",
+      "Clear dispute process",
+      "Privacy protection"
+    ],
+    "consumer_empowerment": [
+      "Financial education provided",
+      "Alternative options presented",
+      "Cooling-off period",
+      "Easy cancellation",
+      "No pressure tactics"
+    ]
+  },
+  "kantian_ethics_framework": {
+    "categorical_imperative": {
+      "universalizability": "Could this practice work if everyone did it?",
+      "humanity_formula": "Are borrowers treated as ends, not merely means?",
+      "autonomy": "Is informed, rational consent possible?"
+    },
+    "violations_in_payday_lending": [
+      "Exploiting desperation violates human dignity",
+      "Deception prevents autonomous choice",
+      "Debt traps treat people as profit sources",
+      "Information asymmetry undermines consent",
+      "Targeting vulnerable violates equal respect"
+    ],
+    "ethical_requirements": [
+      "Full disclosure enables rational choice",
+      "Affordable terms respect human welfare",
+      "Alternatives preserve autonomy",
+      "Cooling-off periods allow reflection",
+      "Fair collection maintains dignity"
+    ]
+  },
+  "quiz_questions_phase_2": [
+    {
+      "question": "What percentage of payday loans are rolled over?",
+      "options": ["20%", "50%", "80%", "95%"],
+      "correct": 2,
+      "explanation": "80% of payday loans are rolled over or renewed, creating debt cycles"
+    },
+    {
+      "question": "What is the average total cost to borrow $375?",
+      "options": ["$400", "$450", "$520", "$750"],
+      "correct": 2,
+      "explanation": "Borrowers pay an average of $520 to borrow just $375"
+    },
+    {
+      "question": "How many states have banned payday lending?",
+      "options": ["5", "12", "17", "25"],
+      "correct": 2,
+      "explanation": "17 states plus DC have effectively banned payday lending"
+    },
+    {
+      "question": "What is the maximum APR under the Military Lending Act?",
+      "options": ["36%", "100%", "300%", "No limit"],
+      "correct": 0,
+      "explanation": "The MLA caps loans to service members at 36% APR"
+    },
+    {
+      "question": "What violates Kant's categorical imperative in payday lending?",
+      "options": [
+        "Offering loans",
+        "Charging interest",
+        "Treating borrowers merely as means to profit",
+        "Online applications"
+      ],
+      "correct": 2,
+      "explanation": "Using desperate borrowers solely for profit violates human dignity"
+    }
+  ]
+}

@@ -3498,21 +3498,18 @@ const ComprehensionQuiz: React.FC = () => {
     const percentage = Math.round((score / questions.length) * 100);
 
     // Calculate category performance
-    const categoryPerformance = questions.reduce(
-      (acc, q, index) => {
-        if (!q) return acc;
-        const category = q.category || "General";
-        if (!acc[category]) {
-          acc[category] = { correct: 0, total: 0 };
-        }
-        acc[category].total++;
-        if (answers[index] !== undefined && answers[index] === q.correct) {
-          acc[category].correct++;
-        }
-        return acc;
-      },
-      {} as Record<string, { correct: number; total: number }>
-    );
+    const categoryPerformance = questions.reduce((acc, q, index) => {
+      if (!q) return acc;
+      const category = q.category || "General";
+      if (!acc[category]) {
+        acc[category] = { correct: 0, total: 0 };
+      }
+      acc[category]!.total++;
+      if (answers[index] !== undefined && answers[index] === q.correct) {
+        acc[category]!.correct++;
+      }
+      return acc;
+    }, {} as Record<string, { correct: number; total: number }>);
 
     return (
       <div>
@@ -3538,8 +3535,8 @@ const ComprehensionQuiz: React.FC = () => {
                   percentage >= 75
                     ? "#16a34a"
                     : percentage >= 50
-                      ? "#f59e0b"
-                      : "#dc2626",
+                    ? "#f59e0b"
+                    : "#dc2626",
               }}
             >
               {percentage}%
@@ -3551,10 +3548,10 @@ const ComprehensionQuiz: React.FC = () => {
               {percentage >= 85
                 ? "🎉 Excellent! You have strong knowledge of predatory lending patterns."
                 : percentage >= 75
-                  ? "✅ Good job! You understand most dark patterns and protection strategies."
-                  : percentage >= 60
-                    ? "⚠️ Fair understanding. Consider reviewing the educational content."
-                    : "❌ Needs improvement. Please review the pattern education and try again."}
+                ? "✅ Good job! You understand most dark patterns and protection strategies."
+                : percentage >= 60
+                ? "⚠️ Fair understanding. Consider reviewing the educational content."
+                : "❌ Needs improvement. Please review the pattern education and try again."}
             </p>
           </div>
 
@@ -3583,7 +3580,13 @@ const ComprehensionQuiz: React.FC = () => {
                       background: "#f9fafb",
                       padding: "1rem",
                       borderRadius: 8,
-                      border: `2px solid ${categoryPercentage >= 75 ? "#16a34a" : categoryPercentage >= 50 ? "#f59e0b" : "#dc2626"}`,
+                      border: `2px solid ${
+                        categoryPercentage >= 75
+                          ? "#16a34a"
+                          : categoryPercentage >= 50
+                          ? "#f59e0b"
+                          : "#dc2626"
+                      }`,
                     }}
                   >
                     <h4
@@ -3613,8 +3616,8 @@ const ComprehensionQuiz: React.FC = () => {
                             categoryPercentage >= 75
                               ? "#16a34a"
                               : categoryPercentage >= 50
-                                ? "#f59e0b"
-                                : "#dc2626",
+                              ? "#f59e0b"
+                              : "#dc2626",
                         }}
                       >
                         {categoryPercentage}%
@@ -3733,7 +3736,7 @@ const ComprehensionQuiz: React.FC = () => {
                     const isCorrect = userAnswerIndex === q.correct;
                     const userAnswer =
                       userAnswerIndex !== undefined
-                        ? (q.options?.[userAnswerIndex] ?? "Invalid Answer")
+                        ? q.options?.[userAnswerIndex] ?? "Invalid Answer"
                         : "No answer";
                     const correctAnswer = q.options?.[q.correct] ?? "N/A";
 

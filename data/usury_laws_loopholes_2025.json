@@ -1,0 +1,575 @@
+{
+  "overview": {
+    "title": "Usury Laws and Payday Loan Loopholes in 2025",
+    "description": "Comprehensive documentation of how payday lenders exploit legal loopholes to charge excessive interest rates",
+    "lastUpdated": "2025-01-23",
+    "sources": [
+      "Consumer Financial Protection Bureau (CFPB)",
+      "National Consumer Law Center",
+      "Center for Responsible Lending",
+      "State regulatory agencies",
+      "Federal court decisions"
+    ]
+  },
+  "usury_laws_by_state": {
+    "states_with_bans": {
+      "description": "17 states + DC have effectively banned payday lending through rate caps",
+      "states": [
+        {
+          "state": "Arizona",
+          "maxAPR": 36,
+          "notes": "Banned since 2010"
+        },
+        {
+          "state": "Arkansas",
+          "maxAPR": 17,
+          "notes": "Constitutional cap"
+        },
+        {
+          "state": "Colorado",
+          "maxAPR": 36,
+          "notes": "Reformed in 2018"
+        },
+        {
+          "state": "Connecticut",
+          "maxAPR": 30.03,
+          "notes": "Small loan rate cap"
+        },
+        {
+          "state": "District of Columbia",
+          "maxAPR": 24,
+          "notes": "Strict enforcement"
+        },
+        {
+          "state": "Georgia",
+          "maxAPR": 16,
+          "notes": "Criminal penalties for violations"
+        },
+        {
+          "state": "Maryland",
+          "maxAPR": 33,
+          "notes": "Small loan rate cap"
+        },
+        {
+          "state": "Massachusetts",
+          "maxAPR": 23,
+          "notes": "Small loan law"
+        },
+        {
+          "state": "Montana",
+          "maxAPR": 36,
+          "notes": "Voter initiative in 2010"
+        },
+        {
+          "state": "New Hampshire",
+          "maxAPR": 36,
+          "notes": "Reformed in 2008"
+        },
+        {
+          "state": "New Jersey",
+          "maxAPR": 30,
+          "notes": "Criminal usury law"
+        },
+        {
+          "state": "New Mexico",
+          "maxAPR": 175,
+          "notes": "Reduced from 400%+"
+        },
+        {
+          "state": "New York",
+          "maxAPR": 25,
+          "notes": "Criminal usury at 25%"
+        },
+        {
+          "state": "North Carolina",
+          "maxAPR": 36,
+          "notes": "Let payday law expire"
+        },
+        {
+          "state": "Pennsylvania",
+          "maxAPR": 24,
+          "notes": "Small loan act"
+        },
+        {
+          "state": "Vermont",
+          "maxAPR": 24,
+          "notes": "No payday lending allowed"
+        },
+        {
+          "state": "West Virginia",
+          "maxAPR": 31,
+          "notes": "Small loan rate cap"
+        }
+      ]
+    },
+    "states_with_high_caps": {
+      "description": "States that allow triple-digit APRs",
+      "states": [
+        {
+          "state": "Alabama",
+          "maxAPR": 456,
+          "typicalAPR": 300,
+          "notes": "10-31 day loans"
+        },
+        {
+          "state": "Alaska",
+          "maxAPR": 520,
+          "typicalAPR": 400,
+          "notes": "14 day minimum"
+        },
+        {
+          "state": "California",
+          "maxAPR": 460,
+          "typicalAPR": 361,
+          "notes": "Recently capped smaller loans"
+        },
+        {
+          "state": "Delaware",
+          "maxAPR": "No limit",
+          "typicalAPR": 521,
+          "notes": "No rate cap"
+        },
+        {
+          "state": "Idaho",
+          "maxAPR": "No limit",
+          "typicalAPR": 652,
+          "notes": "No rate cap"
+        },
+        {
+          "state": "Illinois",
+          "maxAPR": 404,
+          "typicalAPR": 297,
+          "notes": "Reformed but still high"
+        },
+        {
+          "state": "Indiana",
+          "maxAPR": 391,
+          "typicalAPR": 365,
+          "notes": "15% of principal"
+        },
+        {
+          "state": "Iowa",
+          "maxAPR": 433,
+          "typicalAPR": 339,
+          "notes": "$30 fee on $100"
+        },
+        {
+          "state": "Kansas",
+          "maxAPR": 391,
+          "typicalAPR": 390,
+          "notes": "15% of loan"
+        },
+        {
+          "state": "Kentucky",
+          "maxAPR": 459,
+          "typicalAPR": 390,
+          "notes": "$15 per $100"
+        },
+        {
+          "state": "Louisiana",
+          "maxAPR": 391,
+          "typicalAPR": 390,
+          "notes": "Database tracking"
+        },
+        {
+          "state": "Michigan",
+          "maxAPR": 369,
+          "typicalAPR": 339,
+          "notes": "Database required"
+        },
+        {
+          "state": "Minnesota",
+          "maxAPR": 390,
+          "typicalAPR": 273,
+          "notes": "Reformed in 2023"
+        },
+        {
+          "state": "Mississippi",
+          "maxAPR": 521,
+          "typicalAPR": 520,
+          "notes": "$22 per $100"
+        },
+        {
+          "state": "Missouri",
+          "maxAPR": 1950,
+          "typicalAPR": 450,
+          "notes": "Highest in nation"
+        },
+        {
+          "state": "Nebraska",
+          "maxAPR": 459,
+          "typicalAPR": 405,
+          "notes": "Recently reformed"
+        },
+        {
+          "state": "Nevada",
+          "maxAPR": "No limit",
+          "typicalAPR": 652,
+          "notes": "No rate cap"
+        },
+        {
+          "state": "North Dakota",
+          "maxAPR": 520,
+          "typicalAPR": 516,
+          "notes": "20% of loan"
+        },
+        {
+          "state": "Ohio",
+          "maxAPR": 667,
+          "typicalAPR": 591,
+          "notes": "Reformed but still high"
+        },
+        {
+          "state": "Oklahoma",
+          "maxAPR": 390,
+          "typicalAPR": 390,
+          "notes": "Database tracking"
+        },
+        {
+          "state": "Oregon",
+          "maxAPR": 154,
+          "typicalAPR": 140,
+          "notes": "Reformed rate cap"
+        },
+        {
+          "state": "Rhode Island",
+          "maxAPR": 260,
+          "typicalAPR": 260,
+          "notes": "10% monthly"
+        },
+        {
+          "state": "South Carolina",
+          "maxAPR": 391,
+          "typicalAPR": 390,
+          "notes": "Database required"
+        },
+        {
+          "state": "South Dakota",
+          "maxAPR": "No limit",
+          "typicalAPR": 574,
+          "notes": "No rate cap"
+        },
+        {
+          "state": "Tennessee",
+          "maxAPR": 459,
+          "typicalAPR": 459,
+          "notes": "15% + fees"
+        },
+        {
+          "state": "Texas",
+          "maxAPR": "No limit",
+          "typicalAPR": 662,
+          "notes": "Credit access business"
+        },
+        {
+          "state": "Utah",
+          "maxAPR": "No limit",
+          "typicalAPR": 652,
+          "notes": "No rate cap"
+        },
+        {
+          "state": "Virginia",
+          "maxAPR": 299,
+          "typicalAPR": 256,
+          "notes": "Reformed in 2020"
+        },
+        {
+          "state": "Washington",
+          "maxAPR": 391,
+          "typicalAPR": 390,
+          "notes": "Database tracking"
+        },
+        {
+          "state": "Wisconsin",
+          "maxAPR": "No limit",
+          "typicalAPR": 574,
+          "notes": "No rate cap"
+        },
+        {
+          "state": "Wyoming",
+          "maxAPR": "No limit",
+          "typicalAPR": 521,
+          "notes": "No rate cap"
+        }
+      ]
+    }
+  },
+  "major_loopholes": {
+    "rent_a_bank": {
+      "name": "Rent-a-Bank Schemes",
+      "description": "Payday lenders partner with banks in states with no usury caps to export high rates to states with caps",
+      "how_it_works": [
+        "Lender partners with bank in Utah, Delaware, or South Dakota",
+        "Bank technically originates the loan",
+        "Loan is immediately sold to the payday lender",
+        "Lender claims federal preemption of state usury laws"
+      ],
+      "examples": [
+        {
+          "lender": "OppFi",
+          "bank": "FinWise Bank (Utah)",
+          "rates": "Up to 160% APR in states with 36% caps"
+        },
+        {
+          "lender": "Elevate Credit",
+          "bank": "Republic Bank & Trust",
+          "rates": "Up to 149% APR"
+        }
+      ],
+      "regulatory_response": "FDIC and OCC issued 'true lender' rule but it's being challenged"
+    },
+    "tribal_sovereignty": {
+      "name": "Tribal Lending Loophole",
+      "description": "Lenders claim tribal sovereign immunity to avoid state laws",
+      "how_it_works": [
+        "Non-tribal lenders partner with Native American tribes",
+        "Loans are allegedly made on tribal land",
+        "Lenders claim immunity from state laws and courts",
+        "Tribes typically receive 1-2% of revenue"
+      ],
+      "examples": [
+        {
+          "lender": "Big Picture Loans",
+          "tribe": "Lac Vieux Desert Band",
+          "rates": "Up to 800% APR"
+        },
+        {
+          "lender": "Mobiloans",
+          "tribe": "Tunica-Biloxi Tribe",
+          "rates": "Up to 600% APR"
+        }
+      ],
+      "court_challenges": "Several states have successfully challenged this in court"
+    },
+    "credit_service_organizations": {
+      "name": "Credit Service Organization (CSO) Model",
+      "description": "Used primarily in Texas and Ohio to evade rate caps",
+      "how_it_works": [
+        "Payday lender registers as a CSO, not a lender",
+        "CSO 'arranges' a loan with a third-party lender",
+        "CSO charges massive 'fees' for this service",
+        "Total cost exceeds state interest rate caps"
+      ],
+      "impact": "Texas has some of the highest payday loan rates due to this loophole"
+    },
+    "open_end_credit": {
+      "name": "Open-End Line of Credit",
+      "description": "Structured as credit lines instead of loans to avoid regulations",
+      "how_it_works": [
+        "Product is structured as a line of credit, not a loan",
+        "Different regulations apply to open-end credit",
+        "Minimum payment requirements trap borrowers",
+        "Effective APRs can exceed 400%"
+      ],
+      "examples": [
+        "Advance America Line of Credit",
+        "Check Into Cash Flex Loans"
+      ]
+    },
+    "choice_of_law": {
+      "name": "Choice of Law Provisions",
+      "description": "Contracts specify that laws of lender-friendly states apply",
+      "how_it_works": [
+        "Contract includes clause selecting Utah or Delaware law",
+        "Lender claims this overrides borrower's state law",
+        "Often combined with mandatory arbitration clauses",
+        "Makes it difficult for borrowers to challenge in court"
+      ]
+    }
+  },
+  "api_and_data_exploitation": {
+    "overview": "How payday lenders use technology and data to exploit borrowers",
+    "tactics": {
+      "bank_account_scraping": {
+        "description": "Using Plaid or similar services to analyze spending",
+        "data_collected": [
+          "All transactions for 24+ months",
+          "Income patterns and sources",
+          "Bill payment history",
+          "Overdraft frequency",
+          "Other loan payments"
+        ],
+        "exploitation": "Time collections for maximum impact, identify vulnerability"
+      },
+      "lead_generation": {
+        "description": "Buying and selling borrower data",
+        "sources": [
+          "Online loan applications",
+          "Trigger leads from credit bureaus",
+          "Data brokers",
+          "Affiliate marketing"
+        ],
+        "value": "$50-150 per qualified lead"
+      },
+      "behavioral_tracking": {
+        "description": "Monitoring user behavior to maximize conversion",
+        "metrics": [
+          "Time on page",
+          "Mouse movements indicating anxiety",
+          "Form abandonment points",
+          "Click patterns"
+        ],
+        "use": "Optimize dark patterns and manipulation tactics"
+      },
+      "social_media_targeting": {
+        "description": "Using Facebook and Google to target vulnerable populations",
+        "targeting_criteria": [
+          "Low income zip codes",
+          "Single parents",
+          "Recent job loss",
+          "Medical debt searches",
+          "Bankruptcy searches"
+        ]
+      }
+    }
+  },
+  "collection_practices": {
+    "legal_tactics": {
+      "ach_manipulation": {
+        "description": "Exploiting ACH authorization",
+        "tactics": [
+          "Multiple withdrawal attempts",
+          "Splitting payments to trigger multiple NSF fees",
+          "Withdrawing on different days",
+          "Using different merchant codes"
+        ]
+      },
+      "confession_of_judgment": {
+        "description": "Pre-signed admission of debt",
+        "impact": "Allows instant garnishment without trial",
+        "states_banned": ["New York", "Pennsylvania", "Maryland"]
+      }
+    },
+    "illegal_tactics": {
+      "description": "Common illegal practices documented by CFPB",
+      "examples": [
+        "Threatening criminal prosecution for bad checks",
+        "Contacting employers without permission",
+        "Calling before 8am or after 9pm",
+        "Using abusive or threatening language",
+        "Contacting borrowers after receiving cease communication notice",
+        "Threatening violence or harm"
+      ]
+    }
+  },
+  "regulatory_landscape_2025": {
+    "federal": {
+      "cfpb_rules": {
+        "status": "Enforcement limited under current administration",
+        "pending": "Small business lending data collection rule",
+        "challenges": "Industry lawsuits against ability-to-repay requirements"
+      },
+      "military_lending_act": {
+        "description": "36% APR cap for active duty military",
+        "effectiveness": "Successfully protects military families",
+        "loopholes": "Some lenders use arbitration to avoid MLA"
+      }
+    },
+    "state_trends": {
+      "positive": [
+        "More states considering 36% rate caps",
+        "Enhanced database requirements",
+        "Cooling-off periods between loans"
+      ],
+      "negative": [
+        "Industry lobbying against reforms",
+        "Fintech lenders claiming exemptions",
+        "Online lending complicating enforcement"
+      ]
+    }
+  },
+  "impact_statistics": {
+    "borrower_demographics": {
+      "average_income": "$25,000-$50,000",
+      "education": "67% have some college or degree",
+      "age": "Majority between 25-44",
+      "repeat_usage": "80% take multiple loans per year"
+    },
+    "financial_impact": {
+      "average_fees_paid": "$520 annually",
+      "typical_rollover_count": "10+ times",
+      "debt_trap_duration": "5 months average",
+      "bank_fees_triggered": "$32 billion in overdraft fees"
+    }
+  },
+  "kantian_ethics_analysis": {
+    "violations_of_categorical_imperative": {
+      "treating_people_as_means": {
+        "description": "Borrowers are treated solely as sources of fee revenue",
+        "evidence": [
+          "Business model depends on borrowers failing to repay",
+          "80% of revenue from trapped repeat borrowers",
+          "Intentionally unaffordable loan terms"
+        ]
+      },
+      "universalizability_test": {
+        "question": "What if everyone charged 400% APR?",
+        "answer": "Economic system would collapse, proving the practice is unethical"
+      }
+    },
+    "informed_consent_violations": {
+      "deceptive_practices": [
+        "Hiding true APR until final steps",
+        "Using misleading 'fee' language instead of interest",
+        "Burying key terms in fine print",
+        "Rush tactics preventing careful consideration"
+      ],
+      "power_imbalance": {
+        "description": "Desperate borrowers cannot meaningfully consent",
+        "factors": [
+          "Information asymmetry",
+          "Time pressure",
+          "Lack of alternatives",
+          "Emotional distress"
+        ]
+      }
+    },
+    "dignity_violations": {
+      "description": "Practices that violate human dignity",
+      "examples": [
+        "Harassment of references",
+        "Public shaming for non-payment",
+        "Threats and intimidation",
+        "Exploiting cognitive biases"
+      ]
+    }
+  },
+  "educational_resources": {
+    "warning_signs": [
+      "Loan terms of 30 days or less",
+      "Fees that equal 15% or more of loan amount",
+      "Requirements for bank account access",
+      "No credit check claims",
+      "Pressure to decide immediately"
+    ],
+    "alternatives": [
+      {
+        "option": "Credit union payday alternative loans",
+        "apr": "28% max",
+        "requirements": "Membership required"
+      },
+      {
+        "option": "Payment plans with creditors",
+        "apr": "0%",
+        "requirements": "Direct negotiation"
+      },
+      {
+        "option": "Employer advances",
+        "apr": "0%",
+        "requirements": "Employer participation"
+      },
+      {
+        "option": "Local nonprofit assistance",
+        "apr": "0-36%",
+        "requirements": "Income qualification"
+      }
+    ],
+    "borrower_rights": [
+      "Right to rescind within 1 business day",
+      "Right to extended payment plan (in some states)",
+      "Right to file complaints with CFPB",
+      "Right to sue for illegal practices",
+      "Right to stop ACH withdrawals"
+    ]
+  }
+}

@@ -15,11 +15,16 @@
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "validate": "node scripts/validate.js",
+    "validate:connectivity": "node scripts/validate-connectivity.js",
     "validate:full": "npm run type-check && npm run lint && npm run test:ci",
     "deploy": "node scripts/deploy.js",
     "deploy:railway": "node scripts/deploy-railway.js",
     "deploy:vercel": "node scripts/deploy.js",
-    "ci": "npm run validate:full && npm run build"
+    "ci": "npm run validate:full && npm run build",
+    "cleanup:types": "node scripts/cleanup-types.js",
+    "analyze:ui": "node scripts/consolidate-ui.js",
+    "health:check": "node scripts/health-check.js",
+    "health": "npm run health:check"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",

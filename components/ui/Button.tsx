@@ -2,14 +2,16 @@ import React from "react";
 
 interface ButtonProps {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
   variant?:
     | "primary"
     | "secondary"
     | "danger"
     | "success"
     | "warning"
-    | "professional";
+    | "professional"
+    | "outline"
+    | "default";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   loading?: boolean;
@@ -51,6 +53,10 @@ export const Button: React.FC<ButtonProps> = ({
       "bg-yellow-600 hover:bg-yellow-700 text-white focus:ring-yellow-500 shadow-md hover:shadow-lg",
     professional:
       "bg-slate-700 hover:bg-slate-800 text-white focus:ring-slate-500 shadow-lg hover:shadow-xl border border-slate-600",
+    outline:
+      "bg-transparent hover:bg-gray-50 text-gray-700 border-2 border-gray-300 hover:border-gray-400 focus:ring-gray-500",
+    default:
+      "bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 hover:border-gray-400 focus:ring-gray-500 shadow-sm hover:shadow-md",
   };
 
   const sizeClasses = {

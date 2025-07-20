@@ -1,6 +1,6 @@
 # 🏗️ Lotus Educational Platform - Technical Architecture
 
-> **Comprehensive 3-Phase System Architecture - 96,000+ Lines of Educational Code**
+> **Comprehensive 4-Phase System Architecture - 96,000+ Lines of Educational Code**
 
 ## 🌟 Overview
 
@@ -17,8 +17,9 @@ app/                          # Next.js App Router
 ├── api/                     # Serverless API routes
 │   └── lotus/               # Lotus-specific endpoints
 ├── exploitative/           # Phase 1: Predatory simulation
-├── ethical/                # Phase 2: Ethical alternative
-├── reflection/             # Phase 3: Analysis & insights
+├── ethical/                # Phase 4: Ethical alternative
+├── reflection/             # Phase 2: Analysis & debrief
+├── teaching/               # Phase 3: Annotated interactive version
 └── globals.css             # Global styling
 ```
 
@@ -26,16 +27,16 @@ app/                          # Next.js App Router
 
 ```
 components/                   # Modern React components
-├── LotusSimulator.tsx       # Main 1882-line comprehensive simulator
-├── DarkPatternUI.tsx        # Predatory pattern components
+├── DeceptiveCheckoutFlow.tsx # 15-step predatory checkout
+├── PaymentCollectionEngine.tsx # Predatory payment simulation
 ├── ui/                      # Reusable UI components
 │   ├── Button.tsx
 │   ├── Modal.tsx
 │   └── Chart.tsx
-├── predatory/               # Dark pattern implementations
-│   ├── UrgencyTimer.tsx
-│   ├── FakeScarcity.tsx
-│   └── RolloverTraps.tsx
+├── ethical/                 # Ethical design components
+│   ├── TransparentPricing.tsx
+│   ├── ExplicitConsent.tsx
+│   └── EducationalOverlay.tsx
 └── providers/               # Context providers
 ```
 
@@ -43,16 +44,14 @@ components/                   # Modern React components
 
 ```
 lib/                         # Modern TypeScript orchestration
-├── lotus-orchestrator.ts    # Main system orchestrator (682 lines)
-├── comprehensive-integration.ts # Legacy system bridge
-├── autonomy-theater.ts      # 3-phase autonomy theater
-├── behavioral-analysis.js   # Psychology integration
-├── legal-loopholes.js      # Regulatory analysis
-├── educational-content.js  # Learning modules
-└── core/                   # Core utilities
-    ├── LoanCalculator.ts
-    ├── StateRegulations.ts
-    └── SessionManager.ts
+├── core/                    # Core utilities
+│   ├── AnalyticsEngine.ts   # Behavioral tracking
+│   ├── PaymentSystemCore.ts # Payment simulation
+│   ├── EnhancedLoanCalculator.ts # APR calculations
+│   ├── DarkPatternsRegistry.ts # Dark pattern catalog
+│   ├── SessionManager.ts    # Session management
+│   └── AutonomyTheaterEngine.ts # Autonomy analysis
+└── state-regulations.ts     # State-specific rules
 ```
 
 ### **Layer 4: Legacy Comprehensive System (96,000+ Lines)**
@@ -80,11 +79,12 @@ data/                        # Educational content and configuration
 └── ui_config.json          # UI configuration
 ```
 
-## 🔄 3-Phase Educational Framework
+## 🔄 4-Phase Educational Framework
 
 ### **Phase 1: 🕷️ Exploitative Experience**
 
 **Purpose**: Demonstrate predatory lending tactics in action
+**Route**: `/exploitative`
 **Technology Stack**:
 
 - React components with dark pattern implementations
@@ -96,8 +96,9 @@ data/                        # Educational content and configuration
 
 ```typescript
 // Dark Pattern Engine Integration
-import { DarkPatternEngine } from '../legacy-recovered/advanced-dark-pattern-engine.js';
-import { BehavioralPsychologyEngine } from '../legacy-recovered/behavioral-psychology-engine.js';
+import { DarkPatternsRegistry } from '@/lib/core/DarkPatternsRegistry';
+import { PaymentCollectionEngine } from '@/components/PaymentCollectionEngine';
+import { DeceptiveCheckoutFlow } from '@/components/DeceptiveCheckoutFlow';
 
 // 20+ Advanced Dark Patterns
 - Fee Obfuscation (hide true APR)
@@ -105,11 +106,67 @@ import { BehavioralPsychologyEngine } from '../legacy-recovered/behavioral-psych
 - Pre-checked Options (auto-renewal defaults)
 - Social Proof Deception (fake testimonials)
 - Rollover Traps (debt cycle engineering)
+- Multi-processor ACH exploitation
+- Reference collection for harassment
 ```
 
-### **Phase 2: ✨ Ethical Alternative**
+### **Phase 2: 📊 Debrief & Analysis**
+
+**Purpose**: Comprehensive behavioral analysis and education
+**Route**: `/reflection`
+**Technology Stack**:
+
+- Kantian ethics assessment
+- Behavioral pattern visualization
+- Educational content delivery
+- Interactive quiz system
+
+**Key Components**:
+
+```typescript
+// Comprehensive Analysis System
+import { ReflectionDashboard } from '@/components/reflection/ReflectionDashboard';
+import { EthicalFrameworksExplainer } from '@/components/reflection/EthicalFrameworksExplainer';
+
+// Analysis Features
+- Autonomy violation reports
+- Manipulation susceptibility profiling
+- Educational content recommendations
+- Behavioral pattern visualization
+- Quiz on Phase 1 experience
+- Kantian informed consent education
+- Payday loan statistics (2025)
+```
+
+### **Phase 3: 📖 Annotated Interactive Experience**
+
+**Purpose**: Real-time educational annotations of dark patterns
+**Route**: `/teaching`
+**Technology Stack**:
+
+- Live annotation overlay system
+- Pattern detection and explanation
+- Step-by-step trap analysis
+- Interactive learning modules
+
+**Key Components**:
+
+```typescript
+// Real-time Education System
+import { EducationProvider } from '@/components/providers/EducationProvider';
+
+// Features
+- Real-time dark pattern highlighting
+- Pop-up explanations during checkout
+- APR calculation transparency
+- Debt trap prevention education
+- Interactive decision points
+```
+
+### **Phase 4: ✨ Ethical Alternative**
 
 **Purpose**: Show transparent, consumer-protection focused lending
+**Route**: `/ethical`
 **Technology Stack**:
 
 - Ethical design components
@@ -121,39 +178,17 @@ import { BehavioralPsychologyEngine } from '../legacy-recovered/behavioral-psych
 
 ```typescript
 // Ethical Design Implementation
-import { TransparentPricing } from '../components/ethical/TransparentPricing';
-import { ExplicitConsent } from '../components/ethical/ExplicitConsent';
-import { EducationalOverlay } from '../components/ethical/EducationalOverlay';
+import { EthicalHomepage } from '@/components/ethical/EthicalHomepage';
+import { EthicalLoanCalculator } from '@/components/ethical/EthicalLoanCalculator';
+import { EmpowermentDashboard } from '@/components/ethical/EmpowermentDashboard';
 
 // Consumer Protection Features
-- Clear APR display
+- Clear APR display (all fees included)
 - Explicit consent mechanisms
-- Educational guidance
-- Fair terms presentation
-```
-
-### **Phase 3: 🪞 Reflection & Analysis**
-
-**Purpose**: Comprehensive behavioral analysis and education
-**Technology Stack**:
-
-- Advanced analytics dashboards
-- Kantian ethics assessment
-- Behavioral pattern visualization
-- Educational content delivery
-
-**Key Components**:
-
-```typescript
-// Comprehensive Analysis System
-import { ComprehensiveEthicsEngine } from '../legacy-recovered/ethics_engine_comprehensive.js';
-import { KantianEthicsAnalyzer } from '../lib/behavioral-analysis.js';
-
-// Analysis Features
-- Autonomy violation reports
-- Manipulation susceptibility profiling
-- Educational content recommendations
-- Behavioral pattern visualization
+- Alternative lending options
+- Financial counseling resources
+- Cooling-off periods
+- No debt traps or rollovers
 ```
 
 ## 🧠 Advanced System Integrations
@@ -285,7 +320,7 @@ Phase Selection → Dark Patterns → Behavioral Tracking → Psychology Engine 
 // Dynamic imports for heavy legacy modules
 const BehavioralEngine = dynamic(
   () => import("../legacy-recovered/behavioral-psychology-engine.js"),
-  { ssr: false },
+  { ssr: false }
 );
 
 // Phase-specific component loading

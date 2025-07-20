@@ -1,5 +1,10 @@
 // Import the canonical session type
-import { LotusSession, getInitialFormData } from "@/types";
+import { LotusSession } from "@/types";
+
+// Helper function to generate unique session IDs
+const generateSessionId = () => {
+  return `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+};
 
 import { AutonomyViolation } from "@/types";
 
@@ -42,6 +47,10 @@ export interface SessionMetrics {
   psychologicalStress: number;
 }
 
+/**
+ * SessionManager - Centralized session state management
+ * Handles creation, updates, and persistence of user sessions
+ */
 export class SessionManager {
   private session!: LotusSession; // Use definite assignment assertion since it's initialized in initializeSession
   private config: SessionConfig;
@@ -65,37 +74,45 @@ export class SessionManager {
   }
 
   initializeSession(initialData: Partial<LotusSession>): LotusSession {
-    this.session = {
-      id: `lotus_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      sessionId: `session_${Date.now()}_${Math.random()
-        .toString(36)
-        .substr(2, 9)}`,
-      timestamp: new Date().toISOString(),
-      startTime: new Date().toISOString(),
-      exploitativeData: getInitialFormData(),
-      ethicalData: {},
-      autonomyViolations: [],
-      darkPatterns: [],
-      amount: 0,
-      state: "",
-      mode: "exploitative",
-      termDays: 0,
-      fee: 0,
-      apr: 0,
-      totalCost: 0,
-      rolloverCount: 0,
-      psychologicalProfile: {} as any,
-      vulnerabilityScore: 0,
-      coercionTimeline: [],
-      manipulationExposure: [],
-      behavioralMetrics: {} as any,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+    const newSession: LotusSession = {
+      sessionId: generateSessionId(),
+      startTime: new Date(),
+      currentPhase: 1,
       completed: false,
-      phase: 1,
+      userProfile: {
+        vulnerabilityScore: 0,
+        decisionMaking: "methodical",
+        emotionalState: "calm",
+        trustLevel: "medium",
+        cognitiveLoad: "medium",
+        decisionFatigue: 0,
+        interactionPattern: "focused",
+        inferredGoal: "exploring",
+        financialLiteracy: 0,
+        debtToIncomeRatio: 0,
+        dehumanizationScore: 0,
+        netUtilityScore: 0,
+        financialLiteracyLevel: "basic",
+        learningStyle: "visual",
+        vulnerabilities: [],
+        strengths: [],
+        goals: [],
+      },
+      totalManipulationScore: 0,
+      totalEthicsScore: 0,
+      educationalMilestonesReached: [],
+      visitedPhases: [],
+      keyDecisionPoints: [],
+      darkPatternsEncountered: [],
+      ethicalPrincipleViolations: [],
+      loanApplications: [],
+      phaseInteractions: [],
+      detectedDarkPatterns: [],
+      phaseHistory: [],
       ...initialData,
     };
 
+    this.session = newSession;
     return this.session;
   }
 

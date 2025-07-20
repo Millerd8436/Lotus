@@ -1,7 +1,8 @@
+import { analyticsEngine } from "@/lib/core/AnalyticsEngine";
 import React, { useEffect, useState } from "react";
 
 /**
- * DebtTrapMechanism - Consolidated Component
+ * DebtTrapMechanism - Enhanced 2025 Version
  *
  * Based on research findings:
  * - 80% of loans are rolled over within 2 weeks
@@ -11,7 +12,13 @@ import React, { useEffect, useState } from "react";
  * - Business model designed around debt dependency
  * - Rollover fees without principal reduction
  *
- * This consolidates: GamificationDebtTrap, rollover mechanisms, and debt cycle psychology
+ * NEW 2025 TACTICS:
+ * - Merchant Cash Advances (MCA) with daily ACH debits
+ * - Confession of Judgment clauses for immediate asset seizure
+ * - Automatic renewal defaults (opt-out required)
+ * - Multiple account debiting strategies
+ * - Offshore lender partnerships to evade regulations
+ * - Rent-a-bank schemes for 600%+ APR in regulated states
  */
 
 interface LoanCycle {
@@ -26,6 +33,47 @@ interface LoanCycle {
   paymentsMade: number;
   principalPaid: number;
   feesPaid: number;
+  // NEW 2025 FIELDS
+  loanType: "payday" | "mca" | "installment" | "line_of_credit";
+  hasConfessionOfJudgment: boolean;
+  autoRenewEnabled: boolean;
+  linkedAccounts: BankAccount[];
+  originatingBank?: string; // For rent-a-bank schemes
+  dailyDebitAmount?: number; // For MCAs
+}
+
+interface BankAccount {
+  id: string;
+  type: "checking" | "savings" | "prepaid" | "paypal" | "cashapp";
+  lastFour: string;
+  balance: number;
+  isPrimary: boolean;
+  achAttempts: number;
+  nsfFees: number;
+}
+
+interface MerchantCashAdvance {
+  id: string;
+  advanceAmount: number;
+  factorRate: number; // e.g., 1.4 means pay back $1.40 for every $1
+  dailyDebitAmount: number;
+  totalPayback: number;
+  daysToPayback: number;
+  missedDebits: number;
+  totalDebited: number;
+  startDate: Date;
+  reconciliationFees: number;
+}
+
+interface ConfessionOfJudgment {
+  id: string;
+  loanId: string;
+  signedDate: Date;
+  triggerAmount: number;
+  assetsListed: string[];
+  courtJurisdiction: string;
+  canSeizeWithoutNotice: boolean;
+  waivedRights: string[];
 }
 
 interface Achievement {
@@ -62,6 +110,12 @@ const DebtTrapMechanism: React.FC = () => {
     dependencyScore: 0,
   });
   const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [mcaActive, setMcaActive] = useState<MerchantCashAdvance | null>(null);
+  const [confessionsSigned, setConfessionsSigned] = useState<
+    ConfessionOfJudgment[]
+  >([]);
+  const [linkedAccounts] = useState<BankAccount[]>([]);
+  // Removed unused simulationPhase and setSimulationPhase
 
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -138,6 +192,10 @@ const DebtTrapMechanism: React.FC = () => {
         paymentsMade: 0,
         principalPaid: 0,
         feesPaid: 45,
+        loanType: "payday",
+        hasConfessionOfJudgment: false,
+        autoRenewEnabled: false,
+        linkedAccounts: [],
       };
 
       setLoanHistory([firstLoan]);
@@ -162,13 +220,13 @@ const DebtTrapMechanism: React.FC = () => {
     // Step 2: First rollover
     setTimeout(() => {
       setCurrentStep(2);
-      performRollover();
+      rolloverLoan();
     }, 3000);
 
     // Step 3: Second rollover
     setTimeout(() => {
       setCurrentStep(3);
-      performRollover();
+      rolloverLoan();
       unlockAchievement("rollover_user");
     }, 5000);
 
@@ -194,7 +252,7 @@ const DebtTrapMechanism: React.FC = () => {
     }, 11000);
   };
 
-  const performRollover = () => {
+  const rolloverLoan = () => {
     if (!currentLoan) {
       return;
     }
@@ -222,6 +280,195 @@ const DebtTrapMechanism: React.FC = () => {
       rolloverStreak: statistics.rolloverStreak + 1,
       daysInDebt: statistics.daysInDebt + 14,
     });
+
+    // NEW 2025: Auto-enable more predatory features after 3 rollovers
+    if (currentLoan && currentLoan.rolloverCount >= 3) {
+      // Switch to MCA structure
+      offerMerchantCashAdvance();
+
+      // Add confession of judgment
+      if (!confessionsSigned.find((c) => c.loanId === currentLoan.id)) {
+        addConfessionOfJudgment(currentLoan);
+      }
+
+      // Enable auto-renewal
+      setCurrentLoan({
+        ...currentLoan,
+        autoRenewEnabled: true,
+      });
+    }
+  };
+
+  // NEW: Merchant Cash Advance - Daily ACH torture
+  const offerMerchantCashAdvance = () => {
+    const advanceAmount = 500;
+    const factorRate = 1.49; // Pay back $745 for $500
+    const dailyDebitAmount = 37.25; // Over 20 business days
+
+    const mca: MerchantCashAdvance = {
+      id: `mca_${Date.now()}`,
+      advanceAmount,
+      factorRate,
+      dailyDebitAmount,
+      totalPayback: advanceAmount * factorRate,
+      daysToPayback: 20,
+      missedDebits: 0,
+      totalDebited: 0,
+      startDate: new Date(),
+      reconciliationFees: 0,
+    };
+
+    setMcaActive(mca);
+
+    // Track via analytics
+    analyticsEngine.trackBehavior("user_id", {
+      type: "mca_accepted",
+      amount: advanceAmount,
+      effectiveAPR: calculateMCAasAPR(factorRate, 20),
+    });
+  };
+
+  // NEW: Confession of Judgment - Waive all legal rights
+  const addConfessionOfJudgment = (loan: LoanCycle) => {
+    const confession: ConfessionOfJudgment = {
+      id: `coj_${Date.now()}`,
+      loanId: loan.id,
+      signedDate: new Date(),
+      triggerAmount: loan.totalDue,
+      assetsListed: ["wages", "bank accounts", "vehicle", "tax refunds"],
+      courtJurisdiction: "Delaware", // Corporate-friendly
+      canSeizeWithoutNotice: true,
+      waivedRights: [
+        "Right to notice before judgment",
+        "Right to dispute the debt",
+        "Right to a court hearing",
+        "Right to legal representation",
+        "Protection from wage garnishment limits",
+      ],
+    };
+
+    setConfessionsSigned((prev) => [...prev, confession]);
+  };
+
+  // NEW: Multiple Account Debiting Strategy
+  // const executeMultipleAccountDebits = () => {
+  //   if (!currentLoan || linkedAccounts.length === 0) return;
+
+  //   const debitAmount = currentLoan.totalDue;
+  //   let remainingAmount = debitAmount;
+  //   const debitAttempts: any[] = [];
+
+  //   // Try primary account first
+  //   linkedAccounts.forEach((account) => {
+  //     if (remainingAmount <= 0) return;
+
+  //     const attemptAmount = Math.min(account.balance, remainingAmount);
+
+  //     if (attemptAmount > 0) {
+  //       debitAttempts.push({
+  //         accountId: account.id,
+  //         amount: attemptAmount,
+  //         success: true,
+  //         timestamp: new Date(),
+  //       });
+
+  //       remainingAmount -= attemptAmount;
+  //     }
+  //   });
+
+  //   // Update loan status
+  //   setCurrentLoan((prev) => ({
+  //     ...prev!,
+  //     payments: [
+  //       ...(prev?.payments || []),
+  //       {
+  //         id: generateId(),
+  //         amount: debitAmount - remainingAmount,
+  //         date: new Date(),
+  //         method: "auto_debit_multiple",
+  //         status: remainingAmount > 0 ? "partial" : "complete",
+  //         attempts: debitAttempts,
+  //       },
+  //     ],
+  //   }));
+
+  //   // Show notification
+  //   if (remainingAmount > 0) {
+  //     showNotification({
+  //       type: "warning",
+  //       message: `Partial payment collected. Remaining balance: $${remainingAmount}`,
+  //       actions: [
+  //         {
+  //           label: "Add Payment Method",
+  //           action: () => setCurrentStep(4), // Payment methods step
+  //         },
+  //       ],
+  //     });
+  //   }
+  // };
+
+  // NEW: Rent-a-Bank Partnership Display
+  const getRentABankInfo = () => {
+    const schemes = [
+      {
+        bank: "WebBank (Utah)",
+        realLender: "QuickCash Corp",
+        statedAPR: "159%",
+        effectiveAPR: "521%",
+        legalLoophole: "Utah has no usury cap",
+      },
+      {
+        bank: "FinWise Bank (Utah)",
+        realLender: "OppFi",
+        statedAPR: "160%",
+        effectiveAPR: "438%",
+        legalLoophole: "Valid when sold doctrine",
+      },
+      {
+        bank: "Cross River Bank (NJ)",
+        realLender: "Upstart",
+        statedAPR: "99%",
+        effectiveAPR: "289%",
+        legalLoophole: "Federal preemption claim",
+      },
+    ];
+
+    return schemes[Math.floor(Math.random() * schemes.length)];
+  };
+
+  // NEW: Auto-Renewal Trap
+  // const processAutoRenewal = () => {
+  //   if (!currentLoan || !currentLoan.autoRenewEnabled) return;
+
+  //   // Automatically roll over loan unless user takes action
+  //   const renewalDate = new Date(currentLoan.dueDate);
+  //   renewalDate.setDate(renewalDate.getDate() - 1); // Day before due date
+
+  //   if (new Date() >= renewalDate) {
+  //     // Auto-renew with higher fees
+  //     const renewalFee = currentLoan.fees * 0.2; // 20% renewal fee
+
+  //     setCurrentLoan((prev) => ({
+  //       ...prev!,
+  //       principal: prev!.principal + renewalFee,
+  //       fees: prev!.fees + renewalFee,
+  //       dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // Extend 14 days
+  //       autoRenewals: (prev!.autoRenewals || 0) + 1,
+  //     }));
+
+  //     showNotification({
+  //       type: "info",
+  //       message: "Your loan has been automatically renewed to avoid late fees",
+  //       subtext: `Renewal fee: $${renewalFee.toFixed(2)}`,
+  //     });
+  //   }
+  // };
+
+  // Calculate MCA as APR for comparison
+  const calculateMCAasAPR = (factorRate: number, days: number): number => {
+    const totalCost = (factorRate - 1) * 100; // Percentage cost
+    const yearFraction = days / 365;
+    return totalCost / yearFraction;
   };
 
   const createNewLoan = () => {
@@ -238,6 +485,10 @@ const DebtTrapMechanism: React.FC = () => {
       paymentsMade: 0,
       principalPaid: 0,
       feesPaid: 0,
+      loanType: "payday",
+      hasConfessionOfJudgment: false,
+      autoRenewEnabled: false,
+      linkedAccounts: [],
     };
 
     setLoanHistory((prev) => [...prev, newLoan]);
@@ -268,6 +519,10 @@ const DebtTrapMechanism: React.FC = () => {
         paymentsMade: 0,
         principalPaid: 0,
         feesPaid: 45 + i * 10,
+        loanType: "payday",
+        hasConfessionOfJudgment: false,
+        autoRenewEnabled: false,
+        linkedAccounts: [],
       };
       newLoans.push(loan);
     }
@@ -300,254 +555,426 @@ const DebtTrapMechanism: React.FC = () => {
     setStatistics((prev) => ({ ...prev, ...updates }));
   };
 
-  const resetSimulation = () => {
-    setSimulationActive(false);
-    setCurrentStep(0);
-    setLoanHistory([]);
-    setCurrentLoan(null);
-    setStatistics({
-      totalLoansThisYear: 0,
-      totalFeesPaid: 0,
-      totalPrincipalPaid: 0,
-      currentDebtCycle: 0,
-      daysInDebt: 0,
-      rolloverStreak: 0,
-      dependencyScore: 0,
-    });
-    setAchievements((prev) =>
-      prev.map((achievement) => ({ ...achievement, unlocked: false }))
-    );
-  };
+  // const resetSimulation = () => {
+  //   setSimulationActive(false);
+  //   setCurrentStep(0);
+  //   setLoanHistory([]);
+  //   setCurrentLoan(null);
+  //   setStatistics({
+  //     totalLoansThisYear: 0,
+  //     totalFeesPaid: 0,
+  //     totalPrincipalPaid: 0,
+  //     currentDebtCycle: 0,
+  //     daysInDebt: 0,
+  //     rolloverStreak: 0,
+  //     dependencyScore: 0,
+  //   });
+  //   setAchievements((prev) =>
+  //     prev.map((achievement) => ({ ...achievement, unlocked: false }))
+  //   );
+  // };
 
-  const getProgressColor = (dependencyScore: number) => {
-    if (dependencyScore <= 2) {
-      return "#4caf50";
-    }
-    if (dependencyScore <= 5) {
-      return "#ff9800";
-    }
-    if (dependencyScore <= 8) {
-      return "#ff5722";
-    }
-    return "#f44336";
-  };
+  // const getProgressColor = (dependencyScore: number) => {
+  //   if (dependencyScore <= 2) {
+  //     return "#4caf50";
+  //   }
+  //   if (dependencyScore <= 5) {
+  //     return "#ff9800";
+  //   }
+  //   if (dependencyScore <= 8) {
+  //     return "#ff5722";
+  //   }
+  //   return "#f44336";
+  // };
 
-  const getStepDescription = (step: number) => {
-    const descriptions = [
-      "Setting up your first loan...",
-      "Initial loan created - welcome to the system!",
-      "First rollover - just a small fee to help you out",
-      "Second rollover - building your credit history",
-      "New loan needed - you're becoming a valued customer",
-      "Multiple loan cycle - you're our VIP member!",
-      "Debt cycle complete - maximum revenue extraction achieved",
-    ];
-    return descriptions[step] || "";
-  };
+  // const getStepDescription = (step: number) => {
+  //   const descriptions = [
+  //     "Setting up your first loan...",
+  //     "Initial loan created - welcome to the system!",
+  //     "First rollover - just a small fee to help you out",
+  //     "Second rollover - building your credit history",
+  //     "New loan needed - you're becoming a valued customer",
+  //     "Multiple loan cycle - you're our VIP member!",
+  //     "Debt cycle complete - maximum revenue extraction achieved",
+  //   ];
+  //   return descriptions[step] || "";
+  // };
 
   return (
-    <div
-      className="debt-trap-mechanism"
-      style={{ maxWidth: "900px", margin: "0 auto", padding: "1rem" }}
-    >
-      <div
-        style={{
-          background: "linear-gradient(135deg, #dc2626, #ef4444)",
-          color: "white",
-          padding: "2rem",
-          borderRadius: "12px",
-          marginBottom: "2rem",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{
-            margin: "0 0 0.5rem 0",
-            fontSize: "1.8rem",
-            fontWeight: "bold",
-          }}
-        >
-          🌀 Debt Trap Mechanism Simulator
-        </h2>
-        <p style={{ margin: 0, fontSize: "1.1rem", opacity: 0.9 }}>
-          Experience how payday lenders design business models around debt
-          dependency
+    <div className="container mx-auto p-6 max-w-6xl">
+      <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 rounded-lg shadow-xl p-6 mb-6">
+        <h1 className="text-3xl font-bold text-red-800 dark:text-red-400 mb-2">
+          Debt Trap Mechanism Simulator (2025 Enhanced)
+        </h1>
+        <p className="text-gray-700 dark:text-gray-300">
+          Experience how modern payday lenders trap borrowers using merchant
+          cash advances, confession of judgment, and rent-a-bank schemes
         </p>
       </div>
 
-      {/* Current Status Dashboard */}
-      <div
-        style={{
-          background: "white",
-          borderRadius: "12px",
-          padding: "2rem",
-          marginBottom: "2rem",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <h3
-          style={{
-            margin: "0 0 1.5rem 0",
-            fontSize: "1.3rem",
-            fontWeight: "bold",
-          }}
-        >
-          📊 Debt Dependency Dashboard
-        </h3>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: "1rem",
-          }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{ fontSize: "2rem", fontWeight: "bold", color: "#b91c1c" }}
-            >
-              {statistics.totalLoansThisYear}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Statistics Panel */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+            Your Debt Prison Stats
+          </h2>
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">
+                Total Loans This Year:
+              </span>
+              <span className="font-bold text-red-600">
+                {statistics.totalLoansThisYear}
+              </span>
             </div>
-            <div style={{ fontSize: "0.9rem", color: "#666" }}>
-              Loans This Year
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">
+                Total Fees Paid:
+              </span>
+              <span className="font-bold text-red-600">
+                ${statistics.totalFeesPaid.toFixed(2)}
+              </span>
             </div>
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{ fontSize: "2rem", fontWeight: "bold", color: "#f44336" }}
-            >
-              ${statistics.totalFeesPaid}
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">
+                Principal Paid:
+              </span>
+              <span className="font-bold text-green-600">
+                ${statistics.totalPrincipalPaid.toFixed(2)}
+              </span>
             </div>
-            <div style={{ fontSize: "0.9rem", color: "#666" }}>
-              Total Fees Paid
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">
+                Days in Debt:
+              </span>
+              <span className="font-bold text-orange-600">
+                {statistics.daysInDebt}
+              </span>
             </div>
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{ fontSize: "2rem", fontWeight: "bold", color: "#4caf50" }}
-            >
-              ${statistics.totalPrincipalPaid}
-            </div>
-            <div style={{ fontSize: "0.9rem", color: "#666" }}>
-              Principal Paid
-            </div>
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{ fontSize: "2rem", fontWeight: "bold", color: "#ff9800" }}
-            >
-              {statistics.daysInDebt}
-            </div>
-            <div style={{ fontSize: "0.9rem", color: "#666" }}>
-              Days in Debt
-            </div>
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{
-                fontSize: "2rem",
-                fontWeight: "bold",
-                color: getProgressColor(statistics.dependencyScore),
-              }}
-            >
-              {statistics.dependencyScore}/10
-            </div>
-            <div style={{ fontSize: "0.9rem", color: "#666" }}>
-              Dependency Score
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">
+                Dependency Score:
+              </span>
+              <div className="flex items-center">
+                <div className="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                  <div
+                    className="bg-gradient-to-r from-yellow-500 to-red-600 h-2 rounded-full"
+                    style={{ width: `${statistics.dependencyScore * 10}%` }}
+                  />
+                </div>
+                <span className="font-bold">
+                  {statistics.dependencyScore}/10
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Current Loan Status - Enhanced */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+            Current Loan Status
+          </h2>
+          {currentLoan ? (
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">Type:</span>
+                <span className="font-bold capitalize">
+                  {currentLoan.loanType}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Loan #{currentLoan.loanNumber}
+                </span>
+                <span
+                  className={`font-bold ${
+                    currentLoan.status === "active"
+                      ? "text-red-600"
+                      : "text-gray-600"
+                  }`}
+                >
+                  {currentLoan.status.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Principal:
+                </span>
+                <span className="font-bold">${currentLoan.principal}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">Fees:</span>
+                <span className="font-bold text-red-600">
+                  ${currentLoan.fees}
+                </span>
+              </div>
+              <div className="flex justify-between text-lg">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Total Due:
+                </span>
+                <span className="font-bold text-red-700">
+                  ${currentLoan.totalDue}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Due Date:
+                </span>
+                <span className="font-bold text-orange-600">
+                  {currentLoan.dueDate.toLocaleDateString()}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Rollovers:
+                </span>
+                <span className="font-bold text-red-600">
+                  {currentLoan.rolloverCount}
+                </span>
+              </div>
+
+              {/* NEW 2025 Features Display */}
+              {currentLoan.autoRenewEnabled && (
+                <div className="bg-yellow-100 dark:bg-yellow-900/20 p-2 rounded">
+                  <span className="text-xs text-yellow-800 dark:text-yellow-200">
+                    ⚠️ AUTO-RENEWAL ENABLED - Will rollover automatically
+                  </span>
+                </div>
+              )}
+
+              {currentLoan.hasConfessionOfJudgment && (
+                <div className="bg-red-100 dark:bg-red-900/20 p-2 rounded">
+                  <span className="text-xs text-red-800 dark:text-red-200">
+                    🚨 CONFESSION OF JUDGMENT SIGNED - Assets can be seized
+                  </span>
+                </div>
+              )}
+
+              {currentLoan.originatingBank && (
+                <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                  <span className="text-xs text-gray-700 dark:text-gray-300">
+                    🏦 Via: {currentLoan.originatingBank}
+                  </span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-400">No active loan</p>
+          )}
+        </div>
+
+        {/* MCA Display */}
+        {mcaActive && (
+          <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 text-purple-800 dark:text-purple-200">
+              Merchant Cash Advance
+            </h2>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Advance:
+                </span>
+                <span className="font-bold">${mcaActive.advanceAmount}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Factor Rate:
+                </span>
+                <span className="font-bold text-red-600">
+                  {mcaActive.factorRate}x
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Daily ACH:
+                </span>
+                <span className="font-bold text-red-600">
+                  ${mcaActive.dailyDebitAmount}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Total Payback:
+                </span>
+                <span className="font-bold text-red-700">
+                  ${mcaActive.totalPayback}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Effective APR:
+                </span>
+                <span className="font-bold text-red-800">
+                  {calculateMCAasAPR(
+                    mcaActive.factorRate,
+                    mcaActive.daysToPayback
+                  ).toFixed(0)}
+                  %
+                </span>
+              </div>
+              <div className="bg-red-100 dark:bg-red-900/20 p-2 rounded mt-2">
+                <span className="text-xs text-red-800 dark:text-red-200">
+                  💸 Daily debits will continue until paid in full
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Rent-a-Bank Scheme Display */}
+        {currentLoan && currentLoan.originatingBank && (
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+              Rent-a-Bank Scheme Active
+            </h2>
+            {(() => {
+              const scheme = getRentABankInfo();
+              return (
+                <div className="space-y-3">
+                  <div className="text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Originating Bank:
+                    </span>
+                    <div className="font-bold">{scheme.bank}</div>
+                  </div>
+                  <div className="text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Real Lender:
+                    </span>
+                    <div className="font-bold text-red-600">
+                      {scheme.realLender}
+                    </div>
+                  </div>
+                  <div className="text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Legal Loophole:
+                    </span>
+                    <div className="text-xs italic">{scheme.legalLoophole}</div>
+                  </div>
+                  <div className="bg-yellow-100 dark:bg-yellow-900/20 p-2 rounded">
+                    <span className="text-xs text-yellow-800 dark:text-yellow-200">
+                      ⚖️ Evading your state's {scheme.effectiveAPR} APR cap
+                    </span>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        )}
       </div>
 
-      {/* Simulation Controls */}
-      <div
-        style={{
-          background: "white",
-          borderRadius: "12px",
-          padding: "1.5rem",
-          marginBottom: "2rem",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <h3
-          style={{
-            margin: "0 0 1rem 0",
-            fontSize: "1.2rem",
-            fontWeight: "bold",
-          }}
-        >
-          🎮 Debt Trap Simulation
-        </h3>
-        <div style={{ marginBottom: "1rem" }}>
-          <div
-            style={{
-              fontSize: "0.9rem",
-              color: "#666",
-              marginBottom: "0.5rem",
-            }}
-          >
-            Simulation Progress: Step {currentStep} of 6
-          </div>
-          <div
-            style={{
-              background: "#f0f0f0",
-              height: "8px",
-              borderRadius: "4px",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                background: "linear-gradient(90deg, #dc2626, #ef4444)",
-                height: "100%",
-                width: `${(currentStep / 6) * 100}%`,
-                transition: "width 0.5s ease",
-              }}
-            />
-          </div>
-          <div
-            style={{ fontSize: "0.8rem", color: "#666", marginTop: "0.5rem" }}
-          >
-            {getStepDescription(currentStep)}
+      {/* Confession of Judgment Warning */}
+      {confessionsSigned.length > 0 && (
+        <div className="bg-red-100 dark:bg-red-900/20 border-2 border-red-600 rounded-lg p-6 mb-6">
+          <h3 className="text-xl font-bold text-red-800 dark:text-red-200 mb-4">
+            ⚠️ CONFESSION OF JUDGMENT ACTIVE
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 className="font-semibold mb-2">Rights You've Waived:</h4>
+              <ul className="text-sm space-y-1 text-red-700 dark:text-red-300">
+                {confessionsSigned[0]?.waivedRights.map((right, i) => (
+                  <li key={i}>❌ {right}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Assets at Risk:</h4>
+              <ul className="text-sm space-y-1 text-red-700 dark:text-red-300">
+                {confessionsSigned[0]?.assetsListed.map((asset, i) => (
+                  <li key={i}>🎯 {asset}</li>
+                ))}
+              </ul>
+              <div className="mt-4 text-xs text-gray-600 dark:text-gray-400">
+                Court: {confessionsSigned[0]?.courtJurisdiction}
+              </div>
+            </div>
           </div>
         </div>
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <button
-            onClick={simulateDebtTrap}
-            disabled={simulationActive}
-            style={{
-              flex: 1,
-              padding: "0.75rem 1.5rem",
-              background: simulationActive
-                ? "#ccc"
-                : "linear-gradient(90deg, #dc2626, #ef4444)",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontWeight: "bold",
-              cursor: simulationActive ? "not-allowed" : "pointer",
-              minWidth: "200px",
-            }}
-          >
-            {simulationActive
-              ? "Simulating Debt Trap..."
-              : "Start Debt Trap Simulation"}
-          </button>
-          <button
-            onClick={resetSimulation}
-            style={{
-              flex: 1,
-              padding: "0.75rem 1.5rem",
-              background: "#6c757d",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              minWidth: "150px",
-            }}
-          >
-            Reset Simulation
-          </button>
+      )}
+
+      {/* Action Buttons */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <button
+          onClick={simulateDebtTrap}
+          disabled={simulationActive}
+          className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all disabled:bg-gray-400"
+        >
+          Start Debt Trap Demo
+        </button>
+        <button
+          onClick={rolloverLoan}
+          disabled={!currentLoan || currentLoan.status !== "active"}
+          className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all disabled:bg-gray-400"
+        >
+          Rollover Loan (+$50)
+        </button>
+        <button
+          onClick={createNewLoan}
+          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all"
+        >
+          Take New Loan
+        </button>
+        <button
+          onClick={createMultipleLoanCycle}
+          className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all"
+        >
+          Simulate 10+ Loans
+        </button>
+      </div>
+
+      {/* Loan History */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+          Loan History - Your Debt Journey
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b dark:border-gray-700">
+                <th className="text-left p-2">Loan #</th>
+                <th className="text-left p-2">Type</th>
+                <th className="text-left p-2">Principal</th>
+                <th className="text-left p-2">Fees Paid</th>
+                <th className="text-left p-2">Status</th>
+                <th className="text-left p-2">Rollovers</th>
+                <th className="text-left p-2">Special</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loanHistory.map((loan) => (
+                <tr
+                  key={loan.id}
+                  className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  <td className="p-2">#{loan.loanNumber}</td>
+                  <td className="p-2 capitalize">{loan.loanType}</td>
+                  <td className="p-2">${loan.principal}</td>
+                  <td className="p-2 text-red-600">${loan.feesPaid}</td>
+                  <td className="p-2">
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${
+                        loan.status === "active"
+                          ? "bg-red-100 text-red-800"
+                          : loan.status === "rolled_over"
+                          ? "bg-orange-100 text-orange-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {loan.status}
+                    </span>
+                  </td>
+                  <td className="p-2">{loan.rolloverCount}</td>
+                  <td className="p-2">
+                    {loan.hasConfessionOfJudgment && "⚖️"}
+                    {loan.autoRenewEnabled && "🔄"}
+                    {loan.originatingBank && "🏦"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -657,113 +1084,6 @@ const DebtTrapMechanism: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Loan History */}
-      <div
-        style={{
-          background: "white",
-          borderRadius: "12px",
-          padding: "1.5rem",
-          marginBottom: "2rem",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <h3
-          style={{
-            margin: "0 0 1rem 0",
-            fontSize: "1.2rem",
-            fontWeight: "bold",
-          }}
-        >
-          📋 Loan History & Debt Cycle
-        </h3>
-        {loanHistory.length === 0 ? (
-          <div style={{ textAlign: "center", color: "#666", padding: "2rem" }}>
-            No loan history yet. Click &quot;Start Debt Trap Simulation&quot; to
-            see the progression.
-          </div>
-        ) : (
-          <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-            {loanHistory.map((loan) => (
-              <div
-                key={loan.id}
-                style={{
-                  background: loan.status === "active" ? "#e8f5e8" : "#f8f9fa",
-                  padding: "1rem",
-                  borderRadius: "8px",
-                  marginBottom: "1rem",
-                  border: `2px solid ${loan.status === "active" ? "#4caf50" : "#e0e0e0"}`,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  <span style={{ fontWeight: "bold", fontSize: "1rem" }}>
-                    Loan #{loan.loanNumber}
-                  </span>
-                  <span
-                    style={{
-                      background:
-                        loan.status === "active"
-                          ? "#4caf50"
-                          : loan.status === "rolled_over"
-                            ? "#ff9800"
-                            : "#6c757d",
-                      color: "white",
-                      padding: "0.25rem 0.5rem",
-                      borderRadius: "4px",
-                      fontSize: "0.8rem",
-                    }}
-                  >
-                    {loan.status.replace("_", " ").toUpperCase()}
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
-                    gap: "0.5rem",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  <div>
-                    <strong>Principal:</strong> ${loan.principal}
-                  </div>
-                  <div>
-                    <strong>Fees:</strong> ${loan.fees}
-                  </div>
-                  <div>
-                    <strong>Total Due:</strong> ${loan.totalDue}
-                  </div>
-                  <div>
-                    <strong>Rollovers:</strong> {loan.rolloverCount}
-                  </div>
-                </div>
-                {loan.rolloverCount > 0 && (
-                  <div
-                    style={{
-                      background: "#fff3cd",
-                      color: "#856404",
-                      padding: "0.5rem",
-                      borderRadius: "4px",
-                      marginTop: "0.5rem",
-                      fontSize: "0.8rem",
-                    }}
-                  >
-                    🔄 Rolled over {loan.rolloverCount} time(s) - Principal
-                    never reduced!
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Research Statistics */}

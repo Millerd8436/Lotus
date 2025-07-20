@@ -1,29 +1,20 @@
 "use client";
 
+import { useEducation } from "@/components/providers/EducationProvider";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
+import { analyticsEngine } from "@/lib/core/AnalyticsEngine";
+import {
+  BoltIcon,
+  CheckCircleIcon,
+  ChevronRightIcon,
+  ClockIcon,
+  ShieldCheckIcon,
+  UserGroupIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
-
-/**
- * DeceptiveCheckoutFlow - Enhanced Predatory Checkout Based on 2024 Research
- *
- * Based on analysis of actual payday loan websites (MyPaydayLoan.com, SunshineLoans.com, etc.)
- * Implements the exact 15-step checkout process used by real predatory lenders:
- *
- * 1. Quick Entry (Name, Phone, ZIP)
- * 2. Loan Amount & Purpose
- * 3. Personal Information (SSN, DOB, Address)
- * 4. Employment Information (Employer, Income, Pay frequency)
- * 5. Bank Account Details (Bank name, Account type, Routing/Account numbers)
- * 6. Identity Verification (Driver's license upload)
- * 7. Income Verification (Pay stub upload OR bank login)
- * 8. Contact References (2-3 personal references)
- * 9. Electronic Signature & Disclosures
- * 10. ACH Authorization (Multiple account access)
- * 11. Add-on Services (Insurance, Express processing)
- * 12. Final Terms Review (APR finally disclosed)
- * 13. Submission & Approval Process
- * 14. Funding Options (ACH vs Debit card)
- * 15. Rollover/Renewal Setup
- */
 
 interface RealisticFormData {
   // Personal Information
@@ -107,13 +98,16 @@ interface DeceptiveCheckoutFlowProps {
   loanAmount: number;
   phase: "exploitative" | "ethical";
   onBack: () => void;
+  onStepChange?: (step: string) => void;
 }
 
 const DeceptiveCheckoutFlow: React.FC<DeceptiveCheckoutFlowProps> = ({
   loanAmount,
   phase,
   onBack,
+  onStepChange,
 }) => {
+  const { showEducationalOverlay } = useEducation();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<RealisticFormData>({
     firstName: "",
@@ -128,6 +122,7 @@ const DeceptiveCheckoutFlow: React.FC<DeceptiveCheckoutFlowProps> = ({
     zipCode: "",
     timeAtAddress: "",
     housingType: "rent",
+    employmentStatus: "employed",
     employer: "",
     jobTitle: "",
     workPhone: "",
@@ -153,489 +148,662 @@ const DeceptiveCheckoutFlow: React.FC<DeceptiveCheckoutFlowProps> = ({
     loanAmount: loanAmount,
     loanPurpose: "",
     previousPaydayLoan: false,
-    achAuthorization: false,
-    electronicSignature: false,
-    creditCheck: false,
+    achAuthorization: true,
+    electronicSignature: true,
+    creditCheck: true,
     dataSharing: true,
     marketingConsent: true,
     autoRenewal: true,
     loanInsurance: true,
     expressProcessing: true,
-    employmentStatus: "employed",
   });
 
-  const [timeLeft, setTimeLeft] = useState(1847); // Fake urgency timer
-  const [_isProcessing, _setIsProcessing] = useState(false);
-  const [showFakeActivity, _setShowFakeActivity] = useState(true);
-  const [fakeApplications, setFakeApplications] = useState<string[]>([]);
-  const [currentFees, setCurrentFees] = useState(0);
-  const [totalAPR, setTotalAPR] = useState(0);
+  const [totalCost, setTotalCost] = useState(loanAmount);
+  const [baseFee, setBaseFee] = useState(0);
+  const [additionalFees, setAdditionalFees] = useState({
+    processingFee: 0,
+    originationFee: 0,
+    creditCheckFee: 0,
+    transferFee: 0,
+    insuranceFee: 0,
+    expressFee: 0,
+  });
 
-  // Realistic checkout steps based on actual payday loan websites
-  const checkoutSteps: CheckoutStep[] = [
+  // Dark pattern: Fake urgency timer
+  const [timer, setTimer] = useState(600); // 10 minutes
+  const [spotsRemaining, setSpotsRemaining] = useState(3);
+  const [viewersCount, setViewersCount] = useState(127);
+
+  // Start urgency timer and fake activity
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+
+      // Randomly update viewers
+      if (Math.random() > 0.7) {
+        setViewersCount((prev) => prev + Math.floor(Math.random() * 5) - 2);
+      }
+
+      // Randomly decrease spots
+      if (Math.random() > 0.95 && spotsRemaining > 1) {
+        setSpotsRemaining((prev) => prev - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [spotsRemaining]);
+
+  // Dark pattern: Drip pricing - gradually reveal fees
+  useEffect(() => {
+    if (currentStep >= 3) {
+      setBaseFee(loanAmount * 0.15); // 15% base fee
+    }
+    if (currentStep >= 5) {
+      setAdditionalFees((prev) => ({ ...prev, processingFee: 49.99 }));
+    }
+    if (currentStep >= 7) {
+      setAdditionalFees((prev) => ({
+        ...prev,
+        originationFee: loanAmount * 0.05,
+      }));
+    }
+    if (currentStep >= 9) {
+      setAdditionalFees((prev) => ({ ...prev, creditCheckFee: 29.99 }));
+    }
+    if (currentStep >= 11) {
+      setAdditionalFees((prev) => ({ ...prev, transferFee: 14.99 }));
+    }
+    if (formData.loanInsurance && currentStep >= 13) {
+      setAdditionalFees((prev) => ({ ...prev, insuranceFee: 89.99 }));
+    }
+    if (formData.expressProcessing && currentStep >= 14) {
+      setAdditionalFees((prev) => ({ ...prev, expressFee: 59.99 }));
+    }
+  }, [
+    currentStep,
+    loanAmount,
+    formData.loanInsurance,
+    formData.expressProcessing,
+  ]);
+
+  // Calculate total with all fees
+  useEffect(() => {
+    const allFees = Object.values(additionalFees).reduce(
+      (sum, fee) => sum + fee,
+      0
+    );
+    setTotalCost(loanAmount + baseFee + allFees);
+  }, [loanAmount, baseFee, additionalFees]);
+
+  // Call onStepChange when component mounts or step changes
+  useEffect(() => {
+    if (onStepChange && steps[currentStep]) {
+      onStepChange(steps[currentStep].id);
+    }
+  }, [currentStep]);
+
+  const steps: CheckoutStep[] = [
     {
-      id: "quick-entry",
-      title: "💰 GET CASH FAST! $100-$2,000",
-      subtitle: "NO CREDIT CHECK • INSTANT APPROVAL",
-      description: "Get started with just 3 quick details:",
-      progressPercent: 7,
-      darkPattern: "Bait with simplicity - hide 14 more required steps",
+      id: "start",
+      title: "Get Started",
+      subtitle: "Quick 2-minute application",
+      description: "Just 3 simple steps to get your cash",
+      progressPercent: 5,
+      darkPattern: "bait_and_switch",
       mobileOptimized: true,
     },
     {
-      id: "loan-details",
-      title: "How Much Cash Do You Need?",
-      subtitle: "Choose your loan amount and purpose",
-      description: "Select the amount that works for you:",
-      progressPercent: 14,
-      darkPattern: 'Hide true fees - show only "small fee" language',
-      mobileOptimized: true,
-    },
-    {
-      id: "personal-info",
+      id: "personal",
       title: "Personal Information",
-      subtitle: "Quick verification for your security",
-      description: "We need to verify your identity:",
-      progressPercent: 21,
-      darkPattern: "Normalize excessive data collection",
+      subtitle: "Basic details",
+      description: "We just need some basic info",
+      progressPercent: 10,
+      darkPattern: "foot_in_door",
       mobileOptimized: true,
     },
     {
-      id: "employment-info",
-      title: "Employment Details",
-      subtitle: "Verify your income source",
-      description: "Tell us about your job:",
-      progressPercent: 28,
-      darkPattern: "Vulnerability scoring - target desperate workers",
+      id: "contact",
+      title: "Contact Details",
+      subtitle: "How to reach you",
+      description: "For your loan confirmation only",
+      progressPercent: 15,
+      darkPattern: "data_harvesting",
       mobileOptimized: true,
     },
     {
-      id: "banking-info",
+      id: "address",
+      title: "Current Address",
+      subtitle: "Where you live",
+      description: "Required for verification",
+      progressPercent: 20,
+      darkPattern: "progressive_disclosure",
+      mobileOptimized: true,
+    },
+    {
+      id: "employment",
+      title: "Employment Status",
+      subtitle: "Income verification",
+      description: "To ensure you can repay",
+      progressPercent: 25,
+      darkPattern: "data_collection",
+      mobileOptimized: false,
+    },
+    {
+      id: "employer",
+      title: "Employer Details",
+      subtitle: "Work information",
+      description: "For income verification",
+      progressPercent: 30,
+      darkPattern: "privacy_zuckering",
+      mobileOptimized: false,
+    },
+    {
+      id: "income",
+      title: "Income Details",
+      subtitle: "Financial information",
+      description: "Almost there!",
+      progressPercent: 40,
+      darkPattern: "sunk_cost_fallacy",
+      mobileOptimized: false,
+    },
+    {
+      id: "banking",
       title: "Banking Information",
-      subtitle: "Secure account setup",
-      description: "Where should we send your money?",
-      progressPercent: 35,
-      darkPattern: "Broad ACH authorization for exploitation",
-      mobileOptimized: true,
+      subtitle: "For instant deposit",
+      description: "Get funds in 15 minutes!",
+      progressPercent: 50,
+      darkPattern: "forced_continuity",
+      mobileOptimized: false,
     },
     {
-      id: "identity-verification",
+      id: "bank_access",
+      title: "Bank Access",
+      subtitle: "Secure verification",
+      description: "256-bit encryption",
+      progressPercent: 60,
+      darkPattern: "privacy_invasion",
+      mobileOptimized: false,
+    },
+    {
+      id: "identity",
       title: "Identity Verification",
-      subtitle: "Upload your driver's license",
-      description: "Quick photo upload for verification:",
-      progressPercent: 42,
-      darkPattern: "Legitimize extensive data collection",
-      mobileOptimized: true,
-    },
-    {
-      id: "income-verification",
-      title: "Income Verification",
-      subtitle: "Connect your bank OR upload pay stub",
-      description: "Choose your verification method:",
-      progressPercent: 49,
-      darkPattern: "Bank login credentials harvesting",
-      mobileOptimized: true,
+      subtitle: "Government ID",
+      description: "Required by law",
+      progressPercent: 70,
+      darkPattern: "false_authority",
+      mobileOptimized: false,
     },
     {
       id: "references",
-      title: "Emergency Contacts",
-      subtitle: "People who can reach you",
-      description: "Provide 2 contacts (for your security):",
-      progressPercent: 56,
-      darkPattern: "Collection harassment contact list",
-      mobileOptimized: true,
+      title: "References",
+      subtitle: "Emergency contacts",
+      description: "In case we can't reach you",
+      progressPercent: 80,
+      darkPattern: "social_pyramid",
+      mobileOptimized: false,
     },
     {
-      id: "electronic-signature",
-      title: "Electronic Signature",
-      subtitle: "Sign your loan documents",
-      description: "Review and sign your agreement:",
-      progressPercent: 63,
-      darkPattern: "Rushed signature on buried terms",
-      mobileOptimized: true,
+      id: "loan_details",
+      title: "Loan Purpose",
+      subtitle: "Tell us why",
+      description: "Help us serve you better",
+      progressPercent: 85,
+      darkPattern: "emotional_manipulation",
+      mobileOptimized: false,
     },
     {
-      id: "ach-authorization",
-      title: "Payment Authorization",
-      subtitle: "Authorize automatic payments",
-      description: "Set up automatic loan repayment:",
-      progressPercent: 70,
-      darkPattern: "Broad ACH exploitation permissions",
-      mobileOptimized: true,
+      id: "consents",
+      title: "Agreements",
+      subtitle: "Terms and conditions",
+      description: "Standard authorizations",
+      progressPercent: 90,
+      darkPattern: "roach_motel",
+      mobileOptimized: false,
     },
     {
-      id: "add-ons",
-      title: "Protect Your Loan",
-      subtitle: "Recommended services for you",
-      description: "Smart borrowers choose these protections:",
-      progressPercent: 77,
-      darkPattern: "Pre-selected expensive add-ons",
-      mobileOptimized: true,
+      id: "insurance",
+      title: "Loan Protection",
+      subtitle: "Protect your loan",
+      description: "Recommended by 9/10 customers",
+      progressPercent: 95,
+      darkPattern: "sneak_into_basket",
+      mobileOptimized: false,
     },
     {
-      id: "final-terms",
-      title: "Final Terms Review",
-      subtitle: "Confirm your loan details",
-      description: "Review your loan terms:",
-      progressPercent: 84,
-      darkPattern: "APR finally disclosed in tiny text",
-      mobileOptimized: true,
-    },
-    {
-      id: "processing",
-      title: "Processing Your Application",
-      subtitle: "Contacting our network of lenders",
-      description: "Please wait while we process your application...",
-      progressPercent: 91,
-      darkPattern: "Fake processing to simulate legitimacy",
-      mobileOptimized: true,
-    },
-    {
-      id: "funding-options",
-      title: "Choose Your Funding Speed",
-      subtitle: "How fast do you need your cash?",
-      description: "Select your preferred funding method:",
-      progressPercent: 98,
-      darkPattern: "Upsell expensive instant funding",
-      mobileOptimized: true,
-    },
-    {
-      id: "rollover-setup",
-      title: "Congratulations! You're Approved!",
-      subtitle: "Your money is on the way",
-      description: "Set up renewal options for convenience:",
-      progressPercent: 100,
-      darkPattern: "Trap setup - auto-rollover authorization",
+      id: "review",
+      title: "Final Review",
+      subtitle: "Confirm and submit",
+      description: "Get your money now!",
+      progressPercent: 99,
+      darkPattern: "false_urgency",
       mobileOptimized: true,
     },
   ];
 
-  // Fake urgency timer
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 0) return 1847; // Reset to maintain fake urgency
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Fake activity feed
-  useEffect(() => {
-    const activities = [
-      "Sarah from Dallas just approved for $500",
-      "Mike from Houston got $750 in minutes",
-      "Jessica from Austin approved for $1,000",
-      "Carlos from San Antonio got $300 fast",
-      "Jennifer from Fort Worth approved for $600",
-    ];
-
-    const interval = setInterval(() => {
-      const randomActivity =
-        activities[Math.floor(Math.random() * activities.length)];
-      if (randomActivity) {
-        setFakeApplications((prev) => [randomActivity, ...prev.slice(0, 4)]);
-      }
-    }, 8000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Progressive fee calculation
-  useEffect(() => {
-    let fees = 0;
-    let baseFee = Math.floor(formData.loanAmount * 0.15); // 15% base fee
-
-    if (currentStep >= 1) fees += baseFee;
-    if (currentStep >= 10 && formData.expressProcessing) fees += 25;
-    if (currentStep >= 10 && formData.loanInsurance) fees += 35;
-    if (currentStep >= 13) fees += 15; // "Processing fee"
-
-    setCurrentFees(fees);
-
-    // Calculate APR (only shown in final steps)
-    if (currentStep >= 11) {
-      const apr = (fees / formData.loanAmount) * (365 / 14) * 100; // 2-week loan
-      setTotalAPR(Math.round(apr));
-    }
-  }, [
-    currentStep,
-    formData.loanAmount,
-    formData.expressProcessing,
-    formData.loanInsurance,
-  ]);
-
   const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
+    const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleNext = () => {
-    if (currentStep < checkoutSteps.length - 1) {
+    if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
+      onStepChange?.(steps[currentStep + 1].id);
+
+      // Track progression
+      analyticsEngine.trackBehavior("session123", {
+        type: "form_progression",
+        step: steps[currentStep + 1].id,
+        timeSpent: 600 - timer,
+      });
     }
   };
 
   const handleBack = () => {
-    if (currentStep === 0 && onBack) {
-      onBack();
-    } else if (currentStep > 0) {
+    if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+      onStepChange?.(steps[currentStep - 1].id);
+    } else {
+      onBack();
     }
   };
 
-  const currentStepData = checkoutSteps[currentStep] || checkoutSteps[0];
+  const renderStepContent = () => {
+    const step = steps[currentStep];
 
-  if (!currentStepData) {
-    return <div>Loading...</div>;
-  }
-
-  // Example: use phase for conditional styling (optional, can be expanded)
-  const phaseBg =
-    phase === "ethical"
-      ? "bg-gradient-to-br from-green-50 to-green-100"
-      : "bg-gradient-to-br from-orange-50 to-orange-100";
-
-  return (
-    <div className={`min-h-screen ${phaseBg} font-sans`}>
-      {/* Mobile-first header */}
-      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-3 shadow-lg">
+    // Render fake urgency warnings
+    const renderUrgencyWarning = () => (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <span className="text-orange-500 font-bold text-lg">$</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold">CashFast Loans</h1>
-              <p className="text-xs opacity-90">Trusted by thousands</p>
-            </div>
+          <div className="flex items-center gap-2">
+            <ClockIcon className="h-5 w-5 text-red-600 animate-pulse" />
+            <span className="text-red-800 font-semibold">
+              Offer expires in: {formatTime(timer)}
+            </span>
           </div>
-          <div className="text-right">
-            <div className="bg-red-600 px-2 py-1 rounded text-xs font-bold">
-              OFFER EXPIRES: {formatTime(timeLeft)}
+          <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-1">
+              <UserGroupIcon className="h-4 w-4 text-red-600" />
+              <span className="text-red-700">{viewersCount} viewing now</span>
+            </div>
+            <div className="text-red-800 font-bold">
+              Only {spotsRemaining} spots left!
             </div>
           </div>
         </div>
       </div>
+    );
 
-      {/* Progress bar */}
-      <div className="bg-white shadow-sm px-4 py-3">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">
-            Step {currentStep + 1} of {checkoutSteps.length}
-          </span>
-          <span className="text-sm font-medium text-orange-600">
-            {currentStepData.progressPercent}% Complete
+    // Render fake social proof
+    const renderSocialProof = () => (
+      <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+        <div className="flex items-center gap-2">
+          <CheckCircleIcon className="h-5 w-5 text-green-600" />
+          <span className="text-green-800">
+            <strong>Sarah M.</strong> just received $500! •
+            <strong> John D.</strong> got approved for $750! •
+            <strong> Lisa K.</strong> received funds in 12 minutes!
           </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+      </div>
+    );
+
+    // Render security theater
+    const renderSecurityTheater = () => (
+      <div className="flex items-center gap-6 text-sm text-gray-600 mb-4">
+        <div className="flex items-center gap-1">
+          <ShieldCheckIcon className="h-4 w-4" />
+          <span>256-bit SSL Encryption</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <BoltIcon className="h-4 w-4" />
+          <span>Instant Approval</span>
+        </div>
+      </div>
+    );
+
+    switch (step.id) {
+      case "start":
+        return (
+          <div className="space-y-6">
+            {renderUrgencyWarning()}
+            {renderSocialProof()}
+            <div className="text-center space-y-4">
+              <h2 className="text-3xl font-bold">
+                Get ${loanAmount} in Your Account Today!
+              </h2>
+              <p className="text-lg text-gray-600">
+                Approved in 2 minutes • Money in 15 minutes • No hidden fees*
+              </p>
+              <div className="text-xs text-gray-400">
+                *Processing, origination, and transfer fees apply. See terms.
+              </div>
+            </div>
+            {renderSecurityTheater()}
+          </div>
+        );
+
+      case "personal":
+        return (
+          <div className="space-y-4">
+            {renderUrgencyWarning()}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="First Name"
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
+                required
+              />
+              <Input
+                label="Last Name"
+                value={formData.lastName}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
+                required
+              />
+              <Input
+                label="Date of Birth"
+                type="date"
+                value={formData.dob}
+                onChange={(e) =>
+                  setFormData({ ...formData, dob: e.target.value })
+                }
+                required
+              />
+              <Input
+                label="Social Security Number"
+                type="password"
+                placeholder="XXX-XX-XXXX"
+                value={formData.ssn}
+                onChange={(e) =>
+                  setFormData({ ...formData, ssn: e.target.value })
+                }
+                required
+              />
+            </div>
+          </div>
+        );
+
+      case "consents":
+        return (
+          <div className="space-y-4">
+            {renderUrgencyWarning()}
+            <div className="space-y-3">
+              <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
+                <input
+                  type="checkbox"
+                  checked={formData.achAuthorization}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      achAuthorization: e.target.checked,
+                    })
+                  }
+                  className="mt-1"
+                />
+                <div>
+                  <div className="font-semibold">ACH Authorization</div>
+                  <div className="text-sm text-gray-600">
+                    I authorize automatic withdrawals from my account for loan
+                    repayment and any fees
+                  </div>
+                </div>
+              </label>
+
+              <label className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
+                <input
+                  type="checkbox"
+                  checked={formData.autoRenewal}
+                  onChange={(e) =>
+                    setFormData({ ...formData, autoRenewal: e.target.checked })
+                  }
+                  className="mt-1"
+                />
+                <div>
+                  <div className="font-semibold flex items-center gap-2">
+                    Auto-Renewal Service
+                    <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded">
+                      RECOMMENDED
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Automatically renew your loan if you can't pay in full
+                    (saves you from default!)
+                  </div>
+                </div>
+              </label>
+
+              <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
+                <input
+                  type="checkbox"
+                  checked={formData.dataSharing}
+                  onChange={(e) =>
+                    setFormData({ ...formData, dataSharing: e.target.checked })
+                  }
+                  className="mt-1"
+                />
+                <div>
+                  <div className="font-semibold">Data Sharing Agreement</div>
+                  <div className="text-sm text-gray-600">
+                    Share my information with partners for better offers and
+                    services
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+        );
+
+      case "insurance":
+        return (
+          <div className="space-y-4">
+            {renderUrgencyWarning()}
+            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-3">⚠️ Protect Your Loan</h3>
+              <p className="mb-4">
+                <strong>87% of our customers</strong> choose loan protection
+                insurance. Without it, you're personally liable for the full
+                amount even if you lose your job or get sick!
+              </p>
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.loanInsurance}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      loanInsurance: e.target.checked,
+                    })
+                  }
+                  className="mt-1"
+                />
+                <div>
+                  <div className="font-semibold">
+                    Yes, protect my loan for only $89.99
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Covers job loss, illness, and unexpected emergencies
+                  </div>
+                </div>
+              </label>
+              {!formData.loanInsurance && (
+                <div className="mt-4 text-red-600 font-semibold">
+                  ⚠️ Are you sure? You'll be personally responsible for the full
+                  ${totalCost.toFixed(2)} even in emergencies!
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      case "review":
+        return (
+          <div className="space-y-4">
+            {renderUrgencyWarning()}
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-4">Loan Summary</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Loan Amount:</span>
+                  <span className="font-semibold">
+                    ${loanAmount.toFixed(2)}
+                  </span>
+                </div>
+                {baseFee > 0 && (
+                  <div className="flex justify-between">
+                    <span>Finance Charge (391% APR):</span>
+                    <span className="font-semibold">${baseFee.toFixed(2)}</span>
+                  </div>
+                )}
+                {Object.entries(additionalFees).map(
+                  ([key, value]) =>
+                    value > 0 && (
+                      <div
+                        key={key}
+                        className="flex justify-between text-gray-600"
+                      >
+                        <span>
+                          {key
+                            .replace(/([A-Z])/g, " $1")
+                            .replace(/^./, (str) => str.toUpperCase())}
+                          :
+                        </span>
+                        <span>${value.toFixed(2)}</span>
+                      </div>
+                    )
+                )}
+                <div className="border-t pt-2 flex justify-between font-bold text-lg">
+                  <span>Total Amount Due:</span>
+                  <span>${totalCost.toFixed(2)}</span>
+                </div>
+                <div className="text-xs text-gray-500 mt-2">
+                  Due in 14 days. Late fees of $50 apply after grace period.
+                </div>
+              </div>
+            </div>
+
+            <label className="flex items-start gap-3 p-4 bg-green-50 rounded-lg cursor-pointer hover:bg-green-100">
+              <input
+                type="checkbox"
+                checked={formData.expressProcessing}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    expressProcessing: e.target.checked,
+                  })
+                }
+                className="mt-1"
+              />
+              <div>
+                <div className="font-semibold flex items-center gap-2">
+                  Express Processing
+                  <span className="text-xs bg-green-600 text-white px-2 py-1 rounded animate-pulse">
+                    LIMITED TIME
+                  </span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  Get your money in 5 minutes instead of 24 hours for just
+                  $59.99
+                </div>
+              </div>
+            </label>
+          </div>
+        );
+
+      default:
+        // Return placeholder for other steps
+        return (
+          <div className="space-y-4">
+            {renderUrgencyWarning()}
+            <p className="text-gray-600">Step content for: {step.title}</p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-4">
+      {/* Progress bar with manipulation */}
+      <div className="mb-6">
+        <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <span>
+            Step {currentStep + 1} of {steps.length}
+          </span>
+          <span>{steps[currentStep].progressPercent}% Complete</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-3">
           <div
-            className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${currentStepData.progressPercent}%` }}
+            className="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500"
+            style={{ width: `${steps[currentStep].progressPercent}%` }}
           />
         </div>
       </div>
 
-      {/* Fake activity feed */}
-      {showFakeActivity && (
-        <div className="bg-green-50 border-l-4 border-green-400 p-3 mx-4 my-2">
-          <div className="flex items-center">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
-            <p className="text-sm text-green-800">
-              {fakeApplications[0] || "Processing applications..."}
-            </p>
+      <Card className="p-6">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold">{steps[currentStep].title}</h2>
+          <p className="text-gray-600">{steps[currentStep].subtitle}</p>
+        </div>
+
+        {renderStepContent()}
+
+        <div className="flex justify-between mt-8">
+          <Button variant="outline" onClick={handleBack} disabled={timer === 0}>
+            Back
+          </Button>
+
+          <div className="flex gap-3">
+            {currentStep === steps.length - 1 ? (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (showEducationalOverlay) {
+                      showEducationalOverlay(
+                        "Debt Trap Warning",
+                        `You're about to agree to a loan with 391% APR that will cost you $${totalCost.toFixed(
+                          2
+                        )} 
+                        for borrowing $${loanAmount}. This is designed to trap you in a cycle of debt.`
+                      );
+                    }
+                  }}
+                  className="text-red-600 border-red-600"
+                >
+                  <XMarkIcon className="h-5 w-5 mr-2" />
+                  Decline (Really? Give up ${loanAmount}?)
+                </Button>
+                <Button
+                  onClick={handleNext}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Get My ${loanAmount} Now!
+                  {timer < 60 && (
+                    <span className="ml-2 animate-pulse">⚡ HURRY!</span>
+                  )}
+                </Button>
+              </>
+            ) : (
+              <Button onClick={handleNext} disabled={timer === 0}>
+                Continue
+                <ChevronRightIcon className="h-5 w-5 ml-2" />
+              </Button>
+            )}
           </div>
         </div>
-      )}
+      </Card>
 
-      {/* Main content */}
-      <div className="px-4 py-6">
-        <div className="max-w-md mx-auto">
-          {/* Step header */}
-          <div className="text-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
-              {currentStepData.title}
-            </h2>
-            <p className="text-sm text-orange-600 font-medium mb-1">
-              {currentStepData.subtitle}
-            </p>
-            <p className="text-sm text-gray-600">
-              {currentStepData.description}
-            </p>
-          </div>
-
-          {/* Step content */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            {currentStep === 0 && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
-                    placeholder="John Smith"
-                    value={formData.firstName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, firstName: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
-                    placeholder="(555) 123-4567"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ZIP Code *
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
-                    placeholder="75201"
-                    value={formData.zipCode}
-                    onChange={(e) =>
-                      setFormData({ ...formData, zipCode: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-            )}
-
-            {currentStep === 1 && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Loan Amount
-                  </label>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <input
-                      type="range"
-                      min="100"
-                      max="2000"
-                      step="50"
-                      value={formData.loanAmount}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          loanAmount: parseInt(e.target.value),
-                        })
-                      }
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-sm text-gray-600 mt-2">
-                      <span>$100</span>
-                      <span className="font-bold text-2xl text-orange-600">
-                        ${formData.loanAmount}
-                      </span>
-                      <span>$2,000</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-500 mt-2">
-                    ✓ Small processing fee applies
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    What's this for?
-                  </label>
-                  <select
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
-                    value={formData.loanPurpose}
-                    onChange={(e) =>
-                      setFormData({ ...formData, loanPurpose: e.target.value })
-                    }
-                  >
-                    <option value="">Select purpose</option>
-                    <option value="emergency">Emergency expense</option>
-                    <option value="bills">Pay bills</option>
-                    <option value="car">Car repair</option>
-                    <option value="medical">Medical expense</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-              </div>
-            )}
-
-            {/* Add more steps as needed */}
-            {currentStep >= 2 && (
-              <div className="text-center py-8">
-                <div className="text-4xl mb-4">🚧</div>
-                <p className="text-gray-600">
-                  Step {currentStep + 1} implementation in progress...
-                </p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Dark Pattern: {currentStepData.darkPattern}
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex space-x-3">
-            {currentStep > 0 && (
-              <button
-                onClick={handleBack}
-                className="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
-              >
-                Back
-              </button>
-            )}
-            <button
-              onClick={handleNext}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-bold hover:from-orange-600 hover:to-red-600 transition-all transform hover:scale-105"
-            >
-              {currentStep === checkoutSteps.length - 1
-                ? "Complete Application"
-                : "Continue"}
-            </button>
-          </div>
-
-          {/* Trust indicators */}
-          <div className="mt-6 flex justify-center space-x-4 text-xs text-gray-500">
-            <div className="flex items-center">
-              <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
-              <span>SSL Secured</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
-              <span>BBB Accredited</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
-              <span>Licensed Lender</span>
-            </div>
-          </div>
-
-          {/* Fee disclosure (progressive) */}
-          {currentStep >= 1 && (
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-800">
-                <strong>Loan Details:</strong> ${formData.loanAmount}
-                {currentFees > 0 && <span> + ${currentFees} fees</span>}
-                {totalAPR > 0 && (
-                  <span className="text-xs"> ({totalAPR}% APR)</span>
-                )}
-              </p>
-            </div>
-          )}
-        </div>
+      {/* Fake activity ticker */}
+      <div className="mt-4 text-center text-sm text-gray-500">
+        <span className="inline-flex items-center gap-2">
+          <span className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+          Live: {Math.floor(Math.random() * 50) + 100} applications being
+          processed
+        </span>
       </div>
     </div>
   );

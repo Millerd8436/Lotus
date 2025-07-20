@@ -1,21 +1,33 @@
 "use client";
 
 import React, { useState } from "react";
+import EthicalCheckoutFlow from "./EthicalCheckoutFlow";
 
 /**
  * EthicalHomepage - Main landing page for the ethical payday loan simulator.
  * Demonstrates transparent, user-empowering lending practices.
- * Phase 2 of the 3-phase educational platform.
+ * Phase 4 of the 4-phase educational platform.
  */
 const EthicalHomepage: React.FC = () => {
   const [loanAmount, setLoanAmount] = useState(300);
-  const [loanTerm, setLoanTerm] = useState(14);
+  const [loanTerm, setLoanTerm] = useState(30);
   const [showFullTerms, setShowFullTerms] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   // Calculate loan details transparently
   const fee = loanAmount * 0.15; // 15% fee (much lower than predatory)
   const apr = ((fee / loanAmount) * (365 / loanTerm) * 100).toFixed(2);
   const totalRepayment = loanAmount + fee;
+
+  // Show checkout flow if user clicked apply
+  if (showCheckout) {
+    return (
+      <EthicalCheckoutFlow
+        loanAmount={loanAmount}
+        onBack={() => setShowCheckout(false)}
+      />
+    );
+  }
 
   return (
     <div style={{ background: "#ffffff", minHeight: "100vh" }}>
@@ -513,6 +525,7 @@ const EthicalHomepage: React.FC = () => {
 
             <button
               type="button"
+              onClick={() => setShowCheckout(true)}
               style={{
                 width: "100%",
                 background: "#16a34a",
