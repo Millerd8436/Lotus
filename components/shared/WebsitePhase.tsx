@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DeceptiveCheckoutFlow from "../DeceptiveCheckoutFlow";
+import DeceptiveCheckoutFlow from "../phase1-exploitative/DeceptiveCheckoutFlow";
 import {
   EducationalOverlay,
   useEducation,
@@ -10,13 +10,12 @@ import { useSimulation } from "../providers/SimulationProvider";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 // Phase 1 components (Exploitative)
-import AdvancedDarkPatternsDemo from "../phase1-exploitative/AdvancedDarkPatternsDemo";
-import DebtTrapMechanism from "../DebtTrapMechanism";
+import DebtTrapMechanism from "../phase1-exploitative/DebtTrapMechanism";
 
 // Phase 4 components (Ethical)
-import CoolingOffNotice from "../phase4-ethical/CoolingOffNotice";
+import CoolingOffPeriod from "../phase4-ethical/CoolingOffPeriod";
 import EthicalHomepage from "../phase4-ethical/EthicalHomepage";
-import EthicalLoanCalculator from "../phase4-ethical/EthicalLoanCalculator";
+import LoanAffordabilityCalculator from "../phase4-ethical/LoanAffordabilityCalculator";
 
 interface WebsitePhaseProps {
   phase: 1 | 2 | 3 | 4;
@@ -32,8 +31,7 @@ export default function WebsitePhase({
   const [isLoading, setIsLoading] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [loanAmount, setLoanAmount] = useState(300);
-  const [showDarkPatternDemo, setShowDarkPatternDemo] = useState(false);
-  // const [showAnnotations, setShowAnnotations] = useState(false); // unused
+  const [totalRepayment, setTotalRepayment] = useState(350);
   const [detectedPatterns, setDetectedPatterns] = useState<string[]>([]);
 
   const { session, updateSession, transitionToPhase } = useSimulation();
@@ -42,11 +40,6 @@ export default function WebsitePhase({
   useEffect(() => {
     transitionToPhase(phase);
   }, [phase, transitionToPhase]);
-
-  // Enable annotations for phase 3 (teaching mode)
-  useEffect(() => {
-    // setShowAnnotations(phase === 3); // unused
-  }, [phase]);
 
   // Phase-specific styling
   const phaseStyles = {
@@ -123,6 +116,32 @@ export default function WebsitePhase({
     }
   };
 
+  const handleCheckoutFinished = () => {
+    setShowCheckout(false);
+    // Move to the next phase (reflection)
+    if (typeof window !== "undefined") {
+      window.location.href = "/reflection";
+    }
+  };
+
+  const handleConfirmLoan = () => {
+    // In a real app, this would finalize the loan
+    console.log("Loan confirmed");
+  };
+
+  const handleCancelLoan = () => {
+    // In a real app, this would cancel the loan application
+    console.log("Loan canceled");
+  };
+
+  const handleAffordabilityChange = (data: {
+    disposableIncome: number;
+    canAfford: boolean;
+  }) => {
+    // In a real app, you might use this to adjust the UI or log analytics
+    console.log("Affordability changed:", data);
+  };
+
   // Phase 2 loads automatically after phase 1
   if (phase === 2) {
     // Redirect to reflection page for analysis
@@ -134,13 +153,14 @@ export default function WebsitePhase({
 
   // Teaching mode (Phase 3) - Same as Phase 1 but with annotations
   if (showCheckout && (phase === 1 || phase === 3)) {
+    const phaseProp = phase === 1 ? "exploitative" : "teaching";
+
     return (
       <div className="relative">
         <DeceptiveCheckoutFlow
-          loanAmount={loanAmount}
-          phase={phase}
-          onBack={() => setShowCheckout(false)}
+          phase={phaseProp}
           onPatternDetected={handlePatternDetected}
+          onFinished={handleCheckoutFinished}
         />
 
         {/* Live annotations for Phase 3 */}
@@ -175,10 +195,14 @@ export default function WebsitePhase({
   if (phase === 4) {
     return (
       <div className={`min-h-screen ${styles.bg}`}>
-        <CoolingOffNotice />
+        <CoolingOffPeriod onConfirm={handleConfirmLoan} onCancel={handleCancelLoan} />
         <EthicalHomepage />
         <div className="container mx-auto px-4 py-8">
-          <EthicalLoanCalculator />
+          <LoanAffordabilityCalculator
+            loanAmount={loanAmount}
+            totalRepayment={totalRepayment}
+            onAffordabilityChange={handleAffordabilityChange}
+          />
         </div>
       </div>
     );
@@ -314,7 +338,7 @@ export default function WebsitePhase({
                 {/* Demo other dark patterns button */}
                 <div className="mt-6 text-center">
                   <button
-                    onClick={() => setShowDarkPatternDemo(true)}
+                    onClick={() => console.log("Show dark pattern demo")}
                     className="text-sm text-gray-500 hover:text-gray-700 underline"
                   >
                     View more dark patterns demo
@@ -324,19 +348,10 @@ export default function WebsitePhase({
             )}
           </div>
 
-          {/* Additional components for demonstration */}
-          {showDarkPatternDemo && (
-            <div className="mt-8">
-              <AdvancedDarkPatternsDemo
-                onPatternDetected={handlePatternDetected}
-              />
-            </div>
-          )}
-
           {/* Show debt trap mechanism for phase 1 */}
           {phase === 1 && session.exploitativeData && (
             <div className="mt-8">
-              <DebtTrapMechanism />
+              <DebtTrapMechanism initialLoan={300} feePerRollover={50}/>
             </div>
           )}
 

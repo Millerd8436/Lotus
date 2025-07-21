@@ -3,6 +3,12 @@
  * Tracks vulnerability exploitation, psychological pressure tactics, and consent theater patterns
  */
 
+import {
+  calculateVulnerability,
+  getManipulationTactics,
+} from "./helpers";
+import { LoanApplication, UserProfile } from "@/types";
+
 export interface BehavioralManipulationAssessment {
   overallScore: number; // 0-100, where 100 is maximum manipulation
   riskLevel: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";

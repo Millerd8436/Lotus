@@ -1,12 +1,7 @@
 "use client";
 
-import { LotusSession } from "@/types";
 import { CheckCircle, MessageCircle, XCircle } from "lucide-react";
 import React from "react";
-
-interface KantianScorecardProps {
-  session: LotusSession;
-}
 
 interface KantianAssessment {
   respectsAutonomy: boolean;
@@ -20,10 +15,8 @@ interface KantianAssessment {
   };
 }
 
-const KantianScorecard: React.FC<KantianScorecardProps> = ({ session }) => {
-  const assessKantianPrinciples = (
-    session: LotusSession
-  ): KantianAssessment => {
+const KantianScorecard: React.FC<{ session: any }> = ({ session }) => {
+  const assessKantianPrinciples = (session: any): KantianAssessment => {
     const assessment: KantianAssessment = {
       respectsAutonomy: true,
       treatsAsEnds: true,
@@ -47,7 +40,7 @@ const KantianScorecard: React.FC<KantianScorecardProps> = ({ session }) => {
       "terms-trap",
     ];
     consentPatterns.forEach((p) => {
-      if (darkPatterns.some((dp) => dp.type === p)) {
+      if (darkPatterns.some((dp: any) => dp.type === p)) {
         assessment.respectsAutonomy = false;
         assessment.violations.autonomy.push(
           `The use of "${p}" undermines the user's ability to give informed consent.`
@@ -68,7 +61,7 @@ const KantianScorecard: React.FC<KantianScorecardProps> = ({ session }) => {
       "social_pyramid",
     ];
     exploitationPatterns.forEach((p) => {
-      if (darkPatterns.some((dp) => dp.type === p)) {
+      if (darkPatterns.some((dp: any) => dp.type === p)) {
         assessment.treatsAsEnds = false;
         assessment.violations.means.push(
           `The "${p}" pattern treats the user as a means to extract more data or money.`
@@ -90,7 +83,7 @@ const KantianScorecard: React.FC<KantianScorecardProps> = ({ session }) => {
         "A system built on deception and exploitation cannot be universalized without contradiction, as it would destroy the trust necessary for lending to function."
       );
     }
-    if (darkPatterns.some((dp) => dp.type === "fake_urgency")) {
+    if (darkPatterns.some((dp: any) => dp.type === "fake_urgency")) {
       assessment.isUniversalizable = false;
       assessment.violations.universalizability.push(
         'The principle of creating "fake urgency" cannot be universalized, as it would lead to a breakdown in rational decision-making.'

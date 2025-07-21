@@ -1,14 +1,7 @@
 "use client";
 
-import ReflectionDashboard from "@/components/phase2-reflection/ReflectionDashboard";
-import React from "react";
+import Enhanced2025ReflectionDashboard from "@/components/phase2-reflection/Enhanced2025ReflectionDashboard";
 
-const ReflectionPage = () => {
-  return (
-    <div>
-      <ReflectionDashboard />
-    </div>
-  );
-};
-
-export default ReflectionPage;
+export default function ReflectionPage() {
+  return <Enhanced2025ReflectionDashboard />;
+}

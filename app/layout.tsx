@@ -1,12 +1,13 @@
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import { UnifiedLotusProvider } from "@/components/providers/UnifiedLotusProvider";
 import { EducationProvider } from "@/components/providers/EducationProvider";
 import { SimulationProvider } from "@/components/providers/SimulationProvider";
 import { NotificationContainer } from "@/components/shared/InteractiveElements";
 import { PageLoadingOverlay } from "@/components/shared/LoadingSpinner";
 import ModeSelector from "@/components/shared/ModeSelector";
-import UnifiedHeader from "@/components/phase4-ethical/EthicalHeader";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -160,99 +161,100 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} h-full antialiased`}>
         <div id="root" className="h-full">
-          <SimulationProvider>
-            <EducationProvider>
-              <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
-                {/* Professional Header with Mode Selector */}
-                <UnifiedHeader />
-                <ModeSelector />
+          <UnifiedLotusProvider>
+            <SimulationProvider>
+              <EducationProvider>
+                <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+                  {/* Professional Header with Mode Selector */}
+                  <ModeSelector />
 
-                {/* Main Content Area */}
-                <main className="flex-1 pt-16">{children}</main>
+                  {/* Main Content Area */}
+                  <main className="flex-1 pt-16">{children}</main>
 
-                {/* Notification Container for Global Notifications */}
-                <NotificationContainer />
+                  {/* Notification Container for Global Notifications */}
+                  <NotificationContainer />
 
-                {/* Page Loading Overlay */}
-                <PageLoadingOverlay
-                  isVisible={false}
-                  message="Loading..."
-                  theme="professional"
-                />
+                  {/* Page Loading Overlay */}
+                  <PageLoadingOverlay
+                    isVisible={false}
+                    message="Loading..."
+                    theme="professional"
+                  />
 
-                {/* Footer */}
-                <footer className="bg-slate-900 text-white py-8 mt-16">
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                      <div className="col-span-1 md:col-span-2">
-                        <h3 className="text-lg font-semibold mb-4">
-                          Lotus Educational Platform
-                        </h3>
-                        <p className="text-slate-300 text-sm leading-relaxed">
-                          A comprehensive educational simulator designed to
-                          demonstrate predatory lending practices, ethical
-                          alternatives, and behavioral analysis. This platform
-                          serves as a research tool for understanding consumer
-                          protection and financial literacy.
-                        </p>
+                  {/* Footer */}
+                  <footer className="bg-slate-900 text-white py-8 mt-16">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div className="col-span-1 md:col-span-2">
+                          <h3 className="text-lg font-semibold mb-4">
+                            Lotus Educational Platform
+                          </h3>
+                          <p className="text-slate-300 text-sm leading-relaxed">
+                            A comprehensive educational simulator designed to
+                            demonstrate predatory lending practices, ethical
+                            alternatives, and behavioral analysis. This platform
+                            serves as a research tool for understanding consumer
+                            protection and financial literacy.
+                          </p>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold mb-4 text-slate-200">
+                            Educational Resources
+                          </h4>
+                          <ul className="space-y-2 text-sm text-slate-300">
+                            <li>• Consumer Protection</li>
+                            <li>• Financial Literacy</li>
+                            <li>• Behavioral Analysis</li>
+                            <li>• Regulatory Framework</li>
+                          </ul>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold mb-4 text-slate-200">
+                            Research Focus
+                          </h4>
+                          <ul className="space-y-2 text-sm text-slate-300">
+                            <li>• Dark Pattern Analysis</li>
+                            <li>• Vulnerability Assessment</li>
+                            <li>• Ethical Design Principles</li>
+                            <li>• Policy Recommendations</li>
+                          </ul>
+                        </div>
                       </div>
 
-                      <div>
-                        <h4 className="text-sm font-semibold mb-4 text-slate-200">
-                          Educational Resources
-                        </h4>
-                        <ul className="space-y-2 text-sm text-slate-300">
-                          <li>• Consumer Protection</li>
-                          <li>• Financial Literacy</li>
-                          <li>• Behavioral Analysis</li>
-                          <li>• Regulatory Framework</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h4 className="text-sm font-semibold mb-4 text-slate-200">
-                          Research Focus
-                        </h4>
-                        <ul className="space-y-2 text-sm text-slate-300">
-                          <li>• Dark Pattern Analysis</li>
-                          <li>• Vulnerability Assessment</li>
-                          <li>• Ethical Design Principles</li>
-                          <li>• Policy Recommendations</li>
-                        </ul>
+                      <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                        <div className="text-sm text-slate-400 mb-4 md:mb-0">
+                          © 2024 Lotus Research Team. Educational platform for
+                          research and consumer protection.
+                        </div>
+                        <div className="flex space-x-6 text-sm text-slate-400">
+                          <a
+                            href="#"
+                            className="hover:text-white transition-colors"
+                          >
+                            Privacy Policy
+                          </a>
+                          <a
+                            href="#"
+                            className="hover:text-white transition-colors"
+                          >
+                            Terms of Use
+                          </a>
+                          <a
+                            href="#"
+                            className="hover:text-white transition-colors"
+                          >
+                            Research Methodology
+                          </a>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                      <div className="text-sm text-slate-400 mb-4 md:mb-0">
-                        © 2024 Lotus Research Team. Educational platform for
-                        research and consumer protection.
-                      </div>
-                      <div className="flex space-x-6 text-sm text-slate-400">
-                        <a
-                          href="#"
-                          className="hover:text-white transition-colors"
-                        >
-                          Privacy Policy
-                        </a>
-                        <a
-                          href="#"
-                          className="hover:text-white transition-colors"
-                        >
-                          Terms of Use
-                        </a>
-                        <a
-                          href="#"
-                          className="hover:text-white transition-colors"
-                        >
-                          Research Methodology
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </footer>
-              </div>
-            </EducationProvider>
-          </SimulationProvider>
+                  </footer>
+                </div>
+              </EducationProvider>
+            </SimulationProvider>
+          </UnifiedLotusProvider>
         </div>
 
         {/* Performance Monitoring */}
@@ -277,6 +279,7 @@ export default function RootLayout({
             `,
           }}
         />
+        <Analytics />
       </body>
     </html>
   );

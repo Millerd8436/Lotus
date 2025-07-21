@@ -1,16 +1,9 @@
 "use client";
 
-import { Card } from "@/components/ui/Card";
-import { LotusSession } from "@/types";
+import { Card } from "@/components/shared/Card";
 import React from "react";
 
-interface RetrospectiveAnalysisProps {
-  session: LotusSession;
-}
-
-const RetrospectiveAnalysis: React.FC<RetrospectiveAnalysisProps> = ({
-  session,
-}) => {
+const RetrospectiveAnalysis: React.FC<{ session: any }> = ({ session }) => {
   const darkPatterns = session.darkPatternsEncountered || [];
   const kantianAnalysis = session.kantianAnalysis || {
     informedConsent: false,
@@ -47,7 +40,7 @@ const RetrospectiveAnalysis: React.FC<RetrospectiveAnalysisProps> = ({
           </h3>
           {darkPatterns.length > 0 ? (
             <ul>
-              {darkPatterns.map((pattern, index) => (
+              {darkPatterns.map((pattern: any, index: number) => (
                 <li key={index} className="mb-2">
                   <strong className="capitalize">
                     {pattern.type.replace(/_/g, " ")}

@@ -16,14 +16,17 @@ function checkDirectories() {
   const requiredDirs = [
     "app",
     "components",
-    "components/ui",
-    "components/predatory",
-    "components/ethical",
-    "components/reflection",
+    "components/phase1-exploitative",
+    "components/phase2-reflection",
+    "components/phase3-teaching",
+    "components/phase4-ethical",
     "components/providers",
-    "lib",
-    "lib/core",
-    "types",
+    "core",
+    "core/behavioral",
+    "core/config",
+    "core/core",
+    "core/ethics",
+    "core/regulatory",
     "data",
     "docs",
     "scripts",
@@ -44,18 +47,18 @@ function checkCoreFiles() {
 
   const coreFiles = [
     { path: "types/index.ts", description: "Central type definitions" },
-    { path: "lib/utils.ts", description: "Utility functions" },
+    { path: "core/utils.ts", description: "Utility functions" },
     {
-      path: "lib/core/AutonomyTheaterEngine.ts",
+      path: "core/core/AutonomyTheaterEngine.ts",
       description: "Autonomy Theater Engine",
     },
     {
-      path: "lib/core/behavioral-engine.ts",
+      path: "core/behavioral/BehavioralManipulationEngine.ts",
       description: "Behavioral Psychology Engine",
     },
-    { path: "lib/core/LoanCalculator.js", description: "Loan Calculator" },
-    { path: "lib/core/SessionManager.ts", description: "Session Manager" },
-    { path: "lib/core/theme.ts", description: "Theme System" },
+    { path: "core/core/LoanCalculator.ts", description: "Loan Calculator" },
+    { path: "core/core/SessionManager.ts", description: "Session Manager" },
+    { path: "core/core/theme.ts", description: "Theme System" },
     { path: "components/index.tsx", description: "Component exports" },
     { path: "docs/CONNECTIVITY.md", description: "Connectivity documentation" },
   ];
@@ -75,18 +78,18 @@ function checkImports() {
 
   const filesToCheck = [
     {
-      file: "lib/core/behavioral-engine.ts",
+      file: "core/behavioral/BehavioralManipulationEngine.ts",
       shouldImport: ["@/types"],
       description: "Behavioral engine type imports",
     },
     {
-      file: "lib/core/SessionManager.ts",
+      file: "core/core/SessionManager.ts",
       shouldImport: ["@/types"],
       description: "Session manager type imports",
     },
     {
-      file: "components/types.ts",
-      shouldImport: ["@/lib/core/AutonomyTheaterEngine", "@/types"],
+      file: "types/index.ts",
+      shouldImport: [],
       description: "Component type imports",
     },
   ];
@@ -113,9 +116,9 @@ function checkDuplicates() {
   console.log("\n🔍 Checking for duplicate definitions...");
 
   // Check if autonomy-theater.ts was properly removed
-  if (fs.existsSync(path.join(process.cwd(), "lib/core/autonomy-theater.ts"))) {
+  if (fs.existsSync(path.join(process.cwd(), "core/core/autonomy-theater.ts"))) {
     issues.push(
-      "❌ Duplicate file exists: lib/core/autonomy-theater.ts (should be removed)"
+      "❌ Duplicate file exists: core/core/autonomy-theater.ts (should be removed)"
     );
   } else {
     successes.push("✅ No duplicate autonomy theater files");
@@ -160,7 +163,7 @@ function checkComponentExports() {
     if (content.includes("LoadingSpinner") && !content.includes("// export")) {
       const loadingSpinnerPath = path.join(
         process.cwd(),
-        "components/ui/LoadingSpinner.tsx"
+        "components/shared/LoadingSpinner.tsx"
       );
       if (!fs.existsSync(loadingSpinnerPath)) {
         issues.push(
