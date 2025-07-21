@@ -1,22 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DeceptiveCheckoutFlow from "./DeceptiveCheckoutFlow";
+import DeceptiveCheckoutFlow from "../DeceptiveCheckoutFlow";
 import {
   EducationalOverlay,
   useEducation,
-} from "./providers/EducationProvider";
-import { useSimulation } from "./providers/SimulationProvider";
-import { LoadingSpinner } from "./ui/LoadingSpinner";
+} from "../providers/EducationProvider";
+import { useSimulation } from "../providers/SimulationProvider";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 // Phase 1 components (Exploitative)
-import AdvancedDarkPatternsDemo from "./AdvancedDarkPatternsDemo";
-import DebtTrapMechanism from "./DebtTrapMechanism";
+import AdvancedDarkPatternsDemo from "../phase1-exploitative/AdvancedDarkPatternsDemo";
+import DebtTrapMechanism from "../DebtTrapMechanism";
 
 // Phase 4 components (Ethical)
-import CoolingOffNotice from "./ethical/CoolingOffNotice";
-import EthicalHomepage from "./ethical/EthicalHomepage";
-import EthicalLoanCalculator from "./ethical/EthicalLoanCalculator";
+import CoolingOffNotice from "../phase4-ethical/CoolingOffNotice";
+import EthicalHomepage from "../phase4-ethical/EthicalHomepage";
+import EthicalLoanCalculator from "../phase4-ethical/EthicalLoanCalculator";
 
 interface WebsitePhaseProps {
   phase: 1 | 2 | 3 | 4;
@@ -36,8 +36,12 @@ export default function WebsitePhase({
   // const [showAnnotations, setShowAnnotations] = useState(false); // unused
   const [detectedPatterns, setDetectedPatterns] = useState<string[]>([]);
 
-  const { session, updateSession } = useSimulation();
+  const { session, updateSession, transitionToPhase } = useSimulation();
   const { showEducationalOverlay, toggleEducationalOverlay } = useEducation();
+
+  useEffect(() => {
+    transitionToPhase(phase);
+  }, [phase, transitionToPhase]);
 
   // Enable annotations for phase 3 (teaching mode)
   useEffect(() => {
@@ -134,8 +138,9 @@ export default function WebsitePhase({
       <div className="relative">
         <DeceptiveCheckoutFlow
           loanAmount={loanAmount}
-          phase="exploitative"
+          phase={phase}
           onBack={() => setShowCheckout(false)}
+          onPatternDetected={handlePatternDetected}
         />
 
         {/* Live annotations for Phase 3 */}

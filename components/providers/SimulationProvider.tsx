@@ -9,7 +9,7 @@ interface SimulationContextType {
   updateSession: (data: Partial<LotusSession>) => void;
   recordCheckoutStep: (step: CheckoutStepLog) => void;
   // Kept for potential future use, but not the primary mechanism now.
-  transitionToPhase: (phase: 1 | 2 | 3) => void;
+  transitionToPhase: (phase: 1 | 2 | 3 | 4) => void;
 }
 
 const SimulationContext = createContext<SimulationContextType | undefined>(
@@ -53,7 +53,7 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({
   };
 
   // Kept for now, but direct navigation might be simpler.
-  const transitionToPhase = (phase: 1 | 2 | 3) => {
+  const transitionToPhase = (phase: 1 | 2 | 3 | 4) => {
     setSession((prev) => ({
       ...prev,
       currentPhase: phase,

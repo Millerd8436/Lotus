@@ -1,3 +1,4 @@
+// A test comment to check if the file is editable
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -41,6 +42,15 @@ interface Achievement {
   harmLevel: number;
 }
 
+interface RolloverCycle {
+  cycleNumber: number;
+  principal: number;
+  fees: number;
+  totalDue: number;
+  daysInDebt: number;
+  totalPaid: number;
+}
+
 interface DebtTrapStatistics {
   totalLoansThisYear: number;
   totalFeesPaid: number;
@@ -49,11 +59,13 @@ interface DebtTrapStatistics {
   daysInDebt: number;
   rolloverStreak: number;
   dependencyScore: number;
+  totalTipsPaid: number;
+  dailyRepayment: number;
 }
 
 export const DebtTrapMechanism: React.FC<{
-  initialLoan: number;
-  feePerRollover: number;
+  initialLoan?: number;
+  feePerRollover?: number;
 }> = ({ initialLoan = 300, feePerRollover = 50 }) => {
   const [loanHistory, setLoanHistory] = useState<LoanCycle[]>([]);
   const [currentLoan, setCurrentLoan] = useState<LoanCycle | null>(null);
@@ -65,11 +77,16 @@ export const DebtTrapMechanism: React.FC<{
     daysInDebt: 0,
     rolloverStreak: 0,
     dependencyScore: 0,
+    totalTipsPaid: 0,
+    dailyRepayment: 15,
   });
   const [achievements, setAchievements] = useState<Achievement[]>([]);
 
   const [simulationActive, setSimulationActive] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [tipAmount, setTipAmount] = useState(15);
+  const [showTipJar, setShowTipJar] = useState(false);
+  const [confessionSigned, setConfessionSigned] = useState(false);
   const [cycles, setCycles] = useState<RolloverCycle[]>([
     {
       cycleNumber: 0,
@@ -135,6 +152,26 @@ export const DebtTrapMechanism: React.FC<{
         realMeaning: "Complete financial exploitation",
         harmLevel: 5,
       },
+      {
+        id: "generous_tipper",
+        title: " generous Giver",
+        description: "You tipped to support the platform!",
+        icon: "💖",
+        unlocked: false,
+        deceptiveName: "Community Support",
+        realMeaning: "Coerced into paying disguised interest",
+        harmLevel: 3,
+      },
+      {
+        id: "mca_savvy",
+        title: "💼 Business Pro",
+        description: "You're using our advanced MCA repayment plan!",
+        icon: "📈",
+        unlocked: false,
+        deceptiveName: "Flexible Repayment",
+        realMeaning: "Trapped in a confusing, high-cost repayment scheme",
+        harmLevel: 4,
+      },
     ];
     setAchievements(deceptiveAchievements);
   }, []);
@@ -175,10 +212,10 @@ export const DebtTrapMechanism: React.FC<{
       unlockAchievement("first_loan");
     }, 1000);
 
-    // Step 2: First rollover
+    // Step 2: First rollover with tip jar
     setTimeout(() => {
       setCurrentStep(2);
-      performRollover();
+      setShowTipJar(true);
     }, 3000);
 
     // Step 3: Second rollover
@@ -195,11 +232,12 @@ export const DebtTrapMechanism: React.FC<{
       unlockAchievement("quick_return");
     }, 7000);
 
-    // Step 5: Multiple loan cycle
+    // Step 5: Multiple loan cycle with MCA
     setTimeout(() => {
       setCurrentStep(5);
       createMultipleLoanCycle();
       unlockAchievement("loyal_customer");
+      unlockAchievement("mca_savvy");
     }, 9000);
 
     // Step 6: Debt cycle expert status
@@ -208,6 +246,15 @@ export const DebtTrapMechanism: React.FC<{
       unlockAchievement("debt_cycle_expert");
       setSimulationActive(false);
     }, 11000);
+  };
+
+  const handleTipJarSubmit = () => {
+    setShowTipJar(false);
+    updateStatistics({ totalTipsPaid: statistics.totalTipsPaid + tipAmount });
+    if (tipAmount > 10) {
+      unlockAchievement("generous_tipper");
+    }
+    performRollover();
   };
 
   const performRollover = () => {
@@ -329,6 +376,8 @@ export const DebtTrapMechanism: React.FC<{
       daysInDebt: 0,
       rolloverStreak: 0,
       dependencyScore: 0,
+      totalTipsPaid: 0,
+      dailyRepayment: 15,
     });
     setAchievements((prev) =>
       prev.map((achievement) => ({ ...achievement, unlocked: false }))
@@ -337,6 +386,9 @@ export const DebtTrapMechanism: React.FC<{
 
   const addRollover = () => {
     const lastCycle = cycles[cycles.length - 1];
+    if (!lastCycle) {
+      return;
+    }
     const newCycle: RolloverCycle = {
       cycleNumber: lastCycle.cycleNumber + 1,
       principal: lastCycle.principal, // Principal never decreases!
@@ -355,8 +407,9 @@ export const DebtTrapMechanism: React.FC<{
 
   const currentCycle = cycles[cycles.length - 1];
   const apr =
-    ((currentCycle.totalPaid / initialLoan) * (365 / currentCycle.daysInDebt)) *
-    100;
+    currentCycle
+    ? ((currentCycle.totalPaid / initialLoan) * (365 / currentCycle.daysInDebt)) * 100
+    : 0;
 
   const getProgressColor = (dependencyScore: number) => {
     if (dependencyScore <= 2) {
@@ -410,7 +463,7 @@ export const DebtTrapMechanism: React.FC<{
         </h2>
         <p style={{ margin: 0, fontSize: "1.1rem", opacity: 0.9 }}>
           Experience how payday lenders design business models around debt
-          dependency
+          dependency, now with 2025's latest deceptive tactics.
         </p>
       </div>
 
@@ -492,6 +545,34 @@ export const DebtTrapMechanism: React.FC<{
             </div>
             <div style={{ fontSize: "0.9rem", color: "#666" }}>
               Dependency Score
+            </div>
+          </div>
+           <div style={{ textAlign: "center" }}>
+            <div
+              style={{
+                fontSize: "2rem",
+                fontWeight: "bold",
+                color: "#9c27b0",
+              }}
+            >
+              ${statistics.totalTipsPaid}
+            </div>
+            <div style={{ fontSize: "0.9rem", color: "#666" }}>
+              "Tips" Paid
+            </div>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <div
+              style={{
+                fontSize: "2rem",
+                fontWeight: "bold",
+                color: "#1e3a8a",
+              }}
+            >
+              ${statistics.dailyRepayment}
+            </div>
+            <div style={{ fontSize: "0.9rem", color: "#666" }}>
+              Daily Repayment
             </div>
           </div>
         </div>
@@ -589,6 +670,113 @@ export const DebtTrapMechanism: React.FC<{
           </button>
         </div>
       </div>
+
+      {/* Tip Jar Modal */}
+      {showTipJar && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0, 0, 0, 0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "2rem",
+              borderRadius: "12px",
+              maxWidth: "450px",
+              textAlign: "center",
+              boxShadow: "0 10px 40px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <h3
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                marginBottom: "1rem",
+              }}
+            >
+              💖 Support Our Platform!
+            </h3>
+            <p style={{ color: "#666", marginBottom: "1.5rem" }}>
+              Voluntary tips help us keep our service available to everyone. Your
+              generosity makes a difference!
+            </p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              {[5, 10, 15, 20].map((amount) => (
+                <button
+                  key={amount}
+                  onClick={() => setTipAmount(amount)}
+                  style={{
+                    padding: "0.75rem 1.25rem",
+                    borderRadius: "8px",
+                    border:
+                      tipAmount === amount
+                        ? "2px solid #4f46e5"
+                        : "1px solid #d1d5db",
+                    background:
+                      tipAmount === amount ? "#e0e7ff" : "transparent",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                >
+                  ${amount}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => {
+                setTipAmount(0);
+                alert(
+                  "Are you sure? Tipping ensures we can continue to offer this service."
+                );
+              }}
+              style={{
+                fontSize: "0.8rem",
+                color: "#666",
+                textDecoration: "underline",
+                marginBottom: "1rem",
+                cursor: "pointer",
+                border: "none",
+                background: "none",
+              }}
+            >
+              I'd rather not tip this time
+            </button>
+            <button
+              onClick={handleTipJarSubmit}
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                background: "linear-gradient(90deg, #4f46e5, #7c3aed)",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                fontWeight: "bold",
+                cursor: "pointer",
+              }}
+            >
+              Add Tip & Continue
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Deceptive Achievements */}
       <div
@@ -799,9 +987,83 @@ export const DebtTrapMechanism: React.FC<{
                     never reduced!
                   </div>
                 )}
+                <div
+                  style={{
+                    background: "#e0e7ff",
+                    color: "#312e81",
+                    padding: "0.5rem",
+                    borderRadius: "4px",
+                    marginTop: "0.5rem",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  <strong>MCA Repayment:</strong> Daily debit of ${" "}
+                  {statistics.dailyRepayment} from your account.
+                </div>
               </div>
             ))}
           </div>
+        )}
+      </div>
+
+      {/* Confession of Judgment Section */}
+      <div
+        style={{
+          background: "white",
+          borderRadius: "12px",
+          padding: "1.5rem",
+          marginBottom: "2rem",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <h3
+          style={{
+            margin: "0 0 1rem 0",
+            fontSize: "1.2rem",
+            fontWeight: "bold",
+          }}
+        >
+          ⚖️ Standard Loan Authorizations
+        </h3>
+        <div
+          style={{
+            background: "#f8f9fa",
+            padding: "1rem",
+            borderRadius: "8px",
+            fontSize: "0.8rem",
+            color: "#666",
+            maxHeight: "100px",
+            overflowY: "scroll",
+            border: "1px solid #e9ecef",
+            marginBottom: "1rem",
+          }}
+        >
+          <p>
+            ...By checking the box below, you acknowledge and agree to the
+            following: ...you hereby authorize us to electronically debit your
+            account for the full amount of any missed payment, plus any and all
+            associated fees. You also waive your right to dispute any charges
+            and agree to be responsible for all legal fees associated with the
+            collection of your debt. Furthermore, you agree to a{" "}
+            <strong>Confession of Judgment</strong>, which allows us to obtain a
+            judgment against you in court without the need for a trial in the
+            event of default.
+          </p>
+        </div>
+        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <input
+            type="checkbox"
+            checked={confessionSigned}
+            onChange={(e) => setConfessionSigned(e.target.checked)}
+          />
+          <span style={{ fontSize: "0.9rem" }}>
+            I have read and agree to the Standard Loan Authorizations.
+          </span>
+        </label>
+        {confessionSigned && (
+          <p style={{ fontSize: "0.8rem", color: "#4caf50", marginTop: "0.5rem" }}>
+            ✅ Thank you for your cooperation.
+          </p>
         )}
       </div>
 
@@ -992,6 +1254,24 @@ export const DebtTrapMechanism: React.FC<{
             &ldquo;offers&rdquo; framed as &ldquo;help&rdquo; and
             &ldquo;flexibility&rdquo; when they&apos;re designed to create
             dependency.
+          </p>
+          <p>
+            <strong>2025 Update - "Tip" Jars:</strong> Fintech apps now use
+            coercive "tip" jars to disguise interest and pressure users into
+            paying more. These "tips" are often the primary source of revenue
+            for the lender.
+          </p>
+          <p>
+            <strong>2025 Update - Confessions of Judgment:</strong> Some of the
+            most predatory lenders now include "Confession of Judgment" clauses
+            in their contracts. This is a legal document that waives all of your
+            rights and allows the lender to garnish your wages without a trial.
+          </p>
+          <p>
+            <strong>2025 Update - MCA Repayments:</strong> Instead of traditional
+            repayments, many lenders now use a Merchant Cash Advance (MCA)
+            model, where they deduct a percentage of your daily income. This
+            makes it incredibly difficult to track the true cost of the loan.
           </p>
           <p>
             Research: Average payday borrower spends 5 months per year in debt,

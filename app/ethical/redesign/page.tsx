@@ -1,109 +1,133 @@
 "use client";
 
-import EthicalCheckoutFlow from "@/components/ethical/EthicalCheckoutFlow";
+import { useState } from "react";
+import { Stepper } from "react-form-stepper";
+import FinancialSelfAssessment from "@/components/phase4-ethical/FinancialSelfAssessment";
+import LoanAffordabilityCalculator from "@/components/phase4-ethical/LoanAffordabilityCalculator";
+import CoolingOffPeriod from "@/components/phase4-ethical/CoolingOffPeriod";
+import { LegalCaseNotice } from "@/components/regulated/LegalCaseNotice";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import ModeSelector from "@/components/ui/ModeSelector";
-import { CheckCircle, Shield } from "lucide-react";
-import { useState } from "react";
+import { Input } from "@/components/ui/Input";
+import { EnhancedLoanCalculator } from "@/lib/core/EnhancedLoanCalculator";
 
-export default function EthicalRedesignPage() {
-  const [startFlow, setStartFlow] = useState(false);
+export default function RedesignPage() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [loanAmount, setLoanAmount] = useState(500);
+  const [hasUsedExtension, setHasUsedExtension] = useState(false);
+  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
 
-  if (startFlow) {
-    return (
-      <EthicalCheckoutFlow
-        loanAmount={500}
-        onBack={() => setStartFlow(false)}
-      />
-    );
-  }
+  const regulatedLoan =
+    EnhancedLoanCalculator.calculateRegulatedLoan(loanAmount);
+
+  const handleSubmitApplication = () => {
+    const sessionId = `REG-${Date.now()}`;
+    console.log("Saving session:", {
+      sessionId,
+      loanAmount,
+      regulatedLoan,
+    });
+    setApplicationSubmitted(true);
+  };
+
+  const steps = [
+    { label: "Self-Assessment" },
+    { label: "Affordability" },
+    { label: "Terms" },
+    { label: "Cooling Off" },
+    { label: "Confirmation" },
+  ];
+
+  const renderStepContent = () => {
+    switch (activeStep) {
+      case 0:
+        return <FinancialSelfAssessment />;
+      case 1:
+        return (
+          <LoanAffordabilityCalculator
+            loanAmount={loanAmount}
+            totalRepayment={regulatedLoan.totalCost}
+          />
+        );
+      case 2:
+        return (
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Your Loan Terms</h2>
+
+            <div className="mb-4">
+              <label htmlFor="loanAmount" className="block text-sm font-medium">
+                Loan Amount
+              </label>
+              <Input
+                id="loanAmount"
+                type="number"
+                value={loanAmount}
+                onChange={(e) => setLoanAmount(Number(e.target.value))}
+                className="mt-1"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <p>
+                <strong>Advertised APR:</strong> {regulatedLoan.apr.toFixed(2)}%
+              </p>
+              <p>
+                <strong>Origination Fee:</strong> $
+                {regulatedLoan.fees.origination.toFixed(2)}
+              </p>
+              <p>
+                <strong>Total Repayment:</strong> $
+                {regulatedLoan.totalCost.toFixed(2)}
+              </p>
+            </div>
+
+            <LegalCaseNotice
+              capApplied={regulatedLoan.capApplied}
+              caseNotice={regulatedLoan.caseNotice}
+            />
+          </Card>
+        );
+      case 3:
+        return (
+          <CoolingOffPeriod
+            onConfirm={() => setActiveStep(4)}
+            onCancel={() => setActiveStep(0)}
+          />
+        );
+      case 4:
+        return (
+          <Card className="p-6 text-center">
+            <h2 className="text-2xl font-bold mb-4">
+              Application Submitted!
+            </h2>
+            <p>Your loan is being processed.</p>
+          </Card>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <ModeSelector />
-        <Card className="mt-8 p-6 sm:p-8 border-2 border-blue-200 bg-white shadow-lg rounded-xl">
-          <div className="text-center">
-            <Shield className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">
-              A Fairer Way to Borrow
-            </h1>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-              Welcome to our transparent and ethical loan application process.
-              We're committed to your financial well-being.
-            </p>
-          </div>
-
-          <div className="my-8 sm:my-10 border-t border-b border-gray-200 py-6 sm:py-8">
-            <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-              Our Commitment to You
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-6 text-left">
-              <div className="flex items-start">
-                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-gray-700">
-                    Full Transparency
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    No hidden fees or confusing terms. We show you the total
-                    cost upfront, with a clear APR.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-gray-700">
-                    You're in Control
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    We only ask for the data we need. You control your
-                    information and consent is never pre-checked.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-gray-700">
-                    Affordability First
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    We'll help you assess what you can comfortably afford to
-                    repay, avoiding debt traps.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-gray-700">
-                    Flexible & Fair
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    We offer clear repayment plans and a 24-hour cooling-off
-                    period. No rollovers, no surprises.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <Button
-              onClick={() => setStartFlow(true)}
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105"
-            >
-              Start Ethical Application
-            </Button>
-            <p className="text-xs text-gray-500 mt-4">
-              By proceeding, you acknowledge our commitment to a fair process.
-            </p>
-          </div>
-        </Card>
+    <div className="container mx-auto p-6 max-w-2xl">
+      <h1 className="text-3xl font-bold mb-6">
+        Ethical Redesign (CFPB & State Law Compliant)
+      </h1>
+      <Stepper steps={steps} activeStep={activeStep} />
+      <div className="my-8">{renderStepContent()}</div>
+      <div className="flex justify-between">
+        <Button
+          onClick={() => setActiveStep((prev) => prev - 1)}
+          disabled={activeStep === 0}
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => setActiveStep((prev) => prev + 1)}
+          disabled={activeStep === steps.length - 1}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );
