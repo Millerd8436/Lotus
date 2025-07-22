@@ -17,4 +17,5 @@ export * from './steps/CoolingOffStep';
 export * from './steps/EthicalPrinciplesStep';
 export * from './steps/FinalConsentStep';
 export * from './steps/FinancialEducationStep';
+export * from './steps/IncomeVerificationStep';
 export * from './steps/LoanTermsStep'; 

@@ -8,6 +8,7 @@ import CoolingOffPeriod from "./CoolingOffPeriod";
 import AIReviewStep from "./AIReviewStep";
 import HyperPersonalizedGuidance from "./HyperPersonalizedGuidance";
 import InformedConsentStep from "./InformedConsentStep";
+import IncomeVerificationStep from "./steps/IncomeVerificationStep";
 import { Button } from "@/components/shared/Button";
 import { Card } from "@/components/shared/Card";
 import { Input } from "@/components/shared/Input";
@@ -20,19 +21,23 @@ interface AffordabilityData {
   canAfford: boolean;
 }
 
+interface IncomeData {
+  monthlyIncome: number;
+  incomeSource: string;
+  employmentType: string;
+  isVerified: boolean;
+  debtToIncomeRatio?: number;
+}
+
 export default function EthicalHomepage() {
-  // Renamed from RedesignPage
   const [activeStep, setActiveStep] = useState(0);
   const [loanAmount, setLoanAmount] = useState(500);
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
-  const [aiDecision, setAiDecision] = useState<UnderwritingDecision | null>(
-    null
-  );
-  const [affordabilityData, setAffordabilityData] =
-    useState<AffordabilityData | null>(null);
+  const [aiDecision, setAiDecision] = useState<UnderwritingDecision | null>(null);
+  const [affordabilityData, setAffordabilityData] = useState<AffordabilityData | null>(null);
+  const [incomeData, setIncomeData] = useState<IncomeData | null>(null);
 
-  const regulatedLoan =
-    EnhancedLoanCalculator.calculateRegulatedLoan(loanAmount);
+  const regulatedLoan = EnhancedLoanCalculator.calculateRegulatedLoan(loanAmount);
 
   const handleAIDecision = (decision: UnderwritingDecision) => {
     setAiDecision(decision);
@@ -40,6 +45,10 @@ export default function EthicalHomepage() {
 
   const handleAffordabilityChange = (data: AffordabilityData) => {
     setAffordabilityData(data);
+  };
+
+  const handleIncomeVerified = (data: IncomeData) => {
+    setIncomeData(data);
   };
 
   const handleNextStep = () => {
@@ -52,6 +61,7 @@ export default function EthicalHomepage() {
 
   const steps = [
     { label: "Self-Assessment" },
+    { label: "Income Verification" },
     { label: "Affordability" },
     { label: "Terms" },
     { label: "AI Review" },
@@ -65,13 +75,22 @@ export default function EthicalHomepage() {
         return <FinancialSelfAssessment />;
       case 1:
         return (
+          <IncomeVerificationStep
+            onNext={handleNextStep}
+            onPrevious={handlePrevStep}
+            onIncomeVerified={handleIncomeVerified}
+          />
+        );
+      case 2:
+        return (
           <LoanAffordabilityCalculator
             loanAmount={loanAmount}
             totalRepayment={regulatedLoan.totalCost}
             onAffordabilityChange={handleAffordabilityChange}
+            incomeData={incomeData}
           />
         );
-      case 2:
+      case 3:
         return (
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Your Loan Terms</h2>
@@ -100,15 +119,29 @@ export default function EthicalHomepage() {
                 {regulatedLoan.totalCost.toFixed(2)}
               </p>
             </div>
+            {incomeData && (
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded">
+                <h3 className="font-medium text-blue-900 mb-2">Income Summary</h3>
+                <p className="text-sm text-blue-800">
+                  Monthly Income: ${incomeData.monthlyIncome.toLocaleString()}
+                </p>
+                {incomeData.debtToIncomeRatio && (
+                  <p className="text-sm text-blue-800">
+                    Debt-to-Income Ratio: {(incomeData.debtToIncomeRatio * 100).toFixed(1)}%
+                  </p>
+                )}
+              </div>
+            )}
           </Card>
         );
-      case 3:
+      case 4:
         return (
           <div>
             <AIReviewStep
               onDecision={handleAIDecision}
               affordability={affordabilityData}
               loanAmount={loanAmount}
+              incomeData={incomeData}
             />
             {aiDecision && (
               <HyperPersonalizedGuidance
@@ -118,11 +151,11 @@ export default function EthicalHomepage() {
             )}
           </div>
         );
-      case 4:
+      case 5:
         return (
           <CoolingOffPeriod onConfirm={handleNextStep} onCancel={handlePrevStep} />
         );
-      case 5:
+      case 6:
         return (
           <InformedConsentStep
             loanAmount={loanAmount}
@@ -135,7 +168,7 @@ export default function EthicalHomepage() {
             }}
           />
         );
-      case 6:
+      case 7:
         return (
           <Card className="p-6 text-center bg-green-50">
             <h2 className="text-2xl font-bold mb-4 text-green-800">
@@ -165,7 +198,7 @@ export default function EthicalHomepage() {
       <Stepper steps={steps} activeStep={activeStep} />
       <div className="my-8">{renderStepContent()}</div>
 
-      {activeStep < steps.length && (
+      {activeStep < steps.length && activeStep !== 1 && (
         <div className="flex justify-between">
           <Button
             onClick={() => setActiveStep((prev) => prev - 1)}
@@ -175,13 +208,13 @@ export default function EthicalHomepage() {
           </Button>
           <Button
             onClick={() => {
-              if (activeStep === 1 && !affordabilityData?.canAfford) return;
-              if (activeStep === 3 && !aiDecision) return;
+              if (activeStep === 2 && !affordabilityData?.canAfford) return;
+              if (activeStep === 4 && !aiDecision) return;
               setActiveStep((prev) => prev + 1);
             }}
-            disabled={activeStep === steps.length - 1 || activeStep === 5}
+            disabled={activeStep === steps.length - 1 || activeStep === 6}
           >
-            {activeStep === 3 && !aiDecision ? "Awaiting AI..." : "Next"}
+            {activeStep === 4 && !aiDecision ? "Awaiting AI..." : "Next"}
           </Button>
         </div>
       )}

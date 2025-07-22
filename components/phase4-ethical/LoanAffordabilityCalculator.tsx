@@ -3,16 +3,37 @@ import { Card } from '@/components/shared/Card';
 import { Button } from '@/components/shared/Button';
 import { Input } from '@/components/shared/Input';
 
+interface IncomeData {
+  monthlyIncome: number;
+  incomeSource: string;
+  employmentType: string;
+  isVerified: boolean;
+  debtToIncomeRatio?: number;
+}
+
 interface LoanAffordabilityCalculatorProps {
   loanAmount: number;
   totalRepayment: number;
   onAffordabilityChange: (data: { disposableIncome: number, canAfford: boolean }) => void;
+  incomeData?: IncomeData | null;
 }
 
-const LoanAffordabilityCalculator: React.FC<LoanAffordabilityCalculatorProps> = ({ loanAmount, totalRepayment, onAffordabilityChange }) => {
-  const [monthlyIncome, setMonthlyIncome] = useState(3000); // Example value
-  const [monthlyExpenses, setMonthlyExpenses] = useState(1800); // Example value
+const LoanAffordabilityCalculator: React.FC<LoanAffordabilityCalculatorProps> = ({ 
+  loanAmount, 
+  totalRepayment, 
+  onAffordabilityChange,
+  incomeData 
+}) => {
+  const [monthlyIncome, setMonthlyIncome] = useState(incomeData?.monthlyIncome || 3000);
+  const [monthlyExpenses, setMonthlyExpenses] = useState(1800);
   const [showProjection, setShowProjection] = useState(false);
+
+  // Update income when incomeData changes
+  useEffect(() => {
+    if (incomeData?.monthlyIncome) {
+      setMonthlyIncome(incomeData.monthlyIncome);
+    }
+  }, [incomeData]);
 
   const netMonthlyCashflow = monthlyIncome - monthlyExpenses;
   const loanRepaymentMonthly = totalRepayment / 3; // Simplified 3-month repayment
