@@ -20,4 +20,4 @@ export const getComplianceIcon = (score: number) => {
   if (score >= 5)
     return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
   return <XCircle className="w-5 h-5 text-red-500" />;
-};
+}; 

@@ -48,4 +48,4 @@ export const getIconForCategory = (iconName: string) => {
     default:
       return <Info className="w-4 h-4" />;
   }
-};
+}; 
