@@ -1,16 +1,14 @@
+// Phase 4 - Ethical Components (existing files only)
 export * from './AIReviewStep';
 export * from './AIUnderwritingSimulator';
-export * from './CoolingOffNotice';
 export * from './CoolingOffPeriod';
-export * from './EthicalCheckoutFlow';
-export * from './EthicalHeader';
 export * from './EthicalHomepage';
-export * from './EthicalLoanCalculator';
-export * from './EthicalLoanSummary';
 export * from './FinancialSelfAssessment';
 export * from './HyperPersonalizedGuidance';
 export * from './InformedConsentStep';
 export * from './LoanAffordabilityCalculator';
+
+// Phase 4 Steps (existing files only)
 export * from './steps/AlternativesStep';
 export * from './steps/ConfirmationStep';
 export * from './steps/CoolingOffStep';
