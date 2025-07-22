@@ -175,6 +175,65 @@ export const DarkPatternsSection: React.FC<{ analysis: ReflectionAnalysis }> = (
         ))}
       </div>
     </Card>
+    
+    <Card className="p-6">
+      <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+        <AlertTriangle className="w-6 h-6 text-red-600" />
+        Advanced Dark Patterns Debrief
+      </h3>
+      <div className="space-y-4">
+        <Card className="p-4 border-2 border-red-200 bg-red-50">
+          <h4 className="font-bold text-lg flex items-center gap-2">
+            <XCircle className="w-5 h-5 text-red-500" />
+            Forced Action & Obfuscated Fees
+          </h4>
+          <p className="text-gray-700 my-3">
+            This dark pattern forces you into an action (like auto-scrolling) to obscure important details, such as hidden fees. The goal is to get you to agree to terms you haven't fully read or understood.
+          </p>
+          <div className="bg-yellow-50 p-3 rounded border border-yellow-200 mb-3">
+            <h5 className="font-semibold text-yellow-800 mb-1">
+              Real-World Example:
+            </h5>
+            <p className="text-yellow-700 text-sm">
+              A checkout page that automatically scrolls past the details of additional, pre-selected services, leading to unintentional purchases.
+            </p>
+          </div>
+          <div className="bg-green-50 p-3 rounded border border-green-200">
+            <h5 className="font-semibold text-green-800 mb-1">
+              Protection Strategy:
+            </h5>
+            <p className="text-green-700 text-sm">
+              Always manually scroll through any terms and conditions. Be wary of pages that seem to jump or scroll on their own, and look for any pre-checked boxes that add services you didn't ask for.
+            </p>
+          </div>
+        </Card>
+        <Card className="p-4 border-2 border-red-200 bg-red-50">
+          <h4 className="font-bold text-lg flex items-center gap-2">
+            <XCircle className="w-5 h-5 text-red-500" />
+            Post-Purchase Pop-up & False Urgency
+          </h4>
+          <p className="text-gray-700 my-3">
+            This dark pattern appears after you've already made a purchase, using a countdown timer and manipulative language to pressure you into an immediate, additional purchase. The "confirm and pay" button is often designed to be clicked accidentally.
+          </p>
+          <div className="bg-yellow-50 p-3 rounded border border-yellow-200 mb-3">
+            <h5 className="font-semibold text-yellow-800 mb-1">
+              Real-World Example:
+            </h5>
+            <p className="text-yellow-700 text-sm">
+              After buying an item, a pop-up appears with a "special offer" that expires in 10 seconds, with a large "Confirm and Pay" button and a small, hard-to-see "no thanks" link.
+            </p>
+          </div>
+          <div className="bg-green-50 p-3 rounded border border-green-200">
+            <h5 className="font-semibold text-green-800 mb-1">
+              Protection Strategy:
+            </h5>
+            <p className="text-green-700 text-sm">
+              Ignore countdown timers and high-pressure language. Take your time to read what you're being offered, and look for the "no thanks" or "close" button. Never feel rushed into a purchase.
+            </p>
+          </div>
+        </Card>
+      </div>
+    </Card>
   </div>
 );
 
