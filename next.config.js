@@ -6,10 +6,6 @@ const nextConfig = {
     // Temporarily ignore type errors to allow deployment
     ignoreBuildErrors: true,
   },
-  compiler: {
-    // Disabling these for the build to avoid potential issues
-    // removeConsole: process.env.NODE_ENV === 'production',
-  },
   images: {
     domains: [
       "vercel.app",
@@ -20,18 +16,10 @@ const nextConfig = {
       "picsum.photos",
     ],
   },
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "@": ".",
-      "@/lib": "./lib",
-      "@/components": "./components",
-      "@/app": "./app",
-      "@/public": "./public",
-      "@/data": "./data",
-      "@/types": "./types",
-      "@/utils": "./lib/utils",
-    };
+  // Simplified webpack config for Vercel deployment
+  webpack: (config, { isServer }) => {
+    // Add alias for better imports
+    config.resolve.alias['@'] = __dirname;
     return config;
   },
 };
