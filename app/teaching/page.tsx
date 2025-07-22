@@ -5,14 +5,20 @@ import RealTimeAnnotationEngine from "@/components/phase3-teaching/RealTimeAnnot
 import React from "react";
 
 const TeachingPage = () => {
+  const handlePatternDetected = (pattern: string, severity: number) => {
+    console.log("Pattern detected:", pattern, "Severity:", severity);
+  };
+
+  const handleFinished = () => {
+    console.log("Teaching phase complete");
+  };
+
   return (
     <RealTimeAnnotationEngine isActive={true}>
       <DeceptiveCheckoutFlow
-        initialData={{ loanAmount: 500, state: "TX" }}
-        onComplete={(data) => {
-          console.log("Teaching phase complete:", data);
-        }}
         phase="teaching"
+        onPatternDetected={handlePatternDetected}
+        onFinished={handleFinished}
       />
     </RealTimeAnnotationEngine>
   );
