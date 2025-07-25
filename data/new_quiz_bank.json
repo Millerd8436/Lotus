@@ -1,0 +1,109 @@
+
+{
+  "phase1": {
+    "step1": {
+      "id": "q1.1",
+      "question": "What was the most prominent promotional claim you saw on the QuickLoan landing page?",
+      "type": "multiple-choice-confidence",
+      "options": [
+        "“Get $500 Today—0% Fees!”",
+        "“Transparent Loans—See APR Up Front”",
+        "“Lowest Interest Rates in the Market”",
+        "“Build Your Credit Score with Us”"
+      ],
+      "correct_answer": "“Get $500 Today—0% Fees!”",
+      "dv_construct": "Recall of misleading marketing"
+    },
+    "step2": {
+      "id": "q1.2",
+      "question": "Which of the following consents were pre-checked for you by default during the personal information step?",
+      "type": "multiple-choice-confidence",
+      "options": [
+        "Automatic debit and data sharing with marketing partners",
+        "Enrolling in a financial literacy course",
+        "Agreeing to the terms of service",
+        "Receiving promotional emails"
+      ],
+      "correct_answer": "Automatic debit and data sharing with marketing partners",
+      "dv_construct": "Detection of pre-checked consents"
+    },
+    "step3": {
+      "id": "q1.3",
+      "question": "In the loan quote preview, what was the Annual Percentage Rate (APR) for your loan?",
+      "type": "multiple-choice-clarity-time",
+      "options": [
+        "Around 400%, displayed in a small, light-colored font",
+        "Approximately 50%, displayed prominently",
+        "It was not displayed at all",
+        "0%, as stated in the 'Fee-free advance!' badge"
+      ],
+      "correct_answer": "Around 400%, displayed in a small, light-colored font",
+      "dv_construct": "Comprehension of hidden APR"
+    },
+    "step4": {
+      "id": "q1.4",
+      "question": "What was the immediate consequence of clicking the 'See My Cash Offer' button?",
+      "type": "multiple-choice-response-time",
+      "options": [
+        "It committed you to the loan terms, potentially with a tribal lender.",
+        "It showed you a list of different loan rates.",
+        "It took you to a page to review the terms before committing.",
+        "It downloaded a PDF of the loan agreement."
+      ],
+      "correct_answer": "It committed you to the loan terms, potentially with a tribal lender.",
+      "dv_construct": "Understanding of commitment point"
+    }
+  },
+  "phase2": {
+    "step5": {
+      "id": "q2.1",
+      "question": "In the FairLend TILA disclosure, what was the total payback amount for your loan?",
+      "type": "multiple-choice-informed-likert",
+      "options": [
+        "$620",
+        "$500",
+        "$750",
+        "The amount was not specified"
+      ],
+      "correct_answer": "$620",
+      "dv_construct": "Comprehension of TILA disclosure"
+    },
+    "step6": {
+      "id": "q2.2",
+      "question": "How was the loan agreement structured in the FairLend process?",
+      "type": "multiple-choice-confidence",
+      "options": [
+        "As a standard loan agreement",
+        "As a purchase of future receivables (MCA)",
+        "As a line of credit",
+        "As a peer-to-peer loan"
+      ],
+      "correct_answer": "As a standard loan agreement",
+      "dv_construct": "Understanding of loan structure"
+    }
+  },
+  "phase3": {
+    "step7": {
+      "id": "q3.1",
+      "question": "During the Echo Mode review, what hidden fee was revealed in the QuickLoan process after the funds were disbursed?",
+      "type": "multiple-choice-surprise-rating",
+      "options": [
+        "A $5 expedition fee, mentioned in a long paragraph of text",
+        "A $10 processing fee, clearly displayed",
+        "A $2 monthly maintenance fee, mentioned in the terms of service",
+        "There were no hidden fees"
+      ],
+      "correct_answer": "A $5 expedition fee, mentioned in a long paragraph of text",
+      "dv_construct": "Recall of hidden fees"
+    },
+    "step8": {
+      "id": "q3.2",
+      "question": "On a scale of 1 to 7, how much do you agree with the following statement: 'I felt misled by the automated deductions and rollover policies in the QuickLoan simulation.'",
+      "type": "likert-open-ended",
+      "options": [],
+      "correct_answer": null,
+      "dv_construct": "Perceived deception and normative judgment"
+    }
+  }
+}
+

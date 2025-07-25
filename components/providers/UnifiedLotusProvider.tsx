@@ -1,7 +1,7 @@
 "use client";
 
 import { getInitialLotusSession, LotusSession } from "@/types";
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useState, useEffect } from "react";
 
 // Educational content interfaces
 interface EducationalContent {
@@ -24,6 +24,9 @@ interface EducationalProgress {
 
 // Unified context interface combining simulation and education
 interface UnifiedLotusContextType {
+  // User state
+  userId: string | null;
+
   // Simulation state
   session: LotusSession;
   updateSession: (data: Partial<LotusSession>) => void;
@@ -75,6 +78,28 @@ export const UnifiedLotusProvider: React.FC<UnifiedLotusProviderProps> = ({
   const [session, setSession] = useState<LotusSession>(
     getInitialLotusSession()
   );
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      let currentUserId = localStorage.getItem('lotusUserId');
+      if (!currentUserId) {
+        try {
+          const response = await fetch('/api/users', { method: 'POST' });
+          const newUser = await response.json();
+          currentUserId = newUser.id;
+          localStorage.setItem('lotusUserId', currentUserId);
+        } catch (error) {
+          console.error("Failed to create user:", error);
+          return; // Do not proceed if user creation fails
+        }
+      }
+      setUserId(currentUserId);
+    };
+
+    initializeUser();
+  }, []);
+
 
   // Educational state
   const [educationalContent, setEducationalContent] = useState<
@@ -313,6 +338,9 @@ export const UnifiedLotusProvider: React.FC<UnifiedLotusProviderProps> = ({
   };
 
   const value: UnifiedLotusContextType = {
+    // User
+    userId,
+
     // Simulation
     session,
     updateSession,

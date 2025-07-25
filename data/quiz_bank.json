@@ -378,6 +378,32 @@
         "max_amount": "Varies",
         "description": "Personal loans from social network with clear terms"
       }
+    ],
+    "new_alternatives_2024": [
+      {
+        "name": "Possible Finance",
+        "apr_range": "Varies, but offers installment loans",
+        "max_amount": 500,
+        "description": "Offers installment loans that can be repaid over time and reports to credit bureaus to help build credit history. Mobile-first platform."
+      },
+      {
+        "name": "MOD (Money on Demand)",
+        "apr_range": "Low rates, CDFI-backed",
+        "max_amount": 400,
+        "description": "A CDFI-powered app with a focus on fair and flexible advances. Currently in beta in Mississippi, but represents a new wave of ethical lenders."
+      },
+      {
+        "name": "Empower",
+        "apr_range": "0% for cash advance",
+        "max_amount": 400,
+        "description": "Offers interest-free cash advances with a subscription model. Also provides budgeting and savings tools."
+      },
+      {
+        "name": "Elastic",
+        "apr_range": "Varies, line of credit",
+        "max_amount": 4500,
+        "description": "A line of credit that allows you to draw funds as needed. More flexible than a single loan, but important to manage carefully."
+      }
     ]
   }
 }
