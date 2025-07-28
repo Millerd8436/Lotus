@@ -1,137 +1,72 @@
-export interface StepConfig {
-  title: string;
-  description: string;
-  isEthical: boolean;
-  fields: {
-    id: string;
-    label: string;
-    type: 'text' | 'number' | 'date' | 'checkbox';
-    placeholder?: string;
-    required: boolean;
-    defaultValue?: any;
-    darkPattern?: {
-      type: 'hiddenFee' | 'urgency' | 'socialProof' | 'forcedAction';
-      description: string;
-    };
-  }[];
-}
+import { SimulationConfig, ValidatedDeceptivePattern, getScenarioPrompts, VALIDATED_PATTERNS } from '@/types';
 
-export interface SimulationConfig {
-  id: 'easyLend' | 'fairLend';
-  name: string;
-  description: string;
-  initialLoanAmount: number;
-  apr: number;
-  repaymentMonths: number;
-  steps: {
-    initial: StepConfig;
-    personal: StepConfig;
-    employment: StepConfig;
-    terms: StepConfig;
-    submit: StepConfig;
-  };
-}
+const scenarioPrompts = getScenarioPrompts();
 
-export const fairLendConfig: SimulationConfig = {
-  id: 'fairLend',
-  name: 'FairLend',
-  description: 'Transparent, responsible lending designed for your well-being.',
-  initialLoanAmount: 500,
-  apr: 36,
-  repaymentMonths: 6,
-  steps: {
-    initial: {
-      title: 'Get Your Instant Loan Offer',
-      description: 'Review your clear, transparent loan offer. We believe in informed consent and have no hidden fees.',
-      isEthical: true,
-      fields: []
-    },
-    personal: {
-      title: 'Your Personal Information',
-      description: 'We only ask for the information required to process your application securely.',
-      isEthical: true,
-      fields: [
-        { id: 'fullName', label: 'Full Legal Name', type: 'text', placeholder: 'John A. Doe', required: true },
-        { id: 'dob', label: 'Date of Birth', type: 'date', required: true },
-        { id: 'ssn', label: 'Social Security Number', type: 'text', placeholder: '***-**-****', required: true },
-      ]
-    },
-    employment: {
-        title: 'Employment & Income',
-        description: 'Please provide your current employment and income details.',
-        isEthical: true,
-        fields: [
-            { id: 'employer', label: 'Employer Name', type: 'text', placeholder: 'ACME Corporation', required: true },
-            { id: 'jobTitle', label: 'Job Title', type: 'text', placeholder: 'Product Manager', required: true },
-            { id: 'income', label: 'Monthly Income', type: 'number', placeholder: '4000', required: true },
-        ]
-    },
-    terms: {
-        title: 'Review Your Loan Agreement',
-        description: 'Here is a plain-language summary of your key terms:',
-        isEthical: true,
-        fields: [
-            { id: 'agree', label: 'I have read and agree to the terms and conditions.', type: 'checkbox', required: true },
-        ]
-    },
-    submit: {
-        title: 'Ready to Submit?',
-        description: 'Please review your information one last time. When you are ready, submit your application.',
-        isEthical: true,
-        fields: []
-    }
-  }
+// Research-validated simulation configurations based on most controversial practices
+export const simulationConfigs: SimulationConfig[] = [
+  {
+    loanType: 'Payday',
+    name: 'CashAdvance Plus',
+    description: 'Fast cash when you need it most. Get approved instantly with our streamlined process.',
+    validatedPatterns: VALIDATED_PATTERNS['Payday'],
+    scenarioPrompt: scenarioPrompts['Payday'],
+    realWorldExample: 'Based on CFPB data showing 76% of payday borrowers trapped in debt 5+ months/year and debt trap rollover practices',
+    researchBasis: 'CFPB Payday borrower outcomes data (2022); Price Complexity in Laboratory Markets (2024); Multiple state AG enforcement actions'
+  },
+  {
+    loanType: 'Installment',
+    name: 'FlexPayment Solutions', 
+    description: 'Manageable monthly payments for larger expenses. Get the funds you need with predictable payments.',
+    validatedPatterns: VALIDATED_PATTERNS['Installment'],
+    scenarioPrompt: scenarioPrompts['Installment'],
+    realWorldExample: 'Based on NCLC analysis of payment anchoring exploitation and CFPB data on 1.6x average refinancing rates',
+    researchBasis: 'NCLC payment anchoring analysis; CFPB installment lending practices review; Behavioral economics anchoring bias research'
+  },
+  {
+    loanType: 'EWA',
+    name: 'EarlyPay Advance',
+    description: 'Access your earned wages instantly. No interest, just optional tips to help others.',
+    validatedPatterns: VALIDATED_PATTERNS['EWA'],
+    scenarioPrompt: scenarioPrompts['EWA'],
+    realWorldExample: 'Based on CA DFPI findings of 73% tip compliance rates and NCLC documentation of 17 manipulative tip prompts requiring 13 clicks to avoid',
+    researchBasis: 'CA DFPI EWA investigation (2023); NCLC tip coercion documentation; CFPB EWA analysis showing 330% effective APR'
+  },
+  {
+    loanType: 'BNPL',
+    name: 'SplitPay Easy',
+    description: 'Split your purchase into simple payments. No interest, no hidden fees on most purchases.',
+    validatedPatterns: VALIDATED_PATTERNS['BNPL'],
+    scenarioPrompt: scenarioPrompts['BNPL'],
+    realWorldExample: 'Based on CFPB data showing 73% higher spending with BNPL users and Stanford research on decreased financial awareness',
+    researchBasis: 'CFPB BNPL market analysis (2022); Stanford BNPL behavioral study (2024); CFPB 2024 rule treating BNPL as credit'
+  },
+];
+
+export const getSimulationConfig = (
+  loanType: LoanType
+): SimulationConfig | undefined => {
+  return simulationConfigs.find(
+    (config) => config.loanType === loanType
+  );
 };
 
-export const easyLendConfig: SimulationConfig = {
-    id: 'easyLend',
-    name: 'EasyLend',
-    description: 'Your fast track to the cash you need, right when you need it.',
-    initialLoanAmount: 500,
-    apr: 399,
-    repaymentMonths: 1,
-    steps: {
-        initial: {
-            title: 'Unlock Your Cash Instantly!',
-            description: 'Your special offer is waiting! Just a few quick steps to get your money.',
-            isEthical: false,
-            fields: []
-        },
-        personal: {
-            title: 'Just a Few More Details...',
-            description: 'We need to verify some details to secure your amazing rate!',
-            isEthical: false,
-            fields: [
-                { id: 'fullName', label: 'Full Legal Name', type: 'text', placeholder: 'John A. Doe', required: true },
-                { id: 'dob', label: 'Date of Birth', type: 'date', required: true },
-                { id: 'ssn', label: 'Social Security Number', type: 'text', placeholder: '***-**-****', required: true },
-                { id: 'contactAccess', label: 'Grant Contact Access', type: 'checkbox', required: false, darkPattern: { type: 'forcedAction', description: 'To help us verify your identity and speed things up, please grant us temporary access to your phone\'s contact list.' } },
-            ]
-        },
-        employment: {
-            title: 'Verify Your Income Source to Lock In Your Rate!',
-            description: 'Almost there! Providing this info helps us guarantee your funds.',
-            isEthical: false,
-            fields: [
-                { id: 'employer', label: 'Employer Name', type: 'text', placeholder: 'ACME Corporation', required: true },
-                { id: 'jobTitle', label: 'Job Title', type: 'text', placeholder: 'Product Manager', required: true },
-                { id: 'income', label: 'Monthly Income', type: 'number', placeholder: '4000', required: true },
-                { id: 'supervisor', label: 'Supervisor\'s Name & Phone (Optional)', type: 'text', placeholder: 'Helps speed up verification!', required: false },
-            ]
-        },
-        terms: {
-            title: 'Final Step: Review & Agree',
-            description: 'Please review the terms of your agreement below. By checking the box, you agree to all terms.',
-            isEthical: false,
-            fields: [
-                { id: 'agree', label: 'I have read and agree to the terms and conditions.', type: 'checkbox', required: true, defaultValue: true, darkPattern: { type: 'hiddenFee', description: '... buried deep within this text is a Confession of Judgment clause. ... By signing this, you waive your right to legal defense if we sue you. ...' } },
-            ]
-        },
-        submit: {
-            title: 'You\'re All Set!',
-            description: 'Your cash is waiting! Hit submit to get your money transferred ASAP!',
-            isEthical: false,
-            fields: []
-        }
-    }
+// Helper functions for accessing validated patterns
+export const getValidatedPatternsForLoan = (loanType: LoanType): ValidatedDeceptivePattern[] => {
+  return VALIDATED_PATTERNS[loanType] || [];
+};
+
+export const getAllValidatedPatterns = (): ValidatedDeceptivePattern[] => {
+  return Object.values(VALIDATED_PATTERNS).flat();
+};
+
+// Get specific pattern by ID across all loan types
+export const getPatternById = (patternId: string): ValidatedDeceptivePattern | undefined => {
+  return getAllValidatedPatterns().find(pattern => pattern.id === patternId);
+};
+
+// Get patterns by psychological mechanism
+export const getPatternsByMechanism = (mechanism: string): ValidatedDeceptivePattern[] => {
+  return getAllValidatedPatterns().filter(pattern => 
+    pattern.psychologicalMechanism.toLowerCase().includes(mechanism.toLowerCase())
+  );
 }; 

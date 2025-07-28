@@ -1,56 +1,34 @@
 ﻿"use client";
 
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/shared/Button';
 import { Card } from '@/components/shared/Card';
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
-import WebsitePhase from '@/components/shared/WebsitePhase';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
 
-function MainContent() {
-  const searchParams = useSearchParams();
+export default function IntroductionPage() {
   const router = useRouter();
-  const [phase, setPhase] = useState<number | null>(null);
 
-  useEffect(() => {
-    const phaseParam = searchParams.get('phase');
-    if (phaseParam) {
-      const phaseNumber = parseInt(phaseParam, 10);
-      if (!isNaN(phaseNumber) && phaseNumber >= 1 && phaseNumber <= 4) {
-        setPhase(phaseNumber);
-      } else {
-        router.push('/');
-      }
-    } else {
-      setPhase(1); 
-    }
-  }, [searchParams, router]);
+  const handleStart = () => {
+    router.push('/simulation');
+  };
 
-  if (phase === null) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Card title="Loading Lotus Simulator">
-            <LoadingSpinner />
-            <p>Initializing educational experience...</p>
-        </Card>
-      </div>
-    );
-  }
-
-  return <WebsitePhase phase={phase as 1 | 2 | 3 | 4} />;
-}
-
-
-export default function Page() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <Card title="Loading Lotus Simulator">
-            <LoadingSpinner />
-            <p>Initializing educational experience...</p>
-        </Card>
-      </div>
-    }>
-      <MainContent />
-    </Suspense>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card className="max-w-xl p-8">
+        <h1 className="text-2xl font-semibold mb-4 text-center text-gray-800">Financial Simulation</h1>
+        <div className="text-left bg-white p-6 rounded-lg border border-gray-200">
+          <p className="text-gray-700 leading-relaxed">
+            Your car needs a <strong>$300 repair</strong> and you won’t be paid for two weeks. 
+          </p>
+          <p className="text-gray-700 leading-relaxed mt-4">
+            Simulate applying for one short-term online loan provider. Use realistic but fictitious information and proceed as if this were real—you may exit at any time, but your progress will not be saved or revisitable.
+          </p>
+        </div>
+        <div className="mt-8">
+            <Button onClick={handleStart} size="lg" className="w-full">
+              Begin Simulation
+            </Button>
+        </div>
+      </Card>
+    </div>
   );
 }

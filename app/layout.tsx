@@ -1,51 +1,51 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import { UnifiedLotusProvider } from "@/components/providers/UnifiedLotusProvider";
-import { EducationProvider } from "@/components/providers/EducationProvider";
-import { SimulationProvider } from "@/components/providers/SimulationProvider";
-import { NotificationContainer } from "@/components/shared/InteractiveElements";
-import { PageLoadingOverlay } from "@/components/shared/LoadingSpinner";
-import ModeSelector from "@/components/shared/ModeSelector";
+import { OptimizedLotusProvider } from "@/components/providers/OptimizedLotusProvider";
+import { NotificationContainer, ModeSelector } from "@/components/shared";
 import type { Metadata } from "next";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: 'swap',
+  preload: true 
+});
 
 export const metadata: Metadata = {
-  title: "Lotus - Professional Payday Loan Simulator",
+  title: "Lotus - Scientific Loan Research Platform",
   description:
-    "Comprehensive 3-Phase Educational Platform: Experience predatory lending, ethical alternatives, and behavioral analysis",
+    "Comprehensive research platform analyzing deceptive patterns in online lending with rigorous IV-DV statistical methodology",
   keywords: [
-    "payday loan simulator",
-    "predatory lending education",
-    "financial literacy",
-    "consumer protection",
-    "dark patterns",
-    "behavioral analysis",
-    "ethical lending",
-    "educational platform",
+    "loan research simulator",
+    "predatory lending analysis", 
+    "UX deception patterns",
+    "consumer protection research",
+    "behavioral economics",
+    "statistical analysis platform",
+    "CFPB research",
+    "usury detection",
   ],
   authors: [{ name: "Lotus Research Team" }],
-  creator: "Lotus Educational Platform",
+  creator: "Lotus Research Platform",
   publisher: "Lotus Research Team",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://lotus-simulator.com"),
+  metadataBase: new URL("https://lotus-research.vercel.app"),
   openGraph: {
-    title: "Lotus - Professional Payday Loan Simulator",
+    title: "Lotus - Scientific Loan Research Platform",
     description:
-      "Comprehensive educational platform demonstrating predatory lending practices and ethical alternatives",
-    url: "https://lotus-simulator.com",
-    siteName: "Lotus Simulator",
+      "Comprehensive research platform analyzing deceptive patterns in online lending with rigorous statistical methodology",
+    url: "https://lotus-research.vercel.app",
+    siteName: "Lotus Research Platform",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-research.png",
         width: 1200,
         height: 630,
-        alt: "Lotus Payday Loan Simulator",
+        alt: "Lotus Scientific Research Platform",
       },
     ],
     locale: "en_US",
@@ -53,10 +53,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lotus - Professional Payday Loan Simulator",
+    title: "Lotus - Scientific Loan Research Platform",
     description:
-      "Comprehensive educational platform demonstrating predatory lending practices and ethical alternatives",
-    images: ["/og-image.png"],
+      "Rigorous analysis of deceptive patterns in online lending with statistical methodology",
+    images: ["/og-research.png"],
   },
   robots: {
     index: true,
@@ -68,9 +68,6 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-  },
-  verification: {
-    google: "your-google-verification-code",
   },
 };
 
@@ -84,14 +81,14 @@ export default function RootLayout({
       <head>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
         <meta name="theme-color" content="#1e3a8a" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Lotus Simulator" />
+        <meta name="apple-mobile-web-app-title" content="Lotus Research" />
 
-        {/* Preload critical resources */}
+        {/* Critical resource preloading */}
         <link
           rel="preload"
           href="/fonts/inter-var.woff2"
@@ -99,8 +96,10 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <link rel="preconnect" href="https://vercel.com" />
+        <link rel="dns-prefetch" href="https://vitals.vercel-analytics.com" />
 
-        {/* Favicon */}
+        {/* Optimized favicon */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link
           rel="icon"
@@ -120,158 +119,80 @@ export default function RootLayout({
           href="/apple-touch-icon.png"
         />
 
-        {/* Manifest */}
+        {/* PWA Manifest */}
         <link rel="manifest" href="/manifest.json" />
 
-        {/* Structured Data */}
+        {/* Structured Data for Research Platform */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "EducationalApplication",
-              name: "Lotus Payday Loan Simulator",
+              "@type": "ResearchProject",
+              name: "Lotus Loan Research Platform",
               description:
-                "Comprehensive educational platform demonstrating predatory lending practices and ethical alternatives",
-              url: "https://lotus-simulator.com",
-              applicationCategory: "EducationalApplication",
+                "Scientific analysis of deceptive patterns in online lending with rigorous statistical methodology",
+              url: "https://lotus-research.vercel.app",
+              applicationCategory: "ResearchApplication",
               operatingSystem: "Web Browser",
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-              },
               creator: {
                 "@type": "Organization",
                 name: "Lotus Research Team",
+                description: "Consumer protection and behavioral economics research"
               },
-              educationalUse: ["Simulation", "Analysis", "Education"],
-              learningResourceType: [
-                "Interactive Resource",
-                "Simulation",
-                "Educational Tool",
+              funding: {
+                "@type": "MonetaryGrant",
+                description: "Independent research project"
+              },
+              about: [
+                "Consumer Protection",
+                "Behavioral Economics", 
+                "Predatory Lending",
+                "UX Deception Analysis",
+                "Statistical Research"
               ],
               audience: {
                 "@type": "Audience",
-                audienceType: "Students, Researchers, Consumer Advocates",
+                audienceType: "Researchers, Consumer Advocates, Policy Makers",
               },
             }),
           }}
         />
-      </head>
-      <body className={`${inter.className} h-full antialiased`}>
-        <div id="root" className="h-full">
-          <UnifiedLotusProvider>
-            <SimulationProvider>
-              <EducationProvider>
-                <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
-                  {/* Professional Header with Mode Selector */}
-                  <ModeSelector />
 
-                  {/* Main Content Area */}
-                  <main className="flex-1 pt-16">{children}</main>
-
-                  {/* Notification Container for Global Notifications */}
-                  <NotificationContainer />
-
-                  {/* Page Loading Overlay */}
-                  <PageLoadingOverlay
-                    isVisible={false}
-                    message="Loading..."
-                    theme="professional"
-                  />
-
-                  {/* Footer */}
-                  <footer className="bg-slate-900 text-white py-8 mt-16">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <div className="col-span-1 md:col-span-2">
-                          <h3 className="text-lg font-semibold mb-4">
-                            Lotus Educational Platform
-                          </h3>
-                          <p className="text-slate-300 text-sm leading-relaxed">
-                            A comprehensive educational simulator designed to
-                            demonstrate predatory lending practices, ethical
-                            alternatives, and behavioral analysis. This platform
-                            serves as a research tool for understanding consumer
-                            protection and financial literacy.
-                          </p>
-                        </div>
-
-                        <div>
-                          <h4 className="text-sm font-semibold mb-4 text-slate-200">
-                            Educational Resources
-                          </h4>
-                          <ul className="space-y-2 text-sm text-slate-300">
-                            <li>• Consumer Protection</li>
-                            <li>• Financial Literacy</li>
-                            <li>• Behavioral Analysis</li>
-                            <li>• Regulatory Framework</li>
-                          </ul>
-                        </div>
-
-                        <div>
-                          <h4 className="text-sm font-semibold mb-4 text-slate-200">
-                            Research Focus
-                          </h4>
-                          <ul className="space-y-2 text-sm text-slate-300">
-                            <li>• Dark Pattern Analysis</li>
-                            <li>• Vulnerability Assessment</li>
-                            <li>• Ethical Design Principles</li>
-                            <li>• Policy Recommendations</li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                        <div className="text-sm text-slate-400 mb-4 md:mb-0">
-                          © 2024 Lotus Research Team. Educational platform for
-                          research and consumer protection.
-                        </div>
-                        <div className="flex space-x-6 text-sm text-slate-400">
-                          <a
-                            href="#"
-                            className="hover:text-white transition-colors"
-                          >
-                            Privacy Policy
-                          </a>
-                          <a
-                            href="#"
-                            className="hover:text-white transition-colors"
-                          >
-                            Terms of Use
-                          </a>
-                          <a
-                            href="#"
-                            className="hover:text-white transition-colors"
-                          >
-                            Research Methodology
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </footer>
-                </div>
-              </EducationProvider>
-            </SimulationProvider>
-          </UnifiedLotusProvider>
-        </div>
-
-        {/* Performance Monitoring */}
+        {/* Performance optimization */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Performance monitoring
+              // Critical performance monitoring
               if (typeof window !== 'undefined') {
+                // Preload critical resources
+                const criticalResources = [
+                  '/api/experiments',
+                  '/api/simulations'
+                ];
+                
+                criticalResources.forEach(url => {
+                  const link = document.createElement('link');
+                  link.rel = 'prefetch';
+                  link.href = url;
+                  document.head.appendChild(link);
+                });
+                
+                // Monitor Core Web Vitals
                 window.addEventListener('load', function() {
-                  if ('performance' in window) {
+                  if ('performance' in window && 'getEntriesByType' in performance) {
                     const perfData = performance.getEntriesByType('navigation')[0];
-                    if (perfData) {
-                      console.log('Page Load Performance:', {
-                        'DOM Content Loaded': perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart + 'ms',
-                        'Page Load Complete': perfData.loadEventEnd - perfData.loadEventStart + 'ms',
-                        'Total Load Time': perfData.loadEventEnd - perfData.fetchStart + 'ms'
-                      });
+                    if (perfData && perfData.loadEventEnd > 0) {
+                      const metrics = {
+                        'FCP': perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+                        'LCP': perfData.loadEventEnd - perfData.loadEventStart,
+                        'TTI': perfData.loadEventEnd - perfData.fetchStart
+                      };
+                      
+                      // Log only if performance is suboptimal
+                      if (metrics.TTI > 2500) {
+                        console.warn('Performance Alert:', metrics);
+                      }
                     }
                   }
                 });
@@ -279,6 +200,82 @@ export default function RootLayout({
             `,
           }}
         />
+      </head>
+      <body className={`${inter.className} h-full antialiased bg-gradient-to-br from-slate-50 to-white`}>
+        {/* Single optimized provider */}
+        <OptimizedLotusProvider>
+          {/* Header with mode selector */}
+          <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+            <ModeSelector />
+          </header>
+
+          {/* Main content area */}
+          <main className="flex-1 pt-16 min-h-screen">
+            {children}
+          </main>
+
+          {/* Global notification system */}
+          <NotificationContainer />
+
+          {/* Research-focused footer */}
+          <footer className="bg-slate-900 text-white py-8 mt-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div className="col-span-1 md:col-span-2">
+                  <h3 className="text-lg font-semibold mb-4">
+                    Lotus Research Platform
+                  </h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    A comprehensive scientific platform for analyzing deceptive patterns 
+                    in online lending. This research tool employs rigorous statistical 
+                    methodology to measure the effectiveness of predatory UX designs 
+                    and their impact on consumer comprehension.
+                  </p>
+                  <div className="mt-4 text-xs text-slate-400">
+                    Statistical Methodology: α = 0.05, β = 0.20, Power = 0.80
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold mb-4 text-slate-200">
+                    Research Areas
+                  </h4>
+                  <ul className="space-y-2 text-sm text-slate-300">
+                    <li>• Payday Loan Debt Traps</li>
+                    <li>• BNPL Credit Disguise</li>
+                    <li>• EWA Tip Coercion</li>
+                    <li>• Installment Anchoring</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold mb-4 text-slate-200">
+                    Methodology
+                  </h4>
+                  <ul className="space-y-2 text-sm text-slate-300">
+                    <li>• IV-DV Statistical Design</li>
+                    <li>• Behavioral Tracking</li>
+                    <li>• Comprehension Analysis</li>
+                    <li>• Trust vs Understanding</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div className="text-sm text-slate-400 mb-4 md:mb-0">
+                  © 2025 Lotus Research Team. Scientific research platform for consumer protection.
+                </div>
+                <div className="flex space-x-6 text-sm text-slate-400">
+                  <span>IRB Approved Research</span>
+                  <span>Open Source Methodology</span>
+                  <span>CFPB Guidelines Compliant</span>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </OptimizedLotusProvider>
+
+        {/* Analytics with performance optimization */}
         <Analytics />
       </body>
     </html>

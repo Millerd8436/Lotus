@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 interface StateSpecificMessagingProps {
@@ -1140,3 +1142,4 @@ const StateSpecificMessaging: React.FC<StateSpecificMessagingProps> = ({
 };
 
 export default StateSpecificMessaging;
+

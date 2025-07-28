@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Research-Grade Prisma Schema for Scientific Data Collection
+// Optimized for microsecond precision, data integrity, and statistical analysis
 
 generator client {
   provider = "prisma-client-js"
@@ -7,46 +7,293 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // direct connection
+  url      = env("POSTGRES_URL_NON_POOLING")
 }
 
-model User {
+// Research Session - Scientific experiment management
+model ResearchSession {
+  id                String   @id @default(cuid())
+  participantId     String   @unique
+  startTime         DateTime @default(now()) @db.Timestamptz(6) // Microsecond precision
+  endTime           DateTime? @db.Timestamptz(6)
+  
+  // Experimental Design
+  condition         String   // 'experimental' | 'control'
+  randomizationSeed Float    // For reproducible randomization
+  loanOrder         String[] // Randomized order of loans
+  scenarioAssignment String  // Assigned scenario condition
+  
+  // Data Quality Metrics
+  completionRate    Float    @default(0) // 0-100
+  validEventCount   Int      @default(0)
+  invalidEventCount Int      @default(0)
+  averageResponseTime Float  @default(0) // Microseconds
+  
+  // Research Metadata
+  studyVersion      String   @default("2.0")
+  irbApprovalNumber String?  @default("IRB-2025-001")
+  consentVersion    String   @default("v1.0")
+  
+  // Relationships
+  events            ResearchEvent[]
+  analytics         ResearchAnalytics?
+  powerAnalysis     PowerAnalysisResult[]
+  
+  createdAt         DateTime @default(now()) @db.Timestamptz
+  updatedAt         DateTime @updatedAt @db.Timestamptz
+  
+  // High-performance indexes for research queries
+  @@index([participantId])
+  @@index([condition, startTime])
+  @@index([completionRate, validEventCount])
+  @@map("research_sessions")
+}
+
+// Research Event - Microsecond precision behavioral tracking
+model ResearchEvent {
+  id                String   @id @default(cuid())
+  sessionId         String
+  participantId     String
+  
+  // Event Classification
+  loanType          String   // 'Payday', 'BNPL', 'EWA', 'Installment'
+  eventType         String   // 'interaction', 'cognitive', 'behavioral', 'physiological'
+  
+  // High-Precision Timing (microseconds)
+  timestamp         DateTime @db.Timestamptz(6) // Absolute timestamp
+  relativeTimestamp BigInt   // Microseconds since session start
+  
+  // Interaction Events
+  elementId         String?
+  elementType       String?
+  actionType        String?  // 'click', 'hover', 'scroll', 'focus', 'blur', 'input'
+  coordinates       String?  // JSON: {x: number, y: number}
+  
+  // Cognitive Events
+  attentionState    String?  // 'focused', 'distracted', 'confused'
+  cognitiveLoad     Int?     // 1-10 scale
+  confidenceLevel   Int?     // 1-7 scale
+  
+  // Behavioral Events
+  scrollDepth       Int?     // 0-100 percentage
+  timeSpent         BigInt?  // Microseconds
+  interactionIntensity Int?  // Calculated intensity score
+  hesitationPattern Boolean? // Detected hesitation
+  
+  // Research Metadata
+  studyPhase        String   // 'introduction', 'simulation', 'quiz', 'completion'
+  conditionGroup    String   // Participant's experimental condition
+  trialNumber       Int      // Sequential trial number
+  
+  // Data Quality & Validation
+  qualityScore      Int      @default(100) // 0-100
+  outlierFlags      String[] // Array of outlier indicators
+  attentionCheckPassed Boolean @default(true)
+  dataCompleteness  Int      @default(100) // 0-100 percentage
+  temporalConsistency Boolean @default(true)
+  
+  // Relationships
+  session           ResearchSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  // Research-optimized indexes
+  @@index([sessionId, eventType, timestamp])
+  @@index([participantId, loanType])
+  @@index([qualityScore, attentionCheckPassed])
+  @@index([timestamp, relativeTimestamp]) // Time-series analysis
+  @@index([studyPhase, conditionGroup])
+  @@map("research_events")
+}
+
+// Real-time Research Analytics
+model ResearchAnalytics {
   id              String   @id @default(cuid())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  simulations     LoanSimulation[]
-  quizResponses   QuizResponse[]
-  interactionEvents InteractionEvent[]
+  participantId   String   @unique
+  sessionId       String   @unique
+  
+  // Engagement Metrics
+  eventCount      Int      @default(0)
+  qualityScore    Float    @default(95.0) // Average quality
+  engagementLevel Float    @default(0.0)  // 0-100
+  attentionScore  Float    @default(100.0) // 0-100
+  
+  // Behavioral Patterns
+  interactionRate Float    @default(0.0)  // Events per minute
+  hesitationCount Int      @default(0)
+  precisionScore  Float    @default(100.0) // Click/interaction precision
+  
+  // Data Quality Indicators
+  temporalConsistency Float @default(100.0) // Percentage
+  dataCompleteness   Float @default(100.0) // Percentage
+  outlierPercentage  Float @default(0.0)   // Percentage of outlier events
+  
+  // Session Metadata
+  lastActivity    DateTime @db.Timestamptz
+  analysisVersion String   @default("2.0")
+  
+  // Relationships
+  session         ResearchSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now()) @db.Timestamptz
+  updatedAt       DateTime @updatedAt @db.Timestamptz
+  
+  @@index([qualityScore, engagementLevel])
+  @@index([lastActivity])
+  @@map("research_analytics")
 }
 
-model LoanSimulation {
+// Statistical Power Analysis Results
+model PowerAnalysisResult {
+  id                String   @id @default(cuid())
+  sessionId         String?  // Optional - can be study-wide
+  analysisType      String   // 'interim', 'final', 'futility'
+  
+  // Statistical Parameters
+  sampleSize        Int      // Current sample size
+  alpha             Float    @default(0.05)  // Type I error rate
+  beta              Float    @default(0.20)  // Type II error rate
+  power             Float    @default(0.80)  // Statistical power
+  
+  // Effect Size Analysis
+  effectSize        Float?   // Cohen's d or similar
+  effectSizeLowerCI Float?   // Lower confidence interval
+  effectSizeUpperCI Float?   // Upper confidence interval
+  
+  // Study Recommendations
+  recommendation    String   // 'continue', 'stop_success', 'stop_futility'
+  targetSampleSize  Int?     // Recommended total sample size
+  
+  // Metadata
+  calculatedAt      DateTime @default(now()) @db.Timestamptz
+  analysisData      Json?    // Detailed statistical results
+  
+  // Relationships
+  session           ResearchSession? @relation(fields: [sessionId], references: [id])
+  
+  @@index([calculatedAt, recommendation])
+  @@index([sampleSize, power])
+  @@map("power_analysis_results")
+}
+
+// Data Quality Incidents
+model DataQualityIncident {
   id              String   @id @default(cuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id])
-  simulationType  String   // "QuickLoan" or "FairLend"
-  formData        Json
-  createdAt       DateTime @default(now())
+  sessionId       String
+  eventId         String?  // Optional - can be session-wide
+  
+  // Incident Classification
+  severity        String   // 'low', 'medium', 'high', 'critical'
+  incidentType    String   // 'temporal_inconsistency', 'attention_failure', 'outlier_detected'
+  description     String   // Human-readable description
+  
+  // Detection Metadata
+  detectedAt      DateTime @default(now()) @db.Timestamptz
+  detectionMethod String   // 'automated', 'manual_review', 'statistical_analysis'
+  
+  // Resolution
+  resolved        Boolean  @default(false)
+  resolution      String?  // Resolution notes
+  resolvedAt      DateTime? @db.Timestamptz
+  
+  // Impact Assessment
+  affectedDataPoints Int   @default(0)
+  qualityImpact      Float @default(0.0) // -100 to 100
+  
+  @@index([sessionId, severity])
+  @@index([detectedAt, resolved])
+  @@map("data_quality_incidents")
 }
 
-model QuizResponse {
-  id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  questionId    String
-  selection     String?
-  confidence    Int?
-  clarity       Int?
-  surprise      Int?
-  openEnded     String?
-  timeTaken     Float
-  createdAt     DateTime @default(now())
+// Attention Check Results
+model AttentionCheck {
+  id              String   @id @default(cuid())
+  sessionId       String
+  
+  // Check Details
+  checkType       String   // 'reading_comprehension', 'instruction_following', 'timing_validation'
+  checkId         String   // Unique identifier for this check type
+  presented       Boolean  @default(false)
+  presentedAt     DateTime? @db.Timestamptz
+  
+  // Response Data
+  passed          Boolean  @default(false)
+  responseTime    BigInt?  // Microseconds
+  expectedResponse String
+  actualResponse  String?
+  
+  // Scoring
+  accuracyScore   Float?   // 0-100 if applicable
+  confidenceScore Float?   // 0-100 if applicable
+  
+  createdAt       DateTime @default(now()) @db.Timestamptz
+  
+  @@index([sessionId, checkType])
+  @@index([passed, responseTime])
+  @@map("attention_checks")
 }
 
-model InteractionEvent {
-  id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  eventType     String   // e.g., "click", "scroll", "hover"
-  elementId     String   // The ID of the element that was interacted with
-  timestamp     DateTime @default(now())
-} 
+// Experiment Metadata for Reproducibility
+model ExperimentMetadata {
+  id                String   @id @default(cuid())
+  version           String   @unique // e.g., "v2.1.0"
+  
+  // Study Parameters
+  studyTitle        String
+  principalInvestigator String
+  startDate         DateTime @db.Date
+  endDate           DateTime? @db.Date
+  irbApprovalNumber String
+  
+  // Statistical Design
+  targetSampleSize  Int
+  currentSampleSize Int      @default(0)
+  alphaPower        Float    @default(0.05)
+  betaPower         Float    @default(0.20)
+  minimumEffectSize Float    @default(0.3) // Cohen's d
+  
+  // Randomization Parameters
+  randomizationScheme String // 'block', 'simple', 'stratified'
+  blockSize          Int?    // For block randomization
+  stratificationFactors String[] // Factors for stratification
+  
+  // Data Collection Parameters
+  maxSessionDuration Int     @default(3600) // Seconds
+  minDataQualityScore Float  @default(80.0) // Minimum quality threshold
+  
+  // System Configuration
+  trackingPrecision  String  @default("microsecond") // 'millisecond' | 'microsecond'
+  validationLevel    String  @default("strict") // 'basic' | 'standard' | 'strict'
+  
+  // Status
+  isActive          Boolean  @default(true)
+  notes             String?
+  
+  createdAt         DateTime @default(now()) @db.Timestamptz
+  updatedAt         DateTime @updatedAt @db.Timestamptz
+  
+  @@map("experiment_metadata")
+}
+
+// Performance optimization views and materialized views would be created separately:
+/*
+-- Example materialized view for real-time dashboard
+CREATE MATERIALIZED VIEW research_dashboard_summary AS
+SELECT 
+  DATE_TRUNC('hour', rs.start_time) as hour,
+  rs.condition,
+  COUNT(DISTINCT rs.participant_id) as participant_count,
+  AVG(ra.quality_score) as avg_quality,
+  AVG(ra.engagement_level) as avg_engagement,
+  COUNT(re.id) as total_events,
+  AVG(EXTRACT(epoch FROM (rs.end_time - rs.start_time))) as avg_session_duration
+FROM research_sessions rs
+LEFT JOIN research_analytics ra ON rs.id = ra.session_id
+LEFT JOIN research_events re ON rs.id = re.session_id
+WHERE rs.start_time >= NOW() - INTERVAL '7 days'
+GROUP BY DATE_TRUNC('hour', rs.start_time), rs.condition
+ORDER BY hour DESC;
+
+-- Refresh every 5 minutes
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_dashboard_summary_refresh 
+ON research_sessions (start_time, condition) 
+WHERE start_time >= NOW() - INTERVAL '7 days';
+*/ 

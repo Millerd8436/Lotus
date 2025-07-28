@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * OptimizedComponents - Performance-optimized React components
  *
@@ -385,3 +387,4 @@ export function usePerformanceMonitor(componentName: string) {
 
   return { renderCount, lastRenderTime };
 }
+

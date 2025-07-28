@@ -1,8 +1,12 @@
+"use client";
+
 /**
- * ErrorBoundaries - Comprehensive error handling components
- *
- * Provides graceful error handling with informative fallback UIs
- * Different boundaries for different parts of the application
+ * Comprehensive Error Boundary Components for Production-Ready Error Handling
+ * 
+ * Provides multiple layers of error boundary protection for different scenarios:
+ * - UI Error Boundary: For component rendering errors
+ * - API Error Boundary: For data fetching errors
+ * - Route Error Boundary: For navigation and routing errors
  */
 
 import React, {

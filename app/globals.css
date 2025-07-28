@@ -1327,3 +1327,7 @@
     box-shadow: 0 0 60px rgba(255, 0, 0, 1); 
   }
 }
+
+.text-low-contrast {
+  color: #a0aec0; /* gray-500 */
+}

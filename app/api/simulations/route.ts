@@ -1,26 +1,32 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/app/lib/prisma';
+import { prisma } from '@/app/lib/prisma';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, simulationType, loanAmount, apr, repaymentAmount, consentGiven, interactionLog } = body;
+    const {
+      experimentId,
+      uxCondition,
+      loanType,
+      ...simulationData
+    } = body;
 
-    const newSimulation = await prisma.loanSimulation.create({
+    if (!experimentId || !uxCondition || !loanType) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    const newSimulationAttempt = await prisma.simulationAttempt.create({
       data: {
-        userId,
-        simulationType,
-        loanAmount,
-        apr,
-        repaymentAmount,
-        consentGiven,
-        interactionLog,
+        experimentId,
+        uxCondition,
+        loanType,
+        ...simulationData
       },
     });
 
-    return NextResponse.json(newSimulation, { status: 201 });
+    return NextResponse.json(newSimulationAttempt, { status: 201 });
   } catch (error) {
-    console.error('Error creating simulation:', error);
-    return NextResponse.json({ message: 'Error creating simulation' }, { status: 500 });
+    console.error('Failed to create simulation attempt:', error);
+    return NextResponse.json({ error: 'Failed to create simulation attempt' }, { status: 500 });
   }
 } 
